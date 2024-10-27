@@ -11,7 +11,10 @@ A walkthrough for installing both can be found on [Angular's Website](https://an
 The walkthrough also contains basic commands you can use to get started on a project.
 
 ## Setup
-(anything here?)
+To set up your environment to run this repository locally you will need:
+Node.js version 22.9.0 
+npm version 10.8.3
+Angular CLI version 18.2.7
 
 ## Running
 After cloning or pulling from the repository, ensure that you have all of the necessary packages by running `npm install`.
@@ -26,7 +29,7 @@ While running, you can enter 'q' in the CLI to quit or 'h' to display a list of 
 Ava Turner - 
 Cam Osterholt - 
 Cayden Scruggs
-Fred Schein - 
+Fred Schein - FSCHEIN@email.sc.edu
 Michael Pikula - MPIKULA@email.sc.edu
 
 
