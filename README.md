@@ -32,8 +32,6 @@ Cayden Scruggs -
 Fred Schein - FSCHEIN@email.sc.edu
 Michael Pikula - MPIKULA@email.sc.edu
 
-***DOES THIS WORK***
-
 
 
 [//]: # Once we get to unit tests in 492, we will likely have to include Testing, Testing Technology, and Running Tests sections from template.
