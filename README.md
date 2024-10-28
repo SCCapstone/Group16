@@ -30,16 +30,6 @@ Our app will connect to the front end using Java Spring (more research will cont
 ## Authors
 Ava Turner - AVART@email.sc.edu
 Cam Osterholt - OSTERHOC@email.sc.edu
-Cayden Scruggs - 
+Cayden Scruggs - CSCRUGGS@email.sc.edu
 Fred Schein - FSCHEIN@email.sc.edu
 Michael Pikula - MPIKULA@email.sc.edu
-
-
-
-[//]: # Once we get to unit tests in 492, we will likely have to include Testing, Testing Technology, and Running Tests sections from template.
-
-### Previous info, safe to delete?
-mvn --version:
-Apache Maven 3.9.9 (8e8579a9e76f7d015ee5ec7bfcdc97d260186937)
-Java version: 22.0.2, vendor: Homebrew, runtime: /opt/homebrew/Cellar/openjdk/22.0.2/libexec/openjdk.jdk/Contents/Home
-Default locale: en_US, platform encoding: UTF-8
