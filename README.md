@@ -25,12 +25,14 @@ While running, you can enter 'q' in the CLI to quit or 'h' to display a list of 
 ## Deployment
 (need help with this one)
 
-## Authors
+## Authorsf
 Ava Turner - AVART@email.sc.edu
 Cam Osterholt - 
 Cayden Scruggs - 
 Fred Schein - FSCHEIN@email.sc.edu
 Michael Pikula - MPIKULA@email.sc.edu
+
+***DOES THIS WORK***
 
 
 
