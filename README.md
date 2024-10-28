@@ -23,11 +23,13 @@ To visit the app, open your web browser and navigate to the URL `localhost:4200`
 While running, you can enter 'q' in the CLI to quit or 'h' to display a list of options.
 
 ## Deployment
-(need help with this one)
+The app will be deployed on Cam's personal server with a static IP. 
+It will be deployed using Kubernetes to spin up Docker images depending on the number of users. 
+Our app will connect to the front end using Java Spring (more research will continue to evolve this step, we have recently added Java Spring after a meeting with Dr. Vidal).
 
-## Authorsf
+## Authors
 Ava Turner - AVART@email.sc.edu
-Cam Osterholt - 
+Cam Osterholt - OSTERHOC@email.sc.edu
 Cayden Scruggs - 
 Fred Schein - FSCHEIN@email.sc.edu
 Michael Pikula - MPIKULA@email.sc.edu
