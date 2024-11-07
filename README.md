@@ -5,6 +5,9 @@ All information about the project can be found on the repository's wiki. In part
 - Information about the planned views of the app can be found [here](https://github.com/SCCapstone/Group16/wiki/Architecture).
 - Up-to-date information about app architecture can be found [here](https://github.com/SCCapstone/Group16/wiki/Design).
 
+## Access
+Website: www.osterholt.us/bb
+
 ## External Requirements
 To run this project, you will need to install Node.js and the Angular Command Line Interface.
 A walkthrough for installing both can be found on [Angular's Website](https://angular.dev/tools/cli/setup-local).
