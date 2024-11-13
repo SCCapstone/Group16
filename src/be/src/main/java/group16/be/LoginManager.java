@@ -23,6 +23,13 @@ public class LoginManager {
 
     public static String login(String username, String password) {
         // pass the username and password to the database to check if the user exists
+
+        // if not, ask if user wants to register
+
+        // Add user to active connection list
+        InstanceManager.getInstance().connect(null); //TODO: get uID from database
+
+        // if user exists, return the user's ID
         return null;
     }
 
