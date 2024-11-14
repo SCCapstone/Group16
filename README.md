@@ -4,6 +4,7 @@ Blackboard Buddy is a personal assignment-planning app that works with the Black
 All information about the project can be found on the repository's wiki. In particular:
 - Information about the planned views of the app can be found [here](https://github.com/SCCapstone/Group16/wiki/Architecture).
 - Up-to-date information about app architecture can be found [here](https://github.com/SCCapstone/Group16/wiki/Design).
+- Current development information can be found [here](https://github.com/orgs/SCCapstone/projects/50/views/7).
 
 ## Access
 Website: www.osterholt.us/bb
@@ -26,7 +27,7 @@ To visit the app, open your web browser and navigate to the URL `localhost:4200`
 While running, you can enter 'q' in the CLI to quit or 'h' to display a list of options.
 
 To run the backend:
- - install maven (Ubuntu Linux use: `apt install maven`)
+ - install maven 3.9.9 (Ubuntu Linux use: `apt install maven`)
  - run using `mvn spring-boot:run`
 
 ## Deployment
