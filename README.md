@@ -36,8 +36,8 @@ It will be deployed using Kubernetes to spin up Docker images depending on the n
 Our app will connect to the front end using Java Spring (more research will continue to evolve this step, we have recently added Java Spring after a meeting with Dr. Vidal).
 
 ## Authors
-Ava Turner - AVART@email.sc.edu
-Cam Osterholt - OSTERHOC@email.sc.edu
-Cayden Scruggs - CSCRUGGS@email.sc.edu
-Fred Schein - FSCHEIN@email.sc.edu
-Michael Pikula - MPIKULA@email.sc.edu
+- Ava Turner - AVART@email.sc.edu
+- Cam Osterholt - OSTERHOC@email.sc.edu
+- Cayden Scruggs - CSCRUGGS@email.sc.edu
+- Fred Schein - FSCHEIN@email.sc.edu
+- Michael Pikula - MPIKULA@email.sc.edu
