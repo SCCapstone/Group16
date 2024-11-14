@@ -25,6 +25,10 @@ After you've installed the necessary packages, you can start the app locally by 
 To visit the app, open your web browser and navigate to the URL `localhost:4200`.
 While running, you can enter 'q' in the CLI to quit or 'h' to display a list of options.
 
+To run the backend:
+ - install maven (Ubuntu Linux use: `apt install maven`)
+ - run using `mvn spring-boot:run`
+
 ## Deployment
 The app will be deployed on Cam's personal server with a static IP. 
 It will be deployed using Kubernetes to spin up Docker images depending on the number of users. 
