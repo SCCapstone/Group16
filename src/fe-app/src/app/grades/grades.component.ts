@@ -1,0 +1,17 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-grades',
+  standalone: true,
+  imports: [],
+  templateUrl: './grades.component.html',
+  styleUrl: './grades.component.css'
+})
+export class GradesComponent {
+  
+  // Undefined temporary until Grade and Course type are defined.
+  grades: undefined;
+  selectedCourse: undefined;
+  
+  constructor() {}
+}
