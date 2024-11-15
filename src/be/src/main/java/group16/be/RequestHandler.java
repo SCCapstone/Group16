@@ -10,6 +10,8 @@
 package group16.be;
 
 import java.awt.Color;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +39,7 @@ public class RequestHandler {
      * @param password 
      * @return the user's ID if login was successful, null if login failed
      */
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/api/login")
     public static JSONObject login(@RequestParam(value = "username", defaultValue = "NAME") String username, @RequestParam(value = "password", defaultValue = "PASSWORD") String password) {
         if(username == null || password == null) 
