@@ -4,7 +4,6 @@ Blackboard Buddy is a personal assignment-planning app that works with the Black
 All information about the project can be found on the repository's wiki. In particular:
 - Information about the planned views of the app can be found [here](https://github.com/SCCapstone/Group16/wiki/Architecture).
 - Up-to-date information about app architecture can be found [here](https://github.com/SCCapstone/Group16/wiki/Design).
-- Current development information can be found [here](https://github.com/orgs/SCCapstone/projects/50/views/7).
 
 ## Access
 Website: www.osterholt.us/bb
@@ -26,18 +25,14 @@ After you've installed the necessary packages, you can start the app locally by 
 To visit the app, open your web browser and navigate to the URL `localhost:4200`.
 While running, you can enter 'q' in the CLI to quit or 'h' to display a list of options.
 
-To run the backend:
- - install maven 3.9.9 (Ubuntu Linux use: `apt install maven`)
- - run using `mvn spring-boot:run`
-
 ## Deployment
 The app will be deployed on Cam's personal server with a static IP. 
 It will be deployed using Kubernetes to spin up Docker images depending on the number of users. 
 Our app will connect to the front end using Java Spring (more research will continue to evolve this step, we have recently added Java Spring after a meeting with Dr. Vidal).
 
 ## Authors
-- Ava Turner - AVART@email.sc.edu
-- Cam Osterholt - OSTERHOC@email.sc.edu
-- Cayden Scruggs - CSCRUGGS@email.sc.edu
-- Fred Schein - FSCHEIN@email.sc.edu
-- Michael Pikula - MPIKULA@email.sc.edu
+Ava Turner - AVART@email.sc.edu
+Cam Osterholt - OSTERHOC@email.sc.edu
+Cayden Scruggs - CSCRUGGS@email.sc.edu
+Fred Schein - FSCHEIN@email.sc.edu
+Michael Pikula - MPIKULA@email.sc.edu

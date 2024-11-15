@@ -29,6 +29,10 @@ public class InstanceManager {
     }
 
     public static ArrayList<Connection> getConnections() {
+        for (Connection connection : connections) {
+            if(!connection.isConnected())
+                connections.remove(connection);
+        }
         return connections;
     }
 
