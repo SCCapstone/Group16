@@ -38,7 +38,6 @@ public class RequestHandler {
 
     /**
      * This method is to login or register a new user
-     * TEST: http://localhost:1616/api/login?username=Cam&password=urmom
      * @param username 
      * @param password 
      * @return the user's ID if login was successful, null if login failed
@@ -58,7 +57,6 @@ public class RequestHandler {
         // if not, ask if user wants to register
         return ret;
     }
-
     /**
      * This method is to complete assignments that are user made or not yet marked complete by blackboard
      * @param assID Assignment ID
@@ -69,15 +67,11 @@ public class RequestHandler {
         if(assID == null || assID.equals("NULL")) 
             return false;
         //pass the assignment ID to the database to mark the assignment as completed
-        
         return false;
     }
 
     //TODO: Determine param types
     public static boolean addAssignment(String type, String task, String dueDate) {
-        if(type == null || task == null) 
-            return false; // invalid type or task
-        
         //pass the assignment details to the database to add the assignment
         return false;
     }

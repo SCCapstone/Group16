@@ -7,7 +7,7 @@ import { User } from '../user';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, RouterOutlet],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
