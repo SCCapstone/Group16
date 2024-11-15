@@ -13,6 +13,8 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,19 +45,22 @@ public class RequestHandler {
      */
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/api/login")
-    public static Map<String, String> login(@RequestParam(value = "username", defaultValue = "NAME") String username, @RequestParam(value = "password", defaultValue = "PASSWORD") String password) {
+    public static JSONArray login(@RequestParam(value = "username", defaultValue = "NAME") String username, @RequestParam(value = "password", defaultValue = "PASSWORD") String password) {
         if(username == null || password == null) 
             return null;
         //pass the username and password to the database to check if the user exists
-        Map<String, String> ret = new HashMap<>();
-        ret.put("username", username);
-        ret.put("password", password);
-        // JSONObject ret = new JSONObject();
+        // Map<String, String> ret = new HashMap<>();
         // ret.put("username", username);
-        // ret.put("password", password); //TODO: the items are being added to the top of the json object
-        // System.out.println(ret.toString());
+        // ret.put("password", password);
+        JSONObject ret = new JSONObject();
+        ret.put("username", username);
+        ret.put("password", password); //TODO: the items are being added to the top of the json object
+        
+        JSONArray arr = new JSONArray();
+        arr.put(ret);
+        System.out.println(arr.toString());
         // if not, ask if user wants to register
-        return ret;
+        return arr;
     }
 
     /**
