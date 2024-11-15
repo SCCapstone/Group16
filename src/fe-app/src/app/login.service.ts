@@ -10,7 +10,7 @@ export class LoginService {
 
   async login(username: string, password: string) : Promise<any> {
     const data = await fetch(`${this.url}/api/login?username=${username}&password=${password}`);
-    console.log(data);
-    return await data.text();
+    console.log(data.json());
+    return await data.json();
   }
 }

@@ -17,7 +17,7 @@ export class LoginComponent {
     username: new FormControl(''),
     password: new FormControl('')
   });
-  output: any = '';
+  output: any;
 
   login() {
     this.output = this.loginService.login(
