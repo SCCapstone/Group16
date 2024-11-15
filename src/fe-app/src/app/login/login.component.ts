@@ -12,23 +12,23 @@ import { User } from '../user';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  userList: User[] = [];
+  user: User | undefined;
   loginService = inject(LoginService)
   loginForm = new FormGroup ({
     username: new FormControl(''),
     password: new FormControl('')
   });
 
-  output: string = '';
+  output: string | undefined = 'test';
 
   login() {
     this.loginService.login(
       this.loginForm.value.username ?? '',
       this.loginForm.value.password ?? ''
-    ).then((userList: User[]) => {
-      this.userList = userList;
-    })
-
-    this.output = this.userList[0].username;
+    ).then((user: User) => {
+      this.user = user;
+      console.log(this.user);
+      this.output = this.user?.username + ' ' + this.user?.password;
+    });
   };
 }
