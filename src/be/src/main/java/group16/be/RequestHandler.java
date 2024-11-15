@@ -11,6 +11,12 @@ package group16.be;
 
 import java.awt.Color;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
 public class RequestHandler {
     private static RequestHandler requestHandler;
 
@@ -27,14 +33,20 @@ public class RequestHandler {
 
     /**
      * This method is to login or register a new user
+     * TEST: http://localhost:1616/api/login?username=Cam&password=urmom
      * @param username 
      * @param password 
      * @return the user's ID if login was successful, null if login failed
      */
-    public static String login(String username, String password) {
+    @CrossOrigin(origins = "http://localhost:4200")
+    @GetMapping("/api/login")
+    public static String login(@RequestParam(value = "username", defaultValue = "NAME") String username, @RequestParam(value = "password", defaultValue = "PASSWORD") String password) {
+        if(username == null || password == null) 
+            return null;
         //pass the username and password to the database to check if the user exists
+        
         // if not, ask if user wants to register
-        return null;
+        return "DEBUG: Name = " + username + ", Password = " + password;
     }
 
     /**
@@ -43,12 +55,18 @@ public class RequestHandler {
      * @return if the assignment was successfully marked as complete
      */
     public static boolean completeAssignment(String assID) {
+        if(assID == null) 
+            return false;
         //pass the assignment ID to the database to mark the assignment as completed
+        
         return false;
     }
 
     //TODO: Determine param types
     public static boolean addAssignment(String type, String task, String dueDate) {
+        if(type == null || task == null) 
+            return false; // invalid type or task
+        
         //pass the assignment details to the database to add the assignment
         return false;
     }
