@@ -8,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrl: './appearance-settings.component.css'
 })
 export class AppearanceSettingsComponent {
+  primaryColor: string = "";
+  accentColor: string = "";
+  useUniversityColors: boolean = false;
 
+  updateSettings() {}
 }

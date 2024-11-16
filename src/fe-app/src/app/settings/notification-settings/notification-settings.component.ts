@@ -8,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrl: './notification-settings.component.css'
 })
 export class NotificationSettingsComponent {
+  schoolNotifications: boolean = false;
+  personalNotifications: boolean = false;
+  textNotifications: boolean = false;
 
+  updateSettings() {}
 }

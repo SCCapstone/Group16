@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './settings-sidebar.component.css'
 })
 export class SettingsSidebarComponent {
-
+  constructor() {}
 }

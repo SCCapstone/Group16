@@ -8,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './profile-settings.component.css'
 })
 export class ProfileSettingsComponent {
+  preferredName: string = "";
+  schoolEmail: string = "";
+  personalEmail: string = "";
+  phoneNumber: string = "";
 
+  updateSettings() {}
 }
