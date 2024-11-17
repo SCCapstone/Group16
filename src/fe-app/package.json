@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:fe-app": "node dist/fe-app/server/server.mjs",
-    "start:all": "concurrently \"cd ../be && mvn spring-boot:run\" \"npm start\"",
+    "start:all": "concurrently --kill-others \"npm:backend\" \"npm:frontend\"",
     "backend": "echo \"starting backend\" && cd ../be && mvn spring-boot:run",
     "frontend": "echo \"starting frontend\" && ng serve",
     "cleanup": "cd ../.."
