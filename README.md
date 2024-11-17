@@ -20,8 +20,8 @@ npm version 10.8.3
 Angular CLI version 18.2.7
 
 ## Running
-After cloning or pulling from the repository, ensure that you have all of the necessary packages by running `npm install`.
-After you've installed the necessary packages, you can start the app locally by navigating to the `fe-app` folder and running `ng serve`.
+After cloning or pulling from the repository, ensure that you have all of the necessary packages by navigating to the `fe-app` folder running `npm install`.
+After you've installed the necessary packages, you can start the app locally by running `./start` in the `Group16` directory. If you are in VS Code you can open **Run and Debug** pane (`control+shift+d`) and click play.
 To visit the app, open your web browser and navigate to the URL `localhost:4200`.
 While running, you can enter 'q' in the CLI to quit or 'h' to display a list of options.
 
