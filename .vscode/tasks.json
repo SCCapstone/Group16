@@ -1,0 +1,20 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Angular start:all",
+            "type": "npm",
+            "script": "start:all",
+            "problemMatcher": [],
+            "detail": "Runs the 'start:all' script from package.json",
+            "options": {
+                "cwd": "${workspaceFolder}/src/fe-app"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+  }
+  
