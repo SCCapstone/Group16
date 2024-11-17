@@ -1,0 +1,2 @@
+## Runs the application locally using concurrently
+cd src/fe-app && npm run start:all
