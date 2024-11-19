@@ -1,9 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, RouterOutlet } from '@angular/router';
-import { LoginService } from '../login.service';
+import { RouterOutlet, RouterModule } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+
+import { LoginService } from '../login.service';
 import { User } from '../user';
+
 @Component({
   selector: 'app-login',
   standalone: true,
