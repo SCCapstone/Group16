@@ -1,18 +1,17 @@
-import { Component, inject } from '@angular/core';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterOutlet, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [RouterOutlet, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  router = inject(Router);
   
-  handleClick() {
-    this.router.navigate(['/login']);
+  
+  logClick() {
     console.log('Log In Button clicked');
   }
 }
