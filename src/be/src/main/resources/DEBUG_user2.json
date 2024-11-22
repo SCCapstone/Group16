@@ -1,0 +1,50 @@
+{
+    "id": "string",
+    "uuid": "string",
+    "dataSourceId": "string",
+    "userName": "johnnysmith1616",
+    "studentId": "T98765432",
+    "gender": "Male",
+    "pronouns": "he/him",
+    "birthDate": "2004-09-11T03:02:34.995Z",
+    "created": "2024-11-19T03:02:34.995Z",
+    "modified": "2024-11-19T03:02:34.995Z",
+    "lastLogin": "2024-11-19T03:02:34.995Z",
+    "availability": {
+      "available": "Yes"
+    },
+    "name": {
+      "given": "Johnny",
+      "family": "Smith",
+      "middle": "I",
+      "other": "",
+      "suffix": "",
+      "title": "Mr.",
+      "preferredDisplayName": "Jon Jon"
+    },
+    "job": {
+      "title": "Student",
+      "department": "Finance",
+      "company": "University of South Carolina"
+    },
+    "contact": {
+      "homePhone": "",
+      "mobilePhone": "1234567890",
+      "businessPhone": "",
+      "businessFax": "",
+      "email": "jonjon@osterholt.us",
+      "institutionEmail": "johnnysmith1616@email.sc.edu",
+      "webPage": ""
+    },
+    "locale": {
+      "id": "",
+      "calendar": "Gregorian",
+      "firstDayOfWeek": "Sunday"
+    },
+    "avatar": {
+      "viewUrl": "",
+      "source": "",
+      "uploadId": "",
+      "resourceId": ""
+    }
+  }
