@@ -8,6 +8,14 @@ public class User {
     
     @Id
     private String id;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String uuid;
     private String dataSourceId;
     private String userName;

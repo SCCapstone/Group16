@@ -6,6 +6,8 @@ import java.util.List;
 
 import group16.be.db.TestClass;
 import group16.be.db.TestRepository;
+import group16.be.db.User;
+import group16.be.db.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,11 +18,15 @@ public class APIScraper implements CommandLineRunner {
     
     @Autowired
     private TestRepository testItemRepo;
+
+    @Autowired
+    private UserRepository userRepo;
     
     @Override
     public void run(String... args) throws Exception {
         //createTestDocs();
-        findTestTwo();
+        //findTestTwo();
+        login("osterholt", "cameron1234");
     }
 
     public String getItemDetails(TestClass item) {
@@ -33,19 +39,34 @@ public class APIScraper implements CommandLineRunner {
         
         return "";
     }
-    public void createTestDocs() {
-        testItemRepo.save(new TestClass("Test 1"));
-        testItemRepo.save(new TestClass("Test 2"));
-        testItemRepo.save(new TestClass("Test 3"));
 
-        List<TestClass> itemList = new ArrayList<TestClass>();
-        itemList.forEach(this::getItemDetails);
+    public String login(String username, String password) {
+        List<User> users = userRepo.findByUserNameAndPassword(username, password);
+        if (users.size() == 1) {
+            System.out.println("DEBUG User ID: " + users.get(0).getId());
+            return users.get(0).getId();
+        }
+        if(users.size() > 1) {
+            System.out.println("DEBUG Multiple users with the same username and password");
+            return "Error: Multiple users with the same username and password";
+        }
+        System.out.println("DEBUG No user with that username and password");
+        return "Error: No user with that username and password";
     }
 
-    public void findTestTwo() {
-        List<TestClass> testTwo = testItemRepo.findByDescription("Test 2");
-        testTwo.forEach(this::getItemDetails);
-    }
+    // public void createTestDocs() {
+    //     testItemRepo.save(new TestClass("Test 1"));
+    //     testItemRepo.save(new TestClass("Test 2"));
+    //     testItemRepo.save(new TestClass("Test 3"));
+
+    //     List<TestClass> itemList = new ArrayList<TestClass>();
+    //     itemList.forEach(this::getItemDetails);
+    // }
+
+    // public void findTestTwo() {
+    //     List<TestClass> testTwo = testItemRepo.findByDescription("Test 2");
+    //     testTwo.forEach(this::getItemDetails);
+    // }
 
     public static File scrapeUser(String uID) {
         // calls a seperate thread that scrapes for each item in the queue
