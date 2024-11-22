@@ -6,13 +6,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "tests")
-public class Test {
+public class TestClass {
     @Id
     private String id;
     private LocalDateTime creationDate;
     private String description;
 
-    public Test(String description) {
+    public TestClass(String description) {
         this.creationDate = LocalDateTime.now();
         this.description = description;
     }
