@@ -1,7 +1,6 @@
 package group16.be;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List; 
 
 import group16.be.db.TestClass;
@@ -15,10 +14,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class APIScraper implements CommandLineRunner {
-    
-    @Autowired
-    private TestRepository testItemRepo;
-
     @Autowired
     private UserRepository userRepo;
     
@@ -26,7 +21,7 @@ public class APIScraper implements CommandLineRunner {
     public void run(String... args) throws Exception {
         //createTestDocs();
         //findTestTwo();
-        login("osterholt", "cameron1234");
+        //login("osterholt", "cameron1234");
     }
 
     public String getItemDetails(TestClass item) {
@@ -42,15 +37,14 @@ public class APIScraper implements CommandLineRunner {
 
     public String login(String username, String password) {
         List<User> users = userRepo.findByUserNameAndPassword(username, password);
+        
+        //TODO: Need to decide how to handle these errors.
         if (users.size() == 1) {
-            System.out.println("DEBUG User ID: " + users.get(0).getId());
             return users.get(0).getId();
         }
         if(users.size() > 1) {
-            System.out.println("DEBUG Multiple users with the same username and password");
             return "Error: Multiple users with the same username and password";
         }
-        System.out.println("DEBUG No user with that username and password");
         return "Error: No user with that username and password";
     }
 

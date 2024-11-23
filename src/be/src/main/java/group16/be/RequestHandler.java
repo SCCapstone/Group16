@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,18 +24,9 @@ import org.json.*;
 
 @RestController
 public class RequestHandler {
-    private static RequestHandler requestHandler;
 
-    public static RequestHandler getInstance() {
-        if (requestHandler == null) {
-            requestHandler = new RequestHandler();
-        }
-        return requestHandler;
-    }
-
-    private RequestHandler() {
-        //TODO: Initialize database connection
-    }
+    @Autowired
+    private APIScraper scraper;
 
     /**
      * This method is to login or register a new user
@@ -44,18 +36,25 @@ public class RequestHandler {
      */
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/api/login")
-    public static Map<String,String> login(@RequestParam(value = "username", defaultValue = "NAME") String username, @RequestParam(value = "password", defaultValue = "PASSWORD") String password) {
+    public Map<String, String> login(@RequestParam(value = "username", defaultValue = "NAME") String username, @RequestParam(value = "password", defaultValue = "PASSWORD") String password) {
         if(username == null || password == null) 
             return null;
         //pass the username and password to the database to check if the user exists
         Map<String, String> ret = new HashMap<>();
-        ret.put("username", username);
-        ret.put("password", password);
+        // ret.put("username", username);
+        // ret.put("password", password);
+
+        String id = scraper.login(username, password);
+        if(id.startsWith("ERROR")) {
+            return null;
+        }
+        ret.put("id", id);
+        return ret;
+
         // JSONObject ret = new JSONObject();
         // ret.put("username", username);
         // ret.put("password", password); //TODO: the items are being added to the top of the json object
         // if not, ask if user wants to register
-        return ret;
     }
     /**
      * This method is to complete assignments that are user made or not yet marked complete by blackboard
