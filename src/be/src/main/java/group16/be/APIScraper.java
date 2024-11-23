@@ -3,8 +3,6 @@ package group16.be;
 import java.io.File;
 import java.util.List; 
 
-import group16.be.db.TestClass;
-import group16.be.db.TestRepository;
 import group16.be.db.User;
 import group16.be.db.UserRepository;
 
@@ -24,17 +22,6 @@ public class APIScraper implements CommandLineRunner {
         //login("osterholt", "cameron1234");
     }
 
-    public String getItemDetails(TestClass item) {
-
-        System.out.println(
-        "ID: " + item.getId() + 
-        ", \nItem Date: " + item.getCreationDate() + 
-        ", \nItem Description: " + item.getDescription()
-        );
-        
-        return "";
-    }
-
     public String login(String username, String password) {
         List<User> users = userRepo.findByUserNameAndPassword(username, password);
         
@@ -47,20 +34,6 @@ public class APIScraper implements CommandLineRunner {
         }
         return "Error: No user with that username and password";
     }
-
-    // public void createTestDocs() {
-    //     testItemRepo.save(new TestClass("Test 1"));
-    //     testItemRepo.save(new TestClass("Test 2"));
-    //     testItemRepo.save(new TestClass("Test 3"));
-
-    //     List<TestClass> itemList = new ArrayList<TestClass>();
-    //     itemList.forEach(this::getItemDetails);
-    // }
-
-    // public void findTestTwo() {
-    //     List<TestClass> testTwo = testItemRepo.findByDescription("Test 2");
-    //     testTwo.forEach(this::getItemDetails);
-    // }
 
     public static File scrapeUser(String uID) {
         // calls a seperate thread that scrapes for each item in the queue

@@ -22,9 +22,5 @@ public class HeartbeatController {
      */
     public static void sendHeartbeats() {
         // send heartbeats to all connected users
-        for (Connection connection : InstanceManager.getInstance().getConnections()) {
-            if(!connection.isConnected())
-                InstanceManager.getInstance().getConnections().remove(connection);
-        }
     }
 }

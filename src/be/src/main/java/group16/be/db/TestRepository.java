@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+@Deprecated
 public interface TestRepository extends MongoRepository<TestClass, String> {
     @Query("{ 'description' : ?0 }")
     public List<TestClass> findByDescription(String description);
