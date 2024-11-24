@@ -37,6 +37,8 @@ public class RequestHandler {
         if(username == null || password == null) 
             return null;
         
+        System.out.println("DEBUG: Request recieved - Username: " + username + " Password: " + password);
+
         Map<String, String> ret = new HashMap<>();
 
         String id = scraper.login(username, password);
