@@ -36,6 +36,11 @@ public class RequestHandler {
     public Map<String, String> login(@RequestParam(value = "username", defaultValue = "NAME") String username, @RequestParam(value = "password", defaultValue = "PASSWORD") String password) {
         if(username == null || password == null) 
             return null;
+
+        if(username.equals("NAME") || password.equals("PASSWORD")) {
+            System.out.println("DEBUG: Default values used.");
+            return null;
+        }
         
         System.out.println("DEBUG: Request recieved - Username: \"" + username + "\" Password: \"" + password + "\"");
 
