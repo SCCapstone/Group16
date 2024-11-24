@@ -2,11 +2,20 @@
     "version": "0.2.0",
     "configurations": [
       {
+        "type": "java",
+        "name": "BeApplication",
+        "request": "launch",
+        "mainClass": "group16.be.BeApplication",
+        "projectName": "be"
+      },
+      {
         "type": "node",
         "request": "launch",
         "name": "Run Angular start:all",
         "preLaunchTask": "Run Angular start:all",
-        "skipFiles": ["<node_internals>/**"]
+        "skipFiles": [
+          "<node_internals>/**"
+        ]
       }
     ]
   }

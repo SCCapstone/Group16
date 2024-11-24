@@ -1,23 +1,38 @@
 package group16.be;
 
 import java.io.File;
-import java.sql.Time;
-import java.util.Queue;
+import java.util.List; 
 
-public class APIScraper {
-    private Queue queue;
-    private Time interval;
-    private static APIScraper apiScraper;
+import group16.be.db.User;
+import group16.be.db.UserRepository;
 
-    private APIScraper() {
-        interval = new Time(0); //TODO: determine interval
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+@Component
+public class APIScraper implements CommandLineRunner {
+    @Autowired
+    private UserRepository userRepo;
+    
+    @Override
+    public void run(String... args) throws Exception {
+        //createTestDocs();
+        //findTestTwo();
+        //login("osterholt", "cameron1234");
     }
 
-    public static APIScraper getInstance() {
-        if (apiScraper == null) {
-            apiScraper = new APIScraper();
+    public String login(String username, String password) {
+        List<User> users = userRepo.findByUserNameAndPassword(username, password);
+        
+        //TODO: Need to decide how to handle these errors.
+        if (users.size() == 1) {
+            return users.get(0).getId();
         }
-        return apiScraper;
+        if(users.size() > 1) {
+            return "Error: Multiple users with the same username and password";
+        }
+        return "Error: No user with that username and password";
     }
 
     public static File scrapeUser(String uID) {
