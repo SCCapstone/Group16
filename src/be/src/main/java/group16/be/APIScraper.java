@@ -1,8 +1,10 @@
 package group16.be;
 
 import java.io.File;
-import java.util.List; 
+import java.util.List;
 
+import group16.be.db.Course;
+import group16.be.db.CourseRepository;
 import group16.be.db.User;
 import group16.be.db.UserRepository;
 
@@ -14,6 +16,9 @@ import org.springframework.stereotype.Component;
 public class APIScraper implements CommandLineRunner {
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired 
+    private CourseRepository courseRepo;
     
     @Override
     public void run(String... args) throws Exception {
@@ -33,6 +38,15 @@ public class APIScraper implements CommandLineRunner {
             return "Error: Multiple users with the same username and password";
         }
         return "Error: No user with that username and password";
+    }
+
+    /**
+     * This method is to get the user's courses
+     * @param uID the user's ID
+     * @return the user's list of courses
+     */
+    public List<Course> getCourses(String uID) {
+        return courseRepo.findByUserId(uID);
     }
 
     public static File scrapeUser(String uID) {

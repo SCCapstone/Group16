@@ -11,6 +11,7 @@ package group16.be;
 
 import java.awt.Color;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import group16.be.db.Course;
 
 @RestController
 public class RequestHandler {
@@ -53,6 +56,20 @@ public class RequestHandler {
         ret.put("id", id);
         return ret;
     }
+
+    /**
+     * This method is to get the user's courses
+     * @param id the user's ID
+     * @return the user's list of courses
+     */
+    @GetMapping("/api/getCourses")
+    public List<Course> getCourses(@RequestParam(value = "id", defaultValue = "NULL") String id) {
+        if(id == null || id.equals("NULL"))  
+            return null;
+        //pass the user's ID to the database to get the user's courses
+        return scraper.getCourses(id);
+    }
+
     /**
      * This method is to complete assignments that are user made or not yet marked complete by blackboard
      * @param assID Assignment ID
