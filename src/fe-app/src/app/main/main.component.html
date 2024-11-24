@@ -1,5 +1,23 @@
-<p>main works!</p>
-
-<button routerLink="/login">Back to Login</button>
-<button routerLink="/settings">Settings</button>
-<button routerLink="/grades">Grades</button>
+<div class="main">
+    <div class="sidebar">
+        <div class="courses">
+            <p>load courses here</p>
+        </div>
+        <div class="due-soon">
+            <p>load due soon here</p>
+        </div>
+    </div>
+    <div class="task-info">
+        <div class="view-select">
+            <h2>VIEW SELECTOR GOES HERE</h2>
+        </div>
+        <div class="main-view">
+            @if (viewSelect === 0) {
+                <p>calendar view goes here</p>
+            }
+            @else if (viewSelect === 1) {
+                <p>task list view goes here</p>
+            }
+        </div>
+    </div>
+</div>

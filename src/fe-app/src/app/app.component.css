@@ -1,0 +1,9 @@
+header {
+    background: red;
+    height: 10vh;
+    margin: 0 /* doesn't do anything i hate css */
+}
+
+section {
+    height: 90vh;
+}
