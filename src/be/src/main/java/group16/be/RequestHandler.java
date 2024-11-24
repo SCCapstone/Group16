@@ -40,7 +40,7 @@ public class RequestHandler {
         Map<String, String> ret = new HashMap<>();
 
         String id = scraper.login(username, password);
-        if(id.startsWith("ERROR")) {
+        if(id.startsWith("Error")) {
             return null;
         }
         ret.put("id", id);
