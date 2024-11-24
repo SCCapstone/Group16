@@ -1,6 +1,6 @@
 .main {
     display: flex;
-    height: 91.4vh;         /* This sucks */
+    height: 100%;
     flex-direction: row;
     text-align: center;
 }
