@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterModule } from '@angular/router';
+import { LoginService } from '../login.service';
 
 @Component({
   selector: 'app-main',
@@ -9,5 +10,14 @@ import { RouterOutlet, RouterModule } from '@angular/router';
   styleUrl: './main.component.css'
 })
 export class MainComponent {
+  loginService = inject(LoginService);
+  output: string | null = ''; // to be removed for testing only
+
+  getUserId(): void { // function used just to test that we can access userId will be removed
+    console.log(this.loginService.getUserId());
+    if(this.loginService.getUserId()) {
+      this.output = this.loginService.getUserId();
+    }
+  }
 
 }
