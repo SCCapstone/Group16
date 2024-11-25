@@ -23,8 +23,9 @@ export class LoginComponent {
     password: new FormControl('')
   });
 
-  output: string | undefined = 'test';
+  output: string | undefined = '';
 
+  // username: osterholt; password: cameron1234
   login() {
     this.loginService.login(
       this.loginForm.value.username ?? '',
@@ -32,10 +33,13 @@ export class LoginComponent {
     )
     .then((user: User) => {
       this.user = user;
-      console.log(this.user);
-      this.output = this.user?.id;
+      console.log(this.user); // to be removed
+      if (user) {
+        this.router.navigate(['/main']);
+      }
     })
     .catch((error) => {
+      this.output = 'Login failed, please try again';
       console.error('Login failed', error);
     });
   };
