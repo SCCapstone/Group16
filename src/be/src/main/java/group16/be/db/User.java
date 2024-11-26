@@ -41,7 +41,7 @@ public class User {
     private Contact contact;
     private Locale locale;
     private Avatar avatar;
-    @Field("courseId")
+    @Field("courseIds")
     private List<CourseId> courseIDs;
 
     // Inner classes for nested JSON objects
