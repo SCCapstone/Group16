@@ -62,6 +62,7 @@ public class RequestHandler {
      * @param id the user's ID
      * @return the user's list of courses
      */
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/api/getCourses")
     public List<Course> getCourses(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
         if(userId == null || userId.equals("NULL"))  
