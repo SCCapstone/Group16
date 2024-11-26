@@ -48,24 +48,22 @@ public class APIScraper implements CommandLineRunner {
      * @return the user's list of courses
      */
     public List<Course> getCourses(String uID) {
-        // List<User> users = userRepo.findUserByUserId(uID);
-        List<User> users = userRepo.findByUserName(uID);
-        System.out.println("Debug: User is: " + users.get(0).toString());
+        List<User> users = userRepo.findUserByUserId(uID);
+        // List<User> users = userRepo.findByUserName(uID);
+        // System.out.println("Debug: User is: " + users.get(0).toString());
         if (users.size() != 1) {
             System.out.println("Error: Multiple users with the same ID");
             return null; // not just one user by id
         }
         List<CourseId> courseIDs = users.get(0).getCourseIDs();
-        System.out.println("DEBUG: course ids: ");
-        for (CourseId courseID : courseIDs) {
-            System.out.println("\tId: " + courseID.getCourseId());
-        }
-
-        // TODO: Stuck here
+        // System.out.println("DEBUG: course ids: ");
+        // for (CourseId courseID : courseIDs) {
+        //     System.out.println("\tId: " + courseID.getCourseId());
+        // }
 
         List<Course> courses = new ArrayList<Course>();
         for (CourseId courseID : courseIDs) {
-            courses.add(courseRepo.findByCourseId(courseID.getCourseId())); //TODO: need to add the course to the list
+            courses.add(courseRepo.findByCourseId(courseID.getCourseId()));
         }
         // System.out.println("DEBUG: course names: ");
         // for (Course course : courses) {
