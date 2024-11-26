@@ -8,6 +8,7 @@ import group16.be.db.Course;
 import group16.be.db.CourseRepository;
 import group16.be.db.User;
 import group16.be.db.UserRepository;
+import group16.be.db.User.CourseId;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -54,14 +55,14 @@ public class APIScraper implements CommandLineRunner {
             System.out.println("Error: Multiple users with the same ID");
             return null; // not just one user by id
         }
-        List<String> courseIDs = users.get(0).getCourseIDs();
+        List<CourseId> courseIDs = users.get(0).getCourseIDs();
         System.out.println("DEBUG: course ids: ");
-        for (String courseID : courseIDs) {
-            System.out.println("\tId: " + courseID);
+        for (CourseId courseID : courseIDs) {
+            System.out.println("\tId: " + courseID.getCourseId());
         }
         List<Course> courses = new ArrayList<Course>();
-        for (String courseID : courseIDs) {
-            courses.add(courseRepo.findByCourseId(courseID)); //TODO: need to add the course to the list
+        for (CourseId courseID : courseIDs) {
+            courses.add(courseRepo.findByCourseId(courseID.getCourseId())); //TODO: need to add the course to the list
         }
         System.out.println("DEBUG: course names: ");
         for (Course course : courses) {

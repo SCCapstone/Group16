@@ -99,7 +99,14 @@ public class User {
 
         // Getters and Setters
     }
-    private List<String> courseIDs;
+
+    public static class CourseId {
+        private String courseId;
+        public String getCourseId() {
+            return courseId;
+        }
+    }
+    private List<CourseId> courseIDs;
 
     // Getters and Setters for UserProfile
 
@@ -107,7 +114,7 @@ public class User {
         super();
     }
 
-    public List<String> getCourseIDs() {
+    public List<CourseId> getCourseIDs() {
         return this.courseIDs;
     }
 }
