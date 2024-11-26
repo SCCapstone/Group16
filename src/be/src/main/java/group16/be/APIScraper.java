@@ -1,6 +1,7 @@
 package group16.be;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import group16.be.db.Course;
@@ -46,7 +47,26 @@ public class APIScraper implements CommandLineRunner {
      * @return the user's list of courses
      */
     public List<Course> getCourses(String uID) {
-        return courseRepo.findByUserId(uID);
+        List<User> users = userRepo.findUserByUserId(uID);
+        System.out.println("Debug: User's name is: " + users.get(0).getName());
+        if (users.size() != 1) {
+            System.out.println("Error: Multiple users with the same ID");
+            return null; // not just one user by id
+        }
+        List<String> courseIDs = users.get(0).getCourseIDs();
+        System.out.println("DEBUG: course ids: ");
+        for (String courseID : courseIDs) {
+            System.out.println("\tId: " + courseID);
+        }
+        List<Course> courses = new ArrayList<Course>();
+        for (String courseID : courseIDs) {
+            courses.add(courseRepo.findByCourseId(courseID)); //TODO: need to add the course to the list
+        }
+        System.out.println("DEBUG: course names: ");
+        for (Course course : courses) {
+            System.out.println("\tName: " + course.getName());
+        }
+        return courses;
     }
 
     public static File scrapeUser(String uID) {

@@ -63,11 +63,11 @@ public class RequestHandler {
      * @return the user's list of courses
      */
     @GetMapping("/api/getCourses")
-    public List<Course> getCourses(@RequestParam(value = "id", defaultValue = "NULL") String id) {
-        if(id == null || id.equals("NULL"))  
+    public List<Course> getCourses(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
+        if(userId == null || userId.equals("NULL"))  
             return null;
         //pass the user's ID to the database to get the user's courses
-        return scraper.getCourses(id);
+        return scraper.getCourses(userId);
     }
 
     /**

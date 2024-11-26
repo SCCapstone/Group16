@@ -1,5 +1,7 @@
 package group16.be.db;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -29,6 +31,10 @@ public class User {
 
     private Availability availability;
     private Name name;
+    public Name getName() {
+        return name;
+    }
+
     private Job job;
     private Contact contact;
     private Locale locale;
@@ -89,10 +95,15 @@ public class User {
 
         // Getters and Setters
     }
+    private List<String> courseIDs;
 
     // Getters and Setters for UserProfile
 
     public User () {
         super();
+    }
+
+    public List<String> getCourseIDs() {
+        return this.courseIDs;
     }
 }
