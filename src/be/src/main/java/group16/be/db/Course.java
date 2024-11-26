@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "courses")
 public class Course {
     @Id
     private String id;
+    @Field("name")
     private String name;
 
     public String getId() {
