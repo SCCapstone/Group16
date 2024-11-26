@@ -40,6 +40,7 @@ public class User {
     private Contact contact;
     private Locale locale;
     private Avatar avatar;
+    private List<CourseId> courseIDs;
 
     // Inner classes for nested JSON objects
     private static class Availability {
@@ -106,7 +107,7 @@ public class User {
             return courseId;
         }
     }
-    private List<CourseId> courseIDs;
+    
 
     // Getters and Setters for UserProfile
 

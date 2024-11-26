@@ -50,7 +50,7 @@ public class APIScraper implements CommandLineRunner {
     public List<Course> getCourses(String uID) {
         // List<User> users = userRepo.findUserByUserId(uID);
         List<User> users = userRepo.findByUserName(uID);
-        System.out.println("Debug: User's name is: " + users.get(0).getName());
+        System.out.println("Debug: User is: " + users.get(0).toString());
         if (users.size() != 1) {
             System.out.println("Error: Multiple users with the same ID");
             return null; // not just one user by id
