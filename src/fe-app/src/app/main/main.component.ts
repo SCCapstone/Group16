@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterModule } from '@angular/router';
 import { LoginService } from '../login.service';
-import { CoursesSidebarComponent } from "../courses-sidebar/courses-sidebar.component";
-import { DueSoonSidebarComponent } from '../due-soon-sidebar/due-soon-sidebar.component';
+import { CoursesSidebarComponent } from "../main/courses-sidebar/courses-sidebar.component";
+import { DueSoonSidebarComponent } from '../main/due-soon-sidebar/due-soon-sidebar.component';
 
 
 const VIEW_CALENDAR: number = 0;
