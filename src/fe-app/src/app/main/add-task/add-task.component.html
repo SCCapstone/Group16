@@ -1,1 +1,32 @@
-<p>add-task works!</p>
+<div class="testing">
+    <h1>Add a Task:</h1>
+    <br>
+    <p>Name:</p>
+    <input type="text" id="name" [(ngModel)]="name">
+    <p>Type:</p>
+    <select id="type" [(ngModel)]="type">
+        <option>Assignment</option>
+        <option>Reading</option>
+        <option>Quiz</option>
+        <option>Homework</option>
+        <option>Reminder</option>
+    </select>
+    <p>Course:</p>
+    <!-- Once course list is done this will be replaced with @for -->
+    <select id="course" [(ngModel)]="course">
+        <option>test1</option>
+        <option>test2</option>
+        <option>test3</option>
+    </select>
+    <p>Due:</p>
+    <input type="text" id="due" [(ngModel)]="due"> <!-- do some other stuff later here -->
+    <br><br>
+    <button (click)="addTask()">Save</button>
+    <br>
+    @if (displayOutput) {
+        <p>Name: {{ name }}</p>
+        <p>Type: {{ type }}</p>
+        <p>Associated Course: {{ course }}</p>
+        <p>Due Date: {{ due }}</p>
+    }
+</div>
