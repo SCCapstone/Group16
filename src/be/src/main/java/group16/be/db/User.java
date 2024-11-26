@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "users")
 public class User {
@@ -40,6 +41,7 @@ public class User {
     private Contact contact;
     private Locale locale;
     private Avatar avatar;
+    @Field("courseId")
     private List<CourseId> courseIDs;
 
     // Inner classes for nested JSON objects
