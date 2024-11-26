@@ -6,6 +6,8 @@ import { MainComponent } from './main/main.component';
 import { SettingsComponent } from './settings/settings.component';
 import { GradesComponent } from './grades/grades.component';
 
+import { AddTaskComponent } from './main/add-task/add-task.component';  // TODO this and its route is temporary
+
 export const routes: Routes = [
   {
     path: '',
@@ -31,5 +33,10 @@ export const routes: Routes = [
     path: 'grades',
     component: GradesComponent,
     title: 'Grades'
+  },
+  {
+    path: 'main/add-task',
+    component: AddTaskComponent,
+    title: 'Add Task'
   }
 ];
