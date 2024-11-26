@@ -67,10 +67,10 @@ public class APIScraper implements CommandLineRunner {
         for (CourseId courseID : courseIDs) {
             courses.add(courseRepo.findByCourseId(courseID.getCourseId())); //TODO: need to add the course to the list
         }
-        System.out.println("DEBUG: course names: ");
-        for (Course course : courses) {
-            System.out.println("\tName: " + course.getName());
-        }
+        // System.out.println("DEBUG: course names: ");
+        // for (Course course : courses) {
+        //     System.out.println("\tName: " + course.getName());
+        // }
         return courses;
     }
 
