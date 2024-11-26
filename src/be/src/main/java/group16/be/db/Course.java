@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "courses")
 public class Course {
@@ -17,6 +18,7 @@ public class Course {
     private String externalId;
     private String dataSourceId;
     private String courseId;
+    @Field("name")
     private String name;
     public String getName() {
         return name;
