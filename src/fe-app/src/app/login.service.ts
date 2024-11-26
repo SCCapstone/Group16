@@ -13,14 +13,13 @@ export class LoginService {
   constructor() { }
 
   async login(username: string, password: string) : Promise<User> {
-    const data = await fetch(`${this.url}?username=${username}&password=${password}`);
-    const user: Promise<User> = await data.json() ?? {};
+    const response = await fetch(`${this.url}?username=${username}&password=${password}`);
+    const user: Promise<User> = await response.json() ?? {};
     this.userId = (await user).id || null;
     return user;
   }
 
   getUserId(): string | null {
-    console.log(this.userId) // to be removed
     return this.userId;
   }
 
