@@ -30,9 +30,10 @@ public class User {
     private String lastLogin; // ISO date-time format
 
     private Availability availability;
+    
     private Name name;
-    public Name getName() {
-        return name;
+    public String getName() {
+        return name.getName();
     }
 
     private Job job;
@@ -55,6 +56,9 @@ public class User {
         private String suffix;
         private String title;
         private String preferredDisplayName;
+        public String getName() {
+            return preferredDisplayName;
+        }
 
         // Getters and Setters
     }
