@@ -34,7 +34,7 @@ public class RequestHandler {
      * @param password 
      * @return the user's ID if login was successful, null if login failed
      */
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin //(origins = "http://localhost:4200")
     @GetMapping("/api/login")
     public Map<String, String> login(@RequestParam(value = "username", defaultValue = "NAME") String username, @RequestParam(value = "password", defaultValue = "PASSWORD") String password) {
         if(username == null || password == null) 
@@ -62,7 +62,7 @@ public class RequestHandler {
      * @param id the user's ID
      * @return the user's list of courses
      */
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin //(origins = "http://localhost:4200")
     @GetMapping("/api/getCourses")
     public List<Course> getCourses(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
         if(userId == null || userId.equals("NULL"))  
