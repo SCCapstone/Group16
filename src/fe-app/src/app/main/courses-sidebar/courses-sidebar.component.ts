@@ -11,11 +11,11 @@ import { LoginService } from '../../login.service';
   styleUrl: './courses-sidebar.component.css'
 })
 export class CoursesSidebarComponent {
-  courses: Course[] = [];
-  selectIndex: Number = -1;   // Index of course selected by user; -1 indicates none
-
   courseService = inject(CourseService);
   loginService = inject(LoginService);
+  
+  courses: Course[] = [];
+  selectIndex: Number = -1;   // Index of course selected by user; -1 indicates none
 
   constructor() {
     this.courseService.getCourses(this.loginService.getUserId())

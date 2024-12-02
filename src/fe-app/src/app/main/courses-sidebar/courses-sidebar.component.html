@@ -1,5 +1,6 @@
+<!-- $index tracks index of current iteration in @for loop -->
 @for (course of courses; track course.id) {
     <div class="course-container">
-        <a (click)="selectCourse($index)">{{ course.name }}</a>
+        <a (click)="selectCourse($index)">{{ course.name.split("-")[0] }}</a>
     </div>
 }
