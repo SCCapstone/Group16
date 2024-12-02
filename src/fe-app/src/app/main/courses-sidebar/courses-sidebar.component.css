@@ -1,0 +1,9 @@
+/* For a div housing a course in course sidebar */
+.course {
+    border: 2px solid #00000000
+}
+
+/* Additional styling for the selected course div */
+.selected {
+    border: 2px solid red;
+}
