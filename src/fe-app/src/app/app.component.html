@@ -4,8 +4,20 @@
         <h1>HEADER</h1>
       </a>
       <div class = "logos">
-        <a [routerLink]="['/settings']"> <img src="images/settingsIcon.png" alt="settings icon" style="width: 50px; height: auto;"/> </a>
+        <a [routerLink]="['/settings']"> <img src="images/settingsIcon.png" alt="settings icon" 
+          style="width: 50px; height: auto;"/> </a>
+        <a (click)="openPopup('notifications')"> <img src="images/notificationIcon.png" alt="notifications icon" 
+          style="width: 55px; height: auto; padding-left: 1%;" />
+        </a>
       </div>
+      
+      <div *ngIf="showPopup" class="popup-modal">
+        <div class="popup-content">
+          <span class="close" (click)="closePopup()">&times;</span>
+          <p *ngIf="popupType === 'notifications'">notifications go here</p>
+        </div>
+      </div>
+      
     </header>
 
   
