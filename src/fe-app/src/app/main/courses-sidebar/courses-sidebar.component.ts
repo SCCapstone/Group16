@@ -32,4 +32,11 @@ export class CoursesSidebarComponent {
     else
       this.selectIndex = index;
   }
+
+  // Returns CSS class for the given index based on whether or not it is selected
+  getStyle(index: Number): string {
+    if (index === this.selectIndex)
+      return "course selected";     // Element in question will use both "course" and "selected" CSS classes
+    return "course";
+  }
 }

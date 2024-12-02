@@ -1,13 +1,7 @@
 <!-- $index tracks index of current iteration in @for loop -->
 @for (course of courses; track course.id) {
-    @if ($index === this.selectIndex) {
-        <div class="course selected">
-            <p (click)="selectCourse($index)">{{ course.name.split("-")[0] }}</p>
-        </div>
-    }
-    @else {
-        <div class="course">
-            <p (click)="selectCourse($index)">{{ course.name.split("-")[0] }}</p>
-        </div>
-    }
+    <!-- div always uses class "course", also uses class "selected" if selected -->
+    <div [class]="this.getStyle($index)">
+        <p (click)="this.selectCourse($index)">{{ course.name.split("-")[0] }}</p>
+    </div>
 }
