@@ -1,0 +1,32 @@
+<p>{{ this.output }}</p> <!-- to be removed -->
+
+
+<button (click)="getUserId()">UserId Tester</button> <!-- to be removed -->
+<button routerLink="/login">Back to Login</button>
+<button routerLink="/settings">Settings</button>
+<button routerLink="/grades">Grades</button>
+<button routerLink="/main/add-task">TEST ADD TASK</button>
+
+<div class="main">
+    <div class="sidebar">
+        <div class="courses">
+            <app-courses-sidebar></app-courses-sidebar>
+        </div>
+        <div class="due-soon">
+            <app-due-soon-sidebar></app-due-soon-sidebar>
+        </div>
+    </div>
+    <div class="task-info">
+        <div class="view-select">
+            <h2>VIEW SELECTOR GOES HERE</h2>
+        </div>
+        <div class="main-view">
+            @if (viewSelect === 0) {
+                <p>calendar view goes here</p>
+            }
+            @else if (viewSelect === 1) {
+                <p>task list view goes here</p>
+            }
+        </div>
+    </div>
+</div>

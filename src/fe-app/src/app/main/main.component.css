@@ -1,0 +1,43 @@
+.main {
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+    text-align: center;
+}
+
+.sidebar {
+    width: 20%;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+}
+
+.courses {
+    background-color: darkgray;
+    height: 65%;
+    margin: 5%;
+}
+
+.due-soon {
+    background-color: darkgray;
+    height: 35%;
+    margin: 0 5% 5% 5%;
+}
+
+.task-info {
+    width: 80%;
+    background-color: gray;
+}
+
+.view-select {
+    background-color: white;
+    width: 40%;
+    height: 10%;
+    margin-left: 2%;
+}
+
+.main-view {
+    background-color: white;
+    height: 80%;
+    margin: 3% 2% 0 2%;;
+}
