@@ -10,16 +10,23 @@
 package group16.be;
 
 import java.awt.Color;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import group16.be.db.Assignment;
 import group16.be.db.Course;
 
 @RestController
@@ -84,10 +91,25 @@ public class RequestHandler {
         return false;
     }
 
-    //TODO: Determine param types
-    public static boolean addAssignment(String type, String task, String dueDate) {
-        //pass the assignment details to the database to add the assignment
-        return false;
+    public static boolean addAssignment(@RequestParam(value = "id", defaultValue = "NULL") String id, @RequestParam(value = "title", defaultValue = "NULL") String title, @RequestParam(value = "description", defaultValue = "NULL") String description, @RequestParam(value = "dueDate", defaultValue = "NULL") LocalDateTime dueDate) {
+        if(id == null || id.equals("NULL") || title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL")) {
+            return false;
+        }
+        Assignment assignment = new Assignment()
+                .setId(id)
+                .setTitle(title)
+                .setDescription(description)
+                .setDueDate(dueDate);
+        ObjectMapper objectMapper = new ObjectMapper();
+        
+        try {
+            Connection.insertNewData("assignments", objectMapper.writeValueAsString(assignment));
+        } catch (JsonProcessingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     //TODO: complete function
