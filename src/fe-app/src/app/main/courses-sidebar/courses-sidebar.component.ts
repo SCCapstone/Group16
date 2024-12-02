@@ -21,10 +21,4 @@ export class CoursesSidebarComponent {
       this.courses = courses;
     })
   }
-
-  printCourses(): void {
-    console.log("\n--- TESTING COURSES ---\n")
-    for (let i=0; i < this.courses.length; i++)
-      console.log(this.courses[i].name);
-  }
 }
