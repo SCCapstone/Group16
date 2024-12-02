@@ -1,9 +1,14 @@
 <main>
-  <a [routerLink]="['/']">
     <header>
-      <h1>HEADER</h1>
+      <a [routerLink]="['/']">
+        <h1>HEADER</h1>
+      </a>
+      <div class = "logos">
+        <a [routerLink]="['/settings']"> <img src="images/settingsIcon.png" alt="settings icon" style="width: 50px; height: auto;"/> </a>
+      </div>
     </header>
-  </a>
+
+  
   <!--This a element links back to login and is present on all pages
   likely will need removed but for now is reference for routerLink setup-->
   <section>
