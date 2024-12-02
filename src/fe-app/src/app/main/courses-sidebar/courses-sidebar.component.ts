@@ -12,6 +12,8 @@ import { LoginService } from '../../login.service';
 })
 export class CoursesSidebarComponent {
   courses: Course[] = [];
+  selectIndex: Number = -1;   // Index of course selected by user; -1 indicates none
+
   courseService = inject(CourseService);
   loginService = inject(LoginService);
 
@@ -20,5 +22,14 @@ export class CoursesSidebarComponent {
     .then((courses: Course[]) => {
       this.courses = courses;
     })
+  }
+
+  selectCourse(index: Number): void {
+    if (index === this.selectIndex)
+      this.selectIndex = -1;
+    else
+      this.selectIndex = index;
+
+    console.log("Selected course index " + this.selectIndex);
   }
 }

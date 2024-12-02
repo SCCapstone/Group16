@@ -1,5 +1,5 @@
 @for (course of courses; track course.id) {
     <div class="course-container">
-        <h3>{{ course.name }}</h3>
+        <a (click)="selectCourse($index)">{{ course.name }}</a>
     </div>
 }
