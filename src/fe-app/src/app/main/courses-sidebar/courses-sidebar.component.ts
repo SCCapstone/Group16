@@ -13,7 +13,7 @@ import { LoginService } from '../../login.service';
 export class CoursesSidebarComponent {
   courseService = inject(CourseService);
   loginService = inject(LoginService);
-  
+
   courses: Course[] = [];
   selectIndex: Number = -1;   // Index of course selected by user; -1 indicates none
 
@@ -29,7 +29,5 @@ export class CoursesSidebarComponent {
       this.selectIndex = -1;
     else
       this.selectIndex = index;
-
-    console.log("Selected course index " + this.selectIndex);
   }
 }
