@@ -1,2 +1,5 @@
-<p>courses-sidebar component works!</p>
-<button (click)="getCourseTester()">Test Courses</button>
+@for (course of courses; track course.id) {
+    <div class="course-container">
+        <h3>{{ course.name }}</h3>
+    </div>
+}

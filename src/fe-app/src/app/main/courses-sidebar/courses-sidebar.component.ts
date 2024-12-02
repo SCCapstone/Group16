@@ -11,15 +11,20 @@ import { LoginService } from '../../login.service';
   styleUrl: './courses-sidebar.component.css'
 })
 export class CoursesSidebarComponent {
-  test: Course[] = [];
+  courses: Course[] = [];
   courseService = inject(CourseService);
   loginService = inject(LoginService);
 
-  getCourseTester(): void {
+  constructor() {
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
-      this.test = courses;
-      console.log(courses[0].name)
+      this.courses = courses;
     })
+  }
+
+  printCourses(): void {
+    console.log("\n--- TESTING COURSES ---\n")
+    for (let i=0; i < this.courses.length; i++)
+      console.log(this.courses[i].name);
   }
 }
