@@ -12,4 +12,16 @@ import { RouterOutlet, RouterModule } from '@angular/router';
 })
 export class AppComponent {
   title = 'fe-app';
+  showPopup = false;
+  popupType: 'notifications' | null = null;
+
+  openPopup(type: 'notifications'): void {
+    this.popupType = type;
+    this.showPopup = true;
+  }
+
+  closePopup(): void {
+    this.showPopup = false;
+    this.popupType = null;
+  }
 }

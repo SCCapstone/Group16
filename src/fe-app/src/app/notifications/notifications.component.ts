@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { RouterOutlet, RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-notifications',
   standalone: true,
-  imports: [],
+  imports: [RouterOutlet, RouterModule],
   templateUrl: './notifications.component.html',
   styleUrl: './notifications.component.css'
 })
