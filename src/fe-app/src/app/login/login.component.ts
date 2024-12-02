@@ -43,4 +43,22 @@ export class LoginComponent {
       console.error('Login failed', error);
     });
   };
+
+  // Test function to log in automatically with osterholt/cameron1234, TODO remove later
+  fastLogin() {
+    this.loginService.login(
+      "osterholt",
+      "cameron1234"
+    )
+    .then((user: User) => {
+      this.user = user;
+      if (user) {
+        this.router.navigate(['/main']);
+      }
+    })
+    .catch((error) => {
+      this.output = 'Login failed, please try again';
+      console.error('Login failed', error);
+    })
+  }
 }
