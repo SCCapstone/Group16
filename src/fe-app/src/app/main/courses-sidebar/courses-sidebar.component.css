@@ -1,9 +1,17 @@
 /* For a div housing a course in course sidebar */
 .course {
-    border: 2px solid #00000000
+    font-size: 36px;
+    border: 2px solid #00000000;
+    width: 80%;
+    margin: 10px auto;
 }
 
 /* Additional styling for the selected course div */
 .selected {
     border: 2px solid red;
+}
+
+/* Text for course names themselves */
+p {
+    margin: 10px auto;
 }

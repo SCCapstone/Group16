@@ -15,8 +15,9 @@ export class CoursesSidebarComponent {
   loginService = inject(LoginService);
 
   courses: Course[] = [];
-  selectIndex: Number = -1;   // Index of course selected by user; -1 indicates none
+  selectIndex: Number = -1;   // Index of course selected by user; -1 indicates none.
 
+  // Retrieves course list from course service and stores it locally
   constructor() {
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
@@ -24,6 +25,7 @@ export class CoursesSidebarComponent {
     })
   }
 
+  // Updates selectIndex to clicked-on course or deselects it if already selected
   selectCourse(index: Number): void {
     if (index === this.selectIndex)
       this.selectIndex = -1;
