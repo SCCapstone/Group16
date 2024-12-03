@@ -28,11 +28,11 @@ export class CoursesSidebarComponent {
   }
 
   // Updates selectIndex to clicked-on course or deselects it if already selected
-  selectCourse(courseID: string): void {
-    if (courseID === this.courseService.getSelectedCourse())
+  selectCourse(index: Number): void {
+    if (index === this.courseService.getSelectIndex())
       this.courseService.deselectCourse();
     else
-      this.courseService.selectCourse(courseID);
+      this.courseService.selectCourse(index);
   }
   /*
   selectCourse(index: Number): void {
@@ -44,8 +44,8 @@ export class CoursesSidebarComponent {
   */
 
   // Returns CSS class for the given index based on whether or not it is selected
-  getStyle(courseID: string): string {
-    if (courseID === this.courseService.getSelectedCourse())
+  getStyle(index: Number): string {
+    if (index === this.courseService.getSelectIndex())
       return "course selected";
     return "course";
   }

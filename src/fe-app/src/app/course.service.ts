@@ -7,7 +7,7 @@ import { Course } from './course';
 export class CourseService {
   url = 'http://104.234.231.191:1616/api/getCourses';
 
-  private selectedCourse: string = "";    // ID of course selected in CoursesSidebarComponent
+  private selectIndex: Number = -1;    // Index of course selected in array; -1 indicates none
 
   constructor() { }
 
@@ -19,20 +19,20 @@ export class CourseService {
   }
 
   // Returns the ID of the currently-selected course
-  getSelectedCourse(): string {
-    return this.selectedCourse;
+  getSelectIndex(): Number {
+    return this.selectIndex;
   }
 
   // Updates the currently-selected course ID
-  selectCourse(courseID: string): void {
-    if (courseID === this.selectedCourse)
-      this.selectedCourse = "";
+  selectCourse(index: Number): void {
+    if (index === this.selectIndex)
+      this.selectIndex = -1;
     else
-      this.selectedCourse = courseID;
+      this.selectIndex = index;
   }
 
   // Clears course selection; used while initializing a page
   deselectCourse(): void {
-    this.selectedCourse = "";
+    this.selectIndex = -1;
   }
 }
