@@ -1,5 +1,5 @@
 header {
-    background: red;
+    background: rgb(108, 164, 255);
     height: 10vh;
     margin: 0 /* doesn't do anything i hate css */
 }
@@ -11,7 +11,7 @@ section {
 .logos{
     text-align: right;
     padding-right: 10px;
-    margin-top:-47px;
+    margin-top:-90px;
     
 }
 
