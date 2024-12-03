@@ -1,29 +1,52 @@
 package group16.be.db;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Document(collection = "assignments")
 public class Assignment {
+    public Assignment() {
+        availability = new Availability();
+        availability.adaptiveRelease = new AdaptiveRelease();
+    }
     @Id
-    private String id;
+    public String id;
     public String getId() {
         return id;
     }
-    public void randomUUID() {
+    public Assignment randomUUID() {
         id = UUID.randomUUID().toString();
+        return this;
     }
     public Assignment setId(String id) {
         this.id = id;
         return this;
     }
-
-    @Field("name")
-    private String title;
+    @Field("userId")
+    public String userId;
+    public String getUserId() {
+        return userId;
+    }
+    public Assignment setUserId(String userId) {
+        this.userId = userId;
+        return this;
+    }
+    @Field("courseId")
+    public String courseId;
+    public String getCourseId() {
+        return courseId;
+    }
+    public Assignment setCourseId(String courseId) {
+        this.courseId = courseId;
+        return this;
+    }
+    @Field("title")
+    public String title;
     public String getTitle() {
         return title;
     }
@@ -31,9 +54,9 @@ public class Assignment {
         this.title = title;
         return this;
     }
-    private String body;
-    @Field("name")
-    private String description;
+    public String body;
+    @Field("description")
+    public String description;
     public String getDescription() {
         return description;
     }
@@ -41,33 +64,34 @@ public class Assignment {
         this.description = description;
         return this;
     }
-    private LocalDateTime created;
-    private LocalDateTime modified;
-    private int position;
-    private boolean hasChildren;
-    private boolean hasGradebookColumns;
-    private boolean hasAssociatedGroups;
-    private boolean launchInNewWindow;
-    private boolean reviewable;
-    private Availability availability;
-    public LocalDateTime getDueDate() {
+    public String created;
+    public String modified;
+    public int position;
+    public boolean hasChildren;
+    public boolean hasGradebookColumns;
+    public boolean hasAssociatedGroups;
+    public boolean launchInNewWindow;
+    public boolean reviewable;
+    public Availability availability;
+    @JsonIgnore
+    public String getDueDate() {
         return availability.adaptiveRelease.end;
     }
-    public Assignment setDueDate(LocalDateTime dueDate) {
+    public Assignment setDueDate(String dueDate) {
         availability.adaptiveRelease.setEnd(dueDate);
         return this;
     }
 
     public static class Availability {
-        private String available;
-        private boolean allowGuests;
-        private boolean allowObservers;
-        private AdaptiveRelease adaptiveRelease;
+        public String available;
+        public boolean allowGuests;
+        public boolean allowObservers;
+        public AdaptiveRelease adaptiveRelease;
     }
     public static class AdaptiveRelease {
-        private LocalDateTime start;
-        private LocalDateTime end;
-        public void setEnd(LocalDateTime end) {
+        public String start;
+        public String end;
+        public void setEnd(String end) {
             this.end = end;
         }
     }

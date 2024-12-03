@@ -35,6 +35,12 @@ public class RequestHandler {
     @Autowired
     private APIScraper scraper;
 
+    private static Connection connection;
+
+    public RequestHandler() {
+        connection = new Connection(Environment.MONGO_URL);
+    }
+
     /**
      * This method is to login or register a new user
      * @param username 
@@ -91,19 +97,70 @@ public class RequestHandler {
         return false;
     }
 
-    public static boolean addAssignment(@RequestParam(value = "id", defaultValue = "NULL") String id, @RequestParam(value = "title", defaultValue = "NULL") String title, @RequestParam(value = "description", defaultValue = "NULL") String description, @RequestParam(value = "dueDate", defaultValue = "NULL") LocalDateTime dueDate) {
-        if(id == null || id.equals("NULL") || title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL")) {
+    /**
+     * This method is to create assignments with a specified id
+     * @param id assignment ID
+     * @param title title of assignment
+     * @param description short description for assignment
+     * @param dueDate due date time for assignment
+     * @param userId user's ID
+     * @param courseId course ID
+     * @return if the assignment was successfully created
+     */
+    @GetMapping("/api/createAssignmentWithId")
+    public static boolean addAssignment(@RequestParam(value = "id", defaultValue = "NULL") String id, @RequestParam(value = "title", defaultValue = "NULL") String title,
+     @RequestParam(value = "description", defaultValue = "NULL") String description, @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
+     @RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
+        if(id == null || id.equals("NULL") || title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL") || userId == null || userId.equals("NULL") || courseId == null || courseId.equals("NULL")) {
             return false;
         }
         Assignment assignment = new Assignment()
                 .setId(id)
                 .setTitle(title)
                 .setDescription(description)
-                .setDueDate(dueDate);
+                .setDueDate(dueDate)
+                .setUserId(userId)
+                .setCourseId(courseId);
         ObjectMapper objectMapper = new ObjectMapper();
         
         try {
-            Connection.insertNewData("assignments", objectMapper.writeValueAsString(assignment));
+            connection.insertNewData("assignments", objectMapper.writeValueAsString(assignment));
+        } catch (JsonProcessingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * This method is to create assignments without a specified id
+     * @param title title of assignment
+     * @param description short description for assignment
+     * @param dueDate due date time for assignment
+     * @param userId user's ID
+     * @param courseId course ID
+     * @return if the assignment was successfully created
+     */
+    @GetMapping("/api/createAssignmentWithoutId")
+    public static boolean addAssignmentWithoutId(@RequestParam(value = "title", defaultValue = "NULL") String title,
+     @RequestParam(value = "description", defaultValue = "NULL") String description, @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
+     @RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
+        if(title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL") || userId == null || userId.equals("NULL") || courseId == null || courseId.equals("NULL")) {
+            return false;
+        }
+        System.out.println("test");
+        Assignment assignment = new Assignment()
+                .randomUUID()
+                .setTitle(title)
+                .setDescription(description)
+                .setDueDate(dueDate)
+                .setUserId(userId)
+                .setCourseId(courseId);
+        ObjectMapper objectMapper = new ObjectMapper();
+        
+        try {
+            connection.insertNewData("assignments", objectMapper.writeValueAsString(assignment));
         } catch (JsonProcessingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

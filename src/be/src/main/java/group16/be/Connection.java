@@ -46,7 +46,7 @@ public class Connection {
      * @param collectionName The name of the collection to insert the document into.
      * @param data           The JSON string to insert.
      */
-    public static void insertNewData(String collectionName, String data) {
+    public void insertNewData(String collectionName, String data) {
         try {
             if (database == null) {
                 throw new IllegalStateException("Database connection is not initialized.");
