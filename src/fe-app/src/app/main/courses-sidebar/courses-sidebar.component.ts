@@ -15,16 +15,16 @@ export class CoursesSidebarComponent {
   loginService = inject(LoginService);
 
   courses: Course[] = [];
-  // selectIndex: Number = -1;   // Index of course selected by user; -1 indicates none.
 
-  // Retrieves course list from course service and stores it locally
   constructor() {
+    // Retrieve course list from CourseService and store it in courses
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
       this.courses = courses;
     })
 
-    this.courseService.deselectCourse();  // Ensure no course is selected on page load
+    // Ensure no course is selected on page load
+    this.courseService.deselectCourse();
   }
 
   // Updates selectIndex to clicked-on course or deselects it if already selected
@@ -34,14 +34,6 @@ export class CoursesSidebarComponent {
     else
       this.courseService.selectCourse(index);
   }
-  /*
-  selectCourse(index: Number): void {
-    if (index === this.selectIndex)
-      this.selectIndex = -1;
-    else
-      this.selectIndex = index;
-  }
-  */
 
   // Returns CSS class for the given index based on whether or not it is selected
   getStyle(index: Number): string {
@@ -49,11 +41,4 @@ export class CoursesSidebarComponent {
       return "course selected";
     return "course";
   }
-  /*
-  getStyle(index: Number): string {
-    if (index === this.selectIndex)
-      return "course selected";     // Element in question will use both "course" and "selected" CSS classes
-    return "course";
-  }
-  */
 }
