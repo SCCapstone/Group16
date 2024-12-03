@@ -53,8 +53,8 @@ function run(): void {
 
   // SSL/TLS certificates
   const httpsOptions = {
-    key: fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/fullchain.pem'),
+    key: fs.readFileSync('/etc/letsencrypt/live/osterholt.us/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/osterholt.us/fullchain.pem'),
   };  
 
   const server = app();
