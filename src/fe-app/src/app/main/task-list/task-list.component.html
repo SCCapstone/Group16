@@ -1,2 +1,3 @@
-<p>task-list works!</p>
-<button (click)="getAssignmentTester()">Test Assignments</button>
+<p>Task List</p>
+<!--<button (click)="getAssignmentTester()">Test Assignments</button>-->
+<app-task *ngFor="let assignment of assignments"[assignment]="assignment"></app-task>
