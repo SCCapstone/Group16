@@ -5,7 +5,7 @@ import { User } from './user';
   providedIn: 'root'
 })
 export class LoginService {
-  url = 'http://104.234.231.191:1616/api/login';
+  url = 'https:/osterholt.us/api/login';
   // url = 'localhost:1616/api/login';
 
   private userId: string | null = null; // stores userId for use in other components
