@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import group16.be.db.Assignment;
+import group16.be.db.AssignmentRepository;
 import group16.be.db.Course;
 import group16.be.db.CourseRepository;
 import group16.be.db.User;
@@ -21,6 +23,9 @@ public class APIScraper implements CommandLineRunner {
 
     @Autowired 
     private CourseRepository courseRepo;
+
+    @Autowired
+    private AssignmentRepository assignmentRepo;
     
     @Override
     public void run(String... args) throws Exception {
@@ -70,6 +75,17 @@ public class APIScraper implements CommandLineRunner {
         //     System.out.println("\tName: " + course.getName());
         // }
         return courses;
+    }
+
+    /**
+     * This method is to get the user's assignments
+     * @param userId the user's ID
+     * @return the user's list of assignments
+     */
+    public List<Assignment> getAssignments(String userId) {
+        //get the assignments for the course
+        List<Assignment> assignments = assignmentRepo.findByUserId(userId);
+        return assignments;
     }
 
     public static File scrapeUser(String uID) {

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import group16.be.db.Assignment;
 import group16.be.db.Course;
 
 @RestController
@@ -88,6 +89,21 @@ public class RequestHandler {
     public static boolean addAssignment(String type, String task, String dueDate) {
         //pass the assignment details to the database to add the assignment
         return false;
+    }
+
+    /**
+     * 
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
+    @CrossOrigin
+    @GetMapping("/api/getAssignments")
+    public List<Assignment> getAssignments(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
+        //pass the user's ID to the database to get the user's assignments
+        if(userId == null || userId.equals("NULL")) 
+            return null;
+        return scraper.getAssignments(userId);
     }
 
     //TODO: complete function
