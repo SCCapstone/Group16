@@ -4,6 +4,9 @@ import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
+import * as http from 'http';
+import * as https from 'https';
+import fs from 'fs';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -45,12 +48,25 @@ export function app(): express.Express {
 }
 
 function run(): void {
-  const port = process.env['PORT'] || 443;
+  const httpPort = process.env['HTTP_PORT'] || 80;
+  const httpsPort = process.env['HTTPS_PORT'] || 443;
 
-  // Start up the Node server
+  // SSL/TLS certificates
+  const httpsOptions = {
+    key: fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/yourdomain.com/fullchain.pem'),
+  };  
+
   const server = app();
-  server.listen(port, () => {
-    console.log(`Node Express server listening on http://localhost:${port}`);
+
+  // Start HTTP server
+  http.createServer(server).listen(httpPort, () => {
+    console.log(`HTTP server listening on http://localhost:${httpPort}`);
+  });
+
+  // Start HTTPS server
+  https.createServer(httpsOptions, server).listen(httpsPort, () => {
+    console.log(`HTTPS server listening on https://localhost:${httpsPort}`);
   });
 }
 
