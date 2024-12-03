@@ -5,7 +5,7 @@ import { Assignment } from './assignment';
   providedIn: 'root'
 })
 export class AssignmentService {
-  url = 'https:/osterholt.us/api/getAssignments';
+  url = 'https://osterholt.us/api/getAssignments';
 
   constructor() { }
 

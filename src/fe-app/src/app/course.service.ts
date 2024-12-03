@@ -5,7 +5,7 @@ import { Course } from './course';
   providedIn: 'root'
 })
 export class CourseService {
-  url = 'https:/osterholt.us/api/getCourses';
+  url = 'https://osterholt.us/api/getCourses';
 
   constructor() { }
 
