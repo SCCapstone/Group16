@@ -1,5 +1,5 @@
-# Blackboard Buddy (working name)
-Blackboard Buddy is a personal assignment-planning app that works with the Blackboard API to retrieve a student's active assignments, quizzes, announcements, and more. Information will be displayed concisely in two easily-digestible formats that the user can switch between, and the user can add tasks or mark them as complete at any time. In addition, the user will be able to retrieve their assignment grades and use them as part of a fully functional grade calculator, and change settings including the app's appearance, their contact information, and the types of notifications they wish to receive.
+# classMA+E
+classMA+E is a personal assignment-planning app that works with the Blackboard API to retrieve a student's active assignments, quizzes, announcements, and more. Information will be displayed concisely in two easily-digestible formats that the user can switch between, and the user can add tasks or mark them as complete at any time. In addition, the user will be able to retrieve their assignment grades and use them as part of a fully functional grade calculator, and change settings including the app's appearance, their contact information, and the types of notifications they wish to receive.
 
 All information about the project can be found on the repository's wiki. In particular:
 - Information about the planned views of the app can be found [here](https://github.com/SCCapstone/Group16/wiki/Architecture).
