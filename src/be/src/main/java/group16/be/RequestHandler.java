@@ -97,6 +97,7 @@ public class RequestHandler {
      * @param newPassword
      * @return
      */
+    @CrossOrigin
     @GetMapping("/api/getAssignments")
     public List<Assignment> getAssignments(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
         //pass the user's ID to the database to get the user's assignments
