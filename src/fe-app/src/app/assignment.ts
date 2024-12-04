@@ -1,7 +1,12 @@
 export interface Assignment {
-  id: string,
+  id?: string,
   userId: string,
   courseId: string,
   title: string,
-  description: string
+  description?: string,
+  availability: {
+    adaptiveRelease: {
+      end: Date
+    }
+  }
 }

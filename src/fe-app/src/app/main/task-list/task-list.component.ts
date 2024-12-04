@@ -17,7 +17,7 @@ import { TaskComponent } from './task/task.component';
   styleUrl: './task-list.component.css'
 })
 export class TaskListComponent {
-  
+
   test: Assignment[] = [];  // Do we need this?
 
   loginService = inject(LoginService);
@@ -41,10 +41,11 @@ export class TaskListComponent {
     .then((courses: Course[]) => {
       this.courses = courses;
     })
-    
+
     this.assignmentService.getAssignments(this.loginService.getUserId())
     .then((assignments: Assignment[]) => {
       this.assignments = assignments;
+      console.log(assignments[0].availability.adaptiveRelease.end)
     })
   }
   getAllTasks() {}

@@ -1,32 +1,54 @@
-<div class="testing">
+<!--<div class="testing">
     <h1>Add a Task:</h1>
     <br>
     <p>Name:</p>
     <input type="text" id="name" [(ngModel)]="name">
-    <p>Type:</p>
-    <select id="type" [(ngModel)]="type">
-        <option>Assignment</option>
-        <option>Reading</option>
-        <option>Quiz</option>
-        <option>Homework</option>
-        <option>Reminder</option>
-    </select>
+    <p>Description:</p>
+    <input type="text" id="description" [(ngModel)]="description">
+        COMMENT BLOCK: <p>Type:</p>
+        <select id="type" [(ngModel)]="type">
+            <option>Assignment</option>
+            <option>Reading</option>
+            <option>Quiz</option>
+            <option>Homework</option>
+            <option>Reminder</option>
+        </select>
     <p>Course:</p>
-    <!-- Once course list is done this will be replaced with @for -->
+    COMMENT: Once course list is done this will be replaced with @for
     <select id="course" [(ngModel)]="course">
         <option>test1</option>
         <option>test2</option>
         <option>test3</option>
     </select>
     <p>Due:</p>
-    <input type="text" id="due" [(ngModel)]="due"> <!-- do some other stuff later here -->
+    <input type="text" id="due" [(ngModel)]="due"> COMMENT: do some other stuff later here
     <br><br>
     <button (click)="addTask()">Save</button>
     <br>
     @if (displayOutput) {
         <p>Name: {{ name }}</p>
-        <p>Type: {{ type }}</p>
+        <p>Description: {{ description }}</p>
+        COMMENT: <p>Type: {{ type }}</p>
         <p>Associated Course: {{ course }}</p>
         <p>Due Date: {{ due }}</p>
     }
-</div>
+</div>-->
+
+<form [formGroup]="addTaskForm" (ngSubmit)="addTask()">
+  <label for="title">Title:</label>
+  <input id="title" type="text" formControlName="title">
+
+  <label for="description">Description:</label>
+  <input id="description" type="text" formControlName="description">
+
+  <label for="due">Due Date:</label>
+  <input id="due" type="date" formControlName="due">
+
+  <label for="course">Course:</label>
+  <select id="course" formControlName="course">
+    <option value="" disabled></option>
+    <option *ngFor="let course of courses" [value]="course.id">{{ course.name }}</option>
+  </select>
+
+  <button type="submit">Add Task</button>
+</form>
