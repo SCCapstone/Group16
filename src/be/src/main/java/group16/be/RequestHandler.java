@@ -171,6 +171,21 @@ public class RequestHandler {
         return true;
     }
 
+    /**
+     * 
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
+    @CrossOrigin
+    @GetMapping("/api/getAssignments")
+    public List<Assignment> getAssignments(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
+        //pass the user's ID to the database to get the user's assignments
+        if(userId == null || userId.equals("NULL")) 
+            return null;
+        return scraper.getAssignments(userId);
+    }
+
     //TODO: complete function
     // public static boolean editAssignment() {
     //     //pass the assignment details to the database to edit the assignment

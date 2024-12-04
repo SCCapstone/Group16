@@ -1,2 +1,11 @@
-<p>courses-sidebar component works!</p>
-<button (click)="getCourseTester()">Test Courses</button>
+<!-- $index tracks index of current iteration in @for loop -->
+@for (course of courses; track course.id) {
+    <!-- div always uses class "course", also uses class "selected" if selected -->
+    <div [class]="this.getStyle($index)">
+        <p (click)="this.selectCourse($index)">{{ course.name.split("-")[0] }}</p>
+    </div>
+}
+
+<!-- Test Output -->
+<br>
+<p>Selected Course Index: {{ this.courseService.getSelectIndex() }}</p>

@@ -1,16 +1,40 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { title } from 'process';
+import { Assignment } from '../../assignment';
+import { AssignmentService } from '../../assignment.service';
+import { LoginService } from '../../login.service';
+import { CommonModule } from '@angular/common';
+import { TaskComponent } from './task/task.component';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, TaskComponent],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css'
 })
 export class TaskListComponent {
   tasks: undefined; // undefined temporary until type Task is created
+  test: Assignment[] = [];
+  assignmentService = inject(AssignmentService);
+  loginService = inject(LoginService);
+  assignments: Assignment[]=[];
 
-  constructor() {}
+  getAssignmentTester(): void {
+    this.assignmentService.getAssignments(this.loginService.getUserId())
+      .then((assignments: Assignment[]) => {
+        this.test = assignments;
+        console.log(assignments[0].title);
+        console.log(assignments);
+      });
+  }
+
+  constructor() {
+    this.assignmentService.getAssignments(this.loginService.getUserId())
+    .then((assignments: Assignment[]) => {
+      this.assignments = assignments;
+    })
+  }
   getAllTasks() {}
   filterTasks() {}
 }

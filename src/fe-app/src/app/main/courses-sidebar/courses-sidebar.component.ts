@@ -11,15 +11,34 @@ import { LoginService } from '../../login.service';
   styleUrl: './courses-sidebar.component.css'
 })
 export class CoursesSidebarComponent {
-  test: Course[] = [];
   courseService = inject(CourseService);
   loginService = inject(LoginService);
 
-  getCourseTester(): void {
+  courses: Course[] = [];
+
+  constructor() {
+    // Retrieve course list from CourseService and store it in courses
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
-      this.test = courses;
-      console.log(courses[0].name)
+      this.courses = courses;
     })
+
+    // Ensure no course is selected on page load
+    this.courseService.deselectCourse();
+  }
+
+  // Updates selectIndex to clicked-on course or deselects it if already selected
+  selectCourse(index: Number): void {
+    if (index === this.courseService.getSelectIndex())
+      this.courseService.deselectCourse();
+    else
+      this.courseService.selectCourse(index);
+  }
+
+  // Returns CSS class for the given index based on whether or not it is selected
+  getStyle(index: Number): string {
+    if (index === this.courseService.getSelectIndex())
+      return "course selected";
+    return "course";
   }
 }
