@@ -10,15 +10,21 @@
 package group16.be;
 
 import java.awt.Color;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import group16.be.db.Assignment;
 import group16.be.db.Course;
@@ -28,6 +34,12 @@ public class RequestHandler {
 
     @Autowired
     private APIScraper scraper;
+
+    private static Connection connection;
+
+    public RequestHandler() {
+        connection = new Connection(Environment.MONGO_URL);
+    }
 
     /**
      * This method is to login or register a new user
@@ -85,10 +97,78 @@ public class RequestHandler {
         return false;
     }
 
-    //TODO: Determine param types
-    public static boolean addAssignment(String type, String task, String dueDate) {
-        //pass the assignment details to the database to add the assignment
-        return false;
+    /**
+     * This method is to create assignments with a specified id
+     * @param id assignment ID
+     * @param title title of assignment
+     * @param description short description for assignment
+     * @param dueDate due date time for assignment
+     * @param userId user's ID
+     * @param courseId course ID
+     * @return if the assignment was successfully created
+     */
+    @CrossOrigin
+    @GetMapping("/api/createAssignmentWithId")
+    public static boolean addAssignment(@RequestParam(value = "id", defaultValue = "NULL") String id, @RequestParam(value = "title", defaultValue = "NULL") String title,
+     @RequestParam(value = "description", defaultValue = "NULL") String description, @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
+     @RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
+        if(id == null || id.equals("NULL") || title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL") || userId == null || userId.equals("NULL") || courseId == null || courseId.equals("NULL")) {
+            return false;
+        }
+        Assignment assignment = new Assignment()
+                .setId(id)
+                .setTitle(title)
+                .setDescription(description)
+                .setDueDate(dueDate)
+                .setUserId(userId)
+                .setCourseId(courseId);
+        ObjectMapper objectMapper = new ObjectMapper();
+        
+        try {
+            connection.insertNewData("assignments", objectMapper.writeValueAsString(assignment));
+        } catch (JsonProcessingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * This method is to create assignments without a specified id
+     * @param title title of assignment
+     * @param description short description for assignment
+     * @param dueDate due date time for assignment
+     * @param userId user's ID
+     * @param courseId course ID
+     * @return if the assignment was successfully created
+     */
+    @CrossOrigin
+    @GetMapping("/api/createAssignmentWithoutId")
+    public static boolean addAssignmentWithoutId(@RequestParam(value = "title", defaultValue = "NULL") String title,
+     @RequestParam(value = "description", defaultValue = "NULL") String description, @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
+     @RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
+        if(title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL") || userId == null || userId.equals("NULL") || courseId == null || courseId.equals("NULL")) {
+            return false;
+        }
+        System.out.println("test");
+        Assignment assignment = new Assignment()
+                .randomUUID()
+                .setTitle(title)
+                .setDescription(description)
+                .setDueDate(dueDate)
+                .setUserId(userId)
+                .setCourseId(courseId);
+        ObjectMapper objectMapper = new ObjectMapper();
+        
+        try {
+            connection.insertNewData("assignments", objectMapper.writeValueAsString(assignment));
+        } catch (JsonProcessingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -117,6 +197,7 @@ public class RequestHandler {
      * @param newPassword
      * @return
      */
+    @CrossOrigin
     @GetMapping("/api/editPassword")
     public static boolean editPassword(@RequestParam(value = "oldPassword", defaultValue = "NULL") String oldPassword, @RequestParam(value = "newPassword", defaultValue = "NULL") String newPassword) {
         if(oldPassword == null || newPassword == null || oldPassword.equals("NULL") || newPassword.equals("NULL"))
@@ -146,6 +227,7 @@ public class RequestHandler {
      * @param colorHex the new color in HEX format
      * @return if the color was successfully changed
      */
+    @CrossOrigin
     @GetMapping("/api/setPrimaryColor")
     public static boolean setPrimaryColor(@RequestParam(value = "colorHex", defaultValue = "NULL") String colorHex) {
         if(colorHex == null || colorHex.equals("NULL")) 

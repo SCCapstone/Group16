@@ -21,6 +21,20 @@
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver-sync</artifactId>
+			<version>5.3.0-beta0</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.18.2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -44,16 +58,22 @@
 			
 		</dependency>
 		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongodb-crypt</artifactId>
-			<version>${mongodb-crypt.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20231013</version>
 		</dependency>
 	</dependencies>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>5.11.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
 	<build>
 		<plugins>
@@ -63,20 +83,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
-	<dependencyManagement>
-	
-
-		<dependencies>
-
-			<dependency>
-				<groupId>org.mongodb</groupId>
-				<artifactId>mongodb-driver-sync</artifactId>
-				<version>5.0.1</version>
-			</dependency>
-			
-		</dependencies>
-
-	</dependencyManagement>
 </project>
