@@ -107,6 +107,7 @@ public class RequestHandler {
      * @param courseId course ID
      * @return if the assignment was successfully created
      */
+    @CrossOrigin
     @GetMapping("/api/createAssignmentWithId")
     public static boolean addAssignment(@RequestParam(value = "id", defaultValue = "NULL") String id, @RequestParam(value = "title", defaultValue = "NULL") String title,
      @RequestParam(value = "description", defaultValue = "NULL") String description, @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
@@ -142,6 +143,7 @@ public class RequestHandler {
      * @param courseId course ID
      * @return if the assignment was successfully created
      */
+    @CrossOrigin
     @GetMapping("/api/createAssignmentWithoutId")
     public static boolean addAssignmentWithoutId(@RequestParam(value = "title", defaultValue = "NULL") String title,
      @RequestParam(value = "description", defaultValue = "NULL") String description, @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
@@ -180,6 +182,7 @@ public class RequestHandler {
      * @param newPassword
      * @return
      */
+    @CrossOrigin
     @GetMapping("/api/editPassword")
     public static boolean editPassword(@RequestParam(value = "oldPassword", defaultValue = "NULL") String oldPassword, @RequestParam(value = "newPassword", defaultValue = "NULL") String newPassword) {
         if(oldPassword == null || newPassword == null || oldPassword.equals("NULL") || newPassword.equals("NULL"))
@@ -209,6 +212,7 @@ public class RequestHandler {
      * @param colorHex the new color in HEX format
      * @return if the color was successfully changed
      */
+    @CrossOrigin
     @GetMapping("/api/setPrimaryColor")
     public static boolean setPrimaryColor(@RequestParam(value = "colorHex", defaultValue = "NULL") String colorHex) {
         if(colorHex == null || colorHex.equals("NULL")) 
