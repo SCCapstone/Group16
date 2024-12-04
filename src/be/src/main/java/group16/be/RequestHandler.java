@@ -20,6 +20,8 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -89,7 +91,7 @@ public class RequestHandler {
      * @param assID Assignment ID
      * @return if the assignment was successfully marked as complete
      */
-    @GetMapping("/api/completeAssignment")
+    @PutMapping("/api/completeAssignment")
     public static boolean completeAssignment(@RequestParam(value = "assID", defaultValue = "NULL") String assID) {
         if(assID == null || assID.equals("NULL")) 
             return false;
@@ -108,7 +110,7 @@ public class RequestHandler {
      * @return if the assignment was successfully created
      */
     @CrossOrigin
-    @GetMapping("/api/createAssignmentWithId")
+    @PostMapping("/api/createAssignmentWithId")
     public static boolean addAssignment(@RequestParam(value = "id", defaultValue = "NULL") String id, @RequestParam(value = "title", defaultValue = "NULL") String title,
      @RequestParam(value = "description", defaultValue = "NULL") String description, @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
      @RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
@@ -144,7 +146,7 @@ public class RequestHandler {
      * @return if the assignment was successfully created
      */
     @CrossOrigin
-    @GetMapping("/api/createAssignmentWithoutId")
+    @PostMapping("/api/createAssignmentWithoutId")
     public static boolean addAssignmentWithoutId(@RequestParam(value = "title", defaultValue = "NULL") String title,
      @RequestParam(value = "description", defaultValue = "NULL") String description, @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
      @RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
@@ -198,7 +200,7 @@ public class RequestHandler {
      * @return
      */
     @CrossOrigin
-    @GetMapping("/api/editPassword")
+    @PutMapping("/api/editPassword")
     public static boolean editPassword(@RequestParam(value = "oldPassword", defaultValue = "NULL") String oldPassword, @RequestParam(value = "newPassword", defaultValue = "NULL") String newPassword) {
         if(oldPassword == null || newPassword == null || oldPassword.equals("NULL") || newPassword.equals("NULL"))
             return false; // invalid password
@@ -228,7 +230,7 @@ public class RequestHandler {
      * @return if the color was successfully changed
      */
     @CrossOrigin
-    @GetMapping("/api/setPrimaryColor")
+    @PutMapping("/api/setPrimaryColor")
     public static boolean setPrimaryColor(@RequestParam(value = "colorHex", defaultValue = "NULL") String colorHex) {
         if(colorHex == null || colorHex.equals("NULL")) 
             return false; // invalid input
