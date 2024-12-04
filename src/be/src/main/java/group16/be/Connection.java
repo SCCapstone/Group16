@@ -40,6 +40,10 @@ public class Connection {
         }
     }
 
+    public boolean isConnected() {
+        return connected;
+    }
+
     /**
      * Inserts a new document into the specified collection.
      *
