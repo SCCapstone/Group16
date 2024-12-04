@@ -1,3 +1,7 @@
 <p>Task List</p>
 <!--<button (click)="getAssignmentTester()">Test Assignments</button>-->
-<app-task *ngFor="let assignment of assignments"[assignment]="assignment"></app-task>
+<!--<app-task *ngFor="let assignment of assignments"[assignment]="assignment"></app-task>-->
+
+@for (assignment of assignments; track assignment.id) {
+    <app-task [assignment]="assignment" />
+}

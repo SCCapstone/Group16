@@ -14,11 +14,12 @@ import { TaskComponent } from './task/task.component';
   styleUrl: './task-list.component.css'
 })
 export class TaskListComponent {
-  tasks: undefined; // undefined temporary until type Task is created
-  test: Assignment[] = [];
+  
+  test: Assignment[] = [];  // Do we need this?
+
   assignmentService = inject(AssignmentService);
   loginService = inject(LoginService);
-  assignments: Assignment[]=[];
+  assignments: Assignment[] = [];
 
   getAssignmentTester(): void {
     this.assignmentService.getAssignments(this.loginService.getUserId())
