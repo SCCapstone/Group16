@@ -7,7 +7,7 @@ import { Course } from './course';
 export class CourseService {
   url = 'https://osterholt.us/api/getCourses';
 
-  private selectIndex: Number = -1;    // Index of course selected in array; -1 indicates none
+  private selectIndex: number = -1;    // Index of course selected in array; -1 indicates none
 
   constructor() { }
 
@@ -19,12 +19,12 @@ export class CourseService {
   }
 
   // Returns the ID of the currently-selected course
-  getSelectIndex(): Number {
+  getSelectIndex(): number {
     return this.selectIndex;
   }
 
   // Updates the currently-selected course ID
-  selectCourse(index: Number): void {
+  selectCourse(index: number): void {
     if (index === this.selectIndex)
       this.selectIndex = -1;
     else

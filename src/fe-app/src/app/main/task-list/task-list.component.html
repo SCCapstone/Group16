@@ -3,5 +3,7 @@
 <!--<app-task *ngFor="let assignment of assignments"[assignment]="assignment"></app-task>-->
 
 @for (assignment of assignments; track assignment.id) {
-    <app-task [assignment]="assignment" />
+    @if (courseService.getSelectIndex() === -1 || assignment.courseId === courses[courseService.getSelectIndex()].id) {
+        <app-task [assignment]="assignment" />
+    }
 }
