@@ -9,3 +9,6 @@
 <!-- Test Output -->
 <br>
 <p>Selected Course Index: {{ this.courseService.getSelectIndex() }}</p>
+@if (this.courseService.getSelectIndex() >= 0) {
+    <p>Selected Course ID: {{ this.courses[this.courseService.getSelectIndex()].id }}</p>
+}
