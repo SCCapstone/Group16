@@ -31,8 +31,10 @@ export class CoursesSidebarComponent {
   selectCourse(index: number): void {
     if (index === this.courseService.getSelectIndex())
       this.courseService.deselectCourse();
-    else
+    else {
       this.courseService.selectCourse(index);
+      console.log("Selected Course ID: " + this.courses[index].id);  // TODO test code, remove later
+    }
   }
 
   // Returns CSS class for the given index based on whether or not it is selected
