@@ -12,17 +12,17 @@ import { AddTaskComponent } from './main/add-task/add-task.component';  // TODO 
 
 export const routes: Routes = [
   {
-    path: 'classmate',
+    path: '',
     component: HomeComponent,
     title: 'Home'
   },
   {
-    path: 'classmate/login',
+    path: 'login',
     component: LoginComponent,
     title: 'Login'
   },
   {
-    path: 'classmate/main',
+    path: 'main',
     component: MainComponent,
     title: 'Main'
   },
@@ -32,23 +32,18 @@ export const routes: Routes = [
     title: 'Notifications'
   },
   {
-    path: 'classmate/settings',
+    path: 'settings',
     component: SettingsComponent,
     title: 'Settings'
   },
   {
-    path: 'classmate/grades',
+    path: 'grades',
     component: GradesComponent,
     title: 'Grades'
   },
   {
-    path: 'classmate/main/add-task',
+    path: 'main/add-task',
     component: AddTaskComponent,
     title: 'Add Task'
-  },
-  {
-    path: '',
-    redirectTo: 'classmate',
-    pathMatch: 'full'
   }
 ];

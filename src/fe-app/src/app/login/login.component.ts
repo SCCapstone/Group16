@@ -34,7 +34,7 @@ export class LoginComponent {
       this.user = user;
       console.log(this.user); // to be removed
       if (user) {
-        this.router.navigate(['/classmate/main']);
+        this.router.navigate(['/main']);
       }
     })
     .catch((error) => {
@@ -52,7 +52,7 @@ export class LoginComponent {
     .then((user: User) => {
       this.user = user;
       if (user) {
-        this.router.navigate(['/classmate/main']);
+        this.router.navigate(['/main']);
       }
     })
     .catch((error) => {
