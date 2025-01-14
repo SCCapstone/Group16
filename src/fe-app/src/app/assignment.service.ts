@@ -6,8 +6,8 @@ import { Assignment } from './assignment';
   providedIn: 'root'
 })
 export class AssignmentService {
-  url = 'https://osterholt.us/api/getAssignments';
-  url2 = 'https://osterholt.us/api/createAssignmentWithoutId';
+  url = 'https://classmate.osterholt.us/api/getAssignments';
+  url2 = 'https://classmate.osterholt.us/api/createAssignmentWithoutId';
 
   //https://osterholt.us/addAssignmentWithoutId?title=Assignment+1&description=Test+Description&dueDate=2024-12-10&userId=123&courseId=456
 
