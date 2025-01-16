@@ -35,11 +35,7 @@ public class APIScraper implements CommandLineRunner {
     }
 
     public String login(String username, String password) {
-        System.out.println("DEBUG: API Scraper Request recieved - Username: \"" + username + "\" Password: \"" + password + "\"");
         List<User> users = userRepo.findByUserNameAndPassword(username, password);
-        for(User user : users) {
-            System.out.println("APIScraper login() DEBUG: User found: " + user.toString());
-        }
         
         //TODO: Need to decide how to handle these errors.
         if (users.size() == 1) {

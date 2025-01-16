@@ -35,7 +35,6 @@ public class RequestHandlerTests {
     @Test
     void testFindByUserNameAndPassword() {
         List<User> response = userRepo.findByUserNameAndPassword("osterholt", "cameron1234");
-        System.out.println("testLoginScraper() DEBUG: " + response);
         assert(response.size() == 1 && response.get(0).getId().equals(EXPECTED_ID));
     }
 
@@ -45,9 +44,6 @@ public class RequestHandlerTests {
     @Test 
     void testFindUserByUserId() {
         List<User> response = userRepo.findUserByUserId(EXPECTED_ID);
-        for(User user : response) {
-            System.out.println("testFindUserByUserID() DEBUG: " + user);
-        }
         assert(response.size() == 1 && response.get(0).getUserName().equals(LOGIN_USER));
     }
 
