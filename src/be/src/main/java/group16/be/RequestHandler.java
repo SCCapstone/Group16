@@ -71,7 +71,7 @@ public class RequestHandler {
 
         Map<String, String> ret = new HashMap<>();
 
-        String id = scraper.login(username, password); //TODO: CURRENT ERROR, not calling scraper. 
+        String id = scraper.login(username, password); 
         if(id.startsWith("Error")) {
             return null;
         }
