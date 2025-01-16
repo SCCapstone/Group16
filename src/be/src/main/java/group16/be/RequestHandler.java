@@ -59,12 +59,19 @@ public class RequestHandler {
             System.out.println("DEBUG: Default values used.");
             return null;
         }
+
+        return loginLogic(username, password);
+    }
+
+    public Map<String, String> loginLogic(String username, String password) {
+        if(username == null || password == null) 
+            return null;
         
         System.out.println("DEBUG: Request recieved - Username: \"" + username + "\" Password: \"" + password + "\"");
 
         Map<String, String> ret = new HashMap<>();
 
-        String id = scraper.login(username, password);
+        String id = scraper.login(username, password); 
         if(id.startsWith("Error")) {
             return null;
         }
