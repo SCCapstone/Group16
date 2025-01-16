@@ -1,12 +1,14 @@
 package group16.be;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import group16.be.db.User;
 import group16.be.db.UserRepository;
 
 @SpringBootTest
@@ -17,7 +19,7 @@ public class RequestHandlerTests {
     @Autowired
     private APIScraper scraper; // Needed for dependancies of autowired classes
 
-    @MockBean
+    @Autowired
     private UserRepository userRepo;
 
     private final String LOGIN_USER = "osterholt";
@@ -27,17 +29,32 @@ public class RequestHandlerTests {
         put("id", "673fdd30cc2da4c3a3514fb7");
     }};
 
+    /** 
+     * Test the login APIScraper method
+     */
     @Test
-    void testLogin() {
-        Map response = handler.loginLogic(LOGIN_USER, LOGIN_PASS);
-        assert(response.get("status").equals("success") 
-            && response.entrySet().equals(EXPECTED_RESPONSE.entrySet()));
+    void testFindByUserNameAndPassword() {
+        List<User> response = userRepo.findByUserNameAndPassword("osterholt", "cameron1234");
+        System.out.println("testLoginScraper() DEBUG: " + response);
+        assert(response.size() == 1 && response.get(0).getId().equals(EXPECTED_ID));
+    }
+
+    /** 
+     * Test the find user by ID APIScraper method
+     */
+    @Test 
+    void testFindUserByUserId() {
+        List<User> response = userRepo.findUserByUserId(EXPECTED_ID);
+        for(User user : response) {
+            System.out.println("testFindUserByUserID() DEBUG: " + user);
+        }
+        assert(response.size() == 1 && response.get(0).getUserName().equals(LOGIN_USER));
     }
 
     @Test
-    void testLoginScraper() {
-        String response = scraper.login("osterholt", "cameron1234");
-        System.out.println("testLoginScraper() DEBUG: " + response);
-        assert(response.equals(EXPECTED_ID));
+    void testLogin() {
+        Map response = handler.loginLogic(LOGIN_USER, LOGIN_PASS);
+        assert(response.size() == 1
+            && response.containsValue(EXPECTED_RESPONSE.get("id")));
     }
 }
