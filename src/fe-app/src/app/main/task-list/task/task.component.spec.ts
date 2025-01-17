@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { Assignment } from '../../../assignment';
 import { TaskComponent } from './task.component';
 
 describe('TaskComponent', () => {
@@ -14,6 +14,16 @@ describe('TaskComponent', () => {
 
     fixture = TestBed.createComponent(TaskComponent);
     component = fixture.componentInstance;
+
+    component.assignment = {
+      title: 'Test Assignment',
+      availability: {
+        adaptiveRelease: {
+          end: 'date'
+        }
+      }
+    } as any;
+
     fixture.detectChanges();
   });
 

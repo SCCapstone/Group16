@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { GradesComponent } from './grades.component';
 
 describe('GradesComponent', () => {
@@ -7,8 +7,15 @@ describe('GradesComponent', () => {
   let fixture: ComponentFixture<GradesComponent>;
 
   beforeEach(async () => {
+    const activatedRouteMock = {
+      snapshot: { paramMap: {} }
+    };
+
     await TestBed.configureTestingModule({
-      imports: [GradesComponent]
+      imports: [GradesComponent, RouterModule],
+      providers: [
+        { provide: ActivatedRoute, useValue: activatedRouteMock}
+      ]
     })
     .compileComponents();
 
