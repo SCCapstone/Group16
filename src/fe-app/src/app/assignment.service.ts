@@ -1,3 +1,4 @@
+import { core } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { Assignment } from './assignment';
 
@@ -5,7 +6,11 @@ import { Assignment } from './assignment';
   providedIn: 'root'
 })
 export class AssignmentService {
-  url = 'http://104.234.231.191:1616/api/getAssignments';
+  url = 'https://classmate.osterholt.us/api/getAssignments';
+  url2 = 'https://classmate.osterholt.us/api/createAssignmentWithoutId';
+
+  //https://osterholt.us/addAssignmentWithoutId?title=Assignment+1&description=Test+Description&dueDate=2024-12-10&userId=123&courseId=456
+
 
   constructor() { }
 
@@ -14,5 +19,28 @@ export class AssignmentService {
     const data = await response.json() ?? [];
     console.log(data);
     return data;
+  }
+
+  async addTask(title: string | null, description: string | null, dueDate: Date | null,
+    userId: string | null, courseId : string | null) : Promise<void> {
+      const queryParams = new URLSearchParams({
+        title: title ?? "NULL",
+        description: description ?? "NULL",
+        dueDate: dueDate?.toISOString() ?? "NULL",
+        userId: userId ?? "NULL",
+        courseId: courseId ?? "NULL"
+      }).toString();
+
+      console.log(queryParams);
+
+      const response = await fetch(`${this.url2}?${queryParams}`, {
+        method: 'POST'
+      });
+
+      if(!response.ok) {
+        throw new Error(`POST failed: ${response.status}`)
+      }
+
+      console.log(response)
   }
 }

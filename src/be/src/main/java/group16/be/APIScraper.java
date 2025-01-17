@@ -44,7 +44,7 @@ public class APIScraper implements CommandLineRunner {
         if(users.size() > 1) {
             return "Error: Multiple users with the same username and password";
         }
-        return "Error: No user with that username and password";
+        return "Error: No user with that username and password"; // TODO: Could be a failed search.
     }
 
     /**

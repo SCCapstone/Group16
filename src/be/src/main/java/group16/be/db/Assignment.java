@@ -95,5 +95,4 @@ public class Assignment {
             this.end = end;
         }
     }
-
 }

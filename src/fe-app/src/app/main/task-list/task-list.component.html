@@ -1,2 +1,9 @@
-<p>task-list works!</p>
-<button (click)="getAssignmentTester()">Test Assignments</button>
+<p>Task List</p>
+<!--<button (click)="getAssignmentTester()">Test Assignments</button>-->
+<!--<app-task *ngFor="let assignment of assignments"[assignment]="assignment"></app-task>-->
+
+@for (assignment of assignments; track assignment.id) {
+    @if (courseService.getSelectIndex() === -1 || assignment.courseId === courses[courseService.getSelectIndex()].id) {
+        <app-task [assignment]="assignment" />
+    }
+}

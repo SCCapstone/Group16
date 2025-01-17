@@ -1,27 +1,55 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Course } from '../../course';
+import { CourseService } from '../../course.service';
+import { LoginService } from '../../login.service';
+import { CommonModule } from '@angular/common';
+import { AssignmentService } from '../../assignment.service';
 
 @Component({
   selector: 'app-add-task',
   standalone: true,
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './add-task.component.html',
   styleUrl: './add-task.component.css'
 })
 export class AddTaskComponent {
-  name: string = "";
-  type: string = "";
-  course: string = "";
-  // course: undefined; // TODO update type to Course when interface is created
-  due: string = "";
+  assignmentService = inject(AssignmentService);
+  courseService = inject(CourseService);
+  loginService = inject(LoginService);
+  courses: Course[] = [];
+
+  addTaskForm = new FormGroup ({
+    title: new FormControl(''),
+    description: new FormControl(''),
+    course: new FormControl(''),
+    due: new FormControl('')
+  });
+
+  // name: string = "";
+  // description: string = "";
+  // course: string = "";
+  // // course: undefined; // TODO update type to Course when interface is created
   // due: Date = new Date();
 
-  displayOutput: boolean = false;  // TODO for testing, remove later
+  // displayOutput: boolean = false;  // TODO for testing, remove later
 
-  constructor() {}
+  constructor() {
+    this.courseService.getCourses(this.loginService.getUserId())
+    .then((courses: Course[]) => {
+      this.courses = courses;
+    })
+  }
+
   addTask() {
-    this.displayOutput = true;
+    const dueDate = this.addTaskForm.value.due ? new Date(this.addTaskForm.value.due) : null;
 
-    // TODO Validate date and send new task to course service
+    this.assignmentService.addTask(
+      this.addTaskForm.value.title ?? '',
+      this.addTaskForm.value.description ?? '',
+      dueDate,
+      this.loginService.getUserId(),
+      this.addTaskForm.value.course ?? ''
+    )
   }
 }

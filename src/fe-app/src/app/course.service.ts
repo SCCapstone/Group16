@@ -5,7 +5,9 @@ import { Course } from './course';
   providedIn: 'root'
 })
 export class CourseService {
-  url = 'http://104.234.231.191:1616/api/getCourses';
+  url = 'https://classmate.osterholt.us/api/getCourses';
+
+  private selectIndex: number = -1;    // Index of course selected in array; -1 indicates none
 
   constructor() { }
 
@@ -14,5 +16,23 @@ export class CourseService {
     const data = await response.json() ?? [];
     console.log(data);
     return data;
+  }
+
+  // Returns the ID of the currently-selected course
+  getSelectIndex(): number {
+    return this.selectIndex;
+  }
+
+  // Updates the currently-selected course ID
+  selectCourse(index: number): void {
+    if (index === this.selectIndex)
+      this.selectIndex = -1;
+    else
+      this.selectIndex = index;
+  }
+
+  // Clears course selection; used while initializing a page
+  deselectCourse(): void {
+    this.selectIndex = -1;
   }
 }

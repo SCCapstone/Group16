@@ -29,5 +29,5 @@ export class MainComponent {
   }
 
   // Will be refactored with consts when I figure out how; 0 = calendar, 1 = task list, 2 =
-  viewSelect: number = 0;
+  viewSelect: number = 1;
 }

@@ -22,6 +22,9 @@ public class User {
     private String uuid;
     private String dataSourceId;
     private String userName;
+    public String getUserName() {
+        return userName;
+    }
     private String studentId;
     private String gender;
     private String pronouns;
