@@ -1,1 +1,21 @@
-<p>profile-settings works!</p>
+<form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="profile-settings">
+    <label>
+        
+        <!-- Form is ignoring my display: column CSS so using breaks for now -->
+        <label for="preferred-name">Preferred Name:</label><br>
+        <input type="text" id="preferred-name" formControlName="name"/><br>
+
+        <label for="school-email">University Email:</label><br>
+        <input type="email" id="school-email" formControlName="school"/><br>
+
+        <label for="personal-email">Personal Email:</label><br>
+        <input type="email" id="personal-email" formControlName="personal"/><br>
+
+        <label for="phone-number">Phone Number:</label><br>
+        <input type="tel" id="phone-number" formControlName="phone"/><br>
+
+        <br>
+        <button type="submit">Save</button>
+    </label>
+</form>
+
