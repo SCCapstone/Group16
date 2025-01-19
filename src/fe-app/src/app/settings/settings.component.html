@@ -1,8 +1,12 @@
 <div class="settings-main">
-    <app-settings-sidebar />
+    <div class="sidebar">
+        <app-settings-sidebar />
+    </div>
 
     <!-- TODO figure out multilevel routing and replace with router-outlet -->
-    <app-profile-settings />
+    <div class="settings-container">
+        <app-profile-settings />
+    </div>
 </div>
 
 <button routerLink="/main">Back to Main Page</button>
