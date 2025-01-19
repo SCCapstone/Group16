@@ -1,0 +1,18 @@
+/* For a div housing an option in settings sidebar */
+.option {
+    font-size: 36px;
+    border: 2px solid #00000000;
+    width: 80%;
+    margin: 10px auto;
+    text-align: center;
+}
+
+/* Additional styling for the selected setting div */
+.selected {
+    border: 2px solid red;
+}
+
+/* Text for course names themselves */
+p {
+    margin: 10px auto;
+}

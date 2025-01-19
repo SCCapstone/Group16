@@ -7,6 +7,13 @@ import { Component } from '@angular/core';
   templateUrl: './settings-sidebar.component.html',
   styleUrl: './settings-sidebar.component.css'
 })
-export class SettingsSidebarComponent {
+export class SettingsSidebarComponent
+{
+  selectedPage: string = ""  // For CSS styling
+  
   constructor() {}
+
+  selectPage() {
+
+  }
 }
