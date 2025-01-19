@@ -1,13 +1,13 @@
 <!-- TODO: Figure out multilevel routerLink -->
-<div class="option selected">
-    <p (click)="selectPage()">Profile</p>
+<div [class]="this.getStyle(0)">
+    <p (click)="selectPage(0)">Profile</p>
 </div>
-<div class="option">
-    <p (click)="selectPage()">Appearance</p>
+<div [class]="this.getStyle(1)">
+    <p (click)="selectPage(1)">Appearance</p>
 </div>
-<div class="option">
-    <p (click)="selectPage()">Notifications</p>
+<div [class]="this.getStyle(2)">
+    <p (click)="selectPage(2)">Notifications</p>
 </div>
-<div class="option">
-    <p (click)="selectPage()">Sign Out</p>
+<div [class]="this.getStyle(3)">
+    <p (click)="selectPage(3)">Sign Out</p>
 </div>

@@ -9,11 +9,17 @@ import { Component } from '@angular/core';
 })
 export class SettingsSidebarComponent
 {
-  selectedPage: string = ""  // For CSS styling
+  selectedPage: number = 0  // For CSS styling
   
   constructor() {}
 
-  selectPage() {
+  selectPage(index: number) {
+    this.selectedPage = index;
+  }
 
+  getStyle(index: number): string {
+    if (index === this.selectedPage)
+      return "option selected";
+    return "option";
   }
 }
