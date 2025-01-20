@@ -12,7 +12,11 @@ section {
     text-align: right;
     padding-right: 10px;
     margin-top:-90px;
-    
+
+}
+
+.classmate {
+  cursor: pointer;
 }
 
 .logos img{
@@ -31,7 +35,7 @@ section {
     background-color: rgba(0, 0, 0, 0.6);
     z-index: 1000;
   }
-  
+
   .popup-content {
     background: white;
     padding: 20px;
@@ -41,13 +45,12 @@ section {
     width: 70%;
     margin: auto;
   }
-  
+
   .close {
-    position: absolute; 
-    top: -5px; 
+    position: absolute;
+    top: -5px;
     right: 8px;
     cursor: pointer;
     font-size: 34px;
     color: black;
   }
-  

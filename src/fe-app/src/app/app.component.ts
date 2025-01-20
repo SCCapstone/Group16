@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { RouterOutlet, RouterModule, Router } from '@angular/router';
+import { LoginService } from './login.service';
 
 //import {HomeComponent} from './home/home.component';
 
@@ -15,7 +16,9 @@ import { RouterOutlet, RouterModule, Router } from '@angular/router';
 export class AppComponent {
 
   constructor(public router: Router){}
-  
+
+  loginService = inject(LoginService);
+
   title = 'fe-app';
   showPopup = false;
   popupType: 'notifications' | null = null;
@@ -33,5 +36,13 @@ export class AppComponent {
   hideLogos(): boolean {
     const hiddenRoutes = ['/', '/login'];
     return !hiddenRoutes.includes(this.router.url);
+  }
+
+  headerRouting(): void {
+    if(this.loginService.getUserId()) {
+      this.router.navigate(['/main']);
+    } else {
+      this.router.navigate(['/home']);
+    }
   }
 }
