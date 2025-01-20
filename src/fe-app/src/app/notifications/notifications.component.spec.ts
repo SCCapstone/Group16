@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { NotificationsComponent } from './notifications.component';
 
 describe('NotificationsComponent', () => {
@@ -7,8 +7,15 @@ describe('NotificationsComponent', () => {
   let fixture: ComponentFixture<NotificationsComponent>;
 
   beforeEach(async () => {
+    const activatedRouteMock = {
+      snapshot: { paramMap: {} }
+    };
+
     await TestBed.configureTestingModule({
-      imports: [NotificationsComponent]
+      imports: [NotificationsComponent, RouterModule],
+      providers: [
+        { provide: ActivatedRoute, useValue: activatedRouteMock}
+      ]
     })
     .compileComponents();
 
