@@ -13,6 +13,7 @@ export class SettingsSidebarComponent
 {
   selectedPage: number = 0  // For CSS styling
   
+  // TODO handle reload or user moving to page directly via url, currently always starts on profile
   constructor() {}
 
   selectPage(index: number) {
