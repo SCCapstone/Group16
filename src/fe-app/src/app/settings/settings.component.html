@@ -2,9 +2,13 @@
     <div class="sidebar">
         <app-settings-sidebar />
     </div>
-
-    <!-- TODO figure out multilevel routing and replace with router-outlet -->
     <div class="settings-container">
-        <app-profile-settings />
+        <router-outlet />
     </div>
 </div>
+
+<br>
+<button routerLink="profile">Test Profile Link</button>
+<button routerLink="appearance">Test Appearance Link</button>
+<button routerLink="notifications">Test Notifications Link</button>
+<button routerLink="sign-out">Test Signout Link</button>

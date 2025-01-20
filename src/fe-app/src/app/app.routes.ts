@@ -10,6 +10,11 @@ import { NotificationsComponent } from './notifications/notifications.component'
 
 import { AddTaskComponent } from './main/add-task/add-task.component';  // TODO this and its route is temporary
 
+import { ProfileSettingsComponent } from './settings/profile-settings/profile-settings.component';
+import { AppearanceSettingsComponent } from './settings/appearance-settings/appearance-settings.component';
+import { NotificationSettingsComponent } from './settings/notification-settings/notification-settings.component';
+import { SignOutComponent } from './settings/sign-out/sign-out.component';
+
 export const routes: Routes = [
   {
     path: '',
@@ -34,7 +39,25 @@ export const routes: Routes = [
   {
     path: 'settings',
     component: SettingsComponent,
-    title: 'Settings'
+    title: 'Settings',
+    children: [
+      {
+        path: 'profile',
+        component: ProfileSettingsComponent
+      },
+      {
+        path: 'appearance',
+        component: AppearanceSettingsComponent
+      },
+      {
+        path: 'notifications',
+        component: NotificationSettingsComponent
+      },
+      {
+        path: 'sign-out',
+        component: SignOutComponent
+      }
+    ]
   },
   {
     path: 'grades',
