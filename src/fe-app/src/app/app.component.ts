@@ -42,7 +42,7 @@ export class AppComponent {
     if(this.loginService.getUserId()) {
       this.router.navigate(['/main']);
     } else {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/']);
     }
   }
 }
