@@ -1,0 +1,23 @@
+.profile-settings {
+    display: flex;
+    flex-direction: column;
+    background-color: green;
+    align-items: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+  
+input, select {
+    margin-left: 10px;
+}
+
+button {
+    display: block;
+    margin-top: 20px;
+    margin-left: 10px;
+}
