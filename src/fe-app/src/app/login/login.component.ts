@@ -16,7 +16,7 @@ export class LoginComponent {
   router = inject(Router);
 
   user: User | undefined;
-  loginService = inject(LoginService)
+  loginService = inject(LoginService);
   loginForm = new FormGroup ({
     username: new FormControl(''),
     password: new FormControl('')
