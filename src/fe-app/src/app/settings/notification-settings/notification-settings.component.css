@@ -6,3 +6,11 @@
     height: 100%;
     background-color: green;
 }
+
+.item {
+    margin: 10px auto;
+}
+
+button {
+    margin-top: 15px;
+}
