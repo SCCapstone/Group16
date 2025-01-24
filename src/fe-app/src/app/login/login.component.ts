@@ -26,6 +26,10 @@ export class LoginComponent {
 
   // username: osterholt; password: cameron1234
   login() {
+    if (this.loginForm.value.username == '' || this.loginForm.value.password == '') {
+     return;
+    }
+
     this.loginService.login(
       this.loginForm.value.username ?? '',
       this.loginForm.value.password ?? ''
