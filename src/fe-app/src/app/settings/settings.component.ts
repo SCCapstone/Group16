@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterModule } from '@angular/router';
-
+import { SettingsService } from '../settings.service';
 import { SettingsSidebarComponent } from './settings-sidebar/settings-sidebar.component';
+import { UserInfo } from '../user';
+import { LoginService } from '../login.service';
 
 @Component({
   selector: 'app-settings',
@@ -12,4 +14,15 @@ import { SettingsSidebarComponent } from './settings-sidebar/settings-sidebar.co
 })
 export class SettingsComponent {
   constructor() {}
+
+  userInfo: UserInfo | undefined;
+  settingsService = inject(SettingsService);
+  loginService = inject(LoginService);
+
+  getInfoTester() {
+    this.settingsService.getUserInfo(this.loginService.getUserId()).then((userInfo: UserInfo) => {
+      this.userInfo = userInfo;
+      console.log(this.userInfo);
+    })
+  }
 }
