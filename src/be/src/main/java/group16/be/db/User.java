@@ -38,9 +38,6 @@ public class User {
 
     @Field("settings")
     private Settings settings;
-    public Settings getSettings() {
-        return settings;
-    }
     
     private Name name;
     public String getName() {
@@ -121,12 +118,12 @@ public class User {
     }
     
     private static class Settings {
-        private boolean emailNotifications;
-        // public boolean getEmailNotifications() { return emailNotifications; }
-        private boolean institutionEmailNotifications;
-        // public boolean getInstitutionEmailNotifications() { return institutionEmailNotifications; }
-        private boolean smsNotifications;
-        // public boolean getSmsNotifications() { return smsNotifications; }
+        private Boolean emailNotifications;
+        public boolean getEmailNotifications() { return emailNotifications; }
+        private Boolean institutionEmailNotifications;
+        public boolean getInstitutionEmailNotifications() { return institutionEmailNotifications; }
+        private Boolean smsNotifications;
+        public boolean getSmsNotifications() { return smsNotifications; }
         // public Map<String, Boolean> getSettings() {
         //     return Map.of(
         //         "emailNotifications", emailNotifications,
