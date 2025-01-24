@@ -297,8 +297,8 @@ public class RequestHandler {
      * @param userId the user's ID
      * @return True if the email notifications were successfully toggled
      */
-    @PostMapping
-    @GetMapping("/api/toggleEmailNotifications")
+    @CrossOrigin
+    @PostMapping("/api/toggleEmailNotifications")
     public boolean toggleEmailNotifications(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
         if(userId == null || userId.equals("NULL")) 
             return false;
