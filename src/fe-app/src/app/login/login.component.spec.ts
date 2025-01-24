@@ -7,73 +7,76 @@ import { ReactiveFormsModule } from '@angular/forms';
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let mockLoginService: jasmine.SpyObj<LoginService>;
-  let mockRouter: jasmine.SpyObj<Router>;
+  let mockLoginService: jasmine.SpyObj<LoginService>; // create mock login service as LoginService
+  let mockRouter: jasmine.SpyObj<Router>; // create mock router as Router
 
   beforeEach(async () => {
-    mockLoginService = jasmine.createSpyObj('LoginService', ['login']);
-    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
-    spyOn(sessionStorage, 'setItem');
+    mockLoginService = jasmine.createSpyObj('LoginService', ['login']); // spy on the mock service
+    mockRouter = jasmine.createSpyObj('Router', ['navigate']); // spy on the mock router
+    spyOn(sessionStorage, 'setItem'); // spy on session storage for userId key
 
     await TestBed.configureTestingModule({
       imports: [LoginComponent, ReactiveFormsModule],
       providers: [
-        { provide: LoginService, useValue: mockLoginService },
-        { provide: Router, useValue: mockRouter }
+        { provide: LoginService, useValue: mockLoginService }, // replace LoginService with mockLoginService
+        { provide: Router, useValue: mockRouter } // replace Router with mockRouter
       ]
     })
-    .compileComponents();
+    .compileComponents(); // compile wih mock replacements
 
-    fixture = TestBed.createComponent(LoginComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture = TestBed.createComponent(LoginComponent); // set the fixture
+    component = fixture.componentInstance; // create the instance of the component
+    fixture.detectChanges(); // watch the page
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeTruthy(); // expect the component to exist
   });
 
   it('should initialize the login form with empty values', () => {
-    expect(component.loginForm.value).toEqual({ username: '', password: ''});
+    expect(component.loginForm.value).toEqual({ username: '', password: ''}); // expect the form to be empty when first opened
   });
 
   it('should call loginService.login when login() is invoked with valid credentials', () => {
-    const mockResponse = { id: '12345'};
-    component.loginForm.setValue({ username: 'testuser', password: 'password123' });
-    mockLoginService.login.and.returnValue(Promise.resolve(mockResponse));
+    // Arrange
+    const mockResponse = { id: '12345'}; // mock response in form of what is promised on valid login user object
+    component.loginForm.setValue({ username: 'testuser', password: 'password123' }); // pass in fake valid info
+    mockLoginService.login.and.returnValue(Promise.resolve(mockResponse)); // call the mock service and give a valid return
 
-    component.login();
+    // Act
+    component.login(); // call login with fake valid info
 
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(mockLoginService.login).toHaveBeenCalledOnceWith('testuser', 'password123');
-      expect(sessionStorage.setItem).toHaveBeenCalledWith('id', '12345');
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['/main']);
+    // Assert
+    fixture.whenStable().then(() => { // wait for the page to stabilize
+      fixture.detectChanges(); // detect the changes on the page
+      expect(mockLoginService.login).toHaveBeenCalledOnceWith('testuser', 'password123'); // expect login to have been called with the same fake info
+      expect(sessionStorage.setItem).toHaveBeenCalledWith('id', '12345'); // expect session storage to have been set with fake valid return
+      expect(mockRouter.navigate).toHaveBeenCalledWith(['/main']); // expect the mock router to have routed to /main
     });
   });
 
-  it('should set output to an error message when login fails', async () => {
-    component.loginForm.setValue({ username: 'testuser', password: 'wrongpassword'});
-    mockLoginService.login.and.returnValue(Promise.reject('Invalid credentials'));
+  it('should set output to an error message when login fails', async () => { // async due to changes occurring on actual page (maybe?)
+    component.loginForm.setValue({ username: 'testuser', password: 'wrongpassword'}); // pass in fake invalid info
+    mockLoginService.login.and.returnValue(Promise.reject('Invalid credentials')); // call the mock service and give a rejected return (why)
 
-    await component.login();
+    await component.login(); // call the login with fake invalid info (await bc function is async)
 
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(component.output).toBe('Login failed, please try again');
-      expect(mockRouter.navigate).not.toHaveBeenCalled();
+    fixture.whenStable().then(() => { // wait for page to stabilize
+      fixture.detectChanges(); // detect the changes on the page
+      expect(component.output).toBe('Login failed, please try again'); // expect output to have been set as intended on invalid login
+      expect(mockRouter.navigate).not.toHaveBeenCalled(); // expect mock router to have not been called
     });
   });
 
-  it('should not call loginService.login if the form is empty ', async () => {
-    component.loginForm.setValue({ username: '', password: ''});
+  it('should not call loginService.login if the form is empty ', async () => { // also async due to page tracking (maybe?)
+    component.loginForm.setValue({ username: '', password: ''}); // pass in no info
 
-    await component.login();
+    await component.login(); // call login with no info (await bc function is async)
 
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(mockLoginService.login).not.toHaveBeenCalled();
-      expect(component.output).toBe('');
+    fixture.whenStable().then(() => { // wait for page to stabilize
+      fixture.detectChanges(); // detect the changes on the page
+      expect(mockLoginService.login).not.toHaveBeenCalled(); // expect the login service to not get called
+      expect(component.output).toBe(''); // expect output to be unchanged
     })
   });
 });
