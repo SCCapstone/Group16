@@ -35,6 +35,12 @@ public class User {
     private String lastLogin; // ISO date-time format
 
     private Availability availability;
+
+    @Field("settings")
+    private Settings settings;
+    public Settings getSettings() {
+        return settings;
+    }
     
     private Name name;
     public String getName() {
@@ -121,13 +127,13 @@ public class User {
         // public boolean getInstitutionEmailNotifications() { return institutionEmailNotifications; }
         private boolean smsNotifications;
         // public boolean getSmsNotifications() { return smsNotifications; }
-        public Map<String, Boolean> getSettings() {
-            return Map.of(
-                "emailNotifications", emailNotifications,
-                "institutionEmailNotifications", institutionEmailNotifications,
-                "smsNotifications", smsNotifications
-            );
-        }
+        // public Map<String, Boolean> getSettings() {
+        //     return Map.of(
+        //         "emailNotifications", emailNotifications,
+        //         "institutionEmailNotifications", institutionEmailNotifications,
+        //         "smsNotifications", smsNotifications
+        //     );
+        // }
     }
 
     // Getters and Setters for UserProfile
