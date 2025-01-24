@@ -292,7 +292,13 @@ public class RequestHandler {
         return scraper.getUser(userId);
     }
 
+    /**
+     * This method is to toggle the user's email notifications, the user ID is the only parameter as it toggles the saved value from mongo
+     * @param userId the user's ID
+     * @return True if the email notifications were successfully toggled
+     */
     @PostMapping
+    @GetMapping("/api/toggleEmailNotifications")
     public boolean toggleEmailNotifications(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
         if(userId == null || userId.equals("NULL")) 
             return false;
