@@ -1,6 +1,7 @@
 package group16.be.db;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -115,11 +116,18 @@ public class User {
     
     private static class Settings {
         private boolean emailNotifications;
-        public boolean getEmailNotifications() { return emailNotifications; }
+        // public boolean getEmailNotifications() { return emailNotifications; }
         private boolean institutionEmailNotifications;
-        public boolean getInstitutionEmailNotifications() { return institutionEmailNotifications; }
+        // public boolean getInstitutionEmailNotifications() { return institutionEmailNotifications; }
         private boolean smsNotifications;
-        public boolean getSmsNotifications() { return smsNotifications; }
+        // public boolean getSmsNotifications() { return smsNotifications; }
+        public Map<String, Boolean> getSettings() {
+            return Map.of(
+                "emailNotifications", emailNotifications,
+                "institutionEmailNotifications", institutionEmailNotifications,
+                "smsNotifications", smsNotifications
+            );
+        }
     }
 
     // Getters and Setters for UserProfile
@@ -131,6 +139,8 @@ public class User {
     public List<CourseId> getCourseIDs() {
         return this.courseIDs;
     }
+
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
