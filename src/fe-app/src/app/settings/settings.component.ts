@@ -19,10 +19,16 @@ export class SettingsComponent {
   settingsService = inject(SettingsService);
   loginService = inject(LoginService);
 
-  getInfoTester() {
+  getInfo() {
     this.settingsService.getUserInfo(this.loginService.getUserId()).then((userInfo: UserInfo) => {
       this.userInfo = userInfo;
       console.log(this.userInfo);
     })
+  }
+
+  toggleEmailNotificationsTester() {
+    this.settingsService.toggleEmailNotifications(this.loginService.getUserId()).then(() => {
+      this.getInfo();
+    });
   }
 }
