@@ -85,14 +85,21 @@ public class User {
     private static class Contact {
         private String homePhone;
         private String mobilePhone;
+        public String getMobilePhone() { return mobilePhone; }
         private String businessPhone;
         private String businessFax;
         private String email;
+        public String getEmail() { return email; }
         private String institutionEmail;
+        public String getInstitutionEmail() { return institutionEmail; }
         private String webPage;
 
         // Getters and Setters
     }
+    public Contact getContact() {
+        return contact;
+    }
+
 
     private static class Locale {
         private String id;
