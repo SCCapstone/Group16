@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import group16.be.db.Assignment;
 import group16.be.db.Course;
+import group16.be.db.User;
 
 @RestController
 public class RequestHandler {
@@ -275,5 +276,19 @@ public class RequestHandler {
     public static boolean toggleNotifications() {
         //pass the new notification setting to the database to update the user's notification setting
         return false;
+    }
+
+    /**
+     * This method returns a json file representing the user's data.
+     * @param userId
+     * @return the user object
+     */
+    @CrossOrigin
+    @GetMapping("/api/getUser")
+    public User getUser(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
+        if(userId == null || userId.equals("NULL")) 
+            return null;
+        //pass the user's ID to the database to get the user's information
+        return scraper.getUser(userId);
     }
 }

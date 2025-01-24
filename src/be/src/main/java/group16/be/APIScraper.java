@@ -88,6 +88,19 @@ public class APIScraper implements CommandLineRunner {
         return assignments;
     }
 
+    public User getUser(String uID) {
+        List<User> users = userRepo.findUserByUserId(uID);
+        if(users.size() == 0) {
+            System.out.println("Error: No user with that ID");
+            return null;
+        }
+        if (users.size() != 1) {
+            System.out.println("Error: Multiple users with the same ID");
+            return null; // not just one user by id
+        }
+        return users.get(0);
+    }
+
     public static File scrapeUser(String uID) {
         // calls a seperate thread that scrapes for each item in the queue
         //scrape the API and return the json file

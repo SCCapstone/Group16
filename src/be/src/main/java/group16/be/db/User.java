@@ -113,6 +113,11 @@ public class User {
         }
     }
     
+    private static class Settings {
+        private boolean emailNotifications;
+        private boolean institutionEmailNotifications;
+        private boolean smsNotifications;
+    }
 
     // Getters and Setters for UserProfile
 
