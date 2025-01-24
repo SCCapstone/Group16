@@ -38,6 +38,9 @@ public class User {
 
     @Field("settings")
     private Settings settings;
+    public Settings getSettings() {
+        return settings;
+    }
     
     private Name name;
     public String getName() {
