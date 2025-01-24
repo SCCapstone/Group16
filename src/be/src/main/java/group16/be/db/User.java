@@ -38,9 +38,7 @@ public class User {
 
     @Field("settings")
     private Settings settings;
-    public Settings getSettings() {
-        return settings;
-    }
+    
     
     private Name name;
     public String getName() {
@@ -144,6 +142,10 @@ public class User {
 
     public List<CourseId> getCourseIDs() {
         return this.courseIDs;
+    }
+
+    public Settings getSettings() {
+        return settings;
     }
 
 
