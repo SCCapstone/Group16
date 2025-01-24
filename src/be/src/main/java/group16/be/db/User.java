@@ -115,8 +115,11 @@ public class User {
     
     private static class Settings {
         private boolean emailNotifications;
+        public boolean getEmailNotifications() { return emailNotifications; }
         private boolean institutionEmailNotifications;
+        public boolean getInstitutionEmailNotifications() { return institutionEmailNotifications; }
         private boolean smsNotifications;
+        public boolean getSmsNotifications() { return smsNotifications; }
     }
 
     // Getters and Setters for UserProfile
