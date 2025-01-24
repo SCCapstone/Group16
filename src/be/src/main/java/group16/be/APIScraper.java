@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import com.mongodb.MongoClientException;
+
 @Component
 public class APIScraper implements CommandLineRunner {
     @Autowired
@@ -99,6 +101,19 @@ public class APIScraper implements CommandLineRunner {
             return null; // not just one user by id
         }
         return users.get(0);
+    }
+
+    public boolean saveUser(User user) {
+        try {
+            userRepo.save(user);
+            return true;
+        } catch(MongoClientException e) {
+            e.printStackTrace();
+            return false;
+        } catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public static File scrapeUser(String uID) {

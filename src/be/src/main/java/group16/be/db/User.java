@@ -125,9 +125,10 @@ public class User {
         }
     }
     
-    private static class Settings {
+    public static class Settings {
         private Boolean emailNotifications;
         public boolean getEmailNotifications() { return emailNotifications; }
+        public void setEmailNotifications(boolean emailNotifications) { this.emailNotifications = emailNotifications; }
         private Boolean institutionEmailNotifications;
         public boolean getInstitutionEmailNotifications() { return institutionEmailNotifications; }
         private Boolean smsNotifications;

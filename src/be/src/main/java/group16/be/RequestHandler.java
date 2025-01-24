@@ -291,4 +291,15 @@ public class RequestHandler {
         //pass the user's ID to the database to get the user's information
         return scraper.getUser(userId);
     }
+
+    @PostMapping
+    public boolean toggleEmailNotifications(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
+        if(userId == null || userId.equals("NULL")) 
+            return false;
+        //pass the user's ID to the database to toggle the user's email notifications
+        User user = scraper.getUser(userId);
+        boolean emailNotifications = user.getSettings().getEmailNotifications();
+        user.getSettings().setEmailNotifications(!emailNotifications);
+        return scraper.saveUser(user);
+    }
 }
