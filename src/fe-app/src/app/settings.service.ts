@@ -36,4 +36,44 @@ export class SettingsService {
 
     console.log(response);
   }
+
+  async toggleInstitutionEmailNotifications(userId: string | null): Promise<void> {
+    const queryParams = new URLSearchParams({
+      userId: userId ?? "NULL"
+    }).toString();
+
+    console.log(queryParams);
+
+    const response = await fetch(`${this.url}toggleInstitutionEmailNotifications?${queryParams}`, {
+      method: 'POST'
+    });
+
+    console.log(response)
+
+    if(!response.ok) {
+      throw new Error(`POST failed: ${response.status}`);
+    }
+
+    console.log(response);
+  }
+
+  async toggleSmsNotifications(userId: string | null): Promise<void> {
+    const queryParams = new URLSearchParams({
+      userId: userId ?? "NULL"
+    }).toString();
+
+    console.log(queryParams);
+
+    const response = await fetch(`${this.url}toggleSmsNotifications?${queryParams}`, {
+      method: 'POST'
+    });
+
+    console.log(response)
+
+    if(!response.ok) {
+      throw new Error(`POST failed: ${response.status}`);
+    }
+
+    console.log(response);
+  }
 }
