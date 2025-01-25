@@ -5,7 +5,7 @@ import { User } from './user';
   providedIn: 'root'
 })
 export class LoginService {
-  url = 'https://classmate.osterholt.us/api/login';
+  url = 'https://classmate.osterholt.us/api/';
   // url = 'localhost:1616/api/login';
 
   private readonly USER_ID_KEY = 'userId'; // stores userId for use in other components
@@ -13,7 +13,7 @@ export class LoginService {
   constructor() { }
 
   async login(username: string, password: string) : Promise<User> {
-    const response = await fetch(`${this.url}?username=${username}&password=${password}`);
+    const response = await fetch(`${this.url}login?username=${username}&password=${password}`);
     const user: Promise<User> = await response.json() ?? {};
     sessionStorage.setItem(this.USER_ID_KEY, (await user).id);
     return user;

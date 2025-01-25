@@ -5,14 +5,14 @@ import { Course } from './course';
   providedIn: 'root'
 })
 export class CourseService {
-  url = 'https://classmate.osterholt.us/api/getCourses';
+  url = 'https://classmate.osterholt.us/api/';
 
   private selectIndex: number = -1;    // Index of course selected in array; -1 indicates none
 
   constructor() { }
 
   async getCourses(userId: string | null) : Promise<Course[]> {
-    const response = await fetch(`${this.url}?userId=${userId}`);
+    const response = await fetch(`${this.url}getCourses?userId=${userId}`);
     const data = await response.json() ?? [];
     console.log(data);
     return data;
