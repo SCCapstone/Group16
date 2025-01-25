@@ -26,6 +26,7 @@ public class User {
     public String getUserName() {
         return userName;
     }
+    private String password;
     private String studentId;
     private String gender;
     private String pronouns;
