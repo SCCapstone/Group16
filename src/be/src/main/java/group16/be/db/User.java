@@ -42,8 +42,8 @@ public class User {
     
     
     private Name name;
-    public String getName() {
-        return name.getName();
+    public Name getName() {
+        return name;
     }
 
     private Job job;
@@ -68,7 +68,7 @@ public class User {
         private String suffix;
         private String title;
         private String preferredDisplayName;
-        public String getName() {
+        public String getPreferredDisplayName() {
             return preferredDisplayName;
         }
 
@@ -194,7 +194,7 @@ public class User {
         .append(",\n  modified: ").append(modified)
         .append(",\n  lastLogin: ").append(lastLogin)
         .append(",\n  availability: ").append(availability != null ? availability.available : "null")
-        .append(",\n  name: ").append(name != null ? name.getName() : "null")
+        .append(",\n  name: ").append(name != null ? name.getPreferredDisplayName() : "null")
         .append(",\n  job: ").append(job != null ? job.toString() : "null")
         .append(",\n  contact: ").append(contact != null ? contact.toString() : "null")
         .append(",\n  locale: ").append(locale != null ? locale.toString() : "null")
