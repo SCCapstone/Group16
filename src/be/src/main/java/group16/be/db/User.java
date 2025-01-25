@@ -7,6 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Document(collection = "users")
 public class User {
     
@@ -26,7 +28,11 @@ public class User {
     public String getUserName() {
         return userName;
     }
+
+    @JsonIgnore
+    @Field("password")
     private String password;
+    
     private String studentId;
     private String gender;
     private String pronouns;
@@ -62,7 +68,13 @@ public class User {
 
     private static class Name {
         private String given;
+        public String getGiven() {
+            return given;
+        }
         private String family;
+        public String getFamily() {
+            return family;
+        }
         private String middle;
         private String other;
         private String suffix;
