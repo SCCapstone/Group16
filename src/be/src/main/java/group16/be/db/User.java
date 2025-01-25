@@ -86,6 +86,11 @@ public class User {
 
         // Getters and Setters
     }
+    public boolean setPreferredName(String preferredName) {
+        if (name == null) return false;
+        name.preferredDisplayName = preferredName;
+        return true;
+    }
 
     private static class Job {
         private String title;
@@ -111,6 +116,16 @@ public class User {
     }
     public Contact getContact() {
         return contact;
+    }
+    public boolean setEmail(String email) {
+        if (contact == null) return false;
+        contact.email = email;
+        return true;
+    }
+    public boolean setMobilePhone(String mobilePhone) {
+        if (contact == null) return false;
+        contact.mobilePhone = mobilePhone;
+        return true;
     }
 
 

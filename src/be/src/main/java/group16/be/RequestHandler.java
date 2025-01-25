@@ -216,22 +216,6 @@ public class RequestHandler {
         return false;
     }
 
-    // ---------Settings Methods---------
-    public static boolean editName(String name) {
-        //pass the new name to the database to update the user's name
-        return false;
-    }
-
-    public static boolean editEmail(String email) {
-        //pass the new email to the database to update the user's email
-        return false;
-    }
-
-    public static boolean editPhoneNum(String phoneNum) {
-        //pass the new phone number to the database to update the user's phone number
-        return false;
-    }
-
     /**
      * This method is to change the user's primary color
      * @param colorHex the new color in HEX format
@@ -339,4 +323,57 @@ public class RequestHandler {
         user.toggleSmsNotifications();
         return scraper.saveUser(user);
     }
+
+    /**
+     * This method updates a user's preferred name
+     * @param userId the user's ID
+     * @param preferredName the user's new name
+     * @return True if the preferred name was successfully updated
+     */
+    @CrossOrigin
+    @PostMapping("/api/updatePreferredName")
+    public boolean updatePreferredName(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "preferredName", defaultValue = "NULL") String preferredName) {
+        if(userId == null || userId.equals("NULL") || preferredName == null || preferredName.equals("NULL")) 
+            return false;
+        //pass the user's ID and new name to the database to update the user's preferred name
+        User user = scraper.getUser(userId);
+        user.setPreferredName(preferredName);
+        return scraper.saveUser(user);
+    }
+
+    /**
+     * This method updates a user's email
+     * @param userId the user's ID
+     * @param email the user's new email
+     * @return True if the email was successfully updated
+     */
+    @CrossOrigin
+    @PostMapping("/api/updateEmail")
+    public boolean updateEmail(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "email", defaultValue = "NULL") String email) {
+        if(userId == null || userId.equals("NULL") || email == null || email.equals("NULL")) 
+            return false;
+        //pass the user's ID and new email to the database to update the user's email
+        User user = scraper.getUser(userId);
+        user.setEmail(email);
+        return scraper.saveUser(user);
+    }
+
+    /**
+     * This method updates a user's phone number
+     * @param userId the user's ID
+     * @param phoneNumber the user's new phone number
+     * @return True if the phone number was successfully updated
+     */
+    @CrossOrigin
+    @PostMapping("/api/updatePhoneNumber")
+    public boolean updatePhoneNumber(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "phoneNumber", defaultValue = "NULL") String phoneNumber) {
+        if(userId == null || userId.equals("NULL") || phoneNumber == null || phoneNumber.equals("NULL")) 
+            return false;
+        //pass the user's ID and new phone number to the database to update the user's phone number
+        User user = scraper.getUser(userId);
+        user.setMobilePhone(phoneNumber);
+        return scraper.saveUser(user);
+    }
+
+
 }
