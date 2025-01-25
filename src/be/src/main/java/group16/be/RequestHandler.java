@@ -304,8 +304,39 @@ public class RequestHandler {
             return false;
         //pass the user's ID to the database to toggle the user's email notifications
         User user = scraper.getUser(userId);
-        boolean emailNotifications = user.getSettings().getEmailNotifications();
-        user.getSettings().setEmailNotifications(!emailNotifications);
+        user.toggleEmailNotifications();
+        return scraper.saveUser(user);
+    }
+
+    /**
+     * This method is to toggle the user's institution email notifications, the user ID is the only parameter as it toggles the saved value from mongo
+     * @param userId the user's ID
+     * @return True if the institution email notifications were successfully toggled
+     */
+    @CrossOrigin
+    @PostMapping("/api/toggleInstitutionEmailNotifications")
+    public boolean toggleInstitutionEmailNotifications(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
+        if(userId == null || userId.equals("NULL")) 
+            return false;
+        //pass the user's ID to the database to toggle the user's institution email notifications
+        User user = scraper.getUser(userId);
+        user.toggleInstitutionEmailNotifications();
+        return scraper.saveUser(user);
+    }
+
+    /**
+     * This method is to toggle the user's SMS notifications, the user ID is the only parameter as it toggles the saved value from mongo
+     * @param userId the user's ID
+     * @return True if the SMS notifications were successfully toggled
+     */
+    @CrossOrigin
+    @PostMapping("/api/toggleSmsNotifications")
+    public boolean toggleSmsNotifications(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
+        if(userId == null || userId.equals("NULL")) 
+            return false;
+        //pass the user's ID to the database to toggle the user's SMS notifications
+        User user = scraper.getUser(userId);
+        user.toggleSmsNotifications();
         return scraper.saveUser(user);
     }
 }

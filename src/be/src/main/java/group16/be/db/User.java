@@ -126,22 +126,42 @@ public class User {
         }
     }
     
-    public static class Settings {
+    private static class Settings {
         private Boolean emailNotifications;
         public boolean getEmailNotifications() { return emailNotifications; }
         public void setEmailNotifications(boolean emailNotifications) { this.emailNotifications = emailNotifications; }
+        
         private Boolean institutionEmailNotifications;
         public boolean getInstitutionEmailNotifications() { return institutionEmailNotifications; }
+        public void setInstitutionEmailNotifications(boolean institutionEmailNotifications) { this.institutionEmailNotifications = institutionEmailNotifications; }
+        
         private Boolean smsNotifications;
         public boolean getSmsNotifications() { return smsNotifications; }
-        // public Map<String, Boolean> getSettings() {
-        //     return Map.of(
-        //         "emailNotifications", emailNotifications,
-        //         "institutionEmailNotifications", institutionEmailNotifications,
-        //         "smsNotifications", smsNotifications
-        //     );
-        // }
+        public void setSmsNotifications(boolean smsNotifications) { this.smsNotifications = smsNotifications; }
     }
+
+    /**
+     * Toggles email notifications for the user
+     * @return 
+     */
+    public void toggleEmailNotifications() {
+        settings.setEmailNotifications(!settings.getEmailNotifications());
+    }
+    
+    /**
+     * Toggles institution email notifications for the user
+     */
+    public void toggleInstitutionEmailNotifications() {
+        settings.setInstitutionEmailNotifications(!settings.getInstitutionEmailNotifications());
+    }
+
+    /**
+     * Toggles SMS notifications for the user
+     */
+    public void toggleSmsNotifications() {
+        settings.setSmsNotifications(!settings.getSmsNotifications());
+    }
+
 
     // Getters and Setters for UserProfile
 
