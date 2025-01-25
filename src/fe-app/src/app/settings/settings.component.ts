@@ -28,7 +28,7 @@ export class SettingsComponent {
 
   toggleEmailNotifications() {
     this.settingsService.toggleEmailNotifications(this.loginService.getUserId()).then(() => {
-      this.getInfo();
+      this.getInfo(); // manual update further testing to see if this is needed
     });
   }
 
