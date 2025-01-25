@@ -26,8 +26,20 @@ export class SettingsComponent {
     })
   }
 
-  toggleEmailNotificationsTester() {
+  toggleEmailNotifications() {
     this.settingsService.toggleEmailNotifications(this.loginService.getUserId()).then(() => {
+      this.getInfo();
+    });
+  }
+
+  toggleInstitutionEmailNotifications() {
+    this.settingsService.toggleInstitutionEmailNotifications(this.loginService.getUserId()).then(() => {
+      this.getInfo();
+    });
+  }
+
+  toggleSmsNotifications() {
+    this.settingsService.toggleSmsNotifications(this.loginService.getUserId()).then(() => {
       this.getInfo();
     });
   }
