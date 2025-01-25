@@ -43,4 +43,10 @@ export class SettingsComponent {
       this.getInfo();
     });
   }
+
+  testPreferredNameUpdate() {
+    this.settingsService.updatePreferredName(this.loginService.getUserId(), 'Cameron').then(() => {
+      this.getInfo();
+    });
+  }
 }

@@ -68,7 +68,62 @@ export class SettingsService {
       method: 'POST'
     });
 
-    console.log(response)
+    if(!response.ok) {
+      throw new Error(`POST failed: ${response.status}`);
+    }
+
+    console.log(response);
+  }
+
+  async updatePreferredName(userId: string | null, updatedName: string | null): Promise<void> {
+    const queryParams = new URLSearchParams({
+      userId: userId ?? "NULL",
+      preferredName: updatedName ?? "NULL"
+    }).toString();
+
+    console.log(queryParams);
+
+    const response = await fetch (`${this.url}updatePreferredName?${queryParams}`, {
+      method: 'POST'
+    });
+
+    if(!response.ok) {
+      throw new Error(`POST failed: ${response.status}`);
+    }
+
+    console.log(response);
+  }
+
+  async updatePersonalEmail(userId: string | null, updatedEmail: string | null): Promise<void> {
+    const queryParams = new URLSearchParams({
+      userId: userId ?? "NULL",
+      email: updatedEmail ?? "NULL"
+    }).toString();
+
+    console.log(queryParams);
+
+    const response = await fetch (`${this.url}updateEmail?${queryParams}`, {
+      method: 'POST'
+    });
+
+    if(!response.ok) {
+      throw new Error(`POST failed: ${response.status}`);
+    }
+
+    console.log(response);
+  }
+
+  async updatePhoneNumber(userId: string | null, updatedName: string | null): Promise<void> {
+    const queryParams = new URLSearchParams({
+      userId: userId ?? "NULL",
+      phoneNumber: updatedName ?? "NULL"
+    }).toString();
+
+    console.log(queryParams);
+
+    const response = await fetch (`${this.url}updatePhoneNumber?${queryParams}`, {
+      method: 'POST'
+    });
 
     if(!response.ok) {
       throw new Error(`POST failed: ${response.status}`);
