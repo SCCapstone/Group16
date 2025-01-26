@@ -1,10 +1,16 @@
 package group16.be.db;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Document(collection = "users")
 public class User {
@@ -25,6 +31,11 @@ public class User {
     public String getUserName() {
         return userName;
     }
+
+    @JsonIgnore
+    @Field("password")
+    private String password;
+    
     private String studentId;
     private String gender;
     private String pronouns;
@@ -34,10 +45,14 @@ public class User {
     private String lastLogin; // ISO date-time format
 
     private Availability availability;
+
+    @Field("settings")
+    private Settings settings;
+    
     
     private Name name;
-    public String getName() {
-        return name.getName();
+    public Name getName() {
+        return name;
     }
 
     private Job job;
@@ -56,17 +71,28 @@ public class User {
 
     private static class Name {
         private String given;
+        public String getGiven() {
+            return given;
+        }
         private String family;
+        public String getFamily() {
+            return family;
+        }
         private String middle;
         private String other;
         private String suffix;
         private String title;
         private String preferredDisplayName;
-        public String getName() {
+        public String getPreferredDisplayName() {
             return preferredDisplayName;
         }
 
         // Getters and Setters
+    }
+    public boolean setPreferredName(String preferredName) {
+        if (name == null) return false;
+        name.preferredDisplayName = preferredName;
+        return true;
     }
 
     private static class Job {
@@ -80,14 +106,40 @@ public class User {
     private static class Contact {
         private String homePhone;
         private String mobilePhone;
+        public String getMobilePhone() { return mobilePhone; }
         private String businessPhone;
         private String businessFax;
         private String email;
+        public String getEmail() { return email; }
         private String institutionEmail;
+        public String getInstitutionEmail() { return institutionEmail; }
         private String webPage;
 
         // Getters and Setters
     }
+    public Contact getContact() {
+        return contact;
+    }
+    public boolean setEmail(String email) {
+        if (contact == null) return false;
+        if (!testEmailRegex(email)) return false;
+        contact.email = email;
+        return true;
+    }
+    private boolean testEmailRegex(String email) {
+        String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" 
+            + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        return Pattern.compile(regexPattern)
+            .matcher(email)
+            .matches();
+    }
+
+    public boolean setMobilePhone(String mobilePhone) {
+        if (contact == null) return false;
+        contact.mobilePhone = mobilePhone;
+        return true;
+    }
+
 
     private static class Locale {
         private String id;
@@ -113,6 +165,42 @@ public class User {
         }
     }
     
+    private static class Settings {
+        private Boolean emailNotifications;
+        public boolean getEmailNotifications() { return emailNotifications; }
+        public void setEmailNotifications(boolean emailNotifications) { this.emailNotifications = emailNotifications; }
+        
+        private Boolean institutionEmailNotifications;
+        public boolean getInstitutionEmailNotifications() { return institutionEmailNotifications; }
+        public void setInstitutionEmailNotifications(boolean institutionEmailNotifications) { this.institutionEmailNotifications = institutionEmailNotifications; }
+        
+        private Boolean smsNotifications;
+        public boolean getSmsNotifications() { return smsNotifications; }
+        public void setSmsNotifications(boolean smsNotifications) { this.smsNotifications = smsNotifications; }
+    }
+
+    /**
+     * Toggles email notifications for the user
+     * @return 
+     */
+    public void toggleEmailNotifications() {
+        settings.setEmailNotifications(!settings.getEmailNotifications());
+    }
+    
+    /**
+     * Toggles institution email notifications for the user
+     */
+    public void toggleInstitutionEmailNotifications() {
+        settings.setInstitutionEmailNotifications(!settings.getInstitutionEmailNotifications());
+    }
+
+    /**
+     * Toggles SMS notifications for the user
+     */
+    public void toggleSmsNotifications() {
+        settings.setSmsNotifications(!settings.getSmsNotifications());
+    }
+
 
     // Getters and Setters for UserProfile
 
@@ -123,6 +211,12 @@ public class User {
     public List<CourseId> getCourseIDs() {
         return this.courseIDs;
     }
+
+    public Settings getSettings() {
+        return settings;
+    }
+
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -139,7 +233,7 @@ public class User {
         .append(",\n  modified: ").append(modified)
         .append(",\n  lastLogin: ").append(lastLogin)
         .append(",\n  availability: ").append(availability != null ? availability.available : "null")
-        .append(",\n  name: ").append(name != null ? name.getName() : "null")
+        .append(",\n  name: ").append(name != null ? name.getPreferredDisplayName() : "null")
         .append(",\n  job: ").append(job != null ? job.toString() : "null")
         .append(",\n  contact: ").append(contact != null ? contact.toString() : "null")
         .append(",\n  locale: ").append(locale != null ? locale.toString() : "null")

@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import com.mongodb.MongoClientException;
+
 @Component
 public class APIScraper implements CommandLineRunner {
     @Autowired
@@ -86,6 +88,32 @@ public class APIScraper implements CommandLineRunner {
         //get the assignments for the course
         List<Assignment> assignments = assignmentRepo.findByUserId(userId);
         return assignments;
+    }
+
+    public User getUser(String uID) {
+        List<User> users = userRepo.findUserByUserId(uID);
+        if(users.size() == 0) {
+            System.out.println("Error: No user with that ID");
+            return null;
+        }
+        if (users.size() != 1) {
+            System.out.println("Error: Multiple users with the same ID");
+            return null; // not just one user by id
+        }
+        return users.get(0);
+    }
+
+    public boolean saveUser(User user) {
+        try {
+            userRepo.save(user);
+            return true;
+        } catch(MongoClientException e) {
+            e.printStackTrace();
+            return false;
+        } catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public static File scrapeUser(String uID) {
