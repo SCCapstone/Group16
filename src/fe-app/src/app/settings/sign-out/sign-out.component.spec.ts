@@ -15,15 +15,15 @@ describe('SignOutComponent', () => {
   // Test account credentials used in LoginComponent's fastLogin()
   const DUMMY_USER = "osterholt";
   const DUMMY_PASSWORD = "cameron1234"
+  const USER_ID_KEY: string = "userId";  // Key that maps to user ID in sessionStorage
 
   // What to do before each test is run
   beforeEach(async () => {
     
-    // Create mock login service and mock router, log in our test account, and spy on session storage (which contains user ID)
-    mockLoginService = jasmine.createSpyObj('LoginService', ['login']);
-    // mockRouter = jasmine.createSpyObj('Router', ['navigate']);
-    // mockLoginService.login(DUMMY_USER, DUMMY_PASSWORD);
-    spyOn(sessionStorage, 'setItem');
+    // Create mock login service, log in our test account, and spy on session storage (which contains user ID)
+    mockLoginService = jasmine.createSpyObj('LoginService', ['login', 'getUserId', 'signout']);
+    mockLoginService.login(DUMMY_USER, DUMMY_PASSWORD);
+    spyOn(sessionStorage, 'getItem');
     
     // Replace LoginService and Router with mock counterparts, then compile with mock replacements
     await TestBed.configureTestingModule({
@@ -50,10 +50,12 @@ describe('SignOutComponent', () => {
 
   // User should already be signed in if on this page
   it('should have user signed in already', () => {
-
+    expect(mockLoginService.login).toHaveBeenCalledOnceWith(DUMMY_USER, DUMMY_PASSWORD);
+    expect(mockLoginService.getUserId()).not.toBeNull();
+    expect(mockLoginService.getUserId()).toBe(sessionStorage.getItem(USER_ID_KEY));
   });
 
-  // Sign out button should exist on page (TODO see if this is possible)
+  // Sign out button should exist on page
   it('should feature a sign out button on load', () => {
 
   })
