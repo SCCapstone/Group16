@@ -7,6 +7,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Document(collection = "users")
@@ -119,9 +122,18 @@ public class User {
     }
     public boolean setEmail(String email) {
         if (contact == null) return false;
+        if (!testEmailRegex(email)) return false;
         contact.email = email;
         return true;
     }
+    private boolean testEmailRegex(String email) {
+        String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" 
+            + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        return Pattern.compile(regexPattern)
+            .matcher(email)
+            .matches();
+    }
+
     public boolean setMobilePhone(String mobilePhone) {
         if (contact == null) return false;
         contact.mobilePhone = mobilePhone;
