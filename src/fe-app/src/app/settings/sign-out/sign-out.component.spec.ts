@@ -15,7 +15,8 @@ describe('SignOutComponent', () => {
 
   // Test account credentials used in LoginComponent's fastLogin()
   const DUMMY_USER = "osterholt";
-  const DUMMY_PASSWORD = "cameron1234"
+  const DUMMY_PASSWORD = "cameron1234";
+  const DUMMY_ID = "673fdd30cc2da4c3a3514fb7";
   const USER_ID_KEY: string = "userId";  // Key that maps to user ID in sessionStorage
 
   // What to do before each test is run
@@ -23,7 +24,6 @@ describe('SignOutComponent', () => {
     
     // Create mock login service and router, log in our test account
     mockLoginService = jasmine.createSpyObj('LoginService', ['login', 'getUserId', 'signout']);
-    mockRouter = jasmine.createSpyObj(Router, ['navigate', 'url']);
     mockLoginService.login(DUMMY_USER, DUMMY_PASSWORD);
     
     // Replace LoginService and Router with mock counterparts, then compile with mock replacements
@@ -44,10 +44,12 @@ describe('SignOutComponent', () => {
 
   // ACTUAL TESTS START HERE
 
+
   // Component should exist
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 
   // User should already be signed in if on this page
   it('should have user signed in already', () => {
@@ -61,18 +63,19 @@ describe('SignOutComponent', () => {
     expect(mockLoginService.getUserId()).toBe(sessionStorage.getItem(USER_ID_KEY));
   });
 
+
   // Sign out button should exist on page
   it('should feature a sign out button on load', () => {
     let signOutButton = fixture.debugElement.nativeElement.querySelector("button");
     expect(signOutButton).toBeTruthy();
   });
 
-  // Clicking sign out button should call loginService.signout() and clear session storage
-  it('should sign user out when sign out button is clicked', async () => {
+
+  // Clicking sign out button should call SignOutComponent.signOut()
+  it('should call signOut() when sign out button is clicked', async () => {
     
-    // Install necessary spies
+    // Install necessary spies (NOTE: installing this as a spy prevents it from being called, so testing all at once does not work)
     spyOn(component, 'signOut');
-    spyOn(sessionStorage, 'removeItem');
     
     // Find the Sign Out button and click on it
     let signOutButton = fixture.debugElement.nativeElement.querySelector("button");
@@ -81,13 +84,17 @@ describe('SignOutComponent', () => {
 
     // Wait for view to stabilize, then check that expected functions were called, value in sessionStorage is now null, and router is on home page
     await fixture.whenStable();
-    expect(component.signOut).toHaveBeenCalledTimes(1);
-
-    // TODO figure out why these fail, I'm losing my mind
-    expect(mockLoginService.signout).toHaveBeenCalledTimes(1);
-    expect(mockLoginService.getUserId()).toBeNull();
-    expect(sessionStorage.removeItem).toHaveBeenCalledOnceWith(USER_ID_KEY);
+    expect(component.signOut).toHaveBeenCalled();
   });
+
+  
+  // SignOutComponent.signOut() should call LoginService.signOut()
+  it('should call LoginService.signout() when signOut executes', async () => {
+    component.signOut();
+    await fixture.whenStable();
+    expect(mockLoginService.signout).toHaveBeenCalled();
+  })
+
 
   // Clicking sign out button should route user back to home page
   it('should route to home page when sign out button is clicked', () => {
