@@ -13,7 +13,6 @@ describe('LoginComponent', () => {
   beforeEach(async () => {
     mockLoginService = jasmine.createSpyObj('LoginService', ['login']); // spy on the mock service
     mockRouter = jasmine.createSpyObj('Router', ['navigate']); // spy on the mock router
-    spyOn(sessionStorage, 'setItem'); // spy on session storage for userId key
 
     await TestBed.configureTestingModule({
       imports: [LoginComponent, ReactiveFormsModule],
@@ -37,14 +36,18 @@ describe('LoginComponent', () => {
     expect(component.loginForm.value).toEqual({ username: '', password: ''}); // expect the form to be empty when first opened
   });
 
-  it('should call loginService.login when login() is invoked with valid credentials', () => {
+  it('should call loginService.login when login() is invoked with valid credentials', async () => {
     // Arrange
+    spyOn(sessionStorage, 'setItem'); // spy on session storage for userId key
     const mockResponse = { id: '12345'}; // mock response in form of what is promised on valid login user object
     component.loginForm.setValue({ username: 'testuser', password: 'password123' }); // pass in fake valid info
-    mockLoginService.login.and.returnValue(Promise.resolve(mockResponse)); // call the mock service and give a valid return
+    mockLoginService.login.and.callFake(() => {
+      sessionStorage.setItem('id', '12345');
+      return Promise.resolve(mockResponse);
+    }); // call the mock service and give a valid return and fake call sessionStorage.setItem()
 
     // Act
-    component.login(); // call login with fake valid info
+    await component.login(); // call login with fake valid info
 
     // Assert
     fixture.whenStable().then(() => { // wait for the page to stabilize
