@@ -1,1 +1,16 @@
-<p>notification-settings works!</p>
+<div class="notification-settings">
+    <div class="item">
+        <label for="school">University Email</label>
+        <input type="checkbox" id="school" [(ngModel)]="useSchoolEmail" />
+    </div>
+    <div class="item">
+        <label for="personal">Personal Email</label>
+        <input type="checkbox" id="personal" [(ngModel)]="usePersonalEmail" />
+    </div>
+    <div class="item">
+        <label for="text">Text Messages</label>
+        <input type="checkbox" id="text" [(ngModel)]="useText" />
+    </div>
+
+    <button (click)="saveNotifications()">Save</button>
+</div>
