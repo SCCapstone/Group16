@@ -30,6 +30,12 @@ The app will be deployed on Cam's personal server with a static IP.
 It will be deployed using Kubernetes to spin up Docker images depending on the number of users. 
 Our app will connect to the front end using Java Spring (more research will continue to evolve this step, we have recently added Java Spring after a meeting with Dr. Vidal).
 
+## Testing
+Our testing is best done in Visual Studio Code.
+- Front End Unit Testing: You must have Chrome installed to run the FE tests. Once installed, run `ng test` in the `/src/fe-app` directory. 
+- Back End Unit Testing: In the testing pannel hit play on `be` tab.
+- Behavioral Testing: In the command pannel install playwright using `>Install Playwright`. Then run in the testing pannel using the play button. 
+
 ## Authors
 Ava Turner - AVART@email.sc.edu
 Cam Osterholt - OSTERHOC@email.sc.edu
