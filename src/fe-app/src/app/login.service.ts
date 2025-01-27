@@ -15,6 +15,9 @@ export class LoginService {
   async login(username: string, password: string) : Promise<User> {
     const response = await fetch(`${this.url}login?username=${username}&password=${password}`);
     const user: Promise<User> = await response.json() ?? {};
+    if (user == null || user == undefined)  {
+      throw new Error("test error");
+    }
     sessionStorage.setItem(this.USER_ID_KEY, (await user).id);
     return user;
   }
