@@ -72,12 +72,16 @@ public class RequestHandler {
 
         Map<String, String> ret = new HashMap<>();
 
-        String id = scraper.login(username, password); 
-        if(id.startsWith("Error")) {
+        try {
+            User user = scraper.login(username, password); 
+            ret.put("id", user.getId());
+            InstanceManager.addUser(user);
+            return ret;
+        } catch (Exception e) {
             return null;
+            // this logic needs to be expanded for proper error handling from API
         }
-        ret.put("id", id);
-        return ret;
+
     }
 
     /**

@@ -36,17 +36,17 @@ public class APIScraper implements CommandLineRunner {
         //login("osterholt", "cameron1234");
     }
 
-    public String login(String username, String password) {
+    public User login(String username, String password) {
         List<User> users = userRepo.findByUserNameAndPassword(username, password);
         
         //TODO: Need to decide how to handle these errors.
         if (users.size() == 1) {
-            return users.get(0).getId();
+            return users.get(0);
         }
         if(users.size() > 1) {
-            return "Error: Multiple users with the same username and password";
+            throw new Error("Error: Multiple users with the same username and password");
         }
-        return "Error: No user with that username and password"; // TODO: Could be a failed search.
+        throw new Error("Error: No user with that username and password"); // TODO: Could be a failed search.
     }
 
     /**
