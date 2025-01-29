@@ -10,20 +10,20 @@
 package group16.be;
 
 import java.awt.Color;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -52,29 +52,24 @@ public class RequestHandler {
      */
     @CrossOrigin //(origins = "http://localhost:4200")
     @GetMapping("/api/login")
-    public Map<String, String> login(@RequestParam(value = "username", defaultValue = "NAME") String username, @RequestParam(value = "password", defaultValue = "PASSWORD") String password) {
-        if(username == null || password == null) 
-            return null;
-
-        if(username.equals("NAME") || password.equals("PASSWORD")) {
-            System.out.println("DEBUG: Default values used.");
-            return null;
-        }
-
+    public Map<String, String> login(@RequestParam(value = "username", defaultValue = "NAME") String username, @RequestParam(value = "password", defaultValue = "NULL") String password) {
+        if(username == null || username.equals("NAME"))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is missing or invalid");
+        if(password == null || password.equals("NULL"))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is missing or invalid");
         return loginLogic(username, password);
     }
 
     public Map<String, String> loginLogic(String username, String password) {
-        if(username == null || password == null) 
-            return null;
-        
-        System.out.println("DEBUG: Request recieved - Username: \"" + username + "\" Password: \"" + password + "\"");
-
+        if(username == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is missing or invalid");
+        else if (password == null) 
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is missing or invalid");
         Map<String, String> ret = new HashMap<>();
 
         String id = scraper.login(username, password); 
         if(id.startsWith("Error")) {
-            return null;
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, id);
         }
         ret.put("id", id);
         return ret;
@@ -89,7 +84,7 @@ public class RequestHandler {
     @GetMapping("/api/getCourses")
     public List<Course> getCourses(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
         if(userId == null || userId.equals("NULL"))  
-            return null;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
         //pass the user's ID to the database to get the user's courses
         return scraper.getCourses(userId);
     }
@@ -102,46 +97,10 @@ public class RequestHandler {
     @PutMapping("/api/completeAssignment")
     public static boolean completeAssignment(@RequestParam(value = "assID", defaultValue = "NULL") String assID) {
         if(assID == null || assID.equals("NULL")) 
-            return false;
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
         //pass the assignment ID to the database to mark the assignment as completed
-        return false;
-    }
-
-    /**
-     * This method is to create assignments with a specified id
-     * @param id assignment ID
-     * @param title title of assignment
-     * @param description short description for assignment
-     * @param dueDate due date time for assignment
-     * @param userId user's ID
-     * @param courseId course ID
-     * @return if the assignment was successfully created
-     */
-    @CrossOrigin
-    @PostMapping("/api/createAssignmentWithId")
-    public static boolean addAssignment(@RequestParam(value = "id", defaultValue = "NULL") String id, @RequestParam(value = "title", defaultValue = "NULL") String title,
-     @RequestParam(value = "description", defaultValue = "NULL") String description, @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
-     @RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
-        if(id == null || id.equals("NULL") || title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL") || userId == null || userId.equals("NULL") || courseId == null || courseId.equals("NULL")) {
-            return false;
-        }
-        Assignment assignment = new Assignment()
-                .setId(id)
-                .setTitle(title)
-                .setDescription(description)
-                .setDueDate(dueDate)
-                .setUserId(userId)
-                .setCourseId(courseId);
-        ObjectMapper objectMapper = new ObjectMapper();
-        
-        try {
-            connection.insertNewData("assignments", objectMapper.writeValueAsString(assignment));
-        } catch (JsonProcessingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        // return false;
+        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Function not implemented");
     }
 
     /**
@@ -161,7 +120,6 @@ public class RequestHandler {
         if(title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL") || userId == null || userId.equals("NULL") || courseId == null || courseId.equals("NULL")) {
             return false;
         }
-        System.out.println("test");
         Assignment assignment = new Assignment()
                 .randomUUID()
                 .setTitle(title)
@@ -173,27 +131,32 @@ public class RequestHandler {
         
         try {
             connection.insertNewData("assignments", objectMapper.writeValueAsString(assignment));
+            return true;
         } catch (JsonProcessingException e) {
-            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        return true;
     }
 
     /**
-     * 
-     * @param oldPassword
-     * @param newPassword
-     * @return
+     * Get all assignments from the database
+     * @param userId the user's ID
+     * @return a list of all assignments
      */
     @CrossOrigin
     @GetMapping("/api/getAssignments")
     public List<Assignment> getAssignments(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
         //pass the user's ID to the database to get the user's assignments
         if(userId == null || userId.equals("NULL")) 
-            return null;
-        return scraper.getAssignments(userId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
+        List<Assignment> assignments = scraper.getAssignments(userId);
+        if(assignments == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No assignments found for user");
+        }
+        return assignments;
     }
 
     //TODO: complete function
@@ -201,19 +164,26 @@ public class RequestHandler {
     //     //pass the assignment details to the database to edit the assignment
     // }
 
+    
     /**
-     * This method is to edit the password of the user
-     * @param oldPassword
-     * @param newPassword
-     * @return
+     * Edits the user's password by updating it in the database.
+     *
+     * @param oldPassword the user's current password
+     * @param newPassword the user's new password
+     * @return true if the password was successfully updated, false otherwise
+     * @throws ResponseStatusException if the old or new password is missing or invalid, or if the function is not implemented
+     * @Unimplemented This method is not yet implemented.
      */
     @CrossOrigin
     @PutMapping("/api/editPassword")
     public static boolean editPassword(@RequestParam(value = "oldPassword", defaultValue = "NULL") String oldPassword, @RequestParam(value = "newPassword", defaultValue = "NULL") String newPassword) {
-        if(oldPassword == null || newPassword == null || oldPassword.equals("NULL") || newPassword.equals("NULL"))
-            return false; // invalid password
+        // if(oldPassword == null || oldPassword.equals("NULL"))
+        //     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Old password is missing or invalid");
+        // else if (newPassword == null || newPassword.equals("NULL"))
+        //     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New password is missing or invalid");
         //pass the old and new password to the database to update the user's password
-        return false;
+        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Function not implemented");
+        // return false;
     }
 
     /**
@@ -225,14 +195,15 @@ public class RequestHandler {
     @PutMapping("/api/setPrimaryColor")
     public static boolean setPrimaryColor(@RequestParam(value = "colorHex", defaultValue = "NULL") String colorHex) {
         if(colorHex == null || colorHex.equals("NULL")) 
-            return false; // invalid input
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Color is missing or invalid");
         try {
             Color color = Color.decode(colorHex);
             // pass the new color to the database to update the user's primary color
-            return true;
+            // return true;
+            throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Function not implemented");
         } catch (NumberFormatException e) {
             // handle invalid hex code
-            return false;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid color format");
         }
     }
 
@@ -249,7 +220,7 @@ public class RequestHandler {
             return true;
         } catch (NumberFormatException e) {
             // handle invalid hex code
-            return false;
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid color format");
         }
     }
 
@@ -259,35 +230,38 @@ public class RequestHandler {
      */
     public static boolean toggleNotifications() {
         //pass the new notification setting to the database to update the user's notification setting
-        return false;
+        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Function not implemented");
     }
 
     /**
      * This method returns a json file representing the user's data.
      * @param userId
      * @return the user object
+     * @throws ResponseStatusException if the user ID is missing or invalid, if the user is not found, or if there are multiple users with the same ID
      */
     @CrossOrigin
     @GetMapping("/api/getUser")
     public User getUser(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
         if(userId == null || userId.equals("NULL")) 
-            return null;
-        //pass the user's ID to the database to get the user's information
-        return scraper.getUser(userId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
+        List<User> users = scraper.getUser(userId);
+        if(users.size() == 0)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        if(users.size() > 1)
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Multiple users with the same ID");
+        return users.get(0);
     }
 
     /**
      * This method is to toggle the user's email notifications, the user ID is the only parameter as it toggles the saved value from mongo
      * @param userId the user's ID
      * @return True if the email notifications were successfully toggled
+     * @throws ResponseStatusException if the user ID is missing or invalid, if the user is not found, or if there are multiple users with the same ID
      */
     @CrossOrigin
     @PostMapping("/api/toggleEmailNotifications")
     public boolean toggleEmailNotifications(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
-        if(userId == null || userId.equals("NULL")) 
-            return false;
-        //pass the user's ID to the database to toggle the user's email notifications
-        User user = scraper.getUser(userId);
+        User user = getUser(userId);
         user.toggleEmailNotifications();
         return scraper.saveUser(user);
     }
@@ -296,14 +270,12 @@ public class RequestHandler {
      * This method is to toggle the user's institution email notifications, the user ID is the only parameter as it toggles the saved value from mongo
      * @param userId the user's ID
      * @return True if the institution email notifications were successfully toggled
+     * @throws ResponseStatusException if the user ID is missing or invalid, if the user is not found, or if there are multiple users with the same ID
      */
     @CrossOrigin
     @PostMapping("/api/toggleInstitutionEmailNotifications")
     public boolean toggleInstitutionEmailNotifications(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
-        if(userId == null || userId.equals("NULL")) 
-            return false;
-        //pass the user's ID to the database to toggle the user's institution email notifications
-        User user = scraper.getUser(userId);
+        User user = getUser(userId);
         user.toggleInstitutionEmailNotifications();
         return scraper.saveUser(user);
     }
@@ -312,14 +284,12 @@ public class RequestHandler {
      * This method is to toggle the user's SMS notifications, the user ID is the only parameter as it toggles the saved value from mongo
      * @param userId the user's ID
      * @return True if the SMS notifications were successfully toggled
+     * @throws ResponseStatusException if the user ID is missing or invalid, if the user is not found, or if there are multiple users with the same ID
      */
     @CrossOrigin
     @PostMapping("/api/toggleSmsNotifications")
     public boolean toggleSmsNotifications(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
-        if(userId == null || userId.equals("NULL")) 
-            return false;
-        //pass the user's ID to the database to toggle the user's SMS notifications
-        User user = scraper.getUser(userId);
+        User user = getUser(userId);
         user.toggleSmsNotifications();
         return scraper.saveUser(user);
     }
@@ -329,14 +299,14 @@ public class RequestHandler {
      * @param userId the user's ID
      * @param preferredName the user's new name
      * @return True if the preferred name was successfully updated
+     * @throws ResponseStatusException if the user ID is missing or invalid, if the user is not found, or if there are multiple users with the same ID
      */
     @CrossOrigin
     @PostMapping("/api/updatePreferredName")
     public boolean updatePreferredName(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "preferredName", defaultValue = "NULL") String preferredName) {
-        if(userId == null || userId.equals("NULL") || preferredName == null || preferredName.equals("NULL")) 
-            return false;
-        //pass the user's ID and new name to the database to update the user's preferred name
-        User user = scraper.getUser(userId);
+        if(preferredName == null || preferredName.equals("NULL")) 
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Preferred name is missing or invalid");
+        User user = getUser(userId);
         user.setPreferredName(preferredName);
         return scraper.saveUser(user);
     }
@@ -346,14 +316,13 @@ public class RequestHandler {
      * @param userId the user's ID
      * @param email the user's new email
      * @return True if the email was successfully updated
+     * @throws ResponseStatusException if the user ID is missing or invalid, if the user is not found, or if there are multiple users with the same ID
      */
     @CrossOrigin
     @PostMapping("/api/updateEmail")
     public boolean updateEmail(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "email", defaultValue = "NULL") String email) {
-        if(userId == null || userId.equals("NULL") || email == null || email.equals("NULL")) 
-            return false;
-        //pass the user's ID and new email to the database to update the user's email
-        User user = scraper.getUser(userId);
+        //TODO: check email.
+        User user = getUser(userId);
         user.setEmail(email);
         return scraper.saveUser(user);
     }
@@ -367,13 +336,11 @@ public class RequestHandler {
     @CrossOrigin
     @PostMapping("/api/updatePhoneNumber")
     public boolean updatePhoneNumber(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "phoneNumber", defaultValue = "NULL") String phoneNumber) {
-        if(userId == null || userId.equals("NULL") || phoneNumber == null || phoneNumber.equals("NULL")) 
-            return false;
-        //pass the user's ID and new phone number to the database to update the user's phone number
-        User user = scraper.getUser(userId);
+        if(phoneNumber == null || phoneNumber.equals("NULL")) 
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number is missing or invalid");
+        User user = getUser(userId);
         user.setMobilePhone(phoneNumber);
         return scraper.saveUser(user);
     }
-
-
 }
+

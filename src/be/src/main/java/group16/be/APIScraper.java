@@ -90,17 +90,17 @@ public class APIScraper implements CommandLineRunner {
         return assignments;
     }
 
-    public User getUser(String uID) {
+    public List<User> getUser(String uID) {
         List<User> users = userRepo.findUserByUserId(uID);
-        if(users.size() == 0) {
-            System.out.println("Error: No user with that ID");
-            return null;
-        }
-        if (users.size() != 1) {
-            System.out.println("Error: Multiple users with the same ID");
-            return null; // not just one user by id
-        }
-        return users.get(0);
+        // if(users.size() == 0) {
+        //     System.out.println("Error: No user with that ID");
+        //     return null;
+        // }
+        // if (users.size() != 1) {
+        //     System.out.println("Error: Multiple users with the same ID");
+        //     return null; // not just one user by id
+        // }
+        return users;
     }
 
     public boolean saveUser(User user) {
