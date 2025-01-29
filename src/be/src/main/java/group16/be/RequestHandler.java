@@ -321,7 +321,10 @@ public class RequestHandler {
     @CrossOrigin
     @PostMapping("/api/updateEmail")
     public boolean updateEmail(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "email", defaultValue = "NULL") String email) {
-        //TODO: check email.
+        if(email == null || email.equals("NULL")) 
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is missing or invalid");
+        if(!User.testEmailRegex(email))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is invalid");
         User user = getUser(userId);
         user.setEmail(email);
         return scraper.saveUser(user);
