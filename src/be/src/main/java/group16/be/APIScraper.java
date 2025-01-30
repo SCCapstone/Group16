@@ -55,7 +55,14 @@ public class APIScraper implements CommandLineRunner {
      * @return the user's list of courses
      */
     public List<Course> getCourses(String uID) {
-        List<User> users = userRepo.findUserByUserId(uID);
+        List<User> users = null;
+        try{
+            users = userRepo.findUserByUserId(uID);
+        } catch (Exception e) {
+            System.out.println("getCourses() Error: No user with that ID");
+            e.printStackTrace();
+            return null;
+        }
         // List<User> users = userRepo.findByUserName(uID);
         // System.out.println("Debug: User is: " + users.get(0).toString());
         if (users.size() != 1) {

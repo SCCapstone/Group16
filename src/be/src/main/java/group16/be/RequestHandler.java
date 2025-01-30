@@ -196,6 +196,7 @@ public class RequestHandler {
         if(colorHex == null || colorHex.equals("NULL")) 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Color is missing or invalid");
         try {
+            @SuppressWarnings("unused")
             Color color = Color.decode(colorHex);
             // pass the new color to the database to update the user's primary color
             // return true;
@@ -215,6 +216,7 @@ public class RequestHandler {
 
     public static boolean setAccentColor(String colorHex) {
         try {
+            @SuppressWarnings("unused")
             Color color = Color.decode(colorHex);
             // pass the new color to the database to update the user's accent color
             return true;
