@@ -22,6 +22,9 @@ export class LoginService {
 
     sessionStorage.setItem(this.USER_ID_KEY, (await user).id);
     return user;
+  } catch (error: any) {
+    console.error('Error fetching user:', error);
+    throw error;
   }
 
   getUserId(): string | null {
