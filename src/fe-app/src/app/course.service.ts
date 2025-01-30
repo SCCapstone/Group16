@@ -14,8 +14,16 @@ export class CourseService {
   async getCourses(userId: string | null) : Promise<Course[]> {
     const response = await fetch(`${this.url}getCourses?userId=${userId}`);
     const data = await response.json() ?? [];
+
+    if(Array.isArray(data) && data.length === 0) {
+      throw new Error('courses are []');
+    }
+
     console.log(data);
     return data;
+  } catch (error: any) {
+    console.error('Error fetching courses:', error);
+    throw error;
   }
 
   // Returns the ID of the currently-selected course
