@@ -42,7 +42,7 @@ describe('CourseService', () => {
 
     expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/getCourses?userId=123')
     expect(courseList).toEqual(mockCourseList);
-    expect(courseList[0].id).toEqual('abc')
+    expect(courseList[0].id).toEqual('abc');
   });
 
   it('should default selectIndex to -1', () => {
