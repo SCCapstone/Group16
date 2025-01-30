@@ -46,7 +46,7 @@ describe('LoginService', () => {
   });
 
   it('should remove user ID from session storage on signout', () => {
-    service.signout();
+    service.signOut();
     expect(sessionStorage.removeItem).toHaveBeenCalledWith('userId');
   });
 });

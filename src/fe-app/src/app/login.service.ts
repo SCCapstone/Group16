@@ -28,7 +28,7 @@ export class LoginService {
     return sessionStorage.getItem(this.USER_ID_KEY);
   }
 
-  signout(): void { // to be used in signout later
+  signOut(): void { // to be used in signout later
     sessionStorage.removeItem(this.USER_ID_KEY);
   }
 }
