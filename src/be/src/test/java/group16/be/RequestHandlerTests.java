@@ -49,7 +49,7 @@ public class RequestHandlerTests {
 
     @Test
     void testLogin() {
-        Map response = handler.loginLogic(LOGIN_USER, LOGIN_PASS);
+        Map response = handler.login(LOGIN_USER, LOGIN_PASS);
         assert(response.size() == 1
             && response.containsValue(EXPECTED_RESPONSE.get("id")));
     }

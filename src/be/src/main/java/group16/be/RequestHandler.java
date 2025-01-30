@@ -49,6 +49,7 @@ public class RequestHandler {
      * @param username 
      * @param password 
      * @return the user's ID if login was successful, null if login failed
+     * @throws ResponseStatusException if the username or password is missing or invalid
      */
     @CrossOrigin //(origins = "http://localhost:4200")
     @GetMapping("/api/login")
@@ -56,14 +57,6 @@ public class RequestHandler {
         if(username == null || username.equals("NAME"))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is missing or invalid");
         if(password == null || password.equals("NULL"))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is missing or invalid");
-        return loginLogic(username, password);
-    }
-
-    public Map<String, String> loginLogic(String username, String password) {
-        if(username == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is missing or invalid");
-        else if (password == null) 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is missing or invalid");
         Map<String, String> ret = new HashMap<>();
 
@@ -79,6 +72,8 @@ public class RequestHandler {
      * This method is to get the user's courses
      * @param id the user's ID
      * @return the user's list of courses
+     * @throws ResponseStatusException if the user ID is missing or invalid
+     * @throws ResponseStatusException if no courses are found for the user
      */
     @CrossOrigin //(origins = "http://localhost:4200")
     @GetMapping("/api/getCourses")
@@ -86,13 +81,17 @@ public class RequestHandler {
         if(userId == null || userId.equals("NULL"))  
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
         //pass the user's ID to the database to get the user's courses
-        return scraper.getCourses(userId);
+        List<Course> courses = scraper.getCourses(userId);
+        if(courses == null) 
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No courses found for user");
+        return courses;
     }
 
     /**
      * This method is to complete assignments that are user made or not yet marked complete by blackboard
      * @param assID Assignment ID
      * @return if the assignment was successfully marked as complete
+     * @Unimplemented This method is not yet implemented.
      */
     @PutMapping("/api/completeAssignment")
     public static boolean completeAssignment(@RequestParam(value = "assID", defaultValue = "NULL") String assID) {
@@ -211,6 +210,7 @@ public class RequestHandler {
      * This method is to change the user's accent color
      * @param colorHex the new color in HEX format
      * @return if the color was successfully changed
+     * @Unimplemented This method is not yet implemented.
      */
 
     public static boolean setAccentColor(String colorHex) {
@@ -317,6 +317,7 @@ public class RequestHandler {
      * @param email the user's new email
      * @return True if the email was successfully updated
      * @throws ResponseStatusException if the user ID is missing or invalid, if the user is not found, or if there are multiple users with the same ID
+     * @throws ResponseStatusException if the email is invalid
      */
     @CrossOrigin
     @PostMapping("/api/updateEmail")
