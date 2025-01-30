@@ -13,8 +13,16 @@ export class SettingsService {
   async getUserInfo(userId: string | null): Promise<UserInfo> {
     const response = await fetch(`${this.url}getUser?userId=${userId}`);
     const data = await response.json() ?? {};
+
+    if (typeof data === 'object' && Object.keys(data).length === 0)  {
+      throw new Error('userInfo is {}');
+    }
+
     console.log(data);
     return data;
+  } catch (error: any) {
+    console.error('Error fetching userInfo:', error);
+    throw error;
   }
 
   async toggleEmailNotifications(userId: string | null): Promise<void> {
@@ -22,19 +30,20 @@ export class SettingsService {
       userId: userId ?? "NULL"
     }).toString();
 
-    console.log(queryParams);
+    try {
+      const response = await fetch(`${this.url}toggleEmailNotifications?${queryParams}`, {
+        method: 'POST'
+      });
 
-    const response = await fetch(`${this.url}toggleEmailNotifications?${queryParams}`, {
-      method: 'POST'
-    });
+      if(!response.ok) {
+        throw new Error(`POST failed: ${response.status}`);
+      }
 
-    console.log(response)
-
-    if(!response.ok) {
-      throw new Error(`POST failed: ${response.status}`);
+      console.log(response);
+    } catch (error: any) {
+      console.error('Error updating Email Notifications:', error);
+      throw error;
     }
-
-    console.log(response);
   }
 
   async toggleInstitutionEmailNotifications(userId: string | null): Promise<void> {
@@ -42,19 +51,20 @@ export class SettingsService {
       userId: userId ?? "NULL"
     }).toString();
 
-    console.log(queryParams);
+    try {
+      const response = await fetch(`${this.url}toggleInstitutionEmailNotifications?${queryParams}`, {
+        method: 'POST'
+      });
 
-    const response = await fetch(`${this.url}toggleInstitutionEmailNotifications?${queryParams}`, {
-      method: 'POST'
-    });
+      if(!response.ok) {
+        throw new Error(`POST failed: ${response.status}`);
+      }
 
-    console.log(response)
-
-    if(!response.ok) {
-      throw new Error(`POST failed: ${response.status}`);
+      console.log(response);
+    } catch (error: any) {
+      console.error('Error updating Institution Email Notifications:', error);
+      throw error;
     }
-
-    console.log(response);
   }
 
   async toggleSmsNotifications(userId: string | null): Promise<void> {
@@ -62,17 +72,20 @@ export class SettingsService {
       userId: userId ?? "NULL"
     }).toString();
 
-    console.log(queryParams);
+    try {
+      const response = await fetch(`${this.url}toggleSmsNotifications?${queryParams}`, {
+        method: 'POST'
+      });
 
-    const response = await fetch(`${this.url}toggleSmsNotifications?${queryParams}`, {
-      method: 'POST'
-    });
+      if(!response.ok) {
+        throw new Error(`POST failed: ${response.status}`);
+      }
 
-    if(!response.ok) {
-      throw new Error(`POST failed: ${response.status}`);
+      console.log(response);
+    } catch (error: any) {
+      console.error('Error updating SMS Notifications:', error);
+      throw error;
     }
-
-    console.log(response);
   }
 
   async updatePreferredName(userId: string | null, updatedName: string | null): Promise<void> {
@@ -81,17 +94,20 @@ export class SettingsService {
       preferredName: updatedName ?? "NULL"
     }).toString();
 
-    console.log(queryParams);
+    try {
+      const response = await fetch (`${this.url}updatePreferredName?${queryParams}`, {
+        method: 'POST'
+      });
 
-    const response = await fetch (`${this.url}updatePreferredName?${queryParams}`, {
-      method: 'POST'
-    });
+      if(!response.ok) {
+        throw new Error(`POST failed: ${response.status}`);
+      }
 
-    if(!response.ok) {
-      throw new Error(`POST failed: ${response.status}`);
+      console.log(response);
+    } catch (error: any) {
+      console.error('Error updating Preferred Name:', error);
+      throw error;
     }
-
-    console.log(response);
   }
 
   async updatePersonalEmail(userId: string | null, updatedEmail: string | null): Promise<void> {
@@ -100,17 +116,20 @@ export class SettingsService {
       email: updatedEmail ?? "NULL"
     }).toString();
 
-    console.log(queryParams);
+    try {
+      const response = await fetch (`${this.url}updateEmail?${queryParams}`, {
+        method: 'POST'
+      });
 
-    const response = await fetch (`${this.url}updateEmail?${queryParams}`, {
-      method: 'POST'
-    });
+      if(!response.ok) {
+        throw new Error(`POST failed: ${response.status}`);
+      }
 
-    if(!response.ok) {
-      throw new Error(`POST failed: ${response.status}`);
+      console.log(response);
+    } catch (error: any) {
+      console.error('Error updating Email:', error);
+      throw error;
     }
-
-    console.log(response);
   }
 
   async updatePhoneNumber(userId: string | null, updatedName: string | null): Promise<void> {
@@ -119,16 +138,19 @@ export class SettingsService {
       phoneNumber: updatedName ?? "NULL"
     }).toString();
 
-    console.log(queryParams);
+    try {
+      const response = await fetch (`${this.url}updatePhoneNumber?${queryParams}`, {
+        method: 'POST'
+      });
 
-    const response = await fetch (`${this.url}updatePhoneNumber?${queryParams}`, {
-      method: 'POST'
-    });
+      if(!response.ok) {
+        throw new Error(`POST failed: ${response.status}`);
+      }
 
-    if(!response.ok) {
-      throw new Error(`POST failed: ${response.status}`);
+      console.log(response);
+    } catch (error: any) {
+      console.error('Error updating Phone Number:', error);
+      throw error;
     }
-
-    console.log(response);
   }
 }
