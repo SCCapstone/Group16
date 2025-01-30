@@ -11,7 +11,7 @@ describe('SignOutComponent', () => {
 
   // What to do before each test is run
   beforeEach(async () => {
-    mockLoginService = jasmine.createSpyObj('LoginService', ['signOut']);
+    mockLoginService = jasmine.createSpyObj('LoginService', ['signOut', 'getUserId']);
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
     const activatedRouteMock = {
       snapshot: { paramMap: {} }
