@@ -2,7 +2,6 @@ package group16.be;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import group16.be.db.Assignment;
 import group16.be.db.AssignmentRepository;

@@ -1,15 +1,15 @@
 package group16.be;
 
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,7 +23,7 @@ public class RequestHandlerTests {
     @Autowired
     private RequestHandler handler;
 
-    @Autowired
+    @MockBean
     private APIScraper scraper; // Needed for dependancies of autowired classes
 
     @Autowired
@@ -32,12 +32,13 @@ public class RequestHandlerTests {
     private final String LOGIN_USER = "osterholt";
     private final String LOGIN_PASS = "cameron1234";
     private final String EXPECTED_ID = "673fdd30cc2da4c3a3514fb7";
-    private final Map<String, String> EXPECTED_RESPONSE = new HashMap<String, String>() {{
+    private final HashMap<String, String> EXPECTED_RESPONSE = new HashMap<String, String>() {{
         put("id", "673fdd30cc2da4c3a3514fb7");
     }};
 
     /** 
      * Test the login APIScraper method
+     * TODO: Move this test to repository tester
      */
     @Test
     void testFindByUserNameAndPassword() {
@@ -47,6 +48,7 @@ public class RequestHandlerTests {
 
     /** 
      * Test the find user by ID APIScraper method
+     * TODO: Move this test to repository tester
      */
     @Test 
     void testFindUserByUserId() {
@@ -57,7 +59,7 @@ public class RequestHandlerTests {
     @Test
     void testLogin() {
         // Correct Login
-        Map<String,String> response = handler.login(LOGIN_USER, LOGIN_PASS);
+        HashMap<String,String> response = handler.login(LOGIN_USER, LOGIN_PASS);
         assert(response.size() == 1
             && response.containsValue(EXPECTED_RESPONSE.get("id")));
 
@@ -101,7 +103,7 @@ public class RequestHandlerTests {
     @Test
     void testGetCourses() {
         // Correct Login
-        Map<String,String> response = handler.login(LOGIN_USER, LOGIN_PASS);
+        HashMap<String,String> response = handler.login(LOGIN_USER, LOGIN_PASS);
         assert(response.size() == 1
             && response.containsValue(EXPECTED_RESPONSE.get("id")));
         // Get courses
@@ -126,6 +128,42 @@ public class RequestHandlerTests {
         String largeString = "A".repeat(1000000); // 1 million 'A's
         ResponseStatusException exception3 = assertThrows(ResponseStatusException.class, () -> {
             handler.getCourses(largeString);
+        });
+        // Verify the exception contains HttpStatus.NOT_FOUND
+        assertEquals(HttpStatus.NOT_FOUND, exception3.getStatusCode());
+    }
+
+    @Test
+    void testCompleteAssignment() {
+        // Not implemented yet.
+        assertTrue(true);
+    }
+
+    @Test
+    void testGetAssignments() {
+        // Correct Login
+        var assignments = handler.getAssignments(EXPECTED_ID);
+        assertTrue(assignments != null
+                && assignments.size() > 0);
+        
+        // Tests null user ID
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            handler.getAssignments(null);
+        });
+        // Verify the exception contains HttpStatus.BAD_REQUEST
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+
+        // Tests empty user ID
+        ResponseStatusException exception2 = assertThrows(ResponseStatusException.class, () -> {
+            handler.getAssignments("");
+        });
+        // Verify the exception contains HttpStatus.NOT_FOUND
+        assertEquals(HttpStatus.NOT_FOUND, exception2.getStatusCode());
+
+        // Tests abnormally large user ID
+        String largeString = "A".repeat(1000000); // 1 million 'A's
+        ResponseStatusException exception3 = assertThrows(ResponseStatusException.class, () -> {
+            handler.getAssignments(largeString);
         });
         // Verify the exception contains HttpStatus.NOT_FOUND
         assertEquals(HttpStatus.NOT_FOUND, exception3.getStatusCode());
