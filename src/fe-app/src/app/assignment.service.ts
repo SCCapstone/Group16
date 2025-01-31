@@ -8,18 +8,24 @@ import { Assignment } from './assignment';
 export class AssignmentService {
   url = 'https://classmate.osterholt.us/api/';
 
-  //https://osterholt.us/addAssignmentWithoutId?title=Assignment+1&description=Test+Description&dueDate=2024-12-10&userId=123&courseId=456
-
-
   constructor() { }
 
   async getAssignments(userId: string | null) : Promise<Assignment[]> {
     const response = await fetch(`${this.url}getAssignments?userId=${userId}`);
     const data = await response.json() ?? [];
+
+    if(Array.isArray(data) && data.length === 0) {
+      throw new Error('assignments are []');
+    }
+
     console.log(data);
     return data;
+  } catch (error: any) {
+    console.error('Error fetching assignments:', error);
+    throw error;
   }
 
+  // In future adjust add task form to not work when any param is empty
   async addTask(title: string | null, description: string | null, dueDate: Date | null,
     userId: string | null, courseId : string | null) : Promise<void> {
       const queryParams = new URLSearchParams({
@@ -31,15 +37,19 @@ export class AssignmentService {
       }).toString();
 
       console.log(queryParams);
+      try {
+        const response = await fetch(`${this.url}createAssignmentWithoutId?${queryParams}`, {
+          method: 'POST'
+        });
 
-      const response = await fetch(`${this.url}createAssignmentWithoutId?${queryParams}`, {
-        method: 'POST'
-      });
+        if(!response.ok) {
+          throw new Error(`POST failed: ${response.status}`)
+        }
 
-      if(!response.ok) {
-        throw new Error(`POST failed: ${response.status}`)
+        console.log(response);
+      } catch (error: any) {
+        console.error('Error adding task:', error);
+        throw error;
       }
-
-      console.log(response)
   }
 }

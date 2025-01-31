@@ -15,18 +15,23 @@ export class LoginService {
   async login(username: string, password: string) : Promise<User> {
     const response = await fetch(`${this.url}login?username=${username}&password=${password}`);
     const user: Promise<User> = await response.json() ?? {};
-    if (user == null || user == undefined)  {
-      throw new Error("test error");
+
+    if (typeof user === 'object' && Object.keys(user).length === 0)  {
+      throw new Error('user is {}');
     }
+
     sessionStorage.setItem(this.USER_ID_KEY, (await user).id);
     return user;
+  } catch (error: any) {
+    console.error('Error fetching user:', error);
+    throw error;
   }
 
   getUserId(): string | null {
     return sessionStorage.getItem(this.USER_ID_KEY);
   }
 
-  signout(): void { // to be used in signout later
+  signOut(): void { // to be used in signout later
     sessionStorage.removeItem(this.USER_ID_KEY);
   }
 }

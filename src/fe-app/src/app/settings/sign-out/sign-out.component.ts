@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterModule } from '@angular/router';
-
+import { Router, RouterModule } from '@angular/router';
 import { LoginService } from '../../login.service';
 
 @Component({
@@ -10,11 +9,14 @@ import { LoginService } from '../../login.service';
   templateUrl: './sign-out.component.html',
   styleUrl: './sign-out.component.css'
 })
-export class SignOutComponent
-{
+export class SignOutComponent {
+  router = inject(Router);
   loginService = inject(LoginService);
 
   signOut(){
-    this.loginService.signout();
+    this.loginService.signOut();
+    if (!this.loginService.getUserId()) {
+      this.router.navigate(['/']);
+    }
   }
 }
