@@ -17,5 +17,10 @@ export interface Assignment {
 }
 
 export interface Grade {
-
+  id?: string,
+  courseId: string,
+  assignmentId: string,
+  userId: string,
+  percent: number,
+  gradeChar?: string
 }

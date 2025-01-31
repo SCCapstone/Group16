@@ -6,7 +6,7 @@ import { Assignment } from './course';
   providedIn: 'root'
 })
 export class AssignmentService {
-  url = 'https://classmate.osterholt.us/api/';
+  readonly url = 'https://classmate.osterholt.us/api/';
 
   constructor() { }
 

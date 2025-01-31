@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Assignment } from '../../../assignment';
+import { Assignment } from '../../../course';
 
 @Component({
   selector: 'app-task',

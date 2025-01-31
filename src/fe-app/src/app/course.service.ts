@@ -5,7 +5,7 @@ import { Course } from './course';
   providedIn: 'root'
 })
 export class CourseService {
-  url = 'https://classmate.osterholt.us/api/';
+  readonly url = 'https://classmate.osterholt.us/api/';
 
   private selectIndex: number = -1;    // Index of course selected in array; -1 indicates none
 
