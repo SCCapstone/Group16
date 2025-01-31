@@ -15,11 +15,6 @@ export class HomeComponent {
   currentValue: string = ''; // is this needed?
   constructor(public activatedRoute: ActivatedRoute) {}
 
-  // is this needed?
-  updateValue(newValue: string): void {
-    this.currentValue = newValue; // Ensure currentValue is declared
-  }
-
   // we can go back to routerLink in the html, but I am yet to find a good way to test it
   // we likely can expect the framework to handle routerLink properly, but discussion will be needed
   // router.navigate does do a sufficient job as well

@@ -51,12 +51,4 @@ describe('HomeComponent', () => {
     const text = fixture.debugElement.nativeElement.querySelector('h1');
     expect(text.textContent).toContain('Home Page');
   });
-
-  // if updateValue() isn't needed remove this
-  it('should call a function and update a value', () => {
-    spyOn(component, 'updateValue').and.callThrough();
-    component.updateValue('new value');
-    expect(component.updateValue).toHaveBeenCalledOnceWith('new value');
-    expect(component.currentValue).toBe('new value');
-  });
 });
