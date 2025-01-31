@@ -14,6 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import group16.be.db.Assignment;
+import group16.be.db.AssignmentRepository;
 import group16.be.db.Course;
 import group16.be.db.User;
 import group16.be.db.UserRepository;
@@ -28,6 +30,9 @@ public class RequestHandlerTests {
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired 
+    private AssignmentRepository assignmentRepo;
 
     private final String LOGIN_USER = "osterholt";
     private final String LOGIN_PASS = "cameron1234";
