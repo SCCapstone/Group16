@@ -1,6 +1,9 @@
 package group16.be;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,9 +17,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import group16.be.db.Assignment;
 import group16.be.db.AssignmentRepository;
 import group16.be.db.Course;
+import group16.be.db.CourseRepository;
+import group16.be.db.GradeRepository;
 import group16.be.db.User;
 import group16.be.db.UserRepository;
 
@@ -25,14 +29,11 @@ public class RequestHandlerTests {
     @Autowired
     private RequestHandler handler;
 
-    @MockBean
-    private APIScraper scraper; // Needed for dependancies of autowired classes
-
     @Autowired
     private UserRepository userRepo;
 
-    @Autowired 
-    private AssignmentRepository assignmentRepo;
+    @Autowired
+    private GradeRepository gradeRepo;
 
     private final String LOGIN_USER = "osterholt";
     private final String LOGIN_PASS = "cameron1234";
@@ -59,6 +60,12 @@ public class RequestHandlerTests {
     void testFindUserByUserId() {
         ArrayList<User> response = userRepo.findUserByUserId(EXPECTED_ID);
         assert(response.size() == 1 && response.get(0).getUserName().equals(LOGIN_USER));
+    }
+
+    @Test
+    void testGetGradesByUserId() {
+        var response = gradeRepo.findByUserId(EXPECTED_ID);
+        assert(response.size() > 0 && response.get(0).getUserId().equals(EXPECTED_ID));
     }
 
     @Test
@@ -172,5 +179,13 @@ public class RequestHandlerTests {
         });
         // Verify the exception contains HttpStatus.NOT_FOUND
         assertEquals(HttpStatus.NOT_FOUND, exception3.getStatusCode());
+    }
+
+    @Test
+    void testGetGrades() {
+        // Correct userID
+        var grades = handler.getGrades(EXPECTED_ID);
+        assertTrue(grades != null
+                && grades.size() > 0);
     }
 }

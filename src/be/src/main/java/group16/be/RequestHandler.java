@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import group16.be.db.Assignment;
 import group16.be.db.Course;
+import group16.be.db.Grade;
 import group16.be.db.User;
 
 @RestController
@@ -154,6 +155,22 @@ public class RequestHandler {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No assignments found for user");
         }
         return assignments;
+    }
+
+    /**
+     * Get all grades for current user
+     * @param userId the user's ID
+     * @return 
+     */
+    @CrossOrigin
+    @GetMapping("/api/getGrades")
+    public ArrayList<Grade> getGrades(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
+        getUser(userId);
+        // pass the user's ID to the database to get the user's grades
+        var grades = scraper.getGrades(userId);
+        if(grades == null) 
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No grades found for user");
+        return grades;
     }
 
     //TODO: complete function

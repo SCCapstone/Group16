@@ -7,6 +7,8 @@ import group16.be.db.Assignment;
 import group16.be.db.AssignmentRepository;
 import group16.be.db.Course;
 import group16.be.db.CourseRepository;
+import group16.be.db.Grade;
+import group16.be.db.GradeRepository;
 import group16.be.db.User;
 import group16.be.db.UserRepository;
 import group16.be.db.User.CourseId;
@@ -27,6 +29,9 @@ public class APIScraper implements CommandLineRunner {
 
     @Autowired
     private AssignmentRepository assignmentRepo;
+
+    @Autowired
+    private GradeRepository gradeRepo;
     
     @Override
     public void run(String... args) throws Exception {
@@ -45,7 +50,7 @@ public class APIScraper implements CommandLineRunner {
         if(users.size() > 1) {
             return "Error: Multiple users with the same username and password";
         }
-        return "Error: No user with that username and password"; // TODO: Could be a failed search.
+        return "Error: No user with this ID"; // TODO: Could be a failed search.
     }
 
     /**
@@ -119,6 +124,25 @@ public class APIScraper implements CommandLineRunner {
         //     return null; // not just one user by id
         // }
         return users;
+    }
+
+    public ArrayList<Grade> getGrades(String userId) {
+        var users = new ArrayList<User>();
+        try{
+            users = userRepo.findUserByUserId(userId);
+        } catch (Exception e) {
+            System.out.println("getCourses() Error: No user with that ID");
+            e.printStackTrace();
+            return null;
+        }
+
+        if(users.size() != 1) {
+            System.out.println("Error: Multiple users with the same ID");
+            return null; // not just one user by id
+        }
+
+        //get the grades for the user
+        return gradeRepo.findByUserId(userId);
     }
 
     public boolean saveUser(User user) {
