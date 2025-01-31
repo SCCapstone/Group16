@@ -1,5 +1,6 @@
 package group16.be.db;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -60,7 +61,7 @@ public class User {
     private Locale locale;
     private Avatar avatar;
     @Field("courseIds")
-    private List<CourseId> courseIDs;
+    private ArrayList<CourseId> courseIDs;
 
     // Inner classes for nested JSON objects
     private static class Availability {
@@ -208,7 +209,7 @@ public class User {
         super();
     }
 
-    public List<CourseId> getCourseIDs() {
+    public ArrayList<CourseId> getCourseIDs() {
         return this.courseIDs;
     }
 

@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class RequestHandlerTests {
      */
     @Test
     void testFindByUserNameAndPassword() {
-        List<User> response = userRepo.findByUserNameAndPassword("osterholt", "cameron1234");
+        ArrayList<User> response = userRepo.findByUserNameAndPassword("osterholt", "cameron1234");
         assert(response.size() == 1 && response.get(0).getId().equals(EXPECTED_ID));
     }
 
@@ -50,7 +50,7 @@ public class RequestHandlerTests {
      */
     @Test 
     void testFindUserByUserId() {
-        List<User> response = userRepo.findUserByUserId(EXPECTED_ID);
+        ArrayList<User> response = userRepo.findUserByUserId(EXPECTED_ID);
         assert(response.size() == 1 && response.get(0).getUserName().equals(LOGIN_USER));
     }
 
@@ -105,7 +105,7 @@ public class RequestHandlerTests {
         assert(response.size() == 1
             && response.containsValue(EXPECTED_RESPONSE.get("id")));
         // Get courses
-        List<Course> courses = handler.getCourses(EXPECTED_ID);
+        ArrayList<Course> courses = handler.getCourses(EXPECTED_ID);
         assertTrue(courses.size() > 0);
 
         // Tests null user ID

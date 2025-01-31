@@ -10,9 +10,8 @@
 package group16.be;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,12 +52,12 @@ public class RequestHandler {
      */
     @CrossOrigin //(origins = "http://localhost:4200")
     @GetMapping("/api/login")
-    public Map<String, String> login(@RequestParam(value = "username", defaultValue = "NAME") String username, @RequestParam(value = "password", defaultValue = "NULL") String password) {
+    public HashMap<String, String> login(@RequestParam(value = "username", defaultValue = "NAME") String username, @RequestParam(value = "password", defaultValue = "NULL") String password) {
         if(username == null || username.equals("NAME"))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is missing or invalid");
         if(password == null || password.equals("NULL"))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is missing or invalid");
-        Map<String, String> ret = new HashMap<>();
+        HashMap<String, String> ret = new HashMap<>();
 
         String id = scraper.login(username, password); 
         if(id.startsWith("Error")) {
@@ -71,17 +70,16 @@ public class RequestHandler {
     /**
      * This method is to get the user's courses
      * @param id the user's ID
-     * @return the user's list of courses
+     * @return the user's ArrayList of courses
      * @throws ResponseStatusException if the user ID is missing or invalid
      * @throws ResponseStatusException if no courses are found for the user
      */
     @CrossOrigin //(origins = "http://localhost:4200")
     @GetMapping("/api/getCourses")
-    public List<Course> getCourses(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
-        if(userId == null || userId.equals("NULL"))  
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
+    public ArrayList<Course> getCourses(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
+        getUser(userId);
         //pass the user's ID to the database to get the user's courses
-        List<Course> courses = scraper.getCourses(userId);
+        var courses = scraper.getCourses(userId);
         if(courses == null) 
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No courses found for user");
         return courses;
@@ -143,15 +141,15 @@ public class RequestHandler {
     /**
      * Get all assignments from the database
      * @param userId the user's ID
-     * @return a list of all assignments
+     * @return a ArrayList of all assignments
      */
     @CrossOrigin
     @GetMapping("/api/getAssignments")
-    public List<Assignment> getAssignments(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
+    public ArrayList<Assignment> getAssignments(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
         //pass the user's ID to the database to get the user's assignments
         if(userId == null || userId.equals("NULL")) 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
-        List<Assignment> assignments = scraper.getAssignments(userId);
+        var assignments = scraper.getAssignments(userId);
         if(assignments == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No assignments found for user");
         }
@@ -246,8 +244,8 @@ public class RequestHandler {
     public User getUser(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
         if(userId == null || userId.equals("NULL")) 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
-        List<User> users = scraper.getUser(userId);
-        if(users.size() == 0)
+        var users = scraper.getUser(userId);
+        if(users == null || users.size() == 0) 
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         if(users.size() > 1)
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Multiple users with the same ID");
