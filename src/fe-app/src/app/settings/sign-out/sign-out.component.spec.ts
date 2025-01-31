@@ -22,7 +22,7 @@ describe('SignOutComponent', () => {
       providers: [
         { provide: LoginService, useValue: mockLoginService },
         { provide: Router, useValue: mockRouter },
-        { provide: ActivatedRoute, useValue: activatedRouteMock}
+        { provide: ActivatedRoute, useValue: activatedRouteMock }
       ]
     })
     .compileComponents();
@@ -40,7 +40,7 @@ describe('SignOutComponent', () => {
 
   // Sign out button should exist on page
   it('should feature a sign out button on load', () => {
-    let signOutButton = fixture.debugElement.nativeElement.querySelector("button");
+    const signOutButton = fixture.debugElement.nativeElement.querySelector("button");
     expect(signOutButton).toBeTruthy();
   });
 
