@@ -14,6 +14,7 @@ describe('AssignmentService', () => {
     expect(service).toBeTruthy();
   });
 
+  // getAssignments()
   it('should throw an error when getAssignments response is empty ( [] )', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve({
       json: () => Promise.resolve([]),
@@ -22,7 +23,7 @@ describe('AssignmentService', () => {
     await expectAsync(service.getAssignments('123')).toBeRejectedWithError('assignments are []');
   });
 
-  it('should throw an error when fetch fails', async () => {
+  it('should throw an error when getAssignments fetch fails', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.getAssignments('123')).toBeRejectedWithError('Network Error');
@@ -53,7 +54,8 @@ describe('AssignmentService', () => {
     expect(assignmentList[0].userId).toEqual('123')
   });
 
-  it('should throw an error when POST request fails', async () => {
+  // addTask()
+  it('should throw an error when addTask POST request fails', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve({
       ok: false,
       status: 500
@@ -63,7 +65,7 @@ describe('AssignmentService', () => {
       .toBeRejectedWithError('POST failed: 500');
   });
 
-  it('should throw an error when fetch encounters a network failure', async () => {
+  it('should throw an error when addTask fetch encounters a network failure', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.addTask('Test Title', 'Test Description', new Date(), '123', '456'))

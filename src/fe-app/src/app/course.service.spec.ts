@@ -14,6 +14,7 @@ describe('CourseService', () => {
     expect(service).toBeTruthy();
   });
 
+  // getCourses()
   it('should throw an error when getCourses response is empty ( [] )', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve({
       json: () => Promise.resolve([]),
@@ -22,7 +23,7 @@ describe('CourseService', () => {
     await expectAsync(service.getCourses('123')).toBeRejectedWithError('courses are []');
   });
 
-  it('should throw an error when fetch fails', async () => {
+  it('should throw an error when getCourses fetch fails', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.getCourses('123')).toBeRejectedWithError('Network Error');
@@ -45,16 +46,19 @@ describe('CourseService', () => {
     expect(courseList[0].id).toEqual('abc');
   });
 
+  // getSelectIndex()
   it('should default selectIndex to -1', () => {
     expect(service.getSelectIndex()).toBe(-1);
   });
 
+  // selectCourse()
   it('should update the index if new course is selected', () => {
     service.selectCourse(1);
 
     expect(service.getSelectIndex()).toBe(1);
   });
 
+  // deselectCourse()
   it('should set the index back to -1 deselectCourse() is called', () => {
     service.selectCourse(1);
     expect(service.getSelectIndex()).toBe(1);
@@ -63,6 +67,7 @@ describe('CourseService', () => {
     expect(service.getSelectIndex()).toBe(-1);
   });
 
+  // selectCourse()
   it('should set index to -1 if same course is selected', () => {
     service.selectCourse(1);
     expect(service.getSelectIndex()).toBe(1);

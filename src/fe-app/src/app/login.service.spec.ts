@@ -19,6 +19,7 @@ describe('LoginService', () => {
     expect(service).toBeTruthy();
   });
 
+  // login()
   it('should throw an error when login response is empty ( {} )', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve({
       json: () => Promise.resolve({}),
@@ -27,12 +28,11 @@ describe('LoginService', () => {
     await expectAsync(service.login('testuser', 'password')).toBeRejectedWithError('user is {}');
   });
 
-  it('should throw an error when fetch fails', async () => {
+  it('should throw an error when login fetch fails', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.login('testuser', 'password')).toBeRejectedWithError('Network Error');
   });
-
 
   it('should successfully log in a user', async () => {
     const mockUser: User = { id: '123' };
@@ -48,10 +48,12 @@ describe('LoginService', () => {
     expect(sessionStorage.setItem).toHaveBeenCalledWith('userId', '123');
   });
 
+  // getUserId()
   it('should return user ID from session storage', () => {
     expect(service.getUserId()).toBe('123');
   });
 
+  // signOut()
   it('should remove user ID from session storage on signout', () => {
     service.signOut();
     expect(sessionStorage.removeItem).toHaveBeenCalledWith('userId');
