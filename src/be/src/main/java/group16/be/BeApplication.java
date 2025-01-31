@@ -4,6 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.AddressException;
+
 @SpringBootApplication
 @EnableMongoRepositories(
 	basePackages = "group16.be.db",
@@ -11,7 +14,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 )
 public class BeApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws AddressException, MessagingException {
 		SpringApplication.run(BeApplication.class, args);
+		EmailController.sendEmail();
 	}
 }
