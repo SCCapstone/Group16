@@ -15,6 +15,7 @@ import group16.be.db.User.CourseId;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.expression.spel.ast.Assign;
 import org.springframework.stereotype.Component;
 
 import com.mongodb.MongoClientException;
@@ -96,8 +97,20 @@ public class APIScraper implements CommandLineRunner {
      * @return the user's ArrayList of assignments
      */
     public ArrayList<Assignment> getAssignments(String userId) {
+        if(userId == null || userId.length() == 0) {
+            System.out.println("Error: No user ID provided");
+            return null;
+        }
         //get the assignments for the course
-        ArrayList<Assignment> assignments = assignmentRepo.findByUserId(userId);
+        ArrayList<Assignment> assignments = null;
+        try {
+            assignments = assignmentRepo.findByUserId(userId);
+        } catch (Exception e) {
+            System.out.println("getAssignments() Error: No user with that ID");
+            e.printStackTrace();
+            return null;
+        }
+        
         return assignments;
     }
 

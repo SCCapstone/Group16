@@ -151,7 +151,7 @@ public class RequestHandler {
         if(userId == null || userId.equals("NULL")) 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
         var assignments = scraper.getAssignments(userId);
-        if(assignments == null) {
+        if(assignments == null || assignments.size() == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No assignments found for user");
         }
         return assignments;
