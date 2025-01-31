@@ -171,6 +171,33 @@ public class APIScraper implements CommandLineRunner {
         }
     }
 
+    public boolean saveGrade(Grade grade) {
+        try {
+            gradeRepo.save(grade);
+            return true;
+        } catch(MongoClientException e) {
+            e.printStackTrace();
+            return false;
+        } catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public boolean isUserId(String userId) {
+        var users = userRepo.findUserByUserId(userId);
+        return users.size() == 1;
+    }
+
+    public boolean isCourseId(String courseId) {
+        return courseRepo.findByCourseId(courseId) != null;
+    }
+
+    public boolean isAssignmentId(String assignmentId) {
+        return assignmentRepo.findByAssignmentId(assignmentId) != null;
+    }
+
     public static File scrapeUser(String uID) {
         // calls a seperate thread that scrapes for each item in the queue
         //scrape the API and return the json file

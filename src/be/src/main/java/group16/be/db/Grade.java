@@ -1,9 +1,19 @@
 package group16.be.db;
 
+import java.util.UUID;
+
 import org.springframework.data.mongodb.core.mapping.Document;
+
 
 @Document(collection = "grades")
 public class Grade {
+    public Grade(String userId, String courseId, String assignmentId, double percent) {
+        this.uuid = UUID.randomUUID().toString();
+        this.courseId = courseId;
+        this.assignmentId = assignmentId;
+        this.percent = percent;
+    } 
+
     private String id;
     public String getId() {
         return id;

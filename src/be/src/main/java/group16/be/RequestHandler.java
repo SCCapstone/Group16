@@ -363,5 +363,30 @@ public class RequestHandler {
         user.setMobilePhone(phoneNumber);
         return scraper.saveUser(user);
     }
+
+    /**
+     * Set grade for a user
+     * @param userId the user's ID
+     * @param courseId the course's ID
+     * @param assignmentId the assignment's ID
+     * @param percent the grade percentage
+     * @return True if the grade was successfully set
+     * @throws ResponseStatusException if the user ID, course ID, or assignment ID is missing or invalid
+     */
+    @CrossOrigin
+    @PostMapping("/api/setGrade")
+    public boolean setGrade(@RequestParam(value = "userId", defaultValue = "NULL") String userId, 
+                            @RequestParam(value = "courseId", defaultValue = "NULL") String courseId, 
+                            @RequestParam(value = "assignmentId", defaultValue = "NULL") String assignmentId, 
+                            @RequestParam(value = "percent", defaultValue = "NULL") double percent) {
+
+        if(courseId == null || courseId.equals("NULL") || assignmentId == null || assignmentId.equals("NULL") || userId == null || userId.equals("NULL")) 
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID, course ID, or assignment ID is missing or invalid");
+        
+        if(!scraper.isUserId(userId) || !scraper.isCourseId(courseId) || !scraper.isAssignmentId(assignmentId))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course ID or assignment ID is invalid");
+        Grade grade = new Grade(userId, courseId, assignmentId, percent);
+        return scraper.saveGrade(grade);
+    }
 }
 
