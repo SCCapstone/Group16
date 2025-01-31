@@ -1,6 +1,6 @@
 import { core } from '@angular/compiler';
 import { Injectable } from '@angular/core';
-import { Assignment } from './assignment';
+import { Assignment } from './course';
 
 @Injectable({
   providedIn: 'root'

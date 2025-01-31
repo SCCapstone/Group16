@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { LoginService } from '../../login.service';
 import { Course } from '../../course';
 import { CourseService } from '../../course.service';
-import { Assignment } from '../../assignment';
+import { Assignment } from '../../course';
 import { AssignmentService } from '../../assignment.service';
 import { TaskComponent } from './task/task.component';
 
