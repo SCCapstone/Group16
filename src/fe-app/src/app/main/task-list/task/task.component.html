@@ -1,3 +1,9 @@
 <p class="singleAssignment">
-    {{ assignment.title }}, {{ assignment.description }}, Due: {{ assignment.availability.adaptiveRelease.end }} ID: {{ assignment.id }}, CourseID: {{ assignment.courseId }}
+    <span class = "courseID">CourseID: {{ assignment.courseId }}</span>
+    <span class = "assignmentTitle">{{ assignment.title }}</span>
+    <span class = "assignmentDescription"> {{ assignment.description }}</span>
+    <span class = "dueDate">{{ assignment.availability.adaptiveRelease.end }}</span>
+    <span class = "assignmentID">{{ assignment.id }}</span>
 </p>
+
+<!--i think this is lowkey useless-->

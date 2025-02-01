@@ -1,3 +1,23 @@
 .singleAssignment{
     color:rgb(108, 164, 255);
+    margin:3%;
+}
+.courseID{
+    margin: 3%;
+    color:blue;
+}
+.assignmentTitle{
+    margin: 3%;
+    color:purple;
+}
+.assignmentDescription{
+    margin: 3%;
+    color: red;
+}
+.dueDate{
+    margin: 3%;
+    color:green;
+}
+.assignmentID{
+    display: none;
 }
