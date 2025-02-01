@@ -8,11 +8,14 @@ import { CourseService } from '../../course.service';
 import { Assignment } from '../../course';
 import { AssignmentService } from '../../assignment.service';
 import { TaskComponent } from './task/task.component';
+import { FormsModule } from '@angular/forms';
+import { RouterOutlet } from '@angular/router';
+
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, TaskComponent],
+  imports: [CommonModule, TaskComponent,FormsModule, RouterOutlet],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css'
 })
