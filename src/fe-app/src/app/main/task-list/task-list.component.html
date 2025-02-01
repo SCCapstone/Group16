@@ -1,9 +1,35 @@
-<p>Task List</p>
 <!--<button (click)="getAssignmentTester()">Test Assignments</button>-->
 <!--<app-task *ngFor="let assignment of assignments"[assignment]="assignment"></app-task>-->
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>COURSE</th>
+            <th>TYPE</th>
+            <th>TITLE</th>
+            <th>DUE</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (assignment of assignments; track assignment.id) {
 
-@for (assignment of assignments; track assignment.id) {
-    @if (courseService.getSelectIndex() === -1 || assignment.courseId === courses[courseService.getSelectIndex()].id) {
-        <app-task [assignment]="assignment" />
-    }
-}
+            @if (courseService.getSelectIndex() === -1 || assignment.courseId === courses[courseService.getSelectIndex()].id) {
+                <tr [class.completed]="assignment.completed">
+                    <td>
+                        <input type="checkbox" [(ngModel)]="assignment.completed" />
+                    </td>
+                    <td> ID: {{ assignment.courseId }}</td> <!--needs to change from ID to title-->
+                    <td>{{ assignment.title }}</td>
+                    <td><a href = "assignment link here">{{ assignment.description }}</a></td>
+                    <td>{{ assignment.availability.adaptiveRelease.end | date }}</td>
+                    <td>
+                        <a href='edit task here'> <img src="images/pencil.png" alt="pencil icon" 
+                            style="width: 25px; height: auto; margin-left: 15px;"/> </a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+

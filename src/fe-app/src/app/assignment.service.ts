@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { Assignment } from './assignment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
+  
+
 })
 export class AssignmentService {
   url = 'https://classmate.osterholt.us/api/';
@@ -16,6 +18,10 @@ export class AssignmentService {
   async getAssignments(userId: string | null) : Promise<Assignment[]> {
     const response = await fetch(`${this.url}getAssignments?userId=${userId}`);
     const data = await response.json() ?? [];
+    const assignments: Assignment[] = data.map((assignment: Assignment) => ({
+      ...assignment,
+      completed: assignment.completed ?? false
+    }));
     console.log(data);
     return data;
   }

@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { RouterOutlet, RouterModule, Router } from '@angular/router';
 import { LoginService } from './login.service';
 

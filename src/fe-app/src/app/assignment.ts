@@ -9,4 +9,5 @@ export interface Assignment {
       end: Date
     }
   }
+  completed?:boolean;
 }
