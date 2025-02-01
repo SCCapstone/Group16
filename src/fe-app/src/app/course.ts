@@ -13,7 +13,8 @@ export interface Assignment {
     adaptiveRelease: {
       end: Date
     }
-  }
+  },
+  completed?: boolean
 }
 
 export interface Grade {
