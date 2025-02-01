@@ -36,13 +36,12 @@ describe('LoginComponent', () => {
     expect(component.loginForm.value).toEqual({ username: '', password: ''}); // expect the form to be empty when first opened
   });
 
+  // removed sessionStorage checks as it is now checked in login.service.spec.ts
   it('should call loginService.login when login() is invoked with valid credentials', async () => {
     // Arrange
-    spyOn(sessionStorage, 'setItem'); // spy on session storage for userId key
     const mockResponse = { id: '12345'}; // mock response in form of what is promised on valid login user object
     component.loginForm.setValue({ username: 'testuser', password: 'password123' }); // pass in fake valid info
     mockLoginService.login.and.callFake(() => {
-      sessionStorage.setItem('id', '12345');
       return Promise.resolve(mockResponse);
     }); // call the mock service and give a valid return and fake call sessionStorage.setItem()
 
@@ -53,7 +52,6 @@ describe('LoginComponent', () => {
     fixture.whenStable().then(() => { // wait for the page to stabilize
       fixture.detectChanges(); // detect the changes on the page
       expect(mockLoginService.login).toHaveBeenCalledOnceWith('testuser', 'password123'); // expect login to have been called with the same fake info
-      expect(sessionStorage.setItem).toHaveBeenCalledWith('id', '12345'); // expect session storage to have been set with fake valid return
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/main']); // expect the mock router to have routed to /main
     });
   });
