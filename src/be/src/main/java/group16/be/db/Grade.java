@@ -11,6 +11,7 @@ public class Grade {
         this.uuid = UUID.randomUUID().toString();
         this.courseId = courseId;
         this.assignmentId = assignmentId;
+        this.userId = userId;
         this.percent = percent;
     } 
 

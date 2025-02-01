@@ -180,7 +180,7 @@ public class APIScraper implements CommandLineRunner {
             return false;
         } catch(Exception e) {
             e.printStackTrace();
-            return false;
+            return false; 
         }
     }
 
