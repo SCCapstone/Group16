@@ -52,7 +52,7 @@ public class RequestHandler {
      * @throws ResponseStatusException if the username or password is missing or invalid
      */
     @CrossOrigin //(origins = "http://localhost:4200")
-    @GetMapping("/api/login")
+    @PostMapping("/api/login")
     public HashMap<String, String> login(@RequestParam(value = "username", defaultValue = "NAME") String username, @RequestParam(value = "password", defaultValue = "NULL") String password) {
         if(username == null || username.equals("NAME"))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is missing or invalid");
