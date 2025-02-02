@@ -5,7 +5,7 @@ import { UserInfo } from './user';
   providedIn: 'root'
 })
 export class SettingsService {
-  url = 'https://classmate.osterholt.us/api/';
+  readonly url = 'https://classmate.osterholt.us/api/';
 
   constructor() { }
 
