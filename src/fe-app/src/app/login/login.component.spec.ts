@@ -49,11 +49,10 @@ describe('LoginComponent', () => {
     await component.login(); // call login with fake valid info
 
     // Assert
-    fixture.whenStable().then(() => { // wait for the page to stabilize
-      fixture.detectChanges(); // detect the changes on the page
-      expect(mockLoginService.login).toHaveBeenCalledOnceWith('testuser', 'password123'); // expect login to have been called with the same fake info
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['/main']); // expect the mock router to have routed to /main
-    });
+
+    fixture.detectChanges(); // detect the changes on the page
+    expect(mockLoginService.login).toHaveBeenCalledOnceWith('testuser', 'password123'); // expect login to have been called with the same fake info
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/main']); // expect the mock router to have routed to /main
   });
 
   it('should set output to an error message when login fails', async () => { // async due to changes occurring on actual page (maybe?)
@@ -62,11 +61,10 @@ describe('LoginComponent', () => {
 
     await component.login(); // call the login with fake invalid info (await bc function is async)
 
-    fixture.whenStable().then(() => { // wait for page to stabilize
-      fixture.detectChanges(); // detect the changes on the page
-      expect(component.output).toBe('Login failed, please try again'); // expect output to have been set as intended on invalid login
-      expect(mockRouter.navigate).not.toHaveBeenCalled(); // expect mock router to have not been called
-    });
+    await fixture.isStable()
+    fixture.detectChanges(); // detect the changes on the page
+    expect(component.output).toBe('Login failed, please try again'); // expect output to have been set as intended on invalid login
+    expect(mockRouter.navigate).not.toHaveBeenCalled(); // expect mock router to have not been called
   });
 
   it('should not call loginService.login if the form is empty ', async () => { // also async due to page tracking (maybe?)
@@ -74,10 +72,9 @@ describe('LoginComponent', () => {
 
     await component.login(); // call login with no info (await bc function is async)
 
-    fixture.whenStable().then(() => { // wait for page to stabilize
-      fixture.detectChanges(); // detect the changes on the page
-      expect(mockLoginService.login).not.toHaveBeenCalled(); // expect the login service to not get called
-      expect(component.output).toBe(''); // expect output to be unchanged
-    })
+    await fixture.isStable();
+    fixture.detectChanges(); // detect the changes on the page
+    expect(mockLoginService.login).not.toHaveBeenCalled(); // expect the login service to not get called
+    expect(component.output).toBe('Field is blank'); // expect output to be unchanged
   });
 });

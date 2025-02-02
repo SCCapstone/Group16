@@ -20,32 +20,37 @@ describe('LoginService', () => {
   });
 
   // login()
-  it('should throw an error when login response is empty ( {} )', async () => {
+  it('should throw an error when login POST request fails', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve({
-      json: () => Promise.resolve({}),
+      ok: false,
+      status: 500
     } as Response));
 
-    await expectAsync(service.login('testuser', 'password')).toBeRejectedWithError('user is {}');
+    await expectAsync(service.login('username', 'password'))
+      .toBeRejectedWithError('POST failed: 500');
   });
 
-  it('should throw an error when login fetch fails', async () => {
+  it('should throw an error when login fetch encounters a network failure', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
 
-    await expectAsync(service.login('testuser', 'password')).toBeRejectedWithError('Network Error');
+    await expectAsync(service.login('username', 'password'))
+      .toBeRejectedWithError('Network Error');
   });
 
   it('should successfully log in a user', async () => {
-    const mockUser: User = { id: '123' };
+    const mockUser: User = { id: '123'};
 
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
-      json: () => Promise.resolve(mockUser),
-    } as Response));
+    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response(
+      JSON.stringify(mockUser),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    )))
 
-    const user = await service.login('testuser', 'password');
+    const user = await service.login('username', 'password');
 
-    expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/login?username=testuser&password=password')
+    expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/login?username=username&password=password',
+    Object({ method: 'POST' }));
     expect(user).toEqual(mockUser);
-    expect(sessionStorage.setItem).toHaveBeenCalledWith('userId', '123');
+    expect(sessionStorage.getItem(service['USER_ID_KEY'])).toBe('123');
   });
 
   // getUserId()
