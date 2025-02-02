@@ -13,18 +13,28 @@ export class LoginService {
   constructor() { }
 
   async login(username: string, password: string) : Promise<User> {
-    const response = await fetch(`${this.url}login?username=${username}&password=${password}`);
-    const user: Promise<User> = await response.json() ?? {};
+    const queryParams = new URLSearchParams({
+      username: username ?? "NULL",
+      password: password ?? "NULL"
+    }).toString();
 
-    if (typeof user === 'object' && Object.keys(user).length === 0)  {
-      throw new Error('user is {}');
+    try {
+      const response = await fetch(`${this.url}login?${queryParams}`, {
+        method: 'POST'
+      });
+
+      if(!response.ok) {
+        throw new Error(`POST failed: ${response.status}`)
+      }
+
+      const user: Promise<User> = await response.json() ?? {};
+      sessionStorage.setItem(this.USER_ID_KEY, (await user).id);
+
+      return user;
+    } catch (error: any) {
+      console.error('Error adding task:', error);
+      throw error;
     }
-
-    sessionStorage.setItem(this.USER_ID_KEY, (await user).id);
-    return user;
-  } catch (error: any) {
-    console.error('Error fetching user:', error);
-    throw error;
   }
 
   getUserId(): string | null {

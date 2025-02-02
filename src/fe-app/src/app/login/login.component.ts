@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginService } from '../login.service';
 import { User } from '../user';
 
@@ -14,12 +14,11 @@ import { User } from '../user';
 })
 export class LoginComponent {
   router = inject(Router);
-
   user: User | undefined;
   loginService = inject(LoginService);
   loginForm = new FormGroup ({
-    username: new FormControl(''),
-    password: new FormControl('')
+    username: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required)
   });
 
   output: string | undefined = '';
@@ -27,6 +26,7 @@ export class LoginComponent {
   // username: osterholt; password: cameron1234
   login() {
     if (this.loginForm.value.username == '' || this.loginForm.value.password == '') {
+      this.output = 'Field is blank';
      return;
     }
 
@@ -34,15 +34,15 @@ export class LoginComponent {
       this.loginForm.value.username ?? '',
       this.loginForm.value.password ?? ''
     )
-    .then((user: User) => {
-      this.user = user;
-      console.log(this.user); // to be removed
-      if (user) {
+    .then((user: User | undefined) => {
+      if (user && user.id) {
+        this.user = user;
         this.router.navigate(['/main']);
+      } else {
+        this.output = 'Login failed, please try again';
       }
     })
     .catch((error) => {
-      this.output = 'Login failed, please try again';
       console.error('Login failed', error);
     });
   };
@@ -54,13 +54,14 @@ export class LoginComponent {
       "cameron1234"
     )
     .then((user: User) => {
-      this.user = user;
       if (user) {
+        this.user = user;
         this.router.navigate(['/main']);
+      } else {
+        this.output = 'Login failed, please try again';
       }
     })
     .catch((error) => {
-      this.output = 'Login failed, please try again';
       console.error('Login failed', error);
     })
   }
