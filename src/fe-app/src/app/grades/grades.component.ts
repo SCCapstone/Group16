@@ -18,8 +18,4 @@ export class GradesComponent {
   selectedCourse: undefined;
 
   constructor() {}
-
-  setGradeTester() {
-    this.gradeService.setGrade('673fdd30cc2da4c3a3514fb7', '67460db839c6b3085338aa81', '674d0d0d4b663c9b73963226', 90);
-  }
 }
