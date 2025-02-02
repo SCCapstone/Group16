@@ -113,19 +113,14 @@ public class RequestHandler {
     @CrossOrigin
     @PostMapping("/api/createAssignmentWithoutId")
     public static boolean addAssignmentWithoutId(@RequestParam(value = "title", defaultValue = "NULL") String title,
-     @RequestParam(value = "description", defaultValue = "NULL") String description, @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
-     @RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
-        if(title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL") || userId == null || userId.equals("NULL") || courseId == null || courseId.equals("NULL")) {
+                                                 @RequestParam(value = "description", defaultValue = "NULL") String description, 
+                                                 @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
+                                                 @RequestParam(value = "userId", defaultValue = "NULL") String userId, 
+                                                 @RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
+        if(title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL") || userId == null || userId.equals("NULL") || courseId == null || courseId.equals("NULL")) 
             return false;
-        }
-        Assignment assignment = new Assignment()
-                .randomUUID()
-                .setTitle(title)
-                .setDescription(description)
-                .setDueDate(dueDate)
-                .setUserId(userId)
-                .setCourseId(courseId);
-        ObjectMapper objectMapper = new ObjectMapper();
+        var assignment = new Assignment(userId, courseId, title, description, dueDate);
+        var objectMapper = new ObjectMapper();
         
         try {
             connection.insertNewData("assignments", objectMapper.writeValueAsString(assignment));
