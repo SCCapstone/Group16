@@ -14,7 +14,8 @@ export interface Assignment {
       end: Date
     }
   },
-  completed?: boolean
+  completed?: boolean,
+  userCreated: boolean
 }
 
 export interface Grade {
