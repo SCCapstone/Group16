@@ -40,7 +40,9 @@ describe('AssignmentService', () => {
         adaptiveRelease: {
           end: new Date()
         }
-      }
+      },
+      completed: false,
+      userCreated: false
     }];
 
     const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
