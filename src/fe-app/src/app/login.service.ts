@@ -32,7 +32,7 @@ export class LoginService {
 
       return user;
     } catch (error: any) {
-      console.error('Error adding task:', error);
+      console.error('Error logging in:', error);
       throw error;
     }
   }

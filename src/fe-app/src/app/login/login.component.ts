@@ -25,7 +25,7 @@ export class LoginComponent {
 
   // username: osterholt; password: cameron1234
   login() {
-    if (this.loginForm.value.username == '' || this.loginForm.value.password == '') {
+    if (this.loginForm.invalid) {
       this.output = 'Field is blank';
      return;
     }
@@ -38,11 +38,10 @@ export class LoginComponent {
       if (user && user.id) {
         this.user = user;
         this.router.navigate(['/main']);
-      } else {
-        this.output = 'Login failed, please try again';
       }
     })
     .catch((error) => {
+      this.output = 'Login failed, please try again';
       console.error('Login failed', error);
     });
   };
@@ -62,6 +61,7 @@ export class LoginComponent {
       }
     })
     .catch((error) => {
+      this.output = 'Login failed, please try again';
       console.error('Login failed', error);
     })
   }
