@@ -15,7 +15,7 @@ public class Assignment {
         availability.adaptiveRelease = new AdaptiveRelease();
         this.userCreated = false;
     }
-    public Assignment(String userId, String courseId, String title, String description, String dueDate) {
+    public Assignment(String userId, String courseId, String title, String description, String dueDate, boolean userCreated) {
         this();
         this.id = UUID.randomUUID().toString();
         setTitle(title);
@@ -23,6 +23,7 @@ public class Assignment {
         setDueDate(dueDate);
         setUserId(userId);
         setCourseId(courseId);
+        this.userCreated = userCreated;
     }
     @Id
     public String id;

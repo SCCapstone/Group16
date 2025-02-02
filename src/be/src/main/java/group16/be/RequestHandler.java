@@ -119,7 +119,8 @@ public class RequestHandler {
                                                  @RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
         if(title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL") || userId == null || userId.equals("NULL") || courseId == null || courseId.equals("NULL")) 
             return false;
-        var assignment = new Assignment(userId, courseId, title, description, dueDate);
+        boolean userCreated = true;
+        var assignment = new Assignment(userId, courseId, title, description, dueDate, userCreated);
         var objectMapper = new ObjectMapper();
         
         try {
