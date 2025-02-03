@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+
+import { UserInfo, Name, ContactInfo } from '../../user';
+import { LoginService } from '../../login.service';
+import { SettingsService } from '../../settings.service';
 
 @Component({
   selector: 'app-profile-settings',
@@ -13,9 +17,11 @@ export class ProfileSettingsComponent {
   preferredName: string = "";
   schoolEmail: string = "";
   personalEmail: string = "";
-  phoneNumber: string = "";
+  phoneNumber: Number = 0;  // TODO this should be stored as a string, ask about changes
 
-  // TODO trying to load 
+  loginService = inject(LoginService);
+  settingsService = inject(SettingsService);
+
   profileForm = new FormGroup({
     name: new FormControl(),
     school: new FormControl(),
@@ -24,18 +30,20 @@ export class ProfileSettingsComponent {
   })
 
   constructor() {
-    // TODO load variables from settings service when it is implemented, these are temporary
-    this.preferredName = "Michael"
-    this.schoolEmail = "michael@sc.edu"
-    this.personalEmail = "michael@gmail.com"
-    this.phoneNumber = "555-555-5555"
+    // Load necessary settings from database and initialize form
+    this.settingsService.getUserInfo(this.loginService.getUserId()).then((userInfo: UserInfo) => {
+      this.preferredName = userInfo.name.preferredDisplayName;
+      this.schoolEmail = userInfo.contact.institutionEmail;
+      this.personalEmail = userInfo.contact.email;
+      this.phoneNumber = userInfo.contact.mobilePhone;
 
-    // TODO this sucks figure out if there's a better way
-    this.profileForm.setValue({
-      name: this.preferredName,
-      school: this.schoolEmail,
-      personal: this.personalEmail,
-      phone: this.phoneNumber
+      // Set form control values with values from database
+      this.profileForm.setValue({
+        name: this.preferredName,
+        school: this.schoolEmail,
+        personal: this.personalEmail,
+        phone: this.phoneNumber
+      })
     })
   }
 
