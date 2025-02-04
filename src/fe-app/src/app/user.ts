@@ -13,7 +13,7 @@ export interface UserInfo {
 }
 
 export interface ContactInfo {
-  mobilePhone: number;
+  mobilePhone: string;
   email: string;
   readonly institutionEmail: string;
 }

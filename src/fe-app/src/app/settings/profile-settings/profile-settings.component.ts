@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { UserInfo, Name, ContactInfo } from '../../user';
 import { LoginService } from '../../login.service';
@@ -17,16 +17,16 @@ export class ProfileSettingsComponent {
   preferredName: string = "";
   schoolEmail: string = "";
   personalEmail: string = "";
-  phoneNumber: Number = 0;  // TODO this should be stored as a string, ask about changes
+  phoneNumber: string = "";
 
   loginService = inject(LoginService);
   settingsService = inject(SettingsService);
 
   profileForm = new FormGroup({
-    name: new FormControl(),
-    school: new FormControl(),
-    personal: new FormControl(),
-    phone: new FormControl()
+    name: new FormControl("", Validators.required),
+    school: new FormControl("", [Validators.required, Validators.email]),
+    personal: new FormControl("", [Validators.required, Validators.email]),
+    phone: new FormControl("", [Validators.required, Validators.pattern("[0-9]{3}-?[0-9]{3}-?[0-9]{4}")])
   })
 
   constructor() {
@@ -36,6 +36,9 @@ export class ProfileSettingsComponent {
       this.schoolEmail = userInfo.contact.institutionEmail;
       this.personalEmail = userInfo.contact.email;
       this.phoneNumber = userInfo.contact.mobilePhone;
+
+      // Put phone number in more readable format
+      this.phoneNumber = this.phoneNumber.substring(0, 3) + "-" + this.phoneNumber.substring(3, 6) + "-" + this.phoneNumber.substring(6, 10);
 
       // Set form control values with values from database
       this.profileForm.setValue({
@@ -57,5 +60,6 @@ export class ProfileSettingsComponent {
     // TODO call course service with new info
 
     alert(this.preferredName + " | " + this.schoolEmail + " | " + this.personalEmail + " | " + this.phoneNumber);
+    alert(this.profileForm.valid);
   }
 }

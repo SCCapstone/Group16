@@ -13,7 +13,7 @@
         <label for="phone-number">Phone Number:</label>
         <input type="tel" id="phone-number" formControlName="phone"/>
 
-        <button type="submit">Save</button>
+        <button type="submit" [disabled]="!this.profileForm.valid">Save</button>
     </label>
 </form>
 
