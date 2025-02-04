@@ -1,15 +1,13 @@
 .settings-main {
     display: flex;
     flex-direction: row;
-    background-color: red;
 }
 
 .sidebar {
-    background-color: orange;
+    background-color: gray;
     width: 20%;
 }
 
 .settings-container {
-    background-color: yellow;
     width: 80%;
 }
