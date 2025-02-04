@@ -14,6 +14,8 @@ import { SettingsService } from '../../settings.service';
   styleUrl: './profile-settings.component.css'
 })
 export class ProfileSettingsComponent {
+  
+  // TODO probably don't need these anymore with reactive forms, but too lazy to get rid of them rn
   preferredName: string = "";
   schoolEmail: string = "";
   personalEmail: string = "";
@@ -51,15 +53,25 @@ export class ProfileSettingsComponent {
   }
 
   saveProfile() {
-    // TODO validate properly
-    this.preferredName = this.profileForm.value.name ?? "";
-    this.schoolEmail = this.profileForm.value.school ?? "";
-    this.personalEmail = this.profileForm.value.personal ?? "";
-    this.phoneNumber = this.profileForm.value.phone ?? "";
+    // TODO gray out university email on page
 
-    // TODO call course service with new info
+    // Update preferred name
+    if (this.profileForm.value.name != null) {
+      this.preferredName = this.profileForm.value.name;
+      this.settingsService.updatePreferredName(this.loginService.getUserId(), this.preferredName);
+    }
 
-    alert(this.preferredName + " | " + this.schoolEmail + " | " + this.personalEmail + " | " + this.phoneNumber);
-    alert(this.profileForm.valid);
+    // Update personal email
+    if (this.profileForm.value.personal != null) {
+      this.personalEmail = this.profileForm.value.personal;
+      this.settingsService.updatePersonalEmail(this.loginService.getUserId(), this.personalEmail);
+    }
+
+    // Update phone number
+    if (this.profileForm.value.phone != null) {
+      this.phoneNumber = this.profileForm.value.phone;
+      this.phoneNumber = this.phoneNumber.replaceAll("-", "");  // Remove dashes from user input
+      this.settingsService.updatePhoneNumber(this.loginService.getUserId(), this.phoneNumber);
+    }
   }
 }
