@@ -29,12 +29,8 @@ export class NotificationSettingsComponent {
     })
   }
 
-  async test() {
-    let notificationSettings: UserInfo = await this.settingsService.getUserInfo(this.loginService.getUserId());
-  }
-
   saveNotifications() {
-    // TODO send settings to settings service
-    alert(this.useSchoolEmail + " | " + this.usePersonalEmail + " | " + this.useText);
+    this.settingsService.updateNotificationSettings(this.loginService.getUserId(), this.useSchoolEmail, this.usePersonalEmail, this.useText);
+    console.log("School: " + this.useSchoolEmail + "\nPersonal: " + this.usePersonalEmail + "\nText: " + this.useText);
   }
 }
