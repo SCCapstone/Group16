@@ -31,6 +31,6 @@ export class NotificationSettingsComponent {
 
   saveNotifications() {
     this.settingsService.updateNotificationSettings(this.loginService.getUserId(), this.useSchoolEmail, this.usePersonalEmail, this.useText);
-    console.log("School: " + this.useSchoolEmail + "\nPersonal: " + this.usePersonalEmail + "\nText: " + this.useText);
+    console.log("STUDENT ID: " + this.loginService.getUserId());  // For unit test debugging
   }
 }
