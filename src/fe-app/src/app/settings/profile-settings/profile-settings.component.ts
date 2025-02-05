@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, Validators } from '@angular/forms';
+
+import { UserInfo, Name, ContactInfo } from '../../user';
+import { LoginService } from '../../login.service';
+import { SettingsService } from '../../settings.service';
 
 @Component({
   selector: 'app-profile-settings',
@@ -10,44 +14,64 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrl: './profile-settings.component.css'
 })
 export class ProfileSettingsComponent {
+  
+  // TODO probably don't need these anymore with reactive forms, but too lazy to get rid of them rn
   preferredName: string = "";
   schoolEmail: string = "";
   personalEmail: string = "";
   phoneNumber: string = "";
 
-  // TODO trying to load 
+  loginService = inject(LoginService);
+  settingsService = inject(SettingsService);
+
   profileForm = new FormGroup({
-    name: new FormControl(),
-    school: new FormControl(),
-    personal: new FormControl(),
-    phone: new FormControl()
+    name: new FormControl("", Validators.required),
+    school: new FormControl("", [Validators.required, Validators.email]),
+    personal: new FormControl("", [Validators.required, Validators.email]),
+    phone: new FormControl("", [Validators.required, Validators.pattern("[0-9]{3}-?[0-9]{3}-?[0-9]{4}")])
   })
 
   constructor() {
-    // TODO load variables from settings service when it is implemented, these are temporary
-    this.preferredName = "Michael"
-    this.schoolEmail = "michael@sc.edu"
-    this.personalEmail = "michael@gmail.com"
-    this.phoneNumber = "555-555-5555"
+    // Load necessary settings from database and initialize form
+    this.settingsService.getUserInfo(this.loginService.getUserId()).then((userInfo: UserInfo) => {
+      this.preferredName = userInfo.name.preferredDisplayName;
+      this.schoolEmail = userInfo.contact.institutionEmail;
+      this.personalEmail = userInfo.contact.email;
+      this.phoneNumber = userInfo.contact.mobilePhone;
 
-    // TODO this sucks figure out if there's a better way
-    this.profileForm.setValue({
-      name: this.preferredName,
-      school: this.schoolEmail,
-      personal: this.personalEmail,
-      phone: this.phoneNumber
+      // Put phone number in more readable format
+      this.phoneNumber = this.phoneNumber.substring(0, 3) + "-" + this.phoneNumber.substring(3, 6) + "-" + this.phoneNumber.substring(6, 10);
+
+      // Set form control values with values from database
+      this.profileForm.setValue({
+        name: this.preferredName,
+        school: this.schoolEmail,
+        personal: this.personalEmail,
+        phone: this.phoneNumber
+      })
     })
   }
 
   saveProfile() {
-    // TODO validate properly
-    this.preferredName = this.profileForm.value.name ?? "";
-    this.schoolEmail = this.profileForm.value.school ?? "";
-    this.personalEmail = this.profileForm.value.personal ?? "";
-    this.phoneNumber = this.profileForm.value.phone ?? "";
+    // TODO gray out university email on page
 
-    // TODO call course service with new info
+    // Update preferred name
+    if (this.profileForm.value.name != null) {
+      this.preferredName = this.profileForm.value.name;
+      this.settingsService.updatePreferredName(this.loginService.getUserId(), this.preferredName);
+    }
 
-    alert(this.preferredName + " | " + this.schoolEmail + " | " + this.personalEmail + " | " + this.phoneNumber);
+    // Update personal email
+    if (this.profileForm.value.personal != null) {
+      this.personalEmail = this.profileForm.value.personal;
+      this.settingsService.updatePersonalEmail(this.loginService.getUserId(), this.personalEmail);
+    }
+
+    // Update phone number
+    if (this.profileForm.value.phone != null) {
+      this.phoneNumber = this.profileForm.value.phone;
+      this.phoneNumber = this.phoneNumber.replaceAll("-", "");  // Remove dashes from user input
+      this.settingsService.updatePhoneNumber(this.loginService.getUserId(), this.phoneNumber);
+    }
   }
 }
