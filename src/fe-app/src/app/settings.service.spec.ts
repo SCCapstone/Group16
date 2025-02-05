@@ -62,93 +62,33 @@ describe('SettingsService', () => {
     expect(userInfo.name.family).toEqual('last');
   });
 
-  // toggleEmailNotifcations()
-  it('should throw an error when tEN POST request fails', async () => {
+  // upodateNotificationSettings()
+  it('should throw an error when uNS POST request fails', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve({
       ok: false,
       status: 500
     } as Response));
 
-    await expectAsync(service.toggleEmailNotifications('123'))
+    await expectAsync(service.updateNotificationSettings('123', false, false, false))
       .toBeRejectedWithError('POST failed: 500');
   });
 
-  it('should throw an error when tEN fetch encounters a network failure', async () => {
+  it('should throw an error when uNS fetch encounters a network failure', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
 
-    await expectAsync(service.toggleEmailNotifications('123'))
+    await expectAsync(service.updateNotificationSettings('123', false, false, false))
       .toBeRejectedWithError('Network Error');
   });
 
-  it('should successfully call tEN', async () => {
+  it('should successfully call uNS', async () => {
     const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
-      ok: true,
+      ok: true
     } as Response));
 
-    await expectAsync(service.toggleEmailNotifications('123'))
+    await expectAsync(service.updateNotificationSettings('123', true, false, true))
       .toBeResolved();
 
-    expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/toggleEmailNotifications?userId=123',
-    Object({ method: 'POST' }));
-  });
-
-  // toggleInstitutionEmailNotifcations
-  it('should throw an error when tIEN POST request fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
-      ok: false,
-      status: 500
-    } as Response));
-
-    await expectAsync(service.toggleInstitutionEmailNotifications('123'))
-      .toBeRejectedWithError('POST failed: 500');
-  });
-
-  it('should throw an error when tIEN fetch encounters a network failure', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
-
-    await expectAsync(service.toggleInstitutionEmailNotifications('123'))
-      .toBeRejectedWithError('Network Error');
-  });
-
-  it('should successfully call tIEN', async () => {
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
-      ok: true,
-    } as Response));
-
-    await expectAsync(service.toggleInstitutionEmailNotifications('123'))
-      .toBeResolved();
-
-    expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/toggleInstitutionEmailNotifications?userId=123',
-    Object({ method: 'POST' }));
-  });
-
-  // toggleSmsNotifications()
-  it('should throw an error when tSN POST request fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
-      ok: false,
-      status: 500
-    } as Response));
-
-    await expectAsync(service.toggleSmsNotifications('123'))
-      .toBeRejectedWithError('POST failed: 500');
-  });
-
-  it('should throw an error when tSN fetch encounters a network failure', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
-
-    await expectAsync(service.toggleSmsNotifications('123'))
-      .toBeRejectedWithError('Network Error');
-  });
-
-  it('should successfully call tSN', async () => {
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
-      ok: true,
-    } as Response));
-
-    await expectAsync(service.toggleSmsNotifications('123'))
-      .toBeResolved();
-
-    expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/toggleSmsNotifications?userId=123',
+    expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/updateNotificationSettings?userId=123&email=false&sms=true&institutionEmail=true',
     Object({ method: 'POST' }));
   });
 
