@@ -25,6 +25,31 @@ export class SettingsService {
     throw error;
   }
 
+  async updateNotificationSettings(userId: string | null, email: boolean, iEmail: boolean, sms: boolean): Promise<void> {
+    const queryParams = new URLSearchParams({
+      userId: userId ?? "NULL",
+      email: String(email) ?? "NULL",
+      sms: String(sms) ?? "NULL",
+      institutionEmail: String(iEmail) ?? "NULL"
+    }).toString();
+
+    try {
+      const response = await fetch(`${this.url}updateNotificationSettings?${queryParams}`, {
+        method: 'POST'
+      });
+
+      if(!response.ok) {
+        throw new Error(`POST failed: ${response.status}`);
+      }
+
+      console.log(response);
+    } catch (error: any) {
+      console.error('Error updating notification settings:', error);
+      throw error;
+    }
+  }
+
+/*
   async toggleEmailNotifications(userId: string | null): Promise<void> {
     const queryParams = new URLSearchParams({
       userId: userId ?? "NULL"
@@ -87,6 +112,7 @@ export class SettingsService {
       throw error;
     }
   }
+*/
 
   async updatePreferredName(userId: string | null, updatedName: string | null): Promise<void> {
     const queryParams = new URLSearchParams({
