@@ -112,13 +112,17 @@ public class RequestHandler {
      */
     @CrossOrigin
     @PostMapping("/api/createAssignmentWithoutId")
-    public static boolean addAssignmentWithoutId(@RequestParam(value = "title", defaultValue = "NULL") String title,
+    public boolean addAssignmentWithoutId(@RequestParam(value = "title", defaultValue = "NULL") String title,
                                                  @RequestParam(value = "description", defaultValue = "NULL") String description, 
                                                  @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
                                                  @RequestParam(value = "userId", defaultValue = "NULL") String userId, 
                                                  @RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
         if(title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL") || userId == null || userId.equals("NULL") || courseId == null || courseId.equals("NULL")) 
             return false;
+
+        // Search for existing Assignment.
+        var assignments = scraper.getAssignments(userId);
+
         boolean userCreated = true;
         var assignment = new Assignment(userId, courseId, title, description, dueDate, userCreated);
         var objectMapper = new ObjectMapper();
