@@ -363,6 +363,15 @@ public class RequestHandler {
         
         if(!scraper.isUserId(userId) || !scraper.isCourseId(courseId) || !scraper.isAssignmentId(assignmentId))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course ID or assignment ID is invalid");
+        
+        var grades = scraper.getGrades(userId);
+        for (Grade grade : grades) {
+            if (grade.getCourseId().equals(courseId) && grade.getAssignmentId().equals(assignmentId)) {
+                // Grade already exists. Returning HTTP error.
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Grade already exists");
+            }
+        }
+
         Grade grade = new Grade(userId, courseId, assignmentId, percent);
         return scraper.saveGrade(grade);
     }
