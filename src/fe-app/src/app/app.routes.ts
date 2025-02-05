@@ -31,7 +31,17 @@ export const routes: Routes = [
   {
     path: 'main',
     component: MainComponent,
-    title: 'Main'
+    title: 'Main',
+    children: [
+      {
+        path: 'calendar',
+        component: CalendarComponent
+      },
+      {
+        path: 'task-list',
+        component: TaskListComponent
+      }
+    ]
   },
   {
     path: 'notifications',

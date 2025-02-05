@@ -37,7 +37,7 @@ export class LoginComponent {
     .then((user: User | undefined) => {
       if (user && user.id) {
         this.user = user;
-        this.router.navigate(['/main']);
+        this.router.navigateByUrl("/main/task-list");
       }
     })
     .catch((error) => {
@@ -55,7 +55,7 @@ export class LoginComponent {
     .then((user: User) => {
       if (user) {
         this.user = user;
-        this.router.navigate(['/main']);
+        this.router.navigateByUrl("/main/task-list");
       } else {
         this.output = 'Login failed, please try again';
       }
