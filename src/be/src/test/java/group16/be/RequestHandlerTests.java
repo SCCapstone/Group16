@@ -1,9 +1,5 @@
 package group16.be;
 
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,15 +7,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import group16.be.db.AssignmentRepository;
 import group16.be.db.Course;
-import group16.be.db.CourseRepository;
 import group16.be.db.GradeRepository;
 import group16.be.db.User;
 import group16.be.db.UserRepository;
@@ -187,5 +181,5 @@ public class RequestHandlerTests {
         var grades = handler.getGrades(EXPECTED_ID);
         assertTrue(grades != null
                 && grades.size() > 0);
-    }
+    }   
 }

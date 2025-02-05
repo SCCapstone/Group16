@@ -120,9 +120,14 @@ public class RequestHandler {
         if(title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL") || userId == null || userId.equals("NULL") || courseId == null || courseId.equals("NULL")) 
             return false;
 
+        if(!scraper.isUserId(userId) || !scraper.isCourseId(courseId))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course ID or assignment ID is invalid");
+
         // Search for existing Assignment.
         var assignments = scraper.getAssignments(userId);
+        System.out.println("DEBUG: Assignments: ");
         for (Assignment assignment : assignments) {
+            System.out.println(assignment.getTitle());
             if (assignment.getCourseId().equals(courseId) && assignment.getTitle().equalsIgnoreCase(title)) {
                 // Assignment already exists. Returning HTTP error.
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Assignment already exists");
