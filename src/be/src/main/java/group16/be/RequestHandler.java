@@ -266,44 +266,16 @@ public class RequestHandler {
     }
 
     /**
-     * This method is to toggle the user's email notifications, the user ID is the only parameter as it toggles the saved value from mongo
+     * Save notifications settings for a user
      * @param userId the user's ID
-     * @return True if the email notifications were successfully toggled
-     * @throws ResponseStatusException if the user ID is missing or invalid, if the user is not found, or if there are multiple users with the same ID
+     * @return True if the notification settings were successfully saved
      */
     @CrossOrigin
-    @PostMapping("/api/toggleEmailNotifications")
-    public boolean toggleEmailNotifications(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
+    @PostMapping("/api/updateNotificationSettings")
+    public boolean updateNotificationSettings(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "email", defaultValue = "NULL") boolean email, @RequestParam(value = "sms", defaultValue = "NULL") boolean sms, @RequestParam(value = "institutionEmail", defaultValue = "NULL") boolean institutionEmail) {
+        System.out.println("DEBUG: updateNotificationSettings User ID: " + userId + " Email: " + email + " SMS: " + sms + " Institution Email: " + institutionEmail);
         User user = getUser(userId);
-        user.toggleEmailNotifications();
-        return scraper.saveUser(user);
-    }
-
-    /**
-     * This method is to toggle the user's institution email notifications, the user ID is the only parameter as it toggles the saved value from mongo
-     * @param userId the user's ID
-     * @return True if the institution email notifications were successfully toggled
-     * @throws ResponseStatusException if the user ID is missing or invalid, if the user is not found, or if there are multiple users with the same ID
-     */
-    @CrossOrigin
-    @PostMapping("/api/toggleInstitutionEmailNotifications")
-    public boolean toggleInstitutionEmailNotifications(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
-        User user = getUser(userId);
-        user.toggleInstitutionEmailNotifications();
-        return scraper.saveUser(user);
-    }
-
-    /**
-     * This method is to toggle the user's SMS notifications, the user ID is the only parameter as it toggles the saved value from mongo
-     * @param userId the user's ID
-     * @return True if the SMS notifications were successfully toggled
-     * @throws ResponseStatusException if the user ID is missing or invalid, if the user is not found, or if there are multiple users with the same ID
-     */
-    @CrossOrigin
-    @PostMapping("/api/toggleSmsNotifications")
-    public boolean toggleSmsNotifications(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
-        User user = getUser(userId);
-        user.toggleSmsNotifications();
+        user.setNotificationSettings(email, sms, institutionEmail);
         return scraper.saveUser(user);
     }
 

@@ -180,26 +180,12 @@ public class User {
         public void setSmsNotifications(boolean smsNotifications) { this.smsNotifications = smsNotifications; }
     }
 
-    /**
-     * Toggles email notifications for the user
-     * @return 
-     */
-    public void toggleEmailNotifications() {
-        settings.setEmailNotifications(!settings.getEmailNotifications());
-    }
-    
-    /**
-     * Toggles institution email notifications for the user
-     */
-    public void toggleInstitutionEmailNotifications() {
-        settings.setInstitutionEmailNotifications(!settings.getInstitutionEmailNotifications());
-    }
-
-    /**
-     * Toggles SMS notifications for the user
-     */
-    public void toggleSmsNotifications() {
-        settings.setSmsNotifications(!settings.getSmsNotifications());
+    public boolean setNotificationSettings(boolean email, boolean sms, boolean institutionEmail) {
+        if (settings == null) return false;
+        settings.setEmailNotifications(email);
+        settings.setSmsNotifications(sms);
+        settings.setInstitutionEmailNotifications(institutionEmail);
+        return true;
     }
 
 
