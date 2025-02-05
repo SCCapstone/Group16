@@ -1,11 +1,9 @@
 <p>{{ this.output }}</p> <!-- to be removed -->
 <button (click)="getUserId()">UserId Tester</button> <!-- to be removed -->
 <button routerLink="/login">Back to Login</button>
-<!--<button routerLink="/settings">Settings</button>-->
+
 <button routerLink="/grades">Grades</button>
 <button routerLink="/main/add-task">TEST ADD TASK</button>
-
-
 
 
 <div class="main">
@@ -20,17 +18,12 @@
     <div class="task-info">
         <div class="view-select">
             <div class = "selectOptions">
-                <a href = "/calendar" ><h2>CALENDER</h2></a>
-                <a href = "/task-list"style = "width:100%"><h2>TASK-LIST</h2></a> <!--i know these don't do/go where we want yet just wanted to make them clickable-->
+                <a routerLink="calendar"><h2>CALENDER</h2></a>
+                <a routerLink="task-list" style="width:100%"><h2>TASK-LIST</h2></a>
             </div>
         </div>
         <div class="main-view">
-            @if (viewSelect === 0) {
-                <p>calendar view goes here</p>
-            }
-            @else if (viewSelect === 1) {
-                <app-task-list />
-            }
+            <router-outlet />
         </div>
     </div>
 </div>
