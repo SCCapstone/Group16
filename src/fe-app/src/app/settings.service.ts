@@ -25,12 +25,12 @@ export class SettingsService {
     throw error;
   }
 
-  async updateNotificationSettings(userId: string | null, email: boolean, iEmail: boolean, sms: boolean): Promise<void> {
+  async updateNotificationSettings(userId: string | null, schoolEmail: boolean, personalEmail: boolean, sms: boolean): Promise<void> {
     const queryParams = new URLSearchParams({
       userId: userId ?? "NULL",
-      email: String(email) ?? "NULL",
+      email: String(personalEmail) ?? "NULL",
       sms: String(sms) ?? "NULL",
-      institutionEmail: String(iEmail) ?? "NULL"
+      institutionEmail: String(schoolEmail) ?? "NULL"
     }).toString();
 
     try {
