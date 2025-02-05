@@ -39,7 +39,7 @@ describe('SettingsService', () => {
       },
       username: 'username',
       contact: {
-        mobilePhone: 1234567890,
+        mobilePhone: "1234567890",
         email: 'testemail@email.com',
         institutionEmail: 'testiemail@email.com'
       },
