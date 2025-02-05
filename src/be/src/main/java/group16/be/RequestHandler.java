@@ -273,8 +273,6 @@ public class RequestHandler {
     @CrossOrigin
     @PostMapping("/api/updateNotificationSettings")
     public boolean updateNotificationSettings(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "email", defaultValue = "NULL") boolean email, @RequestParam(value = "sms", defaultValue = "NULL") boolean sms, @RequestParam(value = "institutionEmail", defaultValue = "NULL") boolean institutionEmail) {
-        if(email == false || sms == false || institutionEmail == false) 
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No notification settings were selected");
         System.out.println("DEBUG: updateNotificationSettings User ID: " + userId + " Email: " + email + " SMS: " + sms + " Institution Email: " + institutionEmail);
         User user = getUser(userId);
         user.setNotificationSettings(email, sms, institutionEmail);
