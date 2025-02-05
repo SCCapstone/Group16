@@ -54,7 +54,7 @@ public class ModifyDatabaseTests {
         var grades = new ArrayList<Grade>();
         var grade = new Grade(MOCK_USERID, MOCK_COURSEID, MOCK_ASSIGNMENTID, 100);
         grades.add(grade);
-        Mockito.when(scraper.getGrades(MOCK_USERID)).thenReturn(grades);
+        Mockito.when(scraper.getGrades(MOCK_USERID)).thenReturn(grades);  
 
         Mockito.when(scraper.isUserId(MOCK_USERID)).thenReturn(true);
         Mockito.when(scraper.isCourseId(MOCK_COURSEID)).thenReturn(true);
@@ -81,7 +81,5 @@ public class ModifyDatabaseTests {
         });
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         assertEquals(exception.getReason(), "Grade already exists");
-    
-        
     }
 }
