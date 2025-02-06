@@ -54,6 +54,7 @@ export class ProfileSettingsComponent {
 
   saveProfile() {
     // TODO gray out university email on page
+    console.log("CLICKED BUTTON AND RUNNING SAVEPROFILE");
 
     // Update preferred name
     if (this.profileForm.value.name != null) {
