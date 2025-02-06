@@ -37,6 +37,10 @@ public class RequestHandlerTests {
     private final String LOGIN_USER = "osterholt";
     private final String LOGIN_PASS = "cameron1234";
     private final String EXPECTED_ID = "673fdd30cc2da4c3a3514fb7";
+
+    private final String REAL_USERID = "673fdd30cc2da4c3a3514fb7";
+    private final String REAL_COURSEID = "67460db839c6b3085338aa81";
+    private final String REAL_ASSIGNMENTID = "679bf4b631c4d665a59606ff";
     private final HashMap<String, String> EXPECTED_RESPONSE = new HashMap<String, String>() {{
         put("id", "673fdd30cc2da4c3a3514fb7");
     }};
@@ -195,10 +199,6 @@ public class RequestHandlerTests {
         assertTrue(grades != null
                 && grades.size() > 0);
     }   
-
-    private final String REAL_USERID = "673fdd30cc2da4c3a3514fb7";
-    private final String REAL_COURSEID = "67460db839c6b3085338aa81";
-    private final String REAL_ASSIGNMENTID = "679bf4b631c4d665a59606ff";
 
     @Test
     void testIsIdMethods() {
