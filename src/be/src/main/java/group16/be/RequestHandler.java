@@ -156,7 +156,7 @@ public class RequestHandler {
      * @return
      */
     @CrossOrigin
-    @PostMapping("/api/editAssignment")
+    @PutMapping("/api/editAssignment")
     public boolean editAssignment(@RequestParam(value = "userId", defaultValue = "NULL") String userId, 
                                   @RequestParam(value = "courseId", defaultValue = "NULL") String courseId, 
                                   @RequestParam(value = "assignmentId", defaultValue = "NULL") String assignmentId, 
