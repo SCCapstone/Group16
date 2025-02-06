@@ -5,7 +5,7 @@ import { UserInfo } from '../../user';
 import { LoginService } from '../../login.service';
 import { SettingsService } from '../../settings.service';
 
-describe('NotificationSettingsComponent', () => {
+describe('ProfileSettingsComponent', () => {
   let component: ProfileSettingsComponent;
   let fixture: ComponentFixture<ProfileSettingsComponent>;
 
@@ -73,17 +73,20 @@ describe('NotificationSettingsComponent', () => {
   })
 
   // Clicking save button should call component's saveProfile() method
-  it('should call component.saveProfile() when button is clicked', () => {
+  it('should call component.saveProfile() when button is clicked', async () => {
     spyOn(component, 'saveProfile');
+    await fixture.whenStable();
+    fixture.detectChanges();
 
     const submitButton = fixture.debugElement.nativeElement.querySelector('button[type="submit"]');
     submitButton.click();
 
+    expect(submitButton.disabled).toBeFalse();
     expect(component.saveProfile).toHaveBeenCalledOnceWith();
   })
 
   // Component save method should call settings service save method with appropriate arguments
-  it('should call SettingsService.updateNotificationSettings() when component.saveNotifications() is called', () => {
+  it('should call applicable SettingsService methods when component.saveNotifications() is called', () => {
     component.preferredName = "Michael";
     component.personalEmail = "mpikula@gmail.com";
     component.schoolEmail = "m@email.sc.edu";  // This should not be saved
