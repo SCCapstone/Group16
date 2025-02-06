@@ -112,13 +112,28 @@ public class RequestHandler {
      */
     @CrossOrigin
     @PostMapping("/api/createAssignmentWithoutId")
-    public static boolean addAssignmentWithoutId(@RequestParam(value = "title", defaultValue = "NULL") String title,
-                                                 @RequestParam(value = "description", defaultValue = "NULL") String description, 
-                                                 @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
-                                                 @RequestParam(value = "userId", defaultValue = "NULL") String userId, 
-                                                 @RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
+    public boolean addAssignmentWithoutId(@RequestParam(value = "title", defaultValue = "NULL") String title,
+                                          @RequestParam(value = "description", defaultValue = "NULL") String description, 
+                                          @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
+                                          @RequestParam(value = "userId", defaultValue = "NULL") String userId, 
+                                          @RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
         if(title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL") || userId == null || userId.equals("NULL") || courseId == null || courseId.equals("NULL")) 
             return false;
+
+        if(!scraper.isUserId(userId) || !scraper.isCourseId(courseId))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course ID or assignment ID is invalid");
+
+        // Search for existing Assignment.
+        var assignments = scraper.getAssignments(userId);
+        System.out.println("DEBUG: Assignments: ");
+        for (Assignment assignment : assignments) {
+            System.out.println(assignment.getTitle());
+            if (assignment.getCourseId().equals(courseId) && assignment.getTitle().equalsIgnoreCase(title)) {
+                // Assignment already exists. Returning HTTP error.
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Assignment already exists");
+            }
+        }
+
         boolean userCreated = true;
         var assignment = new Assignment(userId, courseId, title, description, dueDate, userCreated);
         var objectMapper = new ObjectMapper();
@@ -353,6 +368,15 @@ public class RequestHandler {
         
         if(!scraper.isUserId(userId) || !scraper.isCourseId(courseId) || !scraper.isAssignmentId(assignmentId))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course ID or assignment ID is invalid");
+        
+        var grades = scraper.getGrades(userId);
+        for (Grade grade : grades) {
+            if (grade.getCourseId().equals(courseId) && grade.getAssignmentId().equals(assignmentId)) {
+                // Grade already exists. Returning HTTP error.
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Grade already exists");
+            }
+        }
+
         Grade grade = new Grade(userId, courseId, assignmentId, percent);
         return scraper.saveGrade(grade);
     }
