@@ -1,19 +1,16 @@
 <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="profile-settings">
-    <label>
-        
-        <label for="preferred-name">Preferred Name:</label>
-        <input type="text" id="preferred-name" formControlName="name"/>
+    <label for="preferred-name">Preferred Name:</label>
+    <input type="text" id="preferred-name" formControlName="name"/>
 
-        <label for="school-email">University Email:</label>
-        <input type="email" id="school-email" formControlName="school"/>
+    <label for="school-email">University Email:</label>
+    <input type="email" id="school-email" formControlName="school"/>
 
-        <label for="personal-email">Personal Email:</label>
-        <input type="email" id="personal-email" formControlName="personal"/>
+    <label for="personal-email">Personal Email:</label>
+    <input type="email" id="personal-email" formControlName="personal"/>
 
-        <label for="phone-number">Phone Number:</label>
-        <input type="tel" id="phone-number" formControlName="phone"/>
+    <label for="phone-number">Phone Number:</label>
+    <input type="tel" id="phone-number" formControlName="phone"/>
 
-        <button type="submit" [disabled]="!this.profileForm.valid">Save</button>
-    </label>
+    <button type="submit" [disabled]="!this.profileForm.valid">Save</button>
 </form>
 
