@@ -151,6 +151,39 @@ public class RequestHandler {
     }
 
     /**
+     * Edit Assignment's Details
+     * @param userId
+     * @return
+     */
+    @CrossOrigin
+    @PostMapping("/api/editAssignment")
+    public boolean editAssignment(@RequestParam(value = "userId", defaultValue = "NULL") String userId, 
+                                  @RequestParam(value = "courseId", defaultValue = "NULL") String courseId, 
+                                  @RequestParam(value = "assignmentId", defaultValue = "NULL") String assignmentId, 
+                                  @RequestParam(value = "title", defaultValue = "NULL") String title, 
+                                  @RequestParam(value = "description", defaultValue = "NULL") String description, 
+                                  @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate) {
+        if(title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL") || userId == null || userId.equals("NULL") || courseId == null || courseId.equals("NULL") || assignmentId == null || assignmentId.equals("NULL")) 
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID, course ID, or assignment ID is missing or invalid");
+
+        if(!scraper.isUserId(userId) || !scraper.isCourseId(courseId) || !scraper.isAssignmentId(assignmentId))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course ID or assignment ID is invalid");
+
+        var assignment = scraper.findByAssignmentId(assignmentId);
+        if(assignment == null) 
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No assignments found for this ID");
+        if(!assignment.getUserId().equals(userId))
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Assignment does not match given user ID");
+        if(!assignment.isUserCreated())
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User does not have permission to edit this assignment");
+
+        // Modify the assignment
+        assignment.editAssignment(title, description, dueDate);
+
+        return scraper.saveAssignment(assignment);
+    }
+
+    /**
      * Get all assignments from the database
      * @param userId the user's ID
      * @return a ArrayList of all assignments

@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -24,6 +25,12 @@ public class Assignment {
         setUserId(userId);
         setCourseId(courseId);
         this.userCreated = userCreated;
+    }
+    public boolean editAssignment(String title, String description, String dueDate) {
+        setTitle(title);
+        setDescription(description);
+        setDueDate(dueDate);
+        return true;
     }
     @Id
     public String id;
