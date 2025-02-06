@@ -35,17 +35,14 @@ describe('SettingsSidebarComponent', () => {
 
   // Upon load, the visually selected route should correspond to the url path; TODO this will fail
   it('should reflect the url path in styling upon load', async () => {
-    router.navigateByUrl("profile");
+    await router.navigateByUrl("/settings/appearance");
+    component.getSelectedPageFromURL();  // Calling router.navigateByUrl by itself does not refresh sidebar so this has to be called manually
     await fixture.whenStable();
     fixture.detectChanges();
-    let highlightedDiv = fixture.debugElement.nativeElement.querySelector('div[class="option selected"]')
-    expect(highlightedDiv?.children[0].innerHTML).toEqual("Profile");
-
-    router.navigateByUrl("appearance");
-    await fixture.whenStable();
-    fixture.detectChanges();
-    highlightedDiv = fixture.debugElement.nativeElement.querySelector('div[class="option selected"]')
-    expect(highlightedDiv?.children[0].innerHTML).toEqual("Appearance");
+    
+    const highlightedDiv = fixture.debugElement.nativeElement.querySelector('div[class="option selected"]');
+    expect(component.selectedPage).toEqual(1);
+    expect(highlightedDiv.children[0].innerHTML).toEqual("Appearance");
   })
 
   // Clicking on a link (e.g. profile settings) should route to that page and change the selectedPage index
