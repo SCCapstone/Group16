@@ -107,4 +107,26 @@ export class AssignmentService {
         throw error;
       }
     }
+
+    async openTask(assignmentId: string | null) {
+      const queryParams = new URLSearchParams({
+        assignmentId: assignmentId ?? "NULL"
+      }).toString();
+
+      console.log(queryParams);
+      try {
+        const response = await fetch(`${this.url}openAssignment?${queryParams}`, {
+          method: 'PUT'
+        });
+
+        if(!response.ok) {
+          throw new Error(`PUT failed: ${response.status}`)
+        }
+
+        console.log(response);
+      } catch (error: any) {
+        console.error('Error completing task:', error);
+        throw error;
+      }
+    }
 }
