@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.server.ResponseStatusException;
 
 import group16.be.db.Assignment;
@@ -27,8 +28,11 @@ public class ModifyDatabaseTests {
     private final String MOCK_ASSIGNMENTID = "91011";
     private final String MOCK_GRADEID = "121314";
     private final String MOCK_TITLE = "Title";
+    private final String MOCK_TITLE2 = "Title2";
     private final String MOCK_DESCRIPTION = "Description";
+    private final String MOCK_DESCRIPTION2 = "Description2";
     private final String MOCK_DUEDATE = "Due Date";
+    private final String MOCK_DUEDATE2 = "Due Date2";
     
     @MockBean
     private AssignmentRepository assignmentRepo;
@@ -70,6 +74,20 @@ public class ModifyDatabaseTests {
         });
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         assertEquals(exception.getReason(), "Assignment already exists");
+    }
+
+    @Async
+    @Test
+    void testEditAssignment() {
+        Mockito.when(scraper.saveAssignment(Mockito.any(Assignment.class))).thenReturn(true);
+        
+        // Essentually, you make a fake assignment, declare a mockito return on getID to be the fake assignment, modify it and assert the new data is true.
+        var assignment = new Assignment(MOCK_USERID, MOCK_COURSEID, MOCK_TITLE, MOCK_DESCRIPTION, MOCK_DUEDATE, true);
+        Mockito.when(scraper.findByAssignmentId(MOCK_ASSIGNMENTID)).thenReturn(assignment);
+        assertTrue(requestHandler.editAssignment(MOCK_USERID, MOCK_COURSEID, MOCK_ASSIGNMENTID, MOCK_TITLE2, MOCK_DESCRIPTION2, MOCK_DUEDATE2));
+        assertEquals(assignment.getTitle(), MOCK_TITLE2);
+        assertEquals(assignment.getDescription(), MOCK_DESCRIPTION2);
+        assertEquals(assignment.getDueDate(), MOCK_DUEDATE2);        
     }
 
     @Test
