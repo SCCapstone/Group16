@@ -91,6 +91,7 @@ public class RequestHandler {
      * @return if the assignment was successfully marked as complete
      * @Unimplemented This method is not yet implemented.
      */
+    @CrossOrigin
     @PutMapping("/api/completeAssignment")
     public boolean completeAssignment(@RequestParam(value = "assID", defaultValue = "NULL") String assID) {
         if(assID == null || assID.equals("NULL")) 
@@ -98,6 +99,24 @@ public class RequestHandler {
         //pass the assignment ID to the database to mark the assignment as completed
         if(!setAssignmentComplete(assID, true))
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not complete assignment");
+        // return false;
+        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Function not implemented");
+    }
+
+    /**
+     * This method is to uncomplete assignments that are user made or not yet marked complete by blackboard
+     * @param assID
+     * @param isComplete
+     * @return
+     */
+    @CrossOrigin
+    @PutMapping("/api/openAssignment")
+    public boolean openAssignment(@RequestParam(value = "assID", defaultValue = "NULL") String assID) {
+        if(assID == null || assID.equals("NULL")) 
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
+        //pass the assignment ID to the database to mark the assignment as incomplete
+        if(!setAssignmentComplete(assID, false))
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not open assignment");
         // return false;
         throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Function not implemented");
     }
