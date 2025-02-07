@@ -1,3 +1,4 @@
 .vscode/settings.json
 Environment.*
 .DS_Store
+/node_modules
