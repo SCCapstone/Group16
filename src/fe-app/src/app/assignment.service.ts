@@ -86,9 +86,8 @@ export class AssignmentService {
       }
     }
 
-    async completeTask(userId: string| null, assignmentId: string | null) {
+    async completeTask(assignmentId: string | null) {
       const queryParams = new URLSearchParams({
-        userId: userId ?? "NULL",
         assignmentId: assignmentId ?? "NULL"
       }).toString();
 
