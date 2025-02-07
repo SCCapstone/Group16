@@ -17,10 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -92,13 +91,42 @@ public class RequestHandler {
      * @return if the assignment was successfully marked as complete
      * @Unimplemented This method is not yet implemented.
      */
+    @CrossOrigin
     @PutMapping("/api/completeAssignment")
-    public static boolean completeAssignment(@RequestParam(value = "assID", defaultValue = "NULL") String assID) {
+    public boolean completeAssignment(@RequestParam(value = "assID", defaultValue = "NULL") String assID) {
         if(assID == null || assID.equals("NULL")) 
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
         //pass the assignment ID to the database to mark the assignment as completed
+        if(!setAssignmentComplete(assID, true))
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not complete assignment");
         // return false;
         throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Function not implemented");
+    }
+
+    /**
+     * This method is to uncomplete assignments that are user made or not yet marked complete by blackboard
+     * @param assID
+     * @param isComplete
+     * @return
+     */
+    @CrossOrigin
+    @PutMapping("/api/openAssignment")
+    public boolean openAssignment(@RequestParam(value = "assID", defaultValue = "NULL") String assID) {
+        if(assID == null || assID.equals("NULL")) 
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
+        //pass the assignment ID to the database to mark the assignment as incomplete
+        if(!setAssignmentComplete(assID, false))
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not open assignment");
+        // return false;
+        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Function not implemented");
+    }
+
+    private boolean setAssignmentComplete(String assID, boolean isComplete) {
+        var ass = scraper.findByAssignmentId(assID);
+        if(ass == null || !ass.getId().equals(assID))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Assignment not found.");
+        ass.setComplete(isComplete);
+        return scraper.saveAssignment(ass);
     }
 
     /**

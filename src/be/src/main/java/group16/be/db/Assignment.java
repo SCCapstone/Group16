@@ -103,6 +103,13 @@ public class Assignment {
         availability.adaptiveRelease.setEnd(dueDate);
         return this;
     }
+    private boolean isComplete;
+    public boolean isComplete() {
+        return isComplete;
+    }
+    public void setComplete(boolean isComplete) {
+        this.isComplete = isComplete;
+    }
 
     public static class Availability {
         public String available;
