@@ -99,8 +99,7 @@ public class RequestHandler {
         //pass the assignment ID to the database to mark the assignment as completed
         if(!setAssignmentComplete(assID, true))
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not complete assignment");
-        // return false;
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Function not implemented");
+        return true;
     }
 
     /**
@@ -117,8 +116,7 @@ public class RequestHandler {
         //pass the assignment ID to the database to mark the assignment as incomplete
         if(!setAssignmentComplete(assID, false))
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not open assignment");
-        // return false;
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Function not implemented");
+        return true;
     }
 
     private boolean setAssignmentComplete(String assID, boolean isComplete) {
