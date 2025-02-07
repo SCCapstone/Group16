@@ -13,12 +13,12 @@ import { AssignmentService } from '../../../assignment.service'; // Ensure the p
 })
 export class TaskComponent {
   @Input() assignment!: Assignment;
-  
+
   constructor(private assignmentService: AssignmentService) {}
- 
+
   async toggleCompletion(assignment: Assignment) {
     console.log("clicked");
-    console.log(assignment.isComplete);
+    console.log('Before ' + assignment.complete);
     try {
       const assignmentId = assignment.id ?? null;
       console.log(assignmentId);
@@ -27,19 +27,19 @@ export class TaskComponent {
         console.error('Assignment ID is missing!');
         return;
       }
-  
-      if (assignment.isComplete) {
+
+      if (assignment.complete) {
         await this.assignmentService.openTask(assignmentId);
       } else {
         await this.assignmentService.completeTask(assignmentId);
       }
-      console.log(assignment.isComplete);
+      console.log('After ' + assignment.complete);
 
       //assignment.isComplete = !assignment.isComplete;
-  
+
     } catch (error) {
       console.error('Error toggling task completion:', error);
     }
   }
-  
+
 }

@@ -14,7 +14,7 @@ export interface Assignment {
       end: Date
     }
   },
-  isComplete?: boolean,
+  complete?: boolean,
   userCreated: boolean
 }
 

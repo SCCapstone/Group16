@@ -1,6 +1,6 @@
-<div class="assignment-row" [ngClass]="{'completed': assignment.isComplete}">
+<div class="assignment-row" [ngClass]="{'completed': assignment.complete}">
     <div class="assignment-column-complete">
-        <input type="checkbox" [(ngModel)]="assignment.isComplete" (click)="toggleCompletion(assignment)" />
+        <input type="checkbox" [(ngModel)]="assignment.complete" (click)="toggleCompletion(assignment)" />
     </div>
     <div class="assignment-column">{{ assignment.courseId }}</div>
     <div class="assignment-column">{{ assignment.title }}</div>

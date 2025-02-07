@@ -15,10 +15,10 @@ export class AssignmentService {
   async getAssignments(userId: string | null) : Promise<Assignment[]> {
     const response = await fetch(`${this.url}getAssignments?userId=${userId}`);
     const data = await response.json() ?? [];
-    const assignments: Assignment[] = data.map((assignment: Assignment) => ({
-      ...assignment,
-      completed: assignment.isComplete ?? false
-    }));
+    // const assignments: Assignment[] = data.map((assignment: Assignment) => ({
+    //   ...assignment,
+    //   completed: assignment.isComplete ?? false
+    // }));
 
     if(Array.isArray(data) && data.length === 0) {
       throw new Error('assignments are []');
