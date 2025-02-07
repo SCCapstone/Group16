@@ -2,13 +2,13 @@
     <div class="assignment-column-complete">
         <input type="checkbox" [(ngModel)]="assignment.complete" (click)="toggleCompletion(assignment)" />
     </div>
-    <div class="assignment-column">{{ assignment.courseId }}</div>
+    <div class="assignment-column">{{ courseName.split("-")[0] }}</div>
     <div class="assignment-column">{{ assignment.title }}</div>
     <div class="assignment-column"><a href="assignment link here">{{ assignment.description }}</a></div>
     <div class="assignment-column">{{ assignment.availability.adaptiveRelease.end | date }}</div>
     <div class="assignment-column-edit">
         <a href="edit task here">
-            <img src="images/pencil.png" alt="pencil icon" style="width: 25px; height: auto; margin-left: 15px;"/>
+            <img *ngIf="assignment.userCreated" src="images/pencil.png" alt="pencil icon" style="width: 25px; height: auto; margin-left: 15px;"/>
         </a>
     </div>
 </div>

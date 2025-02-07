@@ -125,7 +125,7 @@ export class AssignmentService {
 
         console.log(response);
       } catch (error: any) {
-        console.error('Error completing task:', error);
+        console.error('Error opening task:', error);
         throw error;
       }
     }

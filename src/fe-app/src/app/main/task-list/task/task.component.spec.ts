@@ -19,7 +19,7 @@ describe('TaskComponent', () => {
       title: 'Test Assignment',
       availability: {
         adaptiveRelease: {
-          end: 'date'
+          end: new Date() as Date
         }
       }
     } as any;

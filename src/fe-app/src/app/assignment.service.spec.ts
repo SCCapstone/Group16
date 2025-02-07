@@ -41,7 +41,7 @@ describe('AssignmentService', () => {
           end: new Date()
         }
       },
-      completed: false,
+      complete: false,
       userCreated: false
     }];
 
