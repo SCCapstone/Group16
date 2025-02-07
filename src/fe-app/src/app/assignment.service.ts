@@ -17,7 +17,7 @@ export class AssignmentService {
     const data = await response.json() ?? [];
     const assignments: Assignment[] = data.map((assignment: Assignment) => ({
       ...assignment,
-      completed: assignment.completed ?? false
+      completed: assignment.isComplete ?? false
     }));
 
     if(Array.isArray(data) && data.length === 0) {
@@ -88,7 +88,7 @@ export class AssignmentService {
 
     async completeTask(assignmentId: string | null) {
       const queryParams = new URLSearchParams({
-        assignmentId: assignmentId ?? "NULL"
+        assID: assignmentId ?? "NULL"
       }).toString();
 
       console.log(queryParams);
@@ -110,7 +110,7 @@ export class AssignmentService {
 
     async openTask(assignmentId: string | null) {
       const queryParams = new URLSearchParams({
-        assignmentId: assignmentId ?? "NULL"
+        assID: assignmentId ?? "NULL"
       }).toString();
 
       console.log(queryParams);
