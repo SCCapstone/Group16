@@ -1,9 +1,14 @@
-<p class="singleAssignment">
-    <span class = "courseID">CourseID: {{ assignment.courseId }}</span>
-    <span class = "assignmentTitle">{{ assignment.title }}</span>
-    <span class = "assignmentDescription"> {{ assignment.description }}</span>
-    <span class = "dueDate">{{ assignment.availability.adaptiveRelease.end }}</span>
-    <span class = "assignmentID">{{ assignment.id }}</span>
-</p>
-
-<!--i think this is lowkey useless-->
+<div class="assignment-row" [ngClass]="{'completed': assignment.completed}">
+    <div class="assignment-column-complete">
+        <input type="checkbox" [(ngModel)]="assignment.completed" />
+    </div>
+    <div class="assignment-column">{{ assignment.courseId }}</div>
+    <div class="assignment-column">{{ assignment.title }}</div>
+    <div class="assignment-column"><a href="assignment link here">{{ assignment.description }}</a></div>
+    <div class="assignment-column">{{ assignment.availability.adaptiveRelease.end | date }}</div>
+    <div class="assignment-column-edit">
+        <a href="edit task here">
+            <img src="images/pencil.png" alt="pencil icon" style="width: 25px; height: auto; margin-left: 15px;"/>
+        </a>
+    </div>
+</div>
