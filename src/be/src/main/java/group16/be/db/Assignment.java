@@ -26,10 +26,11 @@ public class Assignment {
         setCourseId(courseId);
         this.userCreated = userCreated;
     }
-    public boolean editAssignment(String title, String description, String dueDate) {
+    public boolean editAssignment(String title, String description, String dueDate, String courseId) {
         setTitle(title);
         setDescription(description);
         setDueDate(dueDate);
+        setCourseId(courseId);
         return true;
     }
     @Id
