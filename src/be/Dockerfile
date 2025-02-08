@@ -4,35 +4,33 @@ FROM ubuntu:jammy
 # Maintained by Cam Osterholt
 LABEL maintainer="Cam Osterholt"
 
-# Copy the JAR file to the container / Can make a ARG to access with ${}
-ADD ./target/be-0.2.jar be-0.2.jar
-
 # Set non-interactive mode to avoid prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Update package list and install dependencies
 RUN apt-get update && apt-get install -y \
     openjdk-17-jdk \
-    maven \
-    curl \
-    unzip \
     && rm -rf /var/lib/apt/lists/*
 
 # Set JAVA_HOME environment variable
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
-# Install Spring Boot CLI
-RUN curl -s https://get.sdkman.io | bash \
-    && bash -c "source $HOME/.sdkman/bin/sdkman-init.sh && sdk install springboot"
+WORKDIR /app
 
-# Verify installations
-RUN java -version && mvn -version && bash -c "source $HOME/.sdkman/bin/sdkman-init.sh && spring --version"
+# Copy the JAR file to the container
+ARG JAR_FILE=target/be-0.2.jar
+COPY ${JAR_FILE} app.jar
+
+# Expose the port the app runs on
+EXPOSE 1616
 
 # Set entrypoint to bash for interactive use
-#ENTRYPOINT ["/bin/bash"]
+# ENTRYPOINT ["/bin/bash"]
 
 # Set entrypoint to run the JAR file
-ENTRYPOINT ["java", "-jar", "be-0.2.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
 
-# TO RUN: 
+# TO BUILD: docker build -t classmate-api .
+# TO BUILD with unique jar: docker build --build-arg JAR_FILE=target/be-0.2.jar -t classmate-api .
+# TO RUN: docker run -p 1616:1616 classmate-api
