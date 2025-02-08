@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { AssignmentService } from '../../../assignment.service'; // Ensure the path is correct
 import { CourseService } from '../../../course.service';
 import { LoginService } from '../../../login.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-task',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './task.component.html',
   styleUrl: './task.component.css'
 })
