@@ -4,7 +4,7 @@ export interface Course {
 }
 
 export interface Assignment {
-  id?: string,
+  id?: string | null,
   userId: string,
   courseId: string,
   title: string,
@@ -14,7 +14,7 @@ export interface Assignment {
       end: Date
     }
   },
-  completed?: boolean,
+  complete?: boolean,
   userCreated: boolean
 }
 

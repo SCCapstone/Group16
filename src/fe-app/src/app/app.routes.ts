@@ -1,21 +1,18 @@
 import { Routes } from '@angular/router';
-
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { MainComponent } from './main/main.component';
 import { SettingsComponent } from './settings/settings.component';
 import { GradesComponent } from './grades/grades.component';
 import { NotificationsComponent } from './notifications/notifications.component';
-
-
 import { AddTaskComponent } from './main/add-task/add-task.component';  // TODO this and its route is temporary
-
 import { ProfileSettingsComponent } from './settings/profile-settings/profile-settings.component';
 import { AppearanceSettingsComponent } from './settings/appearance-settings/appearance-settings.component';
 import { NotificationSettingsComponent } from './settings/notification-settings/notification-settings.component';
 import { SignOutComponent } from './settings/sign-out/sign-out.component';
 import { CalendarComponent } from './main/calendar/calendar.component';
 import { TaskListComponent } from './main/task-list/task-list.component';
+import { EditTaskComponent } from './main/edit-task/edit-task.component';
 
 export const routes: Routes = [
   {
@@ -80,6 +77,11 @@ export const routes: Routes = [
     path: 'main/add-task',
     component: AddTaskComponent,
     title: 'Add Task'
+  },
+  {
+    path: 'main/edit-task/:id',
+    component: EditTaskComponent,
+    title: 'Edit Task'
   },
   {
     path: 'calendar',

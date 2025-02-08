@@ -1,0 +1,20 @@
+<form [formGroup]="editTaskForm" (ngSubmit)="editTask()">
+  <label for="title">Title:</label>
+  <input id="title" type="text" formControlName="title">
+
+  <label for="description">Description:</label>
+  <input id="description" type="text" formControlName="description">
+
+  <label for="due">Due Date:</label>
+  <input id="due" type="date" formControlName="due">
+
+  <label for="course">Course:</label>
+  <select id="course" formControlName="course">
+    <option value="" disabled></option>
+    <option *ngFor="let course of courses" [value]="course.id" [selected]="course.id === editTaskForm.value.course">
+      {{ course.name }}
+    </option>
+  </select>
+
+  <button type="submit">Edit Task</button>
+</form>

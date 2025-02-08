@@ -42,7 +42,13 @@ export class AddTaskComponent {
   }
 
   addTask() {
-    const dueDate = this.addTaskForm.value.due ? new Date(this.addTaskForm.value.due) : null;
+    let dueDate: Date | null = null;
+
+    if (this.addTaskForm.value.due) {
+      const selectedDate = new Date(this.addTaskForm.value.due);
+      selectedDate.setMinutes(selectedDate.getMinutes() + selectedDate.getTimezoneOffset()); // Adjust back to UTC
+      dueDate = selectedDate;
+    }
 
     this.assignmentService.addTask(
       this.addTaskForm.value.title ?? '',

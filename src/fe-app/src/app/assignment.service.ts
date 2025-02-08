@@ -4,7 +4,7 @@ import { Assignment } from './course';
 
 @Injectable({
   providedIn: 'root',
-  
+
 
 })
 export class AssignmentService {
@@ -15,10 +15,10 @@ export class AssignmentService {
   async getAssignments(userId: string | null) : Promise<Assignment[]> {
     const response = await fetch(`${this.url}getAssignments?userId=${userId}`);
     const data = await response.json() ?? [];
-    const assignments: Assignment[] = data.map((assignment: Assignment) => ({
-      ...assignment,
-      completed: assignment.completed ?? false
-    }));
+    // const assignments: Assignment[] = data.map((assignment: Assignment) => ({
+    //   ...assignment,
+    //   completed: assignment.isComplete ?? false
+    // }));
 
     if(Array.isArray(data) && data.length === 0) {
       throw new Error('assignments are []');
@@ -57,4 +57,76 @@ export class AssignmentService {
         throw error;
       }
   }
+
+  async editTask(title: string | null, description: string | null, dueDate: Date | null,
+    userId: string | null, courseId : string | null, assignmentId: string | null) {
+      const queryParams = new URLSearchParams({
+        userId: userId ?? "NULL",
+        courseId: courseId ?? "NULL",
+        assignmentId: assignmentId ?? "NULL",
+        title: title ?? "NULL",
+        description: description ?? "NULL",
+        dueDate: dueDate?.toISOString() ?? "NULL"
+      }).toString();
+
+      console.log(queryParams);
+      try {
+        const response = await fetch(`${this.url}editAssignment?${queryParams}`, {
+          method: 'PUT'
+        });
+
+        if(!response.ok) {
+          throw new Error(`PUT failed: ${response.status}`)
+        }
+
+        console.log(response);
+      } catch (error: any) {
+        console.error('Error editing task:', error);
+        throw error;
+      }
+    }
+
+    async completeTask(assignmentId: string | null) {
+      const queryParams = new URLSearchParams({
+        assID: assignmentId ?? "NULL"
+      }).toString();
+
+      console.log(queryParams);
+      try {
+        const response = await fetch(`${this.url}completeAssignment?${queryParams}`, {
+          method: 'PUT'
+        });
+
+        if(!response.ok) {
+          throw new Error(`PUT failed: ${response.status}`)
+        }
+
+        console.log(response);
+      } catch (error: any) {
+        console.error('Error completing task:', error);
+        throw error;
+      }
+    }
+
+    async openTask(assignmentId: string | null) {
+      const queryParams = new URLSearchParams({
+        assID: assignmentId ?? "NULL"
+      }).toString();
+
+      console.log(queryParams);
+      try {
+        const response = await fetch(`${this.url}openAssignment?${queryParams}`, {
+          method: 'PUT'
+        });
+
+        if(!response.ok) {
+          throw new Error(`PUT failed: ${response.status}`)
+        }
+
+        console.log(response);
+      } catch (error: any) {
+        console.error('Error opening task:', error);
+        throw error;
+      }
+    }
 }
