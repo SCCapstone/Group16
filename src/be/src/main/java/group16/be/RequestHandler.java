@@ -188,8 +188,7 @@ public class RequestHandler {
                                   @RequestParam(value = "assignmentId", defaultValue = "NULL") String assignmentId, 
                                   @RequestParam(value = "title", defaultValue = "NULL") String title, 
                                   @RequestParam(value = "description", defaultValue = "NULL") String description, 
-                                  @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
-                                  @RequestParam(value = "newCourseId", defaultValue = "NULL") String newCourseId) {
+                                  @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate) {
         if(title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL") || userId == null || userId.equals("NULL") || courseId == null || courseId.equals("NULL") || assignmentId == null || assignmentId.equals("NULL")) 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID, course ID, or assignment ID is missing or invalid");
 
@@ -205,7 +204,7 @@ public class RequestHandler {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User does not have permission to edit this assignment");
 
         // Modify the assignment
-        assignment.editAssignment(title, description, dueDate, newCourseId);
+        assignment.editAssignment(title, description, dueDate, courseId);
 
         return scraper.saveAssignment(assignment);
     }

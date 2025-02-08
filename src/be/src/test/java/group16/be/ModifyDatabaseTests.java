@@ -84,7 +84,7 @@ public class ModifyDatabaseTests {
         // Essentually, you make a fake assignment, declare a mockito return on getID to be the fake assignment, modify it and assert the new data is true.
         var assignment = new Assignment(MOCK_USERID, MOCK_COURSEID, MOCK_TITLE, MOCK_DESCRIPTION, MOCK_DUEDATE, true);
         Mockito.when(scraper.findByAssignmentId(MOCK_ASSIGNMENTID)).thenReturn(assignment);
-        assertTrue(requestHandler.editAssignment(MOCK_USERID, MOCK_COURSEID, MOCK_ASSIGNMENTID, MOCK_TITLE2, MOCK_DESCRIPTION2, MOCK_DUEDATE2, MOCK_COURSEID));
+        assertTrue(requestHandler.editAssignment(MOCK_USERID, MOCK_COURSEID, MOCK_ASSIGNMENTID, MOCK_TITLE2, MOCK_DESCRIPTION2, MOCK_DUEDATE2));
         assertEquals(assignment.getTitle(), MOCK_TITLE2);
         assertEquals(assignment.getDescription(), MOCK_DESCRIPTION2);
         assertEquals(assignment.getDueDate(), MOCK_DUEDATE2);        
