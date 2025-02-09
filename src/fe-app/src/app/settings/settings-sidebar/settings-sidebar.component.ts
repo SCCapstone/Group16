@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { inject } from '@angular/core';
 
 @Component({
   selector: 'app-settings-sidebar',
@@ -12,9 +13,29 @@ import { RouterModule } from '@angular/router';
 export class SettingsSidebarComponent
 {
   selectedPage: number = 0  // For CSS styling
+
+  router = inject(Router);
   
-  // TODO handle reload or user moving to page directly via url, currently always starts on profile
-  constructor() {}
+  constructor() {
+    this.getSelectedPageFromURL();
+  }
+
+  getSelectedPageFromURL() {
+    switch (this.router.url) {
+      case ("/settings/appearance"):
+        this.selectedPage = 1;
+        break;
+      case ("/settings/notifications"):
+        this.selectedPage = 2;
+        break;
+      case ("/settings/sign-out"):
+        this.selectedPage = 3;
+        break;
+      default:
+        this.router.navigateByUrl("/settings/profile");
+        this.selectedPage = 0;
+    }
+  }
 
   selectPage(index: number) {
     this.selectedPage = index;

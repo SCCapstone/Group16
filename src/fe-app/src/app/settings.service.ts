@@ -25,13 +25,16 @@ export class SettingsService {
     throw error;
   }
 
-  async toggleEmailNotifications(userId: string | null): Promise<void> {
+  async updateNotificationSettings(userId: string | null, schoolEmail: boolean, personalEmail: boolean, sms: boolean): Promise<void> {
     const queryParams = new URLSearchParams({
-      userId: userId ?? "NULL"
+      userId: userId ?? "NULL",
+      email: String(personalEmail) ?? "NULL",
+      sms: String(sms) ?? "NULL",
+      institutionEmail: String(schoolEmail) ?? "NULL"
     }).toString();
 
     try {
-      const response = await fetch(`${this.url}toggleEmailNotifications?${queryParams}`, {
+      const response = await fetch(`${this.url}updateNotificationSettings?${queryParams}`, {
         method: 'POST'
       });
 
@@ -41,49 +44,7 @@ export class SettingsService {
 
       console.log(response);
     } catch (error: any) {
-      console.error('Error updating Email Notifications:', error);
-      throw error;
-    }
-  }
-
-  async toggleInstitutionEmailNotifications(userId: string | null): Promise<void> {
-    const queryParams = new URLSearchParams({
-      userId: userId ?? "NULL"
-    }).toString();
-
-    try {
-      const response = await fetch(`${this.url}toggleInstitutionEmailNotifications?${queryParams}`, {
-        method: 'POST'
-      });
-
-      if(!response.ok) {
-        throw new Error(`POST failed: ${response.status}`);
-      }
-
-      console.log(response);
-    } catch (error: any) {
-      console.error('Error updating Institution Email Notifications:', error);
-      throw error;
-    }
-  }
-
-  async toggleSmsNotifications(userId: string | null): Promise<void> {
-    const queryParams = new URLSearchParams({
-      userId: userId ?? "NULL"
-    }).toString();
-
-    try {
-      const response = await fetch(`${this.url}toggleSmsNotifications?${queryParams}`, {
-        method: 'POST'
-      });
-
-      if(!response.ok) {
-        throw new Error(`POST failed: ${response.status}`);
-      }
-
-      console.log(response);
-    } catch (error: any) {
-      console.error('Error updating SMS Notifications:', error);
+      console.error('Error updating notification settings:', error);
       throw error;
     }
   }

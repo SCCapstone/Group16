@@ -17,10 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -92,13 +91,40 @@ public class RequestHandler {
      * @return if the assignment was successfully marked as complete
      * @Unimplemented This method is not yet implemented.
      */
+    @CrossOrigin
     @PutMapping("/api/completeAssignment")
-    public static boolean completeAssignment(@RequestParam(value = "assID", defaultValue = "NULL") String assID) {
+    public boolean completeAssignment(@RequestParam(value = "assID", defaultValue = "NULL") String assID) {
         if(assID == null || assID.equals("NULL")) 
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
         //pass the assignment ID to the database to mark the assignment as completed
-        // return false;
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Function not implemented");
+        if(!setAssignmentComplete(assID, true))
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not complete assignment");
+        return true;
+    }
+
+    /**
+     * This method is to uncomplete assignments that are user made or not yet marked complete by blackboard
+     * @param assID
+     * @param isComplete
+     * @return
+     */
+    @CrossOrigin
+    @PutMapping("/api/openAssignment")
+    public boolean openAssignment(@RequestParam(value = "assID", defaultValue = "NULL") String assID) {
+        if(assID == null || assID.equals("NULL")) 
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
+        //pass the assignment ID to the database to mark the assignment as incomplete
+        if(!setAssignmentComplete(assID, false))
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not open assignment");
+        return true;
+    }
+
+    private boolean setAssignmentComplete(String assID, boolean isComplete) {
+        var ass = scraper.findByAssignmentId(assID);
+        if(ass == null || !ass.getId().equals(assID))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Assignment not found.");
+        ass.setComplete(isComplete);
+        return scraper.saveAssignment(ass);
     }
 
     /**
@@ -112,13 +138,28 @@ public class RequestHandler {
      */
     @CrossOrigin
     @PostMapping("/api/createAssignmentWithoutId")
-    public static boolean addAssignmentWithoutId(@RequestParam(value = "title", defaultValue = "NULL") String title,
-                                                 @RequestParam(value = "description", defaultValue = "NULL") String description, 
-                                                 @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
-                                                 @RequestParam(value = "userId", defaultValue = "NULL") String userId, 
-                                                 @RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
+    public boolean addAssignmentWithoutId(@RequestParam(value = "title", defaultValue = "NULL") String title,
+                                          @RequestParam(value = "description", defaultValue = "NULL") String description, 
+                                          @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate,
+                                          @RequestParam(value = "userId", defaultValue = "NULL") String userId, 
+                                          @RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
         if(title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL") || userId == null || userId.equals("NULL") || courseId == null || courseId.equals("NULL")) 
             return false;
+
+        if(!scraper.isUserId(userId) || !scraper.isCourseId(courseId))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course ID or assignment ID is invalid");
+
+        // Search for existing Assignment.
+        var assignments = scraper.getAssignments(userId);
+        System.out.println("DEBUG: Assignments: ");
+        for (Assignment assignment : assignments) {
+            System.out.println(assignment.getTitle());
+            if (assignment.getCourseId().equals(courseId) && assignment.getTitle().equalsIgnoreCase(title)) {
+                // Assignment already exists. Returning HTTP error.
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Assignment already exists");
+            }
+        }
+
         boolean userCreated = true;
         var assignment = new Assignment(userId, courseId, title, description, dueDate, userCreated);
         var objectMapper = new ObjectMapper();
@@ -133,6 +174,39 @@ public class RequestHandler {
             e.printStackTrace();
             return false;
         }
+    }
+
+    /**
+     * Edit Assignment's Details
+     * @param userId
+     * @return
+     */
+    @CrossOrigin
+    @PutMapping("/api/editAssignment")
+    public boolean editAssignment(@RequestParam(value = "userId", defaultValue = "NULL") String userId, 
+                                  @RequestParam(value = "courseId", defaultValue = "NULL") String courseId, 
+                                  @RequestParam(value = "assignmentId", defaultValue = "NULL") String assignmentId, 
+                                  @RequestParam(value = "title", defaultValue = "NULL") String title, 
+                                  @RequestParam(value = "description", defaultValue = "NULL") String description, 
+                                  @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate) {
+        if(title == null || title.equals("NULL") || dueDate == null || dueDate.equals("NULL") || userId == null || userId.equals("NULL") || courseId == null || courseId.equals("NULL") || assignmentId == null || assignmentId.equals("NULL")) 
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID, course ID, or assignment ID is missing or invalid");
+
+        if(!scraper.isUserId(userId) || !scraper.isCourseId(courseId) || !scraper.isAssignmentId(assignmentId))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course ID or assignment ID is invalid");
+
+        var assignment = scraper.findByAssignmentId(assignmentId);
+        if(assignment == null) 
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No assignments found for this ID");
+        if(!assignment.getUserId().equals(userId))
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Assignment does not match given user ID");
+        if(!assignment.isUserCreated())
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User does not have permission to edit this assignment");
+
+        // Modify the assignment
+        assignment.editAssignment(title, description, dueDate, courseId);
+
+        return scraper.saveAssignment(assignment);
     }
 
     /**
@@ -266,44 +340,16 @@ public class RequestHandler {
     }
 
     /**
-     * This method is to toggle the user's email notifications, the user ID is the only parameter as it toggles the saved value from mongo
+     * Save notifications settings for a user
      * @param userId the user's ID
-     * @return True if the email notifications were successfully toggled
-     * @throws ResponseStatusException if the user ID is missing or invalid, if the user is not found, or if there are multiple users with the same ID
+     * @return True if the notification settings were successfully saved
      */
     @CrossOrigin
-    @PostMapping("/api/toggleEmailNotifications")
-    public boolean toggleEmailNotifications(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
+    @PostMapping("/api/updateNotificationSettings")
+    public boolean updateNotificationSettings(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "email", defaultValue = "NULL") boolean email, @RequestParam(value = "sms", defaultValue = "NULL") boolean sms, @RequestParam(value = "institutionEmail", defaultValue = "NULL") boolean institutionEmail) {
+        System.out.println("DEBUG: updateNotificationSettings User ID: " + userId + " Email: " + email + " SMS: " + sms + " Institution Email: " + institutionEmail);
         User user = getUser(userId);
-        user.toggleEmailNotifications();
-        return scraper.saveUser(user);
-    }
-
-    /**
-     * This method is to toggle the user's institution email notifications, the user ID is the only parameter as it toggles the saved value from mongo
-     * @param userId the user's ID
-     * @return True if the institution email notifications were successfully toggled
-     * @throws ResponseStatusException if the user ID is missing or invalid, if the user is not found, or if there are multiple users with the same ID
-     */
-    @CrossOrigin
-    @PostMapping("/api/toggleInstitutionEmailNotifications")
-    public boolean toggleInstitutionEmailNotifications(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
-        User user = getUser(userId);
-        user.toggleInstitutionEmailNotifications();
-        return scraper.saveUser(user);
-    }
-
-    /**
-     * This method is to toggle the user's SMS notifications, the user ID is the only parameter as it toggles the saved value from mongo
-     * @param userId the user's ID
-     * @return True if the SMS notifications were successfully toggled
-     * @throws ResponseStatusException if the user ID is missing or invalid, if the user is not found, or if there are multiple users with the same ID
-     */
-    @CrossOrigin
-    @PostMapping("/api/toggleSmsNotifications")
-    public boolean toggleSmsNotifications(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
-        User user = getUser(userId);
-        user.toggleSmsNotifications();
+        user.setNotificationSettings(email, sms, institutionEmail);
         return scraper.saveUser(user);
     }
 
@@ -381,6 +427,15 @@ public class RequestHandler {
         
         if(!scraper.isUserId(userId) || !scraper.isCourseId(courseId) || !scraper.isAssignmentId(assignmentId))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course ID or assignment ID is invalid");
+        
+        var grades = scraper.getGrades(userId);
+        for (Grade grade : grades) {
+            if (grade.getCourseId().equals(courseId) && grade.getAssignmentId().equals(assignmentId)) {
+                // Grade already exists. Returning HTTP error.
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Grade already exists");
+            }
+        }
+
         Grade grade = new Grade(userId, courseId, assignmentId, percent);
         return scraper.saveGrade(grade);
     }

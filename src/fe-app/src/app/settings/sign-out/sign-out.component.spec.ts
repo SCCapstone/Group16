@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SignOutComponent } from './sign-out.component';
+
 import { LoginService } from '../../login.service';
 import { Router, ActivatedRoute } from '@angular/router';
 

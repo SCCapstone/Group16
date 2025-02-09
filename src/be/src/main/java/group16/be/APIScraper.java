@@ -3,6 +3,12 @@ package group16.be;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import com.mongodb.MongoClientException;
+
 import group16.be.db.Assignment;
 import group16.be.db.AssignmentRepository;
 import group16.be.db.Course;
@@ -10,15 +16,8 @@ import group16.be.db.CourseRepository;
 import group16.be.db.Grade;
 import group16.be.db.GradeRepository;
 import group16.be.db.User;
-import group16.be.db.UserRepository;
 import group16.be.db.User.CourseId;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.expression.spel.ast.Assign;
-import org.springframework.stereotype.Component;
-
-import com.mongodb.MongoClientException;
+import group16.be.db.UserRepository;
 
 @Component
 public class APIScraper implements CommandLineRunner {
@@ -114,6 +113,33 @@ public class APIScraper implements CommandLineRunner {
         return assignments;
     }
 
+    /**
+     * THis method is to get the user's assignment by assignmentId
+     * @param uID
+     * @return
+     */
+    public Assignment findByAssignmentId(String aID) {
+        // if(uID == null || uID.length() == 0) {
+        //     System.out.println("Error: No user ID provided");
+        //     var assignment = new Assignment();
+        //     return assignment;
+        // }
+        if(aID == null || aID.length() == 0) {
+            System.out.println("Error: No assignment ID provided");
+            var assignment = new Assignment();
+            return assignment;
+        }
+        var assignment = new Assignment();
+        try{
+            assignment = assignmentRepo.findByAssignmentId(aID);
+        } catch (Exception e) {
+            System.out.println("getAssignment() Error: No user with that ID");
+            e.printStackTrace();
+            return null;
+        }
+        return assignment;
+    }
+
     public ArrayList<User> getUser(String uID) {
         if(uID == null || uID.length() == 0) {
             System.out.println("Error: No user ID provided");
@@ -171,6 +197,19 @@ public class APIScraper implements CommandLineRunner {
         }
     }
 
+    public boolean saveAssignment(Assignment assignment) {
+        try {
+            assignmentRepo.save(assignment);
+            return true;
+        } catch(MongoClientException e) {
+            e.printStackTrace();
+            return false;
+        } catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean saveGrade(Grade grade) {
         try {
             gradeRepo.save(grade);
@@ -186,15 +225,31 @@ public class APIScraper implements CommandLineRunner {
 
 
     public boolean isUserId(String userId) {
-        var users = userRepo.findUserByUserId(userId);
-        return users.size() == 1;
+        if(userId == null || userId.length() == 0) 
+            return false;
+        try {
+            var users = userRepo.findUserByUserId(userId);
+            return users.size() == 1;
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean isCourseId(String courseId) {
-        return courseRepo.findByCourseId(courseId) != null;
+        if(courseId == null || courseId.length() == 0) 
+            return false;
+        try {
+            return courseRepo.findByCourseId(courseId) != null;
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean isAssignmentId(String assignmentId) {
+        if(assignmentId == null || assignmentId.length() == 0) 
+            return false;
         return assignmentRepo.findByAssignmentId(assignmentId) != null;
     }
 

@@ -1,0 +1,20 @@
+form div {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+input, select {
+  margin-left: 10px;
+}
+
+button {
+  display: block;
+  margin-top: 10px;
+  margin-left: 10px;
+}

@@ -13,10 +13,8 @@
     <div class="col-md-auto">
         <button class="btn btn-primary bg-gradient col-md-auto" routerLink="/main/add-task">TEST ADD TASK</button>
     </div>
-    <!--<button routerLink="/settings">Settings</button>-->
+    
 </div>
-
-
 
 <div class="main row bg-secondary mt-2">
 
@@ -31,19 +29,14 @@
     <div class="task-info col-9">
             <div class = "selectOptions row my-5">
                 <div class="col-md-auto">
-                    <a class="btn btn-danger bg-gradient" href = "/calendar" ><h2>CALENDAR</h2></a>
+                    <a class="btn btn-danger bg-gradient" routerLink="calendar"><h2>CALENDAR</h2></a>
                 </div>
                 <div class="col-md-auto">
-                    <a class="btn  btn-danger bg-gradient" href = "/task-list"style = "width:100%"><h2>TASK-LIST</h2></a> <!--i know these don't do/go where we want yet just wanted to make them clickable-->
+                    <a class="btn  btn-danger bg-gradient" routerLink="task-list" style="width:100%"><h2>TASK-LIST</h2></a>
                 </div>
         </div>
         <div class="main-view row bg-light">
-            @if (viewSelect === 0) {
-                <p>calendar view goes here</p>
-            }
-            @else if (viewSelect === 1) {
-                <app-task-list />
-            }
+            <router-outlet />
         </div>
     </div>
 </div>
