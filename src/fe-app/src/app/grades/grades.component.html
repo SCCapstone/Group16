@@ -1,7 +1,28 @@
-<p>grades works!</p>
-<table>
-  <tr *ngFor="let grade of grades">
-      <td><h1>{{grade.gradeChar}}</h1></td>
-  </tr>
-</table>
-<button routerLink="/main">Back to Main Page</button>
+<div class="container py-5">
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Course ID</th>
+        <th scope="col">Grade</th>
+        <th scope="col">Percent</th>
+        <th scope="col"></th>
+        <th scope="col"></th> 
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let grade of grades">
+        <td>{{grade.courseId}}</td>
+        <td>{{grade.gradeChar}}</td>
+        <td>{{grade.percent}}%</td>
+        <td>
+          <button class="btn btn-warning">Edit</button>
+        </td>
+        <td>
+          <button class="btn btn-danger">Delete</button>
+        </td>
+    </tr>
+    </tbody>
+  </table>
+  <button class="btn btn-primary mx-5">Add Grade</button>
+  <button class="btn btn-primary mx-5" routerLink="/main">Back to Main Page</button>
+</div>
