@@ -16,6 +16,7 @@ import { Assignment } from '../../course';
 })
 export class CalendarComponent {
   weekStart: Date;
+  pageNumber: number;
   assignments: Assignment[] = [];
   weekAssignments: Assignment[][] = [[], [], [], [], [], [], []];
 
@@ -25,20 +26,19 @@ export class CalendarComponent {
 
   constructor() {
     this.weekStart = this.getWeekStart(new Date(Date.now()));
+    this.pageNumber = 0;
     this.assignmentService.getAssignments(this.loginService.getUserId()).then((assignments) => {
       this.assignments = assignments;
 
-      // Turn assignment date strings into date objects
+      // Turn assignment date strings into date objects and sort entire list by date
       for (let assignment of this.assignments) {
         assignment.availability.adaptiveRelease.end = new Date(assignment.availability.adaptiveRelease.end)
       }
+      this.assignments.sort((a: Assignment, b: Assignment) => {
+        return (a.availability.adaptiveRelease.end.getTime() <= b.availability.adaptiveRelease.end.getTime() ? -1 : 1);
+      });
 
-      console.log("WEEK START: " + this.weekStart);
-      this.pageForward();
-      console.log("WEEK START: " + this.weekStart);
-      this.pageBack();
-      console.log("WEEK START: " + this.weekStart);
-      
+      this.organizeWeekAssignments();
     });
   }
 
@@ -51,16 +51,30 @@ export class CalendarComponent {
 
   // Organize assignments into a list of assignments in the current week
   organizeWeekAssignments() {
+    const millisecondsPerDay = 86400000;
+    for (const assignment of this.assignments) {
+      const difference = assignment.availability.adaptiveRelease.end.getTime() - this.weekStart.getTime();
+      
+      // Ignore options out of range (can break if too high because array was sorted in constructor)
+      if (difference < 0)
+        continue;
+      if (difference >= 7 * millisecondsPerDay)
+        break;
 
+      // Add assignment to array if it's in range based on the day it falls into
+      this.weekAssignments[difference / millisecondsPerDay].push(assignment);
+    }
   }
 
   pageForward() {
     this.weekStart.setDate(this.weekStart.getDate() + 7);
+    this.pageNumber++;
     this.organizeWeekAssignments();
   }
 
   pageBack() {
     this.weekStart.setDate(this.weekStart.getDate() - 7);
+    this.pageNumber--;
     this.organizeWeekAssignments();
   }
 }
