@@ -13,6 +13,7 @@ import { SignOutComponent } from './settings/sign-out/sign-out.component';
 import { CalendarComponent } from './main/calendar/calendar.component';
 import { TaskListComponent } from './main/task-list/task-list.component';
 import { EditTaskComponent } from './main/edit-task/edit-task.component';
+import { GradeCalcComponent } from './grades/grade-calc/grade-calc.component';
 
 export const routes: Routes = [
   {
@@ -92,5 +93,10 @@ export const routes: Routes = [
     path: 'task-list',
     component: TaskListComponent,
     title: 'Task-List'
+  },
+  {
+    path: 'grades/grade-calc',
+    component: GradeCalcComponent,
+    title: 'Grade-Calc'
   }
 ];

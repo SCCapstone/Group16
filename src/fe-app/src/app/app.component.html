@@ -8,10 +8,10 @@
         <a routerLink='/settings/profile'> <img src="images/settingsIcon.png" alt="settings icon" 
           style="width: 50px; height: auto;"/> </a>
         <a (click)="openPopup('notifications')"> <img src="images/notificationIcon.png" alt="notifications icon"
-          style="width: 55px; height: auto; padding-left: 1%;" />
-        </a>
+          style="width: 55px; height: auto; padding-left: 1%; margin-right: 13px;" /></a>
+        <a routerLink='/grades'> <img src="images/gradesIcon.png" alt="grades icon" 
+            style="width: 50px; height: auto;"/> </a>
       </div>
-
       <div *ngIf="showPopup" class="popup-modal">
         <div class="popup-content">
           <span class="close" (click)="closePopup()">&times;</span>
