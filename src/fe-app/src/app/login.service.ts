@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { User } from './user';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,7 @@ export class LoginService {
   readonly url = 'https://classmate.osterholt.us/api/';
   // url = 'localhost:1616/api/login';
 
+  private readonly PLATFORM_ID_ = inject(PLATFORM_ID)
   private readonly USER_ID_KEY = 'userId'; // stores userId for use in other components
 
   constructor() { }
@@ -38,7 +40,11 @@ export class LoginService {
   }
 
   getUserId(): string | null {
-    return sessionStorage.getItem(this.USER_ID_KEY);
+    
+    // I have no idea why this works
+    if (isPlatformBrowser(this.PLATFORM_ID_))
+      return sessionStorage.getItem(this.USER_ID_KEY);
+    return null;
   }
 
   signOut(): void { // to be used in signout later
