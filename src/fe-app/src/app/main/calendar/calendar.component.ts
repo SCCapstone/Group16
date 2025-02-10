@@ -18,7 +18,7 @@ export class CalendarComponent {
   weekStart: Date;
   pageNumber: number;
   assignments: Assignment[] = [];
-  weekAssignments: Assignment[][] = [[], [], [], [], [], [], []];
+  weekAssignments: Assignment[][] = [[], [], [], [], [], [], []];  // TODO can't find a way to do this with Array(...)?
 
   loginService = inject(LoginService);
   courseService = inject(CourseService);
@@ -39,6 +39,7 @@ export class CalendarComponent {
       });
 
       this.organizeWeekAssignments();
+      console.log(this.assignments);
     });
   }
 
@@ -67,12 +68,15 @@ export class CalendarComponent {
   }
 
   pageForward() {
+    this.weekAssignments = [[], [], [], [], [], [], []];
+    console.log(this.weekAssignments);
     this.weekStart.setDate(this.weekStart.getDate() + 7);
     this.pageNumber++;
     this.organizeWeekAssignments();
   }
 
   pageBack() {
+    this.weekAssignments = [[], [], [], [], [], [], []];
     this.weekStart.setDate(this.weekStart.getDate() - 7);
     this.pageNumber--;
     this.organizeWeekAssignments();
