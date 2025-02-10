@@ -1,29 +1,43 @@
 <p>{{ this.output }}</p> <!-- to be removed -->
-<button (click)="getUserId()">UserId Tester</button> <!-- to be removed -->
-<button routerLink="/login">Back to Login</button>
+<div class="container-fluid">
+<div class="row">
+    <div class="col-md-auto">
+        <button class="btn btn-primary bg-gradient" (click)="getUserId()">UserId Tester</button> <!-- to be removed -->
+    </div>
+    <div class="col-md-auto">
+        <button class="btn btn-primary bg-gradient col-md-auto" routerLink="/login">Back to Login</button>
+    </div>
+    <div class="col-md-auto">
+        <button class="btn btn-primary bg-gradient col-md-auto" routerLink="/grades">Grades</button>
+    </div>
+    <div class="col-md-auto">
+        <button class="btn btn-primary bg-gradient col-md-auto" routerLink="/main/add-task">TEST ADD TASK</button>
+    </div>
+    
+</div>
 
-<!--<button routerLink="/grades">Grades</button>-->
-<button routerLink="/main/add-task">TEST ADD TASK</button>
+<div class="main row bg-secondary mt-2">
 
-
-<div class="main">
-    <div class="sidebar">
-        <div class="courses">
+    <div class="sidebar col-3 bg-dark">
+        <div class="courses bg-light">
             <app-courses-sidebar></app-courses-sidebar>
         </div>
-        <div class="due-soon">
+        <div class="due-soon bg-light">
             <app-due-soon-sidebar></app-due-soon-sidebar>
         </div>
     </div>
-    <div class="task-info">
-        <div class="view-select">
-            <div class = "selectOptions">
-                <a routerLink="calendar"><h2>CALENDER</h2></a>
-                <a routerLink="task-list" style="width:100%"><h2>TASK-LIST</h2></a>
-            </div>
+    <div class="task-info col-9">
+            <div class = "selectOptions row my-5">
+                <div class="col-md-auto">
+                    <a class="btn btn-danger bg-gradient" routerLink="calendar"><h2>CALENDAR</h2></a>
+                </div>
+                <div class="col-md-auto">
+                    <a class="btn  btn-danger bg-gradient" routerLink="task-list" style="width:100%"><h2>TASK-LIST</h2></a>
+                </div>
         </div>
-        <div class="main-view">
+        <div class="main-view row bg-light">
             <router-outlet />
         </div>
     </div>
+</div>
 </div>
