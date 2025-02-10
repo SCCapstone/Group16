@@ -32,14 +32,15 @@ export class AppComponent {
     this.popupType = null;
   }
 
-  hideLogos(): boolean {
+  hide(): boolean {
     const hiddenRoutes = ['/', '/login'];
     return !hiddenRoutes.includes(this.router.url);
   }
+  
 
   headerRouting(): void {
     if(this.loginService.getUserId()) {
-      this.router.navigate(['/main']);
+      this.router.navigate(['/main/task-list']);
     } else {
       this.router.navigate(['/']);
     }

@@ -1,8 +1,9 @@
-header {
-    background: rgb(108, 164, 255);
-    height: 10vh;
-    margin: 0 /* doesn't do anything i hate css */
+
+
+header{
+  background-color: rgb(108, 164, 255);
 }
+
 
 section {
     height: 90vh;

@@ -1,0 +1,34 @@
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #2e2e2d;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: -50px;
+}
+  
+img {
+    width: 140%;
+    height: auto;
+}
+
+h1{
+    font-size: 45px;
+}
+
+button {
+    font-size: 20px;
+    padding: 15px 30px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 65px;
+}
+  
