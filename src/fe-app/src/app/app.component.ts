@@ -32,10 +32,11 @@ export class AppComponent {
     this.popupType = null;
   }
 
-  hideLogos(): boolean {
+  hide(): boolean {
     const hiddenRoutes = ['/', '/login'];
     return !hiddenRoutes.includes(this.router.url);
   }
+  
 
   headerRouting(): void {
     if(this.loginService.getUserId()) {

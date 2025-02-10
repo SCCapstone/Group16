@@ -1,10 +1,11 @@
-<main>
+
+  <main>
     <header>
-      <div (click)="headerRouting()">
+      <div (click)="headerRouting()" *ngIf="hide()">
         <h1><img class="classmate" src="images/classmate.png" alt="classmate icon"
           style="width: 200px; height: auto; margin-left: 15px; margin-top: 7px;"/></h1>
       </div>
-      <div class = "logos" *ngIf="hideLogos()">
+      <div class = "logos" *ngIf="hide()">
         <a routerLink='/settings/profile'> <img src="images/settingsIcon.png" alt="settings icon" 
           style="width: 50px; height: auto;"/> </a>
         <a (click)="openPopup('notifications')"> <img src="images/notificationIcon.png" alt="notifications icon"
@@ -28,3 +29,4 @@
     <router-outlet></router-outlet>
   </section>
 </main>
+  

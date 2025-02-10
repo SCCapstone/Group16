@@ -20,5 +20,11 @@ export class HomeComponent {
   // router.navigate does do a sufficient job as well
   click() {
     this.router.navigate(['/login']);
+    console.log('Button clicked');
+
+    
   }
+
+  
 }
+
