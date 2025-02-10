@@ -1,0 +1,95 @@
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: black
+  }
+  
+  .table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  table {
+    width: 90%; 
+    max-width: 800px; 
+    margin: 0 auto 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  table th, table td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+  
+  table th {
+    background-color: #f4f4f4;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  table td input {
+    width: 80%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    background-color: rgb(108, 164, 255);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 0;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: rgb(108, 164, 255);
+  }
+  
+  button.remove-btn {
+    background-color: #cd3c32;
+  }
+  
+  button.remove-btn:hover {
+    background-color: #cd3c32;
+    opacity: 70%;
+  }
+  
+  h3 {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  
+  button.router-link {
+    background-color: rgb(108, 164, 255);
+  }
+  
+  button.router-link:hover {
+    background-color: rgb(108, 164, 255);
+  }
+  
+  .add-btn-container {
+    width: 90%; 
+    max-width: 800px; 
+    margin: 0 auto; 
+  }
+  
+  .add-btn-container button {
+    width: 100%; 
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .add-btn-container :hover {
+    background-color: rgb(108, 164, 255);
+    opacity: 70%;
+  }
+  

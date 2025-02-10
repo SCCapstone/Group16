@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>group16</groupId>
 	<artifactId>be</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.2</version>
 	<name>be</name>
 	<description>Backend for Group16's capstone project</description>
 
