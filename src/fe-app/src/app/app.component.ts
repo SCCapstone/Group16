@@ -40,7 +40,7 @@ export class AppComponent {
 
   headerRouting(): void {
     if(this.loginService.getUserId()) {
-      this.router.navigate(['/main']);
+      this.router.navigate(['/main/task-list']);
     } else {
       this.router.navigate(['/']);
     }
