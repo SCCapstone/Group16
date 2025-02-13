@@ -1,1 +1,51 @@
-<p>calendar works!</p>
+<h1>todo add header info</h1>
+<div class="calendar-container">
+    <div class="calendar-element">
+        @for (assignment of this.weekAssignments[0]; track assignment.id) {
+            <p>{{ assignment.title }} | {{ assignment.description }}</p>
+        }
+    </div>
+    -
+    <div class="calendar-element">
+        @for (assignment of this.weekAssignments[1]; track assignment.id) {
+            <p>{{ assignment.title }} | {{ assignment.description }}</p>
+        }
+    </div>
+    -
+    <div class="calendar-element">
+        @for (assignment of this.weekAssignments[2]; track assignment.id) {
+            <p>{{ assignment.title }} | {{ assignment.description }}</p>
+        }
+    </div>
+    -
+    <div class="calendar-element">
+        @for (assignment of this.weekAssignments[3]; track assignment.id) {
+            <p>{{ assignment.title }} | {{ assignment.description }}</p>
+        }
+    </div>
+    -
+    <div class="calendar-element">
+        @for (assignment of this.weekAssignments[4]; track assignment.id) {
+            <p>{{ assignment.title }} | {{ assignment.description }}</p>
+        }
+    </div>
+    -
+    <div class="calendar-element">
+        @for (assignment of this.weekAssignments[5]; track assignment.id) {
+            <p>{{ assignment.title }} | {{ assignment.description }}</p>
+        }
+    </div>
+    -
+    <div class="calendar-element">
+        @for (assignment of this.weekAssignments[6]; track assignment.id) {
+            <p>{{ assignment.title }} | {{ assignment.description }}</p>
+        }
+    </div>
+</div>
+
+<!-- TODO Make buttons icons rather than text -->
+<div class="page-container">
+    <button (click)="pageBack()" [disabled]="this.pageNumber <= 0">Back</button>
+    <p>{{ this.pageNumber }}</p>
+    <button (click)="pageForward()" [disabled]="this.pageNumber >= 3">Forward</button>
+</div>
