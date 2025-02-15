@@ -14,9 +14,9 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 public class BeApplication {
 
 	public static void main(String[] args) {
+		SpringApplication.run(BeApplication.class, args);
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
 		HeartbeatController heartbeatController = (HeartbeatController) ctx.getBean("heartbeatController");
 		heartbeatController.start();
-		SpringApplication.run(BeApplication.class, args);
 	}
 }
