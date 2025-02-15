@@ -13,7 +13,7 @@ public class HeartbeatController extends Thread {
         loggedInUsers = new ConcurrentHashMap<>();
     }
 
-    public void run() {
+    public void run(String... args) {
         if (!loggedInUsers.isEmpty()) {
             while (true) {
                 for (ConcurrentHashMap.Entry<String, Boolean> entry : loggedInUsers.entrySet()) {
