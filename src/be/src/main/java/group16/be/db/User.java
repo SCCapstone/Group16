@@ -1,5 +1,6 @@
 package group16.be.db;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -60,7 +61,7 @@ public class User {
     private Locale locale;
     private Avatar avatar;
     @Field("courseIds")
-    private List<CourseId> courseIDs;
+    private ArrayList<CourseId> courseIDs;
 
     // Inner classes for nested JSON objects
     private static class Availability {
@@ -126,7 +127,7 @@ public class User {
         contact.email = email;
         return true;
     }
-    private boolean testEmailRegex(String email) {
+    public static boolean testEmailRegex(String email) {
         String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" 
             + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
         return Pattern.compile(regexPattern)
@@ -179,26 +180,12 @@ public class User {
         public void setSmsNotifications(boolean smsNotifications) { this.smsNotifications = smsNotifications; }
     }
 
-    /**
-     * Toggles email notifications for the user
-     * @return 
-     */
-    public void toggleEmailNotifications() {
-        settings.setEmailNotifications(!settings.getEmailNotifications());
-    }
-    
-    /**
-     * Toggles institution email notifications for the user
-     */
-    public void toggleInstitutionEmailNotifications() {
-        settings.setInstitutionEmailNotifications(!settings.getInstitutionEmailNotifications());
-    }
-
-    /**
-     * Toggles SMS notifications for the user
-     */
-    public void toggleSmsNotifications() {
-        settings.setSmsNotifications(!settings.getSmsNotifications());
+    public boolean setNotificationSettings(boolean email, boolean sms, boolean institutionEmail) {
+        if (settings == null) return false;
+        settings.setEmailNotifications(email);
+        settings.setSmsNotifications(sms);
+        settings.setInstitutionEmailNotifications(institutionEmail);
+        return true;
     }
 
 
@@ -208,7 +195,7 @@ public class User {
         super();
     }
 
-    public List<CourseId> getCourseIDs() {
+    public ArrayList<CourseId> getCourseIDs() {
         return this.courseIDs;
     }
 

@@ -1,3 +1,55 @@
-.singleAssignment{
-    color:rgb(108, 164, 255);
+.assignment-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.assignment-row:hover {
+    background-color: #f9f9f9;
+}
+
+.assignment-row.completed {
+    text-decoration: line-through;
+    color: red;
+    opacity: 0.6;
+}
+
+.assignment-column {
+    padding: 8px;
+    word-wrap: break-word;
+    flex: 1; 
+    border-right: 1px solid #ddd;
+}
+
+.assignment-column:last-child {
+    border-right: none;
+}
+
+.assignment-column-edit:last-child{
+    border-right: none;
+}
+
+
+.assignment-column-complete,
+.assignment-column-edit {
+    flex: 0.3;
+    border-right: 1px solid #ddd;
+
+}
+
+.assignment-column input[type="checkbox"] {
+    transform: scale(1.3);
+    cursor: pointer;
+}
+
+.assignment-column a img {
+    width: 20px;
+    height: auto;
+    transition: transform 0.2s ease-in-out;
+}
+
+.assignment-column a:hover img {
+    transform: scale(1.2);
 }

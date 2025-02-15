@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
-
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
+import { UserInfo, NotificationSettings } from '../../user';
+import { LoginService } from '../../login.service';
+import { SettingsService } from '../../settings.service';
 
 @Component({
   selector: 'app-notification-settings',
@@ -14,12 +17,20 @@ export class NotificationSettingsComponent {
   usePersonalEmail: boolean = false;
   useText: boolean = false;
 
+  loginService = inject(LoginService);
+  settingsService = inject(SettingsService);
+
   constructor() {
-    // TODO get settings from settings service
+    this.settingsService.getUserInfo(this.loginService.getUserId()).then((userInfo: UserInfo) => {
+      let userSettings: NotificationSettings = userInfo.settings;
+      this.useSchoolEmail = userSettings.institutionEmailNotifications;
+      this.usePersonalEmail = userSettings.emailNotifications;
+      this.useText = userSettings.smsNotifications;
+    })
   }
 
   saveNotifications() {
-    // TODO send settings to settings service
-    alert(this.useSchoolEmail + " | " + this.usePersonalEmail + " | " + this.useText);
+    this.settingsService.updateNotificationSettings(this.loginService.getUserId(), this.useSchoolEmail, this.usePersonalEmail, this.useText);
+    console.log("STUDENT ID: " + this.loginService.getUserId());  // For unit test debugging
   }
 }
