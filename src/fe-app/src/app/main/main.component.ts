@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterOutlet, RouterModule } from '@angular/router';
+import { HeartbeatService } from '../heartbeat.service';
 
 import { LoginService } from '../login.service';
 import { CoursesSidebarComponent } from "../main/courses-sidebar/courses-sidebar.component";
@@ -17,8 +18,9 @@ const VIEW_NOTIFICATIONS: number = 2; // This will not be necessary if I can get
     styleUrl: './main.component.css',
     imports: [RouterOutlet, RouterModule, CoursesSidebarComponent, DueSoonSidebarComponent]
 })
-export class MainComponent {
+export class MainComponent implements OnInit {
   loginService = inject(LoginService);
+  heartbeatService = inject(HeartbeatService);
   output: string | null = ''; // to be removed for testing only
 
   router = inject(Router);
@@ -27,6 +29,16 @@ export class MainComponent {
   constructor() {
     if (this.router.url != "/main/task-list" && this.router.url != "/main/calendar") {
       this.router.navigateByUrl("/main/task-list");
+    }
+  }
+
+  ngOnInit() {
+    const userId = this.loginService.getUserId();
+    console.log('UserId from app: ' + userId);
+    if(userId) {
+      this.heartbeatService.startHeartbeat(userId);
+    } else {
+      console.warn('no id')
     }
   }
 
