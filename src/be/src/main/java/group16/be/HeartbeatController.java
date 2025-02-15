@@ -2,10 +2,12 @@ package group16.be;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 
 @Component
+@Scope("prototype")
 public class HeartbeatController extends Thread {
     public ConcurrentHashMap<String, Boolean> loggedInUsers;
 
