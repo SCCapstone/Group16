@@ -19,6 +19,7 @@ public class HeartbeatController extends Thread {
         if (!loggedInUsers.isEmpty()) {
             while (true) {
                 for (ConcurrentHashMap.Entry<String, Boolean> entry : loggedInUsers.entrySet()) {
+                    System.out.println("print before: " + entry);
                     if (!entry.getValue()) {
                         loggedInUsers.remove(entry.getKey());
                     } else {
