@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class HeartbeatController extends Thread {
     public ConcurrentHashMap<String, Boolean> loggedInUsers;
 
-    private HeartbeatController() {
+    public HeartbeatController() {
         loggedInUsers = new ConcurrentHashMap<>();
     }
 
