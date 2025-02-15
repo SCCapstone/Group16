@@ -1,19 +1,39 @@
 package group16.be;
 
-import java.sql.Time;
-import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
-import group16.be.db.User;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-public class HeartbeatController {
-    private Time interval;
+public class HeartbeatController extends Thread {
     private static HeartbeatController heartbeatController;
-    public List<User> loggedInUsers;
+    public static ConcurrentHashMap<String, Boolean> loggedInUsers;
 
     private HeartbeatController() {
-        interval = new Time(0); //TODO: determine interval
+        loggedInUsers = new ConcurrentHashMap<>();
     }
 
+    public void run() {
+        if (!loggedInUsers.isEmpty()) {
+            while (true) {
+                for (ConcurrentHashMap.Entry<String, Boolean> entry : loggedInUsers.entrySet()) {
+                    if (!entry.getValue()) {
+                        loggedInUsers.remove(entry.getKey());
+                    } else {
+                        entry.setValue(false);
+                    } 
+                }
+                try {
+                    sleep(30000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    // not sure if this still needs to be a singleton
     public static HeartbeatController getInstance() {
         if (heartbeatController == null) {
             heartbeatController = new HeartbeatController();
@@ -21,10 +41,14 @@ public class HeartbeatController {
         return heartbeatController;
     }
 
-    /**
-     * This method is used to send heartbeats to all connected users
-     */
-    public static void sendHeartbeats() {
-        // send heartbeats to all connected users
+    @CrossOrigin
+    @PostMapping("/api/heartbeat")
+    public static boolean addAssignment(@RequestParam(value = "id", defaultValue = "NULL") String id) {
+        if (id == null || id.equals("NULL")) {
+            return false;
+        }
+        loggedInUsers.put(id, true);
+        return true;
     }
+
 }
