@@ -114,5 +114,10 @@ export const routes: Routes = [
     component: GradeCalcComponent,
     title: 'Grade-Calc',
     canActivate: [authGuard],
+  },
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full'
   }
 ];
