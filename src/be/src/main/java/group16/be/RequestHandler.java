@@ -37,6 +37,9 @@ public class RequestHandler {
     @Autowired
     private APIScraper scraper;
 
+    @Autowired
+    private static HeartbeatController heartbeatController;
+
     private static Connection connection;
 
     public RequestHandler() {
@@ -65,6 +68,16 @@ public class RequestHandler {
         }
                 return ret;
 
+    }
+
+    @CrossOrigin
+    @PostMapping("/api/heartbeat")
+    public static boolean hitUser(@RequestParam(value = "id", defaultValue = "NULL") String id) {
+        if (id == null || id.equals("NULL")) {
+            return false;
+        }
+        heartbeatController.loggedInUsers.put(id, true);
+        return true;
     }
 
     /**
