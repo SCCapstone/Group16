@@ -63,6 +63,7 @@ public class RequestHandler {
         if(id.startsWith("Error")) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, id);
         }
+                return ret;
 
     }
 

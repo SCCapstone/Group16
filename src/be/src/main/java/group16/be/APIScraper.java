@@ -45,7 +45,7 @@ public class APIScraper implements CommandLineRunner {
         
         //TODO: Need to decide how to handle these errors.
         if (users.size() == 1) {
-            return users.get(0);
+            return users.get(0).getId();
         }
         if(users.size() > 1) {
             throw new Error("Error: Multiple users with the same username and password");
