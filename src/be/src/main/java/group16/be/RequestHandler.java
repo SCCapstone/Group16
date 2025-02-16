@@ -285,12 +285,6 @@ public class RequestHandler {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No grades found for user");
         return grades;
     }
-
-    //TODO: complete function
-    // public static boolean editAssignment() {
-    //     //pass the assignment details to the database to edit the assignment
-    // }
-
     
     /**
      * Edits the user's password by updating it in the database.
