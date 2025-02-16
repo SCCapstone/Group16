@@ -119,12 +119,7 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: determineRedirect(),
+    redirectTo: '',
     pathMatch: 'full'
   }
 ];
-
-export function determineRedirect(): string {
-  const loginService = inject(LoginService);
-  return loginService.getUserId() ? '/main/task-list' : '/';
-}
