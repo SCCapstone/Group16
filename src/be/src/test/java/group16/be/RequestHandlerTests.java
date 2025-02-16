@@ -16,20 +16,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.server.ResponseStatusException;
 
 import group16.be.db.Course;
-import group16.be.db.GradeRepository;
-import group16.be.db.User;
-import group16.be.db.UserRepository;
 
 @SpringBootTest
 public class RequestHandlerTests {
     @Autowired
     private RequestHandler handler;
-
-    @Autowired
-    private UserRepository userRepo;
-
-    @Autowired
-    private GradeRepository gradeRepo;
 
     @Autowired
     private APIScraper scraper;
@@ -44,35 +35,6 @@ public class RequestHandlerTests {
     private final HashMap<String, String> EXPECTED_RESPONSE = new HashMap<String, String>() {{
         put("id", "673fdd30cc2da4c3a3514fb7");
     }};
-
-    /** 
-     * Test the login APIScraper method
-     * TODO: Move this test to repository tester
-     */
-    @Async
-    @Test
-    void testFindByUserNameAndPassword() {
-        ArrayList<User> response = userRepo.findByUserNameAndPassword("osterholt", "cameron1234");
-        assert(response.size() == 1 && response.get(0).getId().equals(EXPECTED_ID));
-    }
-
-    /** 
-     * Test the find user by ID APIScraper method
-     * TODO: Move this test to repository tester
-     */
-    @Async
-    @Test 
-    void testFindUserByUserId() {
-        ArrayList<User> response = userRepo.findUserByUserId(EXPECTED_ID);
-        assert(response.size() == 1 && response.get(0).getUserName().equals(LOGIN_USER));
-    }
-
-    @Async
-    @Test
-    void testGetGradesByUserId() {
-        var response = gradeRepo.findByUserId(EXPECTED_ID);
-        assert(response.size() > 0 && response.get(0).getUserId().equals(EXPECTED_ID));
-    }
 
     @Async
     @Test

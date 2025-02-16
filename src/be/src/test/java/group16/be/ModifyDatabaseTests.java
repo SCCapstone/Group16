@@ -26,7 +26,6 @@ public class ModifyDatabaseTests {
     private final String MOCK_USERID = "1234";
     private final String MOCK_COURSEID = "5678";
     private final String MOCK_ASSIGNMENTID = "91011";
-    private final String MOCK_GRADEID = "121314";
     private final String MOCK_TITLE = "Title";
     private final String MOCK_TITLE2 = "Title2";
     private final String MOCK_DESCRIPTION = "Description";

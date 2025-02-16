@@ -42,15 +42,13 @@ public class APIScraper implements CommandLineRunner {
 
     public String login(String username, String password) {
         ArrayList<User> users = userRepo.findByUserNameAndPassword(username, password);
-        
-        //TODO: Need to decide how to handle these errors.
         if (users.size() == 1) {
             return users.get(0).getId();
         }
         if(users.size() > 1) {
             return "Error: Multiple users with the same username and password";
         }
-        return "Error: No user with this ID"; // TODO: Could be a failed search.
+        return "Error: No user with this ID";
     }
 
     /**
@@ -259,8 +257,8 @@ public class APIScraper implements CommandLineRunner {
         return null;
     }
 
-    private static void scrapeUpdates() {
-        //scrape the API for updates at the interval
-    }
+    // private static void scrapeUpdates() {
+    //     //scrape the API for updates at the interval
+    // }
 
 }

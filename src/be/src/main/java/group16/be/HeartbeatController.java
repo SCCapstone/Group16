@@ -2,12 +2,13 @@ package group16.be;
 
 import java.sql.Time;
 
+@SuppressWarnings("unused")
 public class HeartbeatController {
     private Time interval;
     private static HeartbeatController heartbeatController;
 
     private HeartbeatController() {
-        interval = new Time(0); //TODO: determine interval
+        interval = new Time(0); 
     }
 
     public static HeartbeatController getInstance() {
