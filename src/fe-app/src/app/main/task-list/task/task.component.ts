@@ -33,13 +33,9 @@ export class TaskComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      const userId = this.loginService.getUserId();
-      const courses: Course[] = await this.courseService.getCourses(userId);
-
-      const course = courses.find(c => c.id === this.assignment.courseId);
-      this.courseName = course ? course.name : 'Unknown Course';
+      this.courseName = await (await this.courseService.getCourseById(this.assignment.courseId)).name;
     } catch (error) {
-      console.error('Error fetching courses:', error);
+      console.error('Error fetching course:', error);
     }
   }
 
