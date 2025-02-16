@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterModule, Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { LoginService } from '../login.service';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +14,15 @@ export class HomeComponent {
   router = inject(Router);
   title = 'Home Page'; // Assume this will be used appropriately in future styling
   currentValue: string = ''; // is this needed?
+  loginService = inject(LoginService);
+
+  ngOnInit(): void {
+    const userId = this.loginService.getUserId();
+    if(userId) {
+      this.router.navigateByUrl('/main/task-list');
+    }
+  }
+
   constructor(public activatedRoute: ActivatedRoute) {}
 
   // we can go back to routerLink in the html, but I am yet to find a good way to test it
@@ -21,10 +31,8 @@ export class HomeComponent {
   click() {
     this.router.navigate(['/login']);
     console.log('Button clicked');
-
-    
   }
 
-  
+
 }
 

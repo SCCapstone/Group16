@@ -6,11 +6,15 @@ import { AssignmentService } from '../../../assignment.service'; // Ensure the p
 import { CourseService } from '../../../course.service';
 import { LoginService } from '../../../login.service';
 import { RouterModule } from '@angular/router';
+import { EditTaskComponent } from '../../edit-task/edit-task.component';
+import { AddTaskComponent } from "../../add-task/add-task.component";
+
+
 
 @Component({
   selector: 'app-task',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, EditTaskComponent, AddTaskComponent],
   templateUrl: './task.component.html',
   styleUrl: './task.component.css'
 })
@@ -20,6 +24,10 @@ export class TaskComponent implements OnInit {
   courseService = inject(CourseService);
   loginService = inject(LoginService)
   courseName = '';
+  showPopup = false;
+  popupType: 'edit-task' | null = null;
+  //assignmentId = this.assignment.id ?? null;
+
 
   constructor(private assignmentService: AssignmentService) {}
 
@@ -57,6 +65,18 @@ export class TaskComponent implements OnInit {
     } catch (error) {
       console.error('Error toggling task completion:', error);
     }
+  }
+
+
+openPopup(type: 'edit-task'): void {
+  this.popupType = type;
+  this.showPopup = true;
+}
+
+
+  closePopup(): void {
+    this.showPopup = false;
+    this.popupType = null;
   }
 
 }

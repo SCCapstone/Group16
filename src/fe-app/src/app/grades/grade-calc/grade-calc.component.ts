@@ -13,10 +13,10 @@ import { CommonModule } from '@angular/common';
 })
 export class GradeCalcComponent {
   assignments: { name: string; grade: number; weight: number }[] = [
-    { name: 'Assignment 1', grade: 0, weight: 0 },
-    { name: 'Assignment 2', grade: 0, weight: 0 },
-    { name: 'Assignment 3', grade: 0, weight: 0 },
-    { name: 'Assignment 4', grade: 0, weight: 0 }
+    { name: 'Homework', grade: 0, weight: 0 },
+    { name: 'Quizzes', grade: 0, weight: 0 },
+    { name: 'Midterm', grade: 0, weight: 0 },
+    { name: 'Final', grade: 0, weight: 0 }
   ];
 
 

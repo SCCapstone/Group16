@@ -1,26 +1,39 @@
 package group16.be;
 
-import java.sql.Time;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class HeartbeatController {
-    private Time interval;
-    private static HeartbeatController heartbeatController;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-    private HeartbeatController() {
-        interval = new Time(0); //TODO: determine interval
+
+@Component
+@Scope("prototype")
+public class HeartbeatController extends Thread {
+    public ConcurrentHashMap<String, Boolean> loggedInUsers;
+
+    public HeartbeatController() {
+        loggedInUsers = new ConcurrentHashMap<>();
     }
 
-    public static HeartbeatController getInstance() {
-        if (heartbeatController == null) {
-            heartbeatController = new HeartbeatController();
+    public void run(String... args) {
+        if (!loggedInUsers.isEmpty()) {
+            while (true) {
+                for (ConcurrentHashMap.Entry<String, Boolean> entry : loggedInUsers.entrySet()) {
+                    System.out.println("print before: " + entry);
+                    if (!entry.getValue()) {
+                        loggedInUsers.remove(entry.getKey());
+                    } else {
+                        entry.setValue(false);
+                    } 
+                }
+                try {
+                    sleep(30000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        return heartbeatController;
     }
 
-    /**
-     * This method is used to send heartbeats to all connected users
-     */
-    public static void sendHeartbeats() {
-        // send heartbeats to all connected users
-    }
+
 }

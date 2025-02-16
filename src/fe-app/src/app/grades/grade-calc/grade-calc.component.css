@@ -1,8 +1,14 @@
 h2 {
     text-align: center;
-    margin-bottom: 20px;
-    color: black
+    margin-top: 10px;
+    color: black;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
+
+main{
+  background-color: #40403e;
+}
   
   .table {
     display: flex;
@@ -39,7 +45,7 @@ h2 {
   }
   
   button {
-    background-color: rgb(108, 164, 255);
+    background-color: black;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -49,16 +55,12 @@ h2 {
     transition: background-color 0.3s ease;
   }
   
-  button:hover {
-    background-color: rgb(108, 164, 255);
-  }
-  
   button.remove-btn {
-    background-color: #cd3c32;
+    background-color: #c30000;
   }
   
   button.remove-btn:hover {
-    background-color: #cd3c32;
+    background-color: #c30000;
     opacity: 70%;
   }
   
@@ -66,14 +68,15 @@ h2 {
     text-align: center;
     margin-top: 20px;
     font-weight: bold;
+    color: black;
   }
   
   button.router-link {
-    background-color: rgb(108, 164, 255);
+    background-color: black;
   }
   
   button.router-link:hover {
-    background-color: rgb(108, 164, 255);
+    background-color: black;
   }
   
   .add-btn-container {
@@ -89,7 +92,16 @@ h2 {
   }
 
   .add-btn-container :hover {
-    background-color: rgb(108, 164, 255);
+    background-color: black;
+    opacity: 70%;
+  }
+
+  .btn-back{
+    margin-left: 100px;
+    border-color: black;
+  }
+
+  .btn-back :hover{
     opacity: 70%;
   }
   

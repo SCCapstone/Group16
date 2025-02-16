@@ -2,9 +2,12 @@ package group16.be;
 
 import java.util.ArrayList;
 
+import group16.be.db.User;
+
 public class InstanceManager {
     private static InstanceManager instanceManager;
     private static ArrayList<Connection> connections;
+    private static ArrayList<User> loggedInUsers;
 
     public static InstanceManager getInstance() {
         if (instanceManager == null) {
@@ -34,6 +37,14 @@ public class InstanceManager {
                 connections.remove(connection);
         }
         return connections;
+    }
+
+    public static void addUser(User user) {
+        loggedInUsers.add(user);
+    }
+
+    public static ArrayList<User> getLoggedInUsers() {
+        return loggedInUsers;
     }
 
 }
