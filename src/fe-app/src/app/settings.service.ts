@@ -59,13 +59,13 @@ export class SettingsService {
       const response = await fetch (`${this.url}updatePreferredName?${queryParams}`, {
         method: 'POST'
       });
-
       if(!response.ok) {
         throw new Error(`POST failed: ${response.status}`);
       }
-
+      console.log("--- SAVING PREFERRED NAME: SERVICE ---")
       console.log(response);
-    } catch (error: any) {
+    }
+    catch (error: any) {
       console.error('Error updating Preferred Name:', error);
       throw error;
     }
@@ -81,13 +81,13 @@ export class SettingsService {
       const response = await fetch (`${this.url}updateEmail?${queryParams}`, {
         method: 'POST'
       });
-
       if(!response.ok) {
         throw new Error(`POST failed: ${response.status}`);
       }
-
+      console.log("--- SAVING PERSONAL EMAIL: SERVICE ---")
       console.log(response);
-    } catch (error: any) {
+    }
+    catch (error: any) {
       console.error('Error updating Email:', error);
       throw error;
     }
@@ -103,13 +103,13 @@ export class SettingsService {
       const response = await fetch (`${this.url}updatePhoneNumber?${queryParams}`, {
         method: 'POST'
       });
-
       if(!response.ok) {
         throw new Error(`POST failed: ${response.status}`);
       }
-
+      console.log("--- SAVING PHONE NUMBER: SERVICE ---")
       console.log(response);
-    } catch (error: any) {
+    }
+    catch (error: any) {
       console.error('Error updating Phone Number:', error);
       throw error;
     }
