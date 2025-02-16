@@ -3,8 +3,8 @@ package group16.be;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class BeApplicationTests {
+@SpringBootTest(classes = BeApplication.class)
+public class BeApplicationTests {
 
 	@Test
 	void contextLoads() {
