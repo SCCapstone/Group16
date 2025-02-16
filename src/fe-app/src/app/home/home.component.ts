@@ -16,13 +16,6 @@ export class HomeComponent {
   currentValue: string = ''; // is this needed?
   loginService = inject(LoginService);
 
-  ngOnInit(): void {
-    //const userId = this.loginService.getUserId();
-    //if(userId) {
-      //this.router.navigateByUrl('/main/task-list');
-    //}
-  }
-
   constructor(public activatedRoute: ActivatedRoute) {}
 
   // we can go back to routerLink in the html, but I am yet to find a good way to test it

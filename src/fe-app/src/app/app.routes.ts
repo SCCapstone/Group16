@@ -15,6 +15,8 @@ import { TaskListComponent } from './main/task-list/task-list.component';
 import { EditTaskComponent } from './main/edit-task/edit-task.component';
 import { GradeCalcComponent } from './grades/grade-calc/grade-calc.component';
 import { authGuard } from './auth.guard';
+import { inject } from '@angular/core';
+import { LoginService } from './login.service';
 
 export const routes: Routes = [
   {
@@ -115,9 +117,14 @@ export const routes: Routes = [
     title: 'Grade-Calc',
     canActivate: [authGuard],
   },
-  /*{
+  {
     path: '**',
-    redirectTo: '',
+    redirectTo: determineRedirect(),
     pathMatch: 'full'
-  }*/
+  }
 ];
+
+export function determineRedirect(): string {
+  const loginService = inject(LoginService);
+  return loginService.getUserId() ? '/main/task-list' : '/';
+}
