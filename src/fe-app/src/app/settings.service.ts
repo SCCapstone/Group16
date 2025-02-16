@@ -41,9 +41,9 @@ export class SettingsService {
       if(!response.ok) {
         throw new Error(`POST failed: ${response.status}`);
       }
-
       console.log(response);
-    } catch (error: any) {
+    }
+    catch (error: any) {
       console.error('Error updating notification settings:', error);
       throw error;
     }
@@ -62,7 +62,6 @@ export class SettingsService {
       if(!response.ok) {
         throw new Error(`POST failed: ${response.status}`);
       }
-      console.log("--- SAVING PREFERRED NAME: SERVICE ---")
       console.log(response);
     }
     catch (error: any) {
@@ -84,7 +83,6 @@ export class SettingsService {
       if(!response.ok) {
         throw new Error(`POST failed: ${response.status}`);
       }
-      console.log("--- SAVING PERSONAL EMAIL: SERVICE ---")
       console.log(response);
     }
     catch (error: any) {
@@ -106,7 +104,6 @@ export class SettingsService {
       if(!response.ok) {
         throw new Error(`POST failed: ${response.status}`);
       }
-      console.log("--- SAVING PHONE NUMBER: SERVICE ---")
       console.log(response);
     }
     catch (error: any) {

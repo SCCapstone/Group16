@@ -59,14 +59,12 @@ export class ProfileSettingsComponent {
     if (this.profileForm.value.name != null) {
       this.preferredName = this.profileForm.value.name;
       await this.settingsService.updatePreferredName(this.loginService.getUserId(), this.preferredName);
-      console.log("--- SAVING PREFERRED NAME COMPONENT - " + this.preferredName + " ---")
     }
 
     // Update personal email
     if (this.profileForm.value.personal != null) {
       this.personalEmail = this.profileForm.value.personal;
       await this.settingsService.updatePersonalEmail(this.loginService.getUserId(), this.personalEmail);
-      console.log("--- SAVING PERSONAL EMAIL COMPONENT - " + this.personalEmail + " ---")
     }
 
     // Update phone number
@@ -74,7 +72,6 @@ export class ProfileSettingsComponent {
       this.phoneNumber = this.profileForm.value.phone;
       this.phoneNumber = this.phoneNumber.replaceAll("-", "");  // Remove dashes from user input
       await this.settingsService.updatePhoneNumber(this.loginService.getUserId(), this.phoneNumber);
-      console.log("--- SAVING PHONE NUMBER COMPONENT - " + this.phoneNumber + " ---")
     }
   }
 }
