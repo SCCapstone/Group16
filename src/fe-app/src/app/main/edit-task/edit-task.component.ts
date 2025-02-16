@@ -23,7 +23,6 @@ export class EditTaskComponent implements OnInit {
   courseService = inject(CourseService);
   assignmentService = inject(AssignmentService);
   courses: Course[] = [];
-  activeAssignment: Assignment | undefined = this.assignment;
 
   editTaskForm = new FormGroup ({
     title: new FormControl(''),
@@ -35,20 +34,9 @@ export class EditTaskComponent implements OnInit {
   async ngOnInit() {
 
     try {
-      console.log(this.assignment);
-
-      const assignmentId = String(this.route.snapshot.params['id']);
-      console.log(assignmentId);
-      const userId = this.loginService.getUserId();
-      const assignments: Assignment[] = await this.assignmentService.getAssignments(userId);
-
-      const assignment = assignments.find(a => a.id === assignmentId);
-      //this.activeAssignment = assignment;
-      console.log(this.activeAssignment);
-
-      if (this.activeAssignment) {
-        const dueDate = this.activeAssignment.availability?.adaptiveRelease?.end
-        ? new Date(this.activeAssignment.availability.adaptiveRelease.end)
+      if (this.assignment) {
+        const dueDate = this.assignment.availability?.adaptiveRelease?.end
+        ? new Date(this.assignment.availability.adaptiveRelease.end)
         : null;
 
         if (dueDate) {
@@ -56,9 +44,9 @@ export class EditTaskComponent implements OnInit {
         }
 
         this.editTaskForm.patchValue({
-          title: this.activeAssignment.title ?? '',
-          description: this.activeAssignment.description ?? '',
-          course: this.activeAssignment.courseId ?? '',
+          title: this.assignment.title ?? '',
+          description: this.assignment.description ?? '',
+          course: this.assignment.courseId ?? '',
           due: dueDate ? dueDate.toISOString().split('T')[0] : '' // Ensures correct date format
         });
 
@@ -96,7 +84,7 @@ export class EditTaskComponent implements OnInit {
       dueDate,
       this.loginService.getUserId(),
       this.editTaskForm.value.course ?? '',
-      this.activeAssignment?.id ?? ''
+      this.assignment?.id ?? ''
     )
 
     this.router.navigate(['/main/task-list']);
