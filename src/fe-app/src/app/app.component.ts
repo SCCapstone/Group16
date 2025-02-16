@@ -34,12 +34,12 @@ export class AppComponent {
   }
 
   hide(): boolean {
-    const hiddenRoutes = ['/', '/login', '/settings/profile', '/grades', '/grades/grade-calc'];
+    const hiddenRoutes = ['/', '/login', '/settings/profile', '/settings/appearance', '/settings/notifications', '/settings/sign-out', '/grades', '/grades/grade-calc'];
     return !hiddenRoutes.includes(this.router.url);
   }
 
   settings(): boolean {
-    const visibleRoutes = ['/settings/profile'];
+    const visibleRoutes = ['/settings/profile', '/settings/appearance', '/settings/notifications', '/settings/sign-out'];
     return visibleRoutes.includes(this.router.url);
   }
   grades(): boolean {
