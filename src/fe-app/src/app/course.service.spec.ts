@@ -46,6 +46,38 @@ describe('CourseService', () => {
     expect(courseList[0].id).toEqual('abc');
   });
 
+  // getCourses()
+  it('should throw an error when getCourseById response is empty ( {} )', async () => {
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+      json: () => Promise.resolve([]),
+    } as Response));
+
+    await expectAsync(service.getCourseById('abc')).toBeRejectedWithError('course is {}');
+  });
+
+  it('should throw an error when getCourses fetch fails', async () => {
+    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+
+    await expectAsync(service.getCourses('abc')).toBeRejectedWithError('Network Error');
+  });
+
+  it('should successfully getCourseById for a courseId', async () => {
+    const mockCourse: Course = {
+      id: 'abc',
+      name: 'testCourse'
+    };
+
+    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+      json: () => Promise.resolve(mockCourse),
+    } as Response));
+
+    const course = await service.getCourseById('abc');
+
+    expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/getCourseById?courseId=abc')
+    expect(course).toEqual(mockCourse);
+    expect(course.id).toEqual('abc');
+  });
+
   // getSelectIndex()
   it('should default selectIndex to -1', () => {
     expect(service.getSelectIndex()).toBe(-1);
