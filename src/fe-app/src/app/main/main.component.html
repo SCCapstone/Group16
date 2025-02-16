@@ -1,8 +1,9 @@
 <p>{{ this.output }}</p> <!-- to be removed -->
 <div class="container-fluid">
-<div class="row">
+ <!--remove tester buttons
+    <div class="row">
     <div class="col-md-auto">
-        <button class="btn btn-primary bg-gradient" (click)="getUserId()">UserId Tester</button> <!-- to be removed -->
+        <button class="btn btn-primary bg-gradient" (click)="getUserId()">UserId Tester</button>  to be removed 
     </div>
     <div class="col-md-auto">
         <button class="btn btn-primary bg-gradient col-md-auto" routerLink="/login">Back to Login</button>
@@ -13,30 +14,45 @@
     <div class="col-md-auto">
         <button class="btn btn-primary bg-gradient col-md-auto" routerLink="/main/add-task">TEST ADD TASK</button>
     </div>
-</div>
-
-<div class="main row bg-secondary mt-2">
-
-    <div class="sidebar col-3 bg-dark">
-        <div class="courses bg-light">
-            <app-courses-sidebar></app-courses-sidebar>
-        </div>
-        <div class="due-soon bg-light">
-            <app-due-soon-sidebar></app-due-soon-sidebar>
-        </div>
     </div>
-    <div class="task-info col-9">
-            <div class = "selectOptions row my-5">
+-->
+    <div class="main row bg-secondary mt-2">
+        <div class="sidebar col-3">
+            <div class="courses bg-light">
+                <app-courses-sidebar></app-courses-sidebar>
+            </div>
+            <div class="due-soon bg-light">
+                <app-due-soon-sidebar></app-due-soon-sidebar>
+            </div>
+        </div>
+        <div class="task-info col-9">
+            <div class = "selectOptions row">
                 <div class="col-md-auto">
-                    <a class="btn btn-danger bg-gradient" routerLink="calendar"><h2>CALENDAR</h2></a>
+                    <a routerLink="task-list"><img src="images/task-list.png" alt="task list icon" 
+                        style="width: 75px; height: auto;"/></a>
                 </div>
                 <div class="col-md-auto">
-                    <a class="btn  btn-danger bg-gradient" routerLink="task-list" style="width:100%"><h2>TASK-LIST</h2></a>
+                    <a routerLink="calendar"><img src="images/calendar.png" alt="calendar icon" 
+                        style="width: 80px; height: auto;"/></a>
                 </div>
-        </div>
-        <div class="main-view row bg-light">
-            <router-outlet />
+                <div class="col-md-auto">
+                    <a routerLink="/grades"><img src="images/gradesIcon.png" alt="grades icon" 
+                        style="width: 75px; height: auto;"/></a>
+                </div>
+                <div class="col-md-auto ms-auto" (click)="openPopup('add-task')">
+                    <img src="images/add-task.png" alt="add taskicon" 
+                        style="width: 80px; height: auto; cursor: pointer;"/>
+                </div>
+            </div>
+            <div *ngIf="showPopup" class="popup-modal">
+                <div class="popup-content">
+                  <span class="close" (click)="closePopup()">&times;</span>
+                  <p *ngIf="popupType === 'add-task'"><app-add-task></app-add-task></p>
+                </div>
+              </div>
+            <div class="main-view row bg-light">
+                <router-outlet></router-outlet>
+            </div>
         </div>
     </div>
-</div>
 </div>

@@ -1,26 +1,75 @@
 
   <main>
-    <header>
-      <div class = "logos row" *ngIf="hide()">
-        <div class="col-8" (click)="headerRouting()" *ngIf="hide()">
-          <h1 style="text-align: left;"><img class="classmate" src="images/classmate.png" alt="classmate icon"
-            style="width: 200px; height: auto; margin-top: 7px;"/></h1>
+    <header *ngIf="hide()">
+      <div class="logos row d-flex align-items-center">
+        <div class="col-md-auto" (click)="headerRouting()">
+          <h1 style="text-align: left;">
+            <img class="classmate" src="images/classmate.png" alt="classmate icon" style="width: 200px; height: auto; margin-top: 7px;" />
+          </h1>
         </div>
-        <a class="col-1" routerLink='/settings/profile'> <img src="images/settingsIcon.png" alt="settings icon" 
-          style="width: 50px; height: auto; margin-top: 10px;"/> </a>
-        <a class="col-1" (click)="openPopup('notifications')"> <img src="images/notificationIcon.png" alt="notifications icon"
-          style="width: 55px; height: auto; margin-top: 10px;" /></a>
-        <a class="col-1" routerLink='/grades'> <img src="images/gradesIcon.png" alt="grades icon" 
-            style="width: 50px; height: auto; margin-top: 10px;"/> </a>
-      </div>
-      <div *ngIf="showPopup" class="popup-modal">
-        <div class="popup-content">
-          <span class="close" (click)="closePopup()">&times;</span>
-          <p *ngIf="popupType === 'notifications'">notifications go here</p>
+        <div class="col-md-auto ms-auto d-flex align-items-center">
+          <a class="ms-3" routerLink='/settings/profile'>
+            <img src="images/settingsIcon.png" alt="settings icon" style="width: 50px; height: auto; margin-top: 10px;" />
+          </a>
+          <a class="ms-3" (click)="openPopup('notifications')">
+            <img src="images/notificationIcon.png" alt="notifications icon" style="width: 55px; height: auto; margin-top: 10px;" />
+          </a>
         </div>
+        <div class="div-line"></div>
       </div>
-
     </header>
+    <header *ngIf="settings()">
+      <div class="logos row d-flex align-items-center">
+        <div class="col-md-auto" (click)="headerRouting()">
+          <h1 style="text-align: left;">
+            <img class="classmate" src="images/favicon.ico" alt="A+ icon" style="width: 70px; height: auto; margin-top: 7px;" />
+          </h1>
+        </div>
+        <div class="col-md-auto" (click)="headerRouting()">
+          <h1 style="text-align: left; color:black; margin-top: 12px; margin-left: -15px;">
+             SETTINGS 
+          </h1>
+        </div>
+        <div class="col-md-auto ms-auto d-flex align-items-center">
+          <a class="ms-3" routerLink='/settings/profile'>
+            <img src="images/settingsIcon.png" alt="settings icon" style="width: 50px; height: auto; margin-top: 10px;" />
+          </a>
+          <a class="ms-3" (click)="openPopup('notifications')">
+            <img src="images/notificationIcon.png" alt="notifications icon" style="width: 55px; height: auto; margin-top: 10px;" />
+          </a>
+        </div>
+        <div class="div-line"></div>
+      </div>
+    </header>
+    <header *ngIf="grades()">
+      <div class="logos row d-flex align-items-center">
+        <div class="col-md-auto" (click)="headerRouting()">
+          <h1 style="text-align: left;">
+            <img class="classmate" src="images/favicon.ico" alt="A+ icon" style="width: 70px; height: auto; margin-top: 7px;" />
+          </h1>
+        </div>
+        <div class="col-md-auto" (click)="headerRouting()">
+          <h1 style="text-align: left; color:black; margin-top: 12px; margin-left: -15px;">
+             GRADES 
+          </h1>
+        </div>
+        <div class="col-md-auto ms-auto d-flex align-items-center">
+          <a class="ms-3" routerLink='/settings/profile'>
+            <img src="images/settingsIcon.png" alt="settings icon" style="width: 50px; height: auto; margin-top: 10px;" />
+          </a>
+          <a class="ms-3" (click)="openPopup('notifications')">
+            <img src="images/notificationIcon.png" alt="notifications icon" style="width: 55px; height: auto; margin-top: 10px;" />
+          </a>
+        </div>
+        <div class="div-line"></div>
+      </div>
+    </header>
+    <div *ngIf="showPopup" class="popup-modal">
+      <div class="popup-content">
+        <span class="close" (click)="closePopup()">&times;</span>
+        <p *ngIf="popupType === 'notifications'">notifications go here</p>
+      </div>
+    </div>
 
 
   <!--This a element links back to login and is present on all pages

@@ -3,7 +3,7 @@ main {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #2e2e2d;
+    background-color: #40403e;
 }
 
 .content {
@@ -22,6 +22,7 @@ img {
 
 h1{
     font-size: 45px;
+    color: black;
 }
 
 button {
@@ -31,4 +32,5 @@ button {
     cursor: pointer;
     margin-top: 65px;
 }
+
   
