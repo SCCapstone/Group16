@@ -86,6 +86,22 @@ public class RequestHandler {
     }
 
     /**
+     * 
+     * @param assID
+     * @return
+     */
+    @CrossOrigin
+    @GetMapping("/api/getCourseById")
+    public Course getCourseById(@RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
+        if(courseId == null || courseId.equals("NULL")) 
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course ID is missing or invalid");
+        var course = scraper.findByCourseId(courseId);
+        if(course == null || course.getId() == null || course.getId().equals("NULL")) 
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No courses found for this ID");
+        return course;
+    }
+
+    /**
      * This method is to complete assignments that are user made or not yet marked complete by blackboard
      * @param assID Assignment ID
      * @return if the assignment was successfully marked as complete
@@ -225,6 +241,20 @@ public class RequestHandler {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No assignments found for user");
         }
         return assignments;
+    }
+
+    /**
+     * Get assignment by ID
+     * @param assignmentId the assignment's ID
+     * @return the assignment
+     */
+    public Assignment getAssignmentById(@RequestParam(value = "assignmentId", defaultValue = "NULL") String assignmentId) {
+        if(assignmentId == null || assignmentId.equals("NULL")) 
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Assignment ID is missing or invalid");
+        var assignment = scraper.findByAssignmentId(assignmentId);
+        if(assignment == null || assignment.getId() == null || assignment.getId().equals("NULL")) 
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No assignments found for this ID");
+        return assignment;
     }
 
     /**
