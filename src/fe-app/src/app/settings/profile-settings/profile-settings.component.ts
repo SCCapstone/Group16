@@ -26,7 +26,7 @@ export class ProfileSettingsComponent {
 
   profileForm = new FormGroup({
     name: new FormControl("", Validators.required),
-    school: new FormControl("", [Validators.required, Validators.email]),
+    school: new FormControl({ value: "", disabled: true }, [Validators.required, Validators.email]),
     personal: new FormControl("", [Validators.required, Validators.email]),
     phone: new FormControl("", [Validators.required, Validators.pattern("[0-9]{3}-?[0-9]{3}-?[0-9]{4}")])
   })
@@ -53,7 +53,6 @@ export class ProfileSettingsComponent {
   }
 
   async saveProfile() {
-    // TODO gray out university email on page
 
     // Update preferred name
     if (this.profileForm.value.name != null) {
