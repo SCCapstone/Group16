@@ -52,37 +52,29 @@ export class ProfileSettingsComponent {
     })
   }
 
-  saveProfile() {
+  async saveProfile() {
     // TODO gray out university email on page
 
-    // TODO THIS IS A BAND-AID FIX, NEED TO FIX IN BACKEND
-
     // Update preferred name
-    setTimeout(() => {
-      if (this.profileForm.value.name != null) {
-        this.preferredName = this.profileForm.value.name;
-        this.settingsService.updatePreferredName(this.loginService.getUserId(), this.preferredName);
-        console.log("--- SAVING PREFERRED NAME COMPONENT - " + this.preferredName + " ---")
-      }
-    }, 500);
+    if (this.profileForm.value.name != null) {
+      this.preferredName = this.profileForm.value.name;
+      await this.settingsService.updatePreferredName(this.loginService.getUserId(), this.preferredName);
+      console.log("--- SAVING PREFERRED NAME COMPONENT - " + this.preferredName + " ---")
+    }
 
     // Update personal email
-    setTimeout(() => {
-      if (this.profileForm.value.personal != null) {
-        this.personalEmail = this.profileForm.value.personal;
-        this.settingsService.updatePersonalEmail(this.loginService.getUserId(), this.personalEmail);
-        console.log("--- SAVING PERSONAL EMAIL COMPONENT - " + this.personalEmail + " ---")
-      }
-    }, 1000);
+    if (this.profileForm.value.personal != null) {
+      this.personalEmail = this.profileForm.value.personal;
+      await this.settingsService.updatePersonalEmail(this.loginService.getUserId(), this.personalEmail);
+      console.log("--- SAVING PERSONAL EMAIL COMPONENT - " + this.personalEmail + " ---")
+    }
 
     // Update phone number
-    setTimeout(() => {
-      if (this.profileForm.value.phone != null) {
-        this.phoneNumber = this.profileForm.value.phone;
-        this.phoneNumber = this.phoneNumber.replaceAll("-", "");  // Remove dashes from user input
-        this.settingsService.updatePhoneNumber(this.loginService.getUserId(), this.phoneNumber);
-        console.log("--- SAVING PHONE NUMBER COMPONENT - " + this.phoneNumber + " ---")
-      }
-    }, 1500);
+    if (this.profileForm.value.phone != null) {
+      this.phoneNumber = this.profileForm.value.phone;
+      this.phoneNumber = this.phoneNumber.replaceAll("-", "");  // Remove dashes from user input
+      await this.settingsService.updatePhoneNumber(this.loginService.getUserId(), this.phoneNumber);
+      console.log("--- SAVING PHONE NUMBER COMPONENT - " + this.phoneNumber + " ---")
+    }
   }
 }
