@@ -27,36 +27,40 @@ public class SecurityConfiguration {
         http
             .cors(withDefaults())
             .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(req ->
-                req.requestMatchers(
-                    "/v1/api/**",
-                    "/v2/api-docs",
-                    "/v3/api-docs",
-                    "/v3/api-docs/**",
-                    "/swagger-resources",
-                    "/swagger-resources/**",
-                    "/configuration/ui",
-                    "/configuration/security",
-                    "/swagger-ui/**",
-                    "/webjars/**",
-                    "/swagger-ui.html"
-                ).permitAll()
-                .anyRequest()
-                .authenticated()
-            )
+            .authorizeHttpRequests(req -> req.anyRequest().permitAll()) // Allow all requests
             .sessionManagement(session -> session.sessionCreationPolicy(STATELESS));
+            // .cors(withDefaults())
+            // .csrf(AbstractHttpConfigurer::disable)
+            // .authorizeHttpRequests(req ->
+            //     req.requestMatchers(
+            //         "/v1/api/**",
+            //         "/v2/api-docs",
+            //         "/v3/api-docs",
+            //         "/v3/api-docs/**",
+            //         "/swagger-resources",
+            //         "/swagger-resources/**",
+            //         "/configuration/ui",
+            //         "/configuration/security",
+            //         "/swagger-ui/**",
+            //         "/webjars/**",
+            //         "/swagger-ui.html"
+            //     ).permitAll()
+            //     .anyRequest()
+            //     .authenticated()
+            // )
+            // .sessionManagement(session -> session.sessionCreationPolicy(STATELESS));
         System.out.println("Configuring Success ...");
         return http.build();
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*")); // Allow all origins (change as needed)
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+    // @Bean
+    // public CorsConfigurationSource corsConfigurationSource() {
+    //     CorsConfiguration configuration = new CorsConfiguration();
+    //     configuration.setAllowedOrigins(List.of("*")); // Allow all origins (change as needed)
+    //     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    //     configuration.setAllowedHeaders(List.of("*"));
+    //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    //     source.registerCorsConfiguration("/**", configuration);
+    //     return source;
+    // }
 }
