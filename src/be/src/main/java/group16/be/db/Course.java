@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "courses")
+@SuppressWarnings("unused")
 public class Course {
     @Id
     private String id;

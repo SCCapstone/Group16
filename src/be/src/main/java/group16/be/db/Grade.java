@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
 @Document(collection = "grades")
+@SuppressWarnings("unused")
 public class Grade {
     public Grade(String userId, String courseId, String assignmentId, double percent) {
         this.uuid = UUID.randomUUID().toString();

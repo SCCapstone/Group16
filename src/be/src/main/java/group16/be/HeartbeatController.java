@@ -2,6 +2,7 @@ package group16.be;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
