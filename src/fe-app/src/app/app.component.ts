@@ -25,6 +25,7 @@ export class AppComponent {
   openPopup(type: 'notifications'): void {
     this.popupType = type;
     this.showPopup = true;
+    console.log("pop up clicked")
   }
 
   closePopup(): void {
@@ -33,11 +34,19 @@ export class AppComponent {
   }
 
   hide(): boolean {
-    const hiddenRoutes = ['/', '/login'];
+    const hiddenRoutes = ['/', '/login', '/settings/profile', '/grades', '/grades/grade-calc'];
     return !hiddenRoutes.includes(this.router.url);
   }
-  
 
+  settings(): boolean {
+    const visibleRoutes = ['/settings/profile'];
+    return visibleRoutes.includes(this.router.url);
+  }
+  grades(): boolean {
+    const visibleRoutes = ['/grades', '/grades/grade-calc'];
+    return visibleRoutes.includes(this.router.url);
+  }
+  
   headerRouting(): void {
     if(this.loginService.getUserId()) {
       this.router.navigate(['/main/task-list']);

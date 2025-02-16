@@ -7,8 +7,33 @@
     <div class="assignment-column"><a href="assignment link here">{{ assignment.description }}</a></div>
     <div class="assignment-column">{{ assignment.availability.adaptiveRelease.end | date }}</div>
     <div class="assignment-column-edit">
-        <a [routerLink]="['/main/edit-task', assignment.id]">
+        <a (click)="openPopup('edit-task')">
             <img *ngIf="assignment.userCreated" src="images/pencil.png" alt="pencil icon" style="width: 25px; height: auto; margin-left: 15px;"/>
         </a>
+
+         
     </div>
 </div>
+
+<div *ngIf="showPopup" class="popup-modal">
+    <div class="popup-content">
+      <span class="close" (click)="closePopup()">&times;</span>
+      <p *ngIf="popupType === 'edit-task'">   <app-edit-task [assignment]="assignment"></app-edit-task>
+      </p>
+
+    </div>
+  </div>
+
+  <!--(click)="openPopup('edit-task')"
+  <a [routerLink] = "['/main/edit-task', assignment.id]" >
+     <app-task [assignment]="assignment" /> 
+           <p *ngIf="popupType === 'edit-task'">   <app-task [assignment]="assignment" /> </p>
+
+  
+  <button (click)="createBook()">Create Book</button>
+
+    createBook(bookData){
+        // Create Book logic
+    this.router.navigate(['/my-book-listing']);
+    }
+   -->

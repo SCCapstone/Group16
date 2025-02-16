@@ -1,15 +1,28 @@
-<form [formGroup]="loginForm" (ngSubmit)="login()">
-  <label for="username">Username:</label>
-  <input id="username" type="text" formControlName="username">
+<main>
+  
+  <div class = "forms">
+    <h1>LOGIN</h1>
+    <img src="images/favicon.ico" alt="A+ icon" style="width: 70px; height: auto;"/>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <div class = "username">
+      <label for="username">Username:</label>
+      <input id="username" type="text" formControlName="username">
+    </div>
+    <div class = "password">
+      <label for="password">Password: </label>
+      <input id="password" type="text" formControlName="password">
+    </div>
+    </form>
+    <div class = "submit">
+      <button type="submit">Login</button>
+    </div>
+  </div>
+ 
+  
+  <p>{{ this.output }}</p>
 
-  <label for="password">Password:</label>
-  <input id="password" type="text" formControlName="password">
-
-  <button type="submit">Login</button>
-</form>
-<p>{{ this.output }}</p>
-
-<!-- TODO: Remove later -->
-<br>
-<p>For testing, remove later</p>
-<button (click)="fastLogin()">Auto-Login</button>
+  <!-- TODO: Remove later -->
+  <br>
+  <p>For testing, remove later</p>
+  <button (click)="fastLogin()">Auto-Login</button>
+</main>

@@ -1,6 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Necessary (alongside links in HTML head) for Inter font from Figma prototype to display. */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap');
+
+
 :root {
     font-family: Inter, sans-serif;
     font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
@@ -8,7 +11,12 @@
   @supports (font-variation-settings: normal) {
     :root { font-family: InterVariable, sans-serif; }
   }
+  body {
+    font-family: 'Montserrat', sans-serif;
+  }
 
-body {
-  margin: 0;
+  main {
+    background-color: #40403e;
 }
+  
+

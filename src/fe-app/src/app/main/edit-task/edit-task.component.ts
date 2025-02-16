@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from '../../login.service';
 import { CourseService } from '../../course.service';
@@ -15,13 +15,15 @@ import { CommonModule } from '@angular/common';
   styleUrl: './edit-task.component.css'
 })
 export class EditTaskComponent implements OnInit {
+  @Input () assignment! : Assignment;
+
   route: ActivatedRoute = inject(ActivatedRoute);
   router = inject(Router);
   loginService = inject(LoginService);
   courseService = inject(CourseService);
   assignmentService = inject(AssignmentService);
   courses: Course[] = [];
-  activeAssignment: Assignment | undefined;
+  activeAssignment: Assignment | undefined = this.assignment;
 
   editTaskForm = new FormGroup ({
     title: new FormControl(''),
@@ -31,14 +33,17 @@ export class EditTaskComponent implements OnInit {
   });
 
   async ngOnInit() {
+
     try {
+      console.log(this.assignment);
+
       const assignmentId = String(this.route.snapshot.params['id']);
       console.log(assignmentId);
       const userId = this.loginService.getUserId();
       const assignments: Assignment[] = await this.assignmentService.getAssignments(userId);
 
       const assignment = assignments.find(a => a.id === assignmentId);
-      this.activeAssignment = assignment;
+      //this.activeAssignment = assignment;
       console.log(this.activeAssignment);
 
       if (this.activeAssignment) {

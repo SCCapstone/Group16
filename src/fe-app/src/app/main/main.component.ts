@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet, RouterModule } from '@angular/router';
-
+import { AddTaskComponent } from './add-task/add-task.component';
 import { LoginService } from '../login.service';
 import { CoursesSidebarComponent } from "../main/courses-sidebar/courses-sidebar.component";
 import { DueSoonSidebarComponent } from '../main/due-soon-sidebar/due-soon-sidebar.component';
+import { CommonModule } from '@angular/common';
 
 
 const VIEW_CALENDAR: number = 0;
@@ -15,13 +16,16 @@ const VIEW_NOTIFICATIONS: number = 2; // This will not be necessary if I can get
     standalone: true,
     templateUrl: './main.component.html',
     styleUrl: './main.component.css',
-    imports: [RouterOutlet, RouterModule, CoursesSidebarComponent, DueSoonSidebarComponent]
+    imports: [RouterOutlet, RouterModule, CoursesSidebarComponent, DueSoonSidebarComponent,AddTaskComponent, CommonModule]
 })
 export class MainComponent {
   loginService = inject(LoginService);
   output: string | null = ''; // to be removed for testing only
 
   router = inject(Router);
+
+  showPopup = false;
+  popupType: 'add-task' | null = null;
 
   // Redirect user to task-list if they are just in /main.
   constructor() {
@@ -39,4 +43,15 @@ export class MainComponent {
 
   // Will be refactored with consts when I figure out how; 0 = calendar, 1 = task list, 2 =
   viewSelect: number = 1;
+
+  openPopup(type: 'add-task'): void {
+    this.popupType = type;
+    this.showPopup = true;
+    console.log(this.showPopup)
+  }
+
+  closePopup(): void {
+    this.showPopup = false;
+    this.popupType = null;
+  }
 }
