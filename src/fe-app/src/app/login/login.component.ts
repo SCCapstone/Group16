@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -12,7 +12,14 @@ import { User } from '../user';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+  ngOnInit(): void {
+    const userId = this.loginService.getUserId();
+    if(userId) {
+      this.router.navigateByUrl('/main/task-list');
+    }
+  }
+
   router = inject(Router);
   user: User | undefined;
   loginService = inject(LoginService);
