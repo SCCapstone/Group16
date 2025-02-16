@@ -17,10 +17,10 @@ export class HomeComponent {
   loginService = inject(LoginService);
 
   ngOnInit(): void {
-    const userId = this.loginService.getUserId();
-    if(userId) {
-      this.router.navigateByUrl('/main/task-list');
-    }
+    //const userId = this.loginService.getUserId();
+    //if(userId) {
+      //this.router.navigateByUrl('/main/task-list');
+    //}
   }
 
   constructor(public activatedRoute: ActivatedRoute) {}

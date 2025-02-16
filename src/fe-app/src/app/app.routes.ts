@@ -114,14 +114,9 @@ export const routes: Routes = [
     component: GradeCalcComponent,
     title: 'Grade-Calc',
     canActivate: [authGuard],
-  }/*,
-  {
-    matcher: (url) => {
-      if (url.length > 0 && (url[0].path.startsWith('api') || url[0].path.startsWith('swagger-ui.html') || url[0].path.startsWith('v3'))) {
-        return null; // Do not match these routes
-      }
-      return { consumed: url };
-    },
+  },
+  /*{
+    path: '**',
     redirectTo: '',
     pathMatch: 'full'
   }*/
