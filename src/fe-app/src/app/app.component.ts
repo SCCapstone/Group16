@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterModule, Router } from '@angular/router';
 import { LoginService } from './login.service';
 
 //import {HomeComponent} from './home/home.component';
+import { HeartbeatService } from './heartbeat.service';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +13,12 @@ import { LoginService } from './login.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
 
   constructor(public router: Router){}
 
   loginService = inject(LoginService);
+  heartbeatService = inject(HeartbeatService)
 
   title = 'fe-app';
   showPopup = false;
@@ -53,5 +55,9 @@ export class AppComponent {
     } else {
       this.router.navigate(['/']);
     }
+  }
+
+  ngOnDestroy() {
+    this.heartbeatService.stopHeartbeat();
   }
 }
