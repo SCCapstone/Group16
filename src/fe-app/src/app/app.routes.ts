@@ -14,6 +14,7 @@ import { CalendarComponent } from './main/calendar/calendar.component';
 import { TaskListComponent } from './main/task-list/task-list.component';
 import { EditTaskComponent } from './main/edit-task/edit-task.component';
 import { GradeCalcComponent } from './grades/grade-calc/grade-calc.component';
+import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
   {
@@ -30,73 +31,98 @@ export const routes: Routes = [
     path: 'main',
     component: MainComponent,
     title: 'Main',
+    canActivate: [authGuard],
     children: [
       {
         path: 'calendar',
-        component: CalendarComponent
+        component: CalendarComponent,
+        canActivate: [authGuard]
       },
       {
         path: 'task-list',
-        component: TaskListComponent
+        component: TaskListComponent,
+        canActivate: [authGuard]
       }
     ]
   },
   {
     path: 'notifications',
     component: NotificationsComponent,
-    title: 'Notifications'
+    title: 'Notifications',
+    canActivate: [authGuard]
   },
   {
     path: 'settings',
     component: SettingsComponent,
     title: 'Settings',
+    canActivate: [authGuard],
     children: [
       {
         path: 'profile',
-        component: ProfileSettingsComponent
+        component: ProfileSettingsComponent,
+        canActivate: [authGuard]
       },
       {
         path: 'appearance',
-        component: AppearanceSettingsComponent
+        component: AppearanceSettingsComponent,
+        canActivate: [authGuard]
       },
       {
         path: 'notifications',
-        component: NotificationSettingsComponent
+        component: NotificationSettingsComponent,
+        canActivate: [authGuard]
       },
       {
         path: 'sign-out',
-        component: SignOutComponent
+        component: SignOutComponent,
+        canActivate: [authGuard]
       }
     ]
   },
   {
     path: 'grades',
     component: GradesComponent,
-    title: 'Grades'
+    title: 'Grades',
+    canActivate: [authGuard]
   },
   {
     path: 'main/add-task',
     component: AddTaskComponent,
-    title: 'Add Task'
+    title: 'Add Task',
+    canActivate: [authGuard],
   },
   {
     path: 'main/edit-task/:id',
     component: EditTaskComponent,
-    title: 'Edit Task'
+    title: 'Edit Task',
+    canActivate: [authGuard]
   },
   {
     path: 'calendar',
     component: CalendarComponent,
-    title: 'Calendar'
+    title: 'Calendar',
+    canActivate: [authGuard]
   },
   {
     path: 'task-list',
     component: TaskListComponent,
-    title: 'Task-List'
+    title: 'Task-List',
+    canActivate: [authGuard]
   },
   {
     path: 'grades/grade-calc',
     component: GradeCalcComponent,
-    title: 'Grade-Calc'
-  }
+    title: 'Grade-Calc',
+    canActivate: [authGuard],
+  }/*,
+  {
+    matcher: (url) => {
+      if (url.length > 0 && (url[0].path.startsWith('api') || url[0].path.startsWith('swagger-ui.html') || url[0].path.startsWith('v3'))) {
+        return null; // Do not match these routes
+      }
+      return { consumed: url };
+    },
+    redirectTo: '',
+    pathMatch: 'full'
+  }*/
 ];

@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterModule, Router } from '@angular/router';
 import { LoginService } from './login.service';
 
 //import {HomeComponent} from './home/home.component';
+import { HeartbeatService } from './heartbeat.service';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +13,12 @@ import { LoginService } from './login.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
 
   constructor(public router: Router){}
 
   loginService = inject(LoginService);
+  heartbeatService = inject(HeartbeatService)
 
   title = 'fe-app';
   showPopup = false;
@@ -25,6 +27,7 @@ export class AppComponent {
   openPopup(type: 'notifications'): void {
     this.popupType = type;
     this.showPopup = true;
+    console.log("pop up clicked")
   }
 
   closePopup(): void {
@@ -33,16 +36,28 @@ export class AppComponent {
   }
 
   hide(): boolean {
-    const hiddenRoutes = ['/', '/login'];
+    const hiddenRoutes = ['/', '/login', '/settings/profile', '/settings/appearance', '/settings/notifications', '/settings/sign-out', '/grades', '/grades/grade-calc'];
     return !hiddenRoutes.includes(this.router.url);
   }
-  
 
+  settings(): boolean {
+    const visibleRoutes = ['/settings/profile', '/settings/appearance', '/settings/notifications', '/settings/sign-out'];
+    return visibleRoutes.includes(this.router.url);
+  }
+  grades(): boolean {
+    const visibleRoutes = ['/grades', '/grades/grade-calc'];
+    return visibleRoutes.includes(this.router.url);
+  }
+  
   headerRouting(): void {
     if(this.loginService.getUserId()) {
       this.router.navigate(['/main/task-list']);
     } else {
       this.router.navigate(['/']);
     }
+  }
+
+  ngOnDestroy() {
+    this.heartbeatService.stopHeartbeat();
   }
 }

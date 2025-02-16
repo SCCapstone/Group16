@@ -179,4 +179,22 @@ public class RequestHandlerTests {
         assertFalse(scraper.isAssignmentId(""));
         assertFalse(scraper.isAssignmentId("123"));
     }
+
+    @Test 
+    void testFindCourseById() {
+        // Tests findCourseById
+        var course = scraper.findByCourseId(REAL_COURSEID);
+        assertTrue(course != null);
+        assertTrue(scraper.findByCourseId("") == null);
+        assertTrue(scraper.findByCourseId("123") == null);
+    }
+
+    @Test
+    void testFindAssignmentById() {
+        // Tests findCourseById
+        var assignment = scraper.findByAssignmentId(REAL_ASSIGNMENTID);
+        assertTrue(assignment != null);
+        assertTrue(scraper.findByAssignmentId("") == null);
+        assertTrue(scraper.findByAssignmentId("123") == null);
+    }
 }

@@ -26,7 +26,7 @@ export class ProfileSettingsComponent {
 
   profileForm = new FormGroup({
     name: new FormControl("", Validators.required),
-    school: new FormControl("", [Validators.required, Validators.email]),
+    school: new FormControl({ value: "", disabled: true }, [Validators.required, Validators.email]),
     personal: new FormControl("", [Validators.required, Validators.email]),
     phone: new FormControl("", [Validators.required, Validators.pattern("[0-9]{3}-?[0-9]{3}-?[0-9]{4}")])
   })
@@ -52,26 +52,25 @@ export class ProfileSettingsComponent {
     })
   }
 
-  saveProfile() {
-    // TODO gray out university email on page
+  async saveProfile() {
 
     // Update preferred name
     if (this.profileForm.value.name != null) {
       this.preferredName = this.profileForm.value.name;
-      this.settingsService.updatePreferredName(this.loginService.getUserId(), this.preferredName);
+      await this.settingsService.updatePreferredName(this.loginService.getUserId(), this.preferredName);
     }
 
     // Update personal email
     if (this.profileForm.value.personal != null) {
       this.personalEmail = this.profileForm.value.personal;
-      this.settingsService.updatePersonalEmail(this.loginService.getUserId(), this.personalEmail);
+      await this.settingsService.updatePersonalEmail(this.loginService.getUserId(), this.personalEmail);
     }
 
     // Update phone number
     if (this.profileForm.value.phone != null) {
       this.phoneNumber = this.profileForm.value.phone;
       this.phoneNumber = this.phoneNumber.replaceAll("-", "");  // Remove dashes from user input
-      this.settingsService.updatePhoneNumber(this.loginService.getUserId(), this.phoneNumber);
+      await this.settingsService.updatePhoneNumber(this.loginService.getUserId(), this.phoneNumber);
     }
   }
 }

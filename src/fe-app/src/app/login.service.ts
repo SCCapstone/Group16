@@ -32,6 +32,8 @@ export class LoginService {
       const user: Promise<User> = await response.json() ?? {};
       sessionStorage.setItem(this.USER_ID_KEY, (await user).id);
 
+      console.log(user);
+
       return user;
     } catch (error: any) {
       console.error('Error logging in:', error);
@@ -40,7 +42,7 @@ export class LoginService {
   }
 
   getUserId(): string | null {
-    
+
     // I have no idea why this works
     if (isPlatformBrowser(this.PLATFORM_ID_))
       return sessionStorage.getItem(this.USER_ID_KEY);

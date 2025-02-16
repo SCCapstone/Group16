@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.expression.spel.ast.Assign;
 import org.springframework.stereotype.Component;
 
 import com.mongodb.MongoClientException;
@@ -46,7 +47,7 @@ public class APIScraper implements CommandLineRunner {
             return users.get(0).getId();
         }
         if(users.size() > 1) {
-            return "Error: Multiple users with the same username and password";
+            throw new Error("Error: Multiple users with the same username and password");
         }
         return "Error: No user with this ID";
     }
@@ -87,6 +88,26 @@ public class APIScraper implements CommandLineRunner {
         // }
         return courses;
     }
+    
+    /**
+     * This method returns a course by courseId
+     * @param courseId
+     * @return
+     */
+    public Course findByCourseId(String courseId) {
+        if(courseId == null || courseId.length() == 0) {
+            System.out.println("Error: No assignment ID provided");
+            return null;
+        }
+        Course course = null;
+        try {
+            course = courseRepo.findByCourseId(courseId);
+        } catch (Exception e) {
+            System.out.println("getAssignment() Error: No assignment with that ID");
+            e.printStackTrace();
+        }
+        return course;
+    }
 
     /**
      * This method is to get the user's assignments
@@ -119,16 +140,14 @@ public class APIScraper implements CommandLineRunner {
     public Assignment findByAssignmentId(String aID) {
         if(aID == null || aID.length() == 0) {
             System.out.println("Error: No assignment ID provided");
-            var assignment = new Assignment();
-            return assignment;
+            return null;
         }
-        var assignment = new Assignment();
+        Assignment assignment = null;
         try{
             assignment = assignmentRepo.findByAssignmentId(aID);
         } catch (Exception e) {
             System.out.println("getAssignment() Error: No user with that ID");
             e.printStackTrace();
-            return null;
         }
         return assignment;
     }

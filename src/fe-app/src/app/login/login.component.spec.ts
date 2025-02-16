@@ -11,7 +11,7 @@ describe('LoginComponent', () => {
   let mockRouter: jasmine.SpyObj<Router>; // create mock router as Router
 
   beforeEach(async () => {
-    mockLoginService = jasmine.createSpyObj('LoginService', ['login']); // spy on the mock service
+    mockLoginService = jasmine.createSpyObj('LoginService', ['login', 'getUserId']); // spy on the mock service
     mockRouter = jasmine.createSpyObj('Router', ['navigateByUrl']); // spy on the mock router
 
     await TestBed.configureTestingModule({
@@ -30,6 +30,15 @@ describe('LoginComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy(); // expect the component to exist
+  });
+
+  it('should redirect to main/task-list if user is already logged in', () => {
+    mockLoginService.getUserId.and.returnValue('12345');
+
+    component.ngOnInit();
+    fixture.detectChanges();
+
+    expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/main/task-list');
   });
 
   it('should initialize the login form with empty values', () => {
