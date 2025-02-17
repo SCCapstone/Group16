@@ -8,7 +8,7 @@
         <div class="header-column-edit">EDIT</div>
     </div>
     <div class="assignment-container">
-        @for (assignment of assignments; track assignment.id) {
+        @for (assignment of sortedAssignments; track assignment.id) {
             @if (courseService.getSelectIndex() === -1 || assignment.courseId === courses[courseService.getSelectIndex()].id) {
                 <app-task [assignment]="assignment" /> 
             }
