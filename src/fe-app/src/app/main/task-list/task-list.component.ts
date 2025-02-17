@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import { title } from 'process';
 
 import { LoginService } from '../../login.service';
 import { Course } from '../../course';
@@ -9,13 +8,12 @@ import { Assignment } from '../../course';
 import { AssignmentService } from '../../assignment.service';
 import { TaskComponent } from './task/task.component';
 import { FormsModule } from '@angular/forms';
-import { RouterOutlet } from '@angular/router';
 
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, TaskComponent,FormsModule, RouterOutlet],
+  imports: [CommonModule, TaskComponent,FormsModule],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css'
 })

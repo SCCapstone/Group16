@@ -4,13 +4,23 @@ import { Assignment } from './course';
 
 @Injectable({
   providedIn: 'root',
-
-
 })
 export class AssignmentService {
   readonly url = 'https://classmate.osterholt.us/api/';
 
-  constructor() { }
+  private viewSelected: boolean;
+
+  constructor() {
+    this.viewSelected = false;
+  }
+
+  getViewSelected(): boolean {
+    return this.viewSelected;
+  }
+
+  setViewSelection(input: boolean) {
+    this.viewSelected = input;
+  }
 
   async getAssignments(userId: string | null) : Promise<Assignment[]> {
     const response = await fetch(`${this.url}getAssignments?userId=${userId}`);

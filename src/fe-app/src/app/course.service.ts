@@ -7,9 +7,11 @@ import { Course } from './course';
 export class CourseService {
   readonly url = 'https://classmate.osterholt.us/api/';
 
-  private selectIndex: number = -1;    // Index of course selected in array; -1 indicates none
+  private selectIndex: number;    // Index of course selected in array; -1 indicates none
 
-  constructor() { }
+  constructor() {
+    this.selectIndex = -1;
+  }
 
   async getCourses(userId: string | null) : Promise<Course[]> {
     const response = await fetch(`${this.url}getCourses?userId=${userId}`);
