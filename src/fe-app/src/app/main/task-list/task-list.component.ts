@@ -19,22 +19,17 @@ import { FormsModule } from '@angular/forms';
 })
 export class TaskListComponent {
 
-  test: Assignment[] = [];  // Do we need this?
-
   loginService = inject(LoginService);
   courseService = inject(CourseService);
   assignmentService = inject(AssignmentService);
 
   courses: Course[] = []
   assignments: Assignment[] = [];
+  completedAssignments: Assignment[] = [];
 
-  getAssignmentTester(): void {
-    this.assignmentService.getAssignments(this.loginService.getUserId())
-      .then((assignments: Assignment[]) => {
-        this.test = assignments;
-        console.log(assignments[0].title);
-        console.log(assignments);
-      });
+
+  test(): void {
+    this.assignmentService.toggleViewCompleted();
   }
 
   constructor() {
@@ -45,10 +40,17 @@ export class TaskListComponent {
 
     this.assignmentService.getAssignments(this.loginService.getUserId())
     .then((assignments: Assignment[]) => {
-      this.assignments = assignments;
+      this.filterAssignments(assignments);
       console.log(assignments[0].availability.adaptiveRelease.end)
     })
   }
-  getAllTasks() {}
-  filterTasks() {}
+
+  filterAssignments(assignments: Assignment[]) {
+    for (const assignment of assignments) {
+      if (assignment.complete && Date.now() >= (new Date(assignment.availability.adaptiveRelease.end)).getTime())
+        this.completedAssignments.push(assignment)
+      else
+        this.assignments.push(assignment);
+    }
+  }
 }

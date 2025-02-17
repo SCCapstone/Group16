@@ -8,18 +8,18 @@ import { Assignment } from './course';
 export class AssignmentService {
   readonly url = 'https://classmate.osterholt.us/api/';
 
-  private viewSelected: boolean;
+  private viewCompleted: boolean;
 
   constructor() {
-    this.viewSelected = false;
+    this.viewCompleted = false;
   }
 
-  getViewSelected(): boolean {
-    return this.viewSelected;
+  getViewCompleted(): boolean {
+    return this.viewCompleted;
   }
 
-  setViewSelection(input: boolean) {
-    this.viewSelected = input;
+  toggleViewCompleted() {
+    this.viewCompleted = !this.viewCompleted;
   }
 
   async getAssignments(userId: string | null) : Promise<Assignment[]> {
