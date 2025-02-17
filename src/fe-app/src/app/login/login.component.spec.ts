@@ -45,6 +45,16 @@ describe('LoginComponent', () => {
     expect(component.loginForm.value).toEqual({ username: '', password: ''}); // expect the form to be empty when first opened
   });
 
+  it('should call login() on submit button click', () => {
+    spyOn(component, 'login');
+
+    const button = fixture.nativeElement.querySelector('button[type="submit"]');
+    button.click();
+
+    fixture.detectChanges();
+    expect(component.login).toHaveBeenCalled();
+  });
+
   // removed sessionStorage checks as it is now checked in login.service.spec.ts
   it('should call loginService.login when login() is invoked with valid credentials', async () => {
     // Arrange
