@@ -22,7 +22,7 @@
                 <app-courses-sidebar></app-courses-sidebar>
             </div>
             <div class="due-soon bg-light">
-                <app-due-soon-sidebar></app-due-soon-sidebar>
+                <app-due-soon-sidebar [assignments]="topThreeAssignments"></app-due-soon-sidebar>
             </div>
         </div>
         <div class="task-info col-9">
@@ -52,6 +52,8 @@
               </div>
             <div class="main-view row bg-light">
                 <router-outlet></router-outlet>
+                <app-task-list (dueSoonAssignments)="onDueSoonAssignmentsUpdated($event)" style="display: none;"></app-task-list>
+
             </div>
         </div>
     </div>

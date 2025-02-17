@@ -1,69 +1,74 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router, RouterOutlet, RouterModule } from '@angular/router';
 import { HeartbeatService } from '../heartbeat.service';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { LoginService } from '../login.service';
 import { CoursesSidebarComponent } from "../main/courses-sidebar/courses-sidebar.component";
-import { DueSoonSidebarComponent } from '../main/due-soon-sidebar/due-soon-sidebar.component';
+import { DueSoonSidebarComponent } from './due-soon-sidebar/due-soon-sidebar.component';
 import { CommonModule } from '@angular/common';
-
-
-const VIEW_CALENDAR: number = 0;
-const VIEW_TASK_LIST: number = 1;
-const VIEW_NOTIFICATIONS: number = 2; // This will not be necessary if I can get notification overlay working
+import { TaskComponent } from './task-list/task/task.component';
+import { TaskListComponent } from './task-list/task-list.component'; // Import TaskListComponent
+import { Assignment } from '../course'; // Ensure Assignment is correctly imported
 
 @Component({
     selector: 'app-main',
     standalone: true,
     templateUrl: './main.component.html',
     styleUrl: './main.component.css',
-    imports: [RouterOutlet, RouterModule, CoursesSidebarComponent, DueSoonSidebarComponent,AddTaskComponent, CommonModule]
+    imports: [
+        RouterOutlet, RouterModule, CoursesSidebarComponent, TaskComponent, DueSoonSidebarComponent, AddTaskComponent, CommonModule, TaskListComponent 
+    ]
 })
 export class MainComponent implements OnInit {
-  loginService = inject(LoginService);
-  heartbeatService = inject(HeartbeatService);
-  output: string | null = ''; // to be removed for testing only
+    loginService = inject(LoginService);
+    heartbeatService = inject(HeartbeatService);
+    router = inject(Router);
+    
+    output: string | null = ''; // For testing purposes
 
-  router = inject(Router);
+    showPopup = false;
+    popupType: 'add-task' | null = null;
 
-  showPopup = false;
-  popupType: 'add-task' | null = null;
+    topThreeAssignments: Assignment[] = [];
+    
 
-  // Redirect user to task-list if they are just in /main.
-  constructor() {
-    if (this.router.url != "/main/task-list" && this.router.url != "/main/calendar") {
-      this.router.navigateByUrl("/main/task-list");
+    constructor() {
+        if (this.router.url != "/main/task-list" && this.router.url != "/main/calendar") {
+            this.router.navigateByUrl("/main/task-list");
+        }
     }
-  }
 
-  ngOnInit() {
-    const userId = this.loginService.getUserId();
-    console.log('UserId from app: ' + userId);
-    if(userId) {
-      this.heartbeatService.startHeartbeat(userId);
-    } else {
-      console.warn('no id')
+    ngOnInit() {
+        const userId = this.loginService.getUserId();
+        console.log('UserId from app: ' + userId);
+        if (userId) {
+            this.heartbeatService.startHeartbeat(userId);
+        } else {
+            console.warn('No user ID found');
+        }
     }
+
+    onDueSoonAssignmentsUpdated(assignments: Assignment[]) {
+      console.log('Received top 3 assignments in MainComponent:', assignments);
+      this.topThreeAssignments = assignments;
   }
 
-  getUserId(): void { // function used just to test that we can access userId will be removed
-    console.log(this.loginService.getUserId());
-    if(this.loginService.getUserId()) {
-      this.output = this.loginService.getUserId();
+    getUserId(): void { 
+        console.log(this.loginService.getUserId());
+        if (this.loginService.getUserId()) {
+            this.output = this.loginService.getUserId();
+        }
     }
-  }
 
-  // Will be refactored with consts when I figure out how; 0 = calendar, 1 = task list, 2 =
-  viewSelect: number = 1;
+    viewSelect: number = 1;
 
-  openPopup(type: 'add-task'): void {
-    this.popupType = type;
-    this.showPopup = true;
-    console.log(this.showPopup)
-  }
+    openPopup(type: 'add-task'): void {
+        this.popupType = type;
+        this.showPopup = true;
+    }
 
-  closePopup(): void {
-    this.showPopup = false;
-    this.popupType = null;
-  }
+    closePopup(): void {
+        this.showPopup = false;
+        this.popupType = null;
+    }
 }
