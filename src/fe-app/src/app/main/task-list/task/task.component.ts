@@ -7,14 +7,13 @@ import { CourseService } from '../../../course.service';
 import { LoginService } from '../../../login.service';
 import { RouterModule } from '@angular/router';
 import { EditTaskComponent } from '../../edit-task/edit-task.component';
-import { AddTaskComponent } from "../../add-task/add-task.component";
 
 
 
 @Component({
   selector: 'app-task',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, EditTaskComponent, AddTaskComponent],
+  imports: [FormsModule, CommonModule, RouterModule, EditTaskComponent],
   templateUrl: './task.component.html',
   styleUrl: './task.component.css'
 })
