@@ -56,6 +56,48 @@ describe('AssignmentService', () => {
     expect(assignmentList[0].userId).toEqual('123')
   });
 
+  // getAssignmentById
+  it('should throw an error when getAssignmentById response is empty ( {} )', async () => {
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+      json: () => Promise.resolve([]),
+    } as Response));
+
+    await expectAsync(service.getAssignmentById('abc')).toBeRejectedWithError('assignment is {}');
+  });
+
+  it('should throw an error when getAssignmentById fetch fails', async () => {
+    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+
+    await expectAsync(service.getAssignments('abc')).toBeRejectedWithError('Network Error');
+  });
+
+  it('should successfully getAssignmentById for an assignmentId', async () => {
+    const mockAssignment: Assignment = {
+      id: 'abc',
+      userId: '123',
+      courseId: '456',
+      title: 'testAssignment',
+      description: 'unit test',
+      availability: {
+        adaptiveRelease: {
+          end: new Date()
+        }
+      },
+      complete: false,
+      userCreated: false
+    };
+
+    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+      json: () => Promise.resolve(mockAssignment),
+    } as Response));
+
+    const assignment = await service.getAssignmentById('abc');
+
+    expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/getAssignmentById?assignmentId=abc')
+    expect(assignment).toEqual(mockAssignment);
+    expect(assignment.userId).toEqual('123')
+  });
+
   // addTask()
   it('should throw an error when addTask POST request fails', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve({

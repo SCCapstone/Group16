@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.expression.spel.ast.Assign;
 import org.springframework.stereotype.Component;
 
 import com.mongodb.MongoClientException;
@@ -43,15 +42,13 @@ public class APIScraper implements CommandLineRunner {
 
     public String login(String username, String password) {
         ArrayList<User> users = userRepo.findByUserNameAndPassword(username, password);
-        
-        //TODO: Need to decide how to handle these errors.
         if (users.size() == 1) {
             return users.get(0).getId();
         }
         if(users.size() > 1) {
             throw new Error("Error: Multiple users with the same username and password");
         }
-        return "Error: No user with this ID"; // TODO: Could be a failed search.
+        return "Error: No user with this ID";
     }
 
     /**
@@ -127,7 +124,7 @@ public class APIScraper implements CommandLineRunner {
             assignments = assignmentRepo.findByUserId(userId);
         } catch (Exception e) {
             System.out.println("getAssignments() Error: No user with that ID");
-            e.printStackTrace();
+            // e.printStackTrace();
             return null;
         }
         
@@ -140,11 +137,6 @@ public class APIScraper implements CommandLineRunner {
      * @return
      */
     public Assignment findByAssignmentId(String aID) {
-        // if(uID == null || uID.length() == 0) {
-        //     System.out.println("Error: No user ID provided");
-        //     var assignment = new Assignment();
-        //     return assignment;
-        // }
         if(aID == null || aID.length() == 0) {
             System.out.println("Error: No assignment ID provided");
             return null;
@@ -162,25 +154,16 @@ public class APIScraper implements CommandLineRunner {
     public ArrayList<User> getUser(String uID) {
         if(uID == null || uID.length() == 0) {
             System.out.println("Error: No user ID provided");
-            ArrayList<User> users = new ArrayList<User>();
-            return users;
+            return null;
         }
         var users = new ArrayList<User>();
         try{
             users = userRepo.findUserByUserId(uID);
         } catch (Exception e) {
             System.out.println("getUser() Error: No user with that ID");
-            e.printStackTrace();
+            // e.printStackTrace();
             return null;
         }
-        // if(users.size() == 0) {
-        //     System.out.println("Error: No user with that ID");
-        //     return null;
-        // }
-        // if (users.size() != 1) {
-        //     System.out.println("Error: Multiple users with the same ID");
-        //     return null; // not just one user by id
-        // }
         return users;
     }
 
@@ -278,8 +261,8 @@ public class APIScraper implements CommandLineRunner {
         return null;
     }
 
-    private static void scrapeUpdates() {
-        //scrape the API for updates at the interval
-    }
+    // private static void scrapeUpdates() {
+    //     //scrape the API for updates at the interval
+    // }
 
 }
