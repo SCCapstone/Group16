@@ -22,11 +22,9 @@ export class TaskListComponent {
   loginService = inject(LoginService);
   courseService = inject(CourseService);
   assignmentService = inject(AssignmentService);
-
+  
   courses: Course[] = []
-  assignments: Assignment[] = [];
-  completedAssignments: Assignment[] = [];
-
+  assignments: Assignment[][] = [ [], [] ]  // Active, complete
 
   test(): void {
     this.assignmentService.toggleViewCompleted();
@@ -48,9 +46,9 @@ export class TaskListComponent {
   filterAssignments(assignments: Assignment[]) {
     for (const assignment of assignments) {
       if (assignment.complete && Date.now() >= (new Date(assignment.availability.adaptiveRelease.end)).getTime())
-        this.completedAssignments.push(assignment)
+        this.assignments[1].push(assignment)
       else
-        this.assignments.push(assignment);
+        this.assignments[0].push(assignment);
     }
   }
 
@@ -60,5 +58,9 @@ export class TaskListComponent {
         return course.name
     }
     return "Unknown";
+  }
+
+  getIndex() {
+    return (this.assignmentService.getViewCompleted() ? 1 : 0);
   }
 }

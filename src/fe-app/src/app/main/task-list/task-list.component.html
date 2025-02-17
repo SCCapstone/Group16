@@ -10,18 +10,9 @@
         <div class="header-column-edit">EDIT</div>
     </div>
     <div class="assignment-container">
-        @if (!this.assignmentService.getViewCompleted()) {
-            @for (assignment of this.assignments; track assignment.id) {
-                @if (courseService.getSelectIndex() === -1 || assignment.courseId === courses[courseService.getSelectIndex()].id) {
-                    <app-task [assignment]="assignment" [courseName]="this.getCourseNameByID(assignment.courseId)" /> 
-                }
-            }
-        }
-        @else {
-            @for (assignment of this.completedAssignments; track assignment.id) {
-                @if (courseService.getSelectIndex() === -1 || assignment.courseId === courses[courseService.getSelectIndex()].id) {
-                    <app-task [assignment]="assignment" [courseName]="this.getCourseNameByID(assignment.courseId)" /> 
-                }
+        @for (assignment of this.assignments[this.getIndex()]; track assignment.id) {
+            @if (courseService.getSelectIndex() === -1 || assignment.courseId === courses[courseService.getSelectIndex()].id) {
+                <app-task [assignment]="assignment" [courseName]="this.getCourseNameByID(assignment.courseId)" /> 
             }
         }
     </div>
