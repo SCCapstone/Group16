@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.server.ResponseStatusException;
 
 import group16.be.db.Assignment;
@@ -33,10 +33,10 @@ public class ModifyDatabaseTests {
     private final String MOCK_DUEDATE = "Due Date";
     private final String MOCK_DUEDATE2 = "Due Date2";
     
-    @MockBean
+    @MockitoBean
     private AssignmentRepository assignmentRepo;
 
-    @MockBean
+    @MockitoBean
     private APIScraper scraper;
 
     @Autowired
