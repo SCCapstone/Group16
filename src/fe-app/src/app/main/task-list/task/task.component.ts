@@ -7,23 +7,22 @@ import { CourseService } from '../../../course.service';
 import { LoginService } from '../../../login.service';
 import { RouterModule } from '@angular/router';
 import { EditTaskComponent } from '../../edit-task/edit-task.component';
-import { AddTaskComponent } from "../../add-task/add-task.component";
 
 
 
 @Component({
   selector: 'app-task',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, EditTaskComponent, AddTaskComponent],
+  imports: [FormsModule, CommonModule, RouterModule, EditTaskComponent],
   templateUrl: './task.component.html',
   styleUrl: './task.component.css'
 })
 export class TaskComponent implements OnInit {
   @Input() assignment!: Assignment;
+  @Input() courseName!: String;
 
   courseService = inject(CourseService);
   loginService = inject(LoginService)
-  courseName = '';
   showPopup = false;
   popupType: 'edit-task' | null = null;
   //assignmentId = this.assignment.id ?? null;
@@ -32,11 +31,11 @@ export class TaskComponent implements OnInit {
   constructor(private assignmentService: AssignmentService) {}
 
   async ngOnInit() {
-    try {
-      this.courseName = await (await this.courseService.getCourseById(this.assignment.courseId)).name;
-    } catch (error) {
-      console.error('Error fetching course:', error);
-    }
+    //try {
+    //  this.courseName = await (await this.courseService.getCourseById(this.assignment.courseId)).name;
+    //} catch (error) {
+    //  console.error('Error fetching course:', error);
+    //}
   }
 
   async toggleCompletion(assignment: Assignment) {

@@ -1,3 +1,5 @@
+<label for="completed">Show completed TEST</label>
+<input id="completed" type="checkbox" (click)="test()"/>
 <div class="assignment-list">
     <div class="assignment-header">
         <div class="header-column-check">✔</div>
@@ -8,9 +10,9 @@
         <div class="header-column-edit">EDIT</div>
     </div>
     <div class="assignment-container">
-        @for (assignment of assignments; track assignment.id) {
+        @for (assignment of this.assignments[this.getIndex()]; track assignment.id) {
             @if (courseService.getSelectIndex() === -1 || assignment.courseId === courses[courseService.getSelectIndex()].id) {
-                <app-task [assignment]="assignment" /> 
+                <app-task [assignment]="assignment" [courseName]="this.getCourseNameByID(assignment.courseId)" /> 
             }
         }
     </div>

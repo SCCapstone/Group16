@@ -4,13 +4,23 @@ import { Assignment } from './course';
 
 @Injectable({
   providedIn: 'root',
-
-
 })
 export class AssignmentService {
   readonly url = 'https://classmate.osterholt.us/api/';
 
-  constructor() { }
+  private viewCompleted: boolean;
+
+  constructor() {
+    this.viewCompleted = false;
+  }
+
+  getViewCompleted(): boolean {
+    return this.viewCompleted;
+  }
+
+  toggleViewCompleted() {
+    this.viewCompleted = !this.viewCompleted;
+  }
 
   async getAssignments(userId: string | null) : Promise<Assignment[]> {
      try {
