@@ -12,18 +12,37 @@ export class CourseService {
   constructor() { }
 
   async getCourses(userId: string | null) : Promise<Course[]> {
-    const response = await fetch(`${this.url}getCourses?userId=${userId}`);
-    const data = await response.json() ?? [];
+    try {
+      const response = await fetch(`${this.url}getCourses?userId=${userId}`);
+      const data = await response.json() ?? [];
 
-    if(Array.isArray(data) && data.length === 0) {
-      throw new Error('courses are []');
+      if(Array.isArray(data) && data.length === 0) {
+        throw new Error('courses are []');
+      }
+
+      console.log(data);
+      return data;
+    } catch (error: any) {
+      console.error('Error fetching courses:', error);
+      throw error;
     }
+  }
 
-    console.log(data);
-    return data;
-  } catch (error: any) {
-    console.error('Error fetching courses:', error);
-    throw error;
+  async getCourseById(courseId: string | null) : Promise<Course> {
+    try {
+      const response = await fetch(`${this.url}getCourseById?courseId=${courseId}`);
+      const data = await response.json() ?? {};
+
+      if(Object.keys(data).length === 0) {
+        throw new Error('course is {}');
+      }
+
+      console.log(data);
+      return data;
+    } catch (error: any) {
+      console.error('Error fetching course:', error);
+      throw error;
+    }
   }
 
   // Returns the ID of the currently-selected course
