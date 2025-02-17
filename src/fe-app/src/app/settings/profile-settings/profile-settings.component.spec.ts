@@ -86,13 +86,13 @@ describe('ProfileSettingsComponent', () => {
   })
 
   // Component save method should call settings service save method with appropriate arguments
-  it('should call applicable SettingsService methods when component.saveNotifications() is called', () => {
+  it('should call applicable SettingsService methods when component.saveNotifications() is called', async () => {
     component.preferredName = "Michael";
     component.personalEmail = "mpikula@gmail.com";
     component.schoolEmail = "m@email.sc.edu";  // This should not be saved
     component.phoneNumber = "555-555-5555"
 
-    component.saveProfile();
+    await component.saveProfile();
 
     expect(mockSettingsService.updatePreferredName).toHaveBeenCalledOnceWith(MOCK_USER_INFO.id, component.preferredName);
     expect(mockSettingsService.updatePersonalEmail).toHaveBeenCalledOnceWith(MOCK_USER_INFO.id, component.personalEmail);
