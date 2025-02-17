@@ -20,10 +20,10 @@ import { AddTaskComponent } from "../../add-task/add-task.component";
 })
 export class TaskComponent implements OnInit {
   @Input() assignment!: Assignment;
+  @Input() courseName!: String;
 
   courseService = inject(CourseService);
   loginService = inject(LoginService)
-  courseName = '';
   showPopup = false;
   popupType: 'edit-task' | null = null;
   //assignmentId = this.assignment.id ?? null;
@@ -32,15 +32,15 @@ export class TaskComponent implements OnInit {
   constructor(private assignmentService: AssignmentService) {}
 
   async ngOnInit() {
-    try {
-      const userId = this.loginService.getUserId();
-      const courses: Course[] = await this.courseService.getCourses(userId);
+    // try {
+    //   const userId = this.loginService.getUserId();
+    //   const courses: Course[] = await this.courseService.getCourses(userId);
 
-      const course = courses.find(c => c.id === this.assignment.courseId);
-      this.courseName = course ? course.name : 'Unknown Course';
-    } catch (error) {
-      console.error('Error fetching courses:', error);
-    }
+    //   const course = courses.find(c => c.id === this.assignment.courseId);
+    //   this.courseName = course ? course.name : 'Unknown Course';
+    // } catch (error) {
+    //   console.error('Error fetching courses:', error);
+    // }
   }
 
   async toggleCompletion(assignment: Assignment) {

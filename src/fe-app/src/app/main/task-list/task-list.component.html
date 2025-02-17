@@ -13,14 +13,14 @@
         @if (!this.assignmentService.getViewCompleted()) {
             @for (assignment of this.assignments; track assignment.id) {
                 @if (courseService.getSelectIndex() === -1 || assignment.courseId === courses[courseService.getSelectIndex()].id) {
-                    <app-task [assignment]="assignment" /> 
+                    <app-task [assignment]="assignment" [courseName]="this.getCourseNameByID(assignment.courseId)" /> 
                 }
             }
         }
         @else {
             @for (assignment of this.completedAssignments; track assignment.id) {
                 @if (courseService.getSelectIndex() === -1 || assignment.courseId === courses[courseService.getSelectIndex()].id) {
-                    <app-task [assignment]="assignment" /> 
+                    <app-task [assignment]="assignment" [courseName]="this.getCourseNameByID(assignment.courseId)" /> 
                 }
             }
         }

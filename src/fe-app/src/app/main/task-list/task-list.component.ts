@@ -53,4 +53,12 @@ export class TaskListComponent {
         this.assignments.push(assignment);
     }
   }
+
+  getCourseNameByID(id: String): String {
+    for (const course of this.courses) {
+      if (course.id === id)
+        return course.name
+    }
+    return "Unknown";
+  }
 }
