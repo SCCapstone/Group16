@@ -4,18 +4,18 @@
     <h1>LOGIN</h1>
     <img src="images/favicon.ico" alt="A+ icon" style="width: 70px; height: auto;"/>
     <form [formGroup]="loginForm" (ngSubmit)="login()">
-    <div class = "username">
-      <label for="username">Username:</label>
-      <input id="username" type="text" formControlName="username">
-    </div>
-    <div class = "password">
-      <label for="password">Password: </label>
-      <input id="password" type="text" formControlName="password">
-    </div>
+      <div class = "username">
+        <label for="username">Username:</label>
+        <input id="username" type="text" formControlName="username">
+      </div>
+      <div class = "password">
+        <label for="password">Password: </label>
+        <input id="password" type="text" formControlName="password">
+      </div>
+      <div class = "submit">
+        <button type="submit">Login</button>
+      </div>
     </form>
-    <div class = "submit">
-      <button type="submit">Login</button>
-    </div>
   </div>
  
   

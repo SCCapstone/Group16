@@ -49,6 +49,6 @@ describe('HomeComponent', () => {
 
   it('should provide the title in a <h1> tag', () => {
     const text = fixture.debugElement.nativeElement.querySelector('h1');
-    expect(text.textContent).toContain('Home Page');
+    expect(text.textContent).toContain('Welcome To');
   });
 });

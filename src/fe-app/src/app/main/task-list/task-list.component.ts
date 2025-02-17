@@ -7,45 +7,29 @@ import { Assignment } from '../../course';
 import { AssignmentService } from '../../assignment.service';
 import { TaskComponent } from './task/task.component';
 import { FormsModule } from '@angular/forms';
-import { RouterOutlet } from '@angular/router';
 import { DueSoonSidebarComponent } from '../due-soon-sidebar/due-soon-sidebar.component';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, TaskComponent, FormsModule, RouterOutlet, DueSoonSidebarComponent],
+  imports: [CommonModule, TaskComponent, FormsModule, DueSoonSidebarComponent],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css'
-})
-export class TaskListComponent implements OnInit {
+export class TaskListComponent {
+
 
   loginService = inject(LoginService);
   courseService = inject(CourseService);
   assignmentService = inject(AssignmentService);
 
-  courses: Course[] = [];
-  assignments: Assignment[] = [];
-
   @Output() dueSoonAssignments = new EventEmitter<Assignment[]>();  // ✅ Output for parent component
+  
+  courses: Course[] = []
+  assignments: Assignment[][] = [ [], [] ]  // Active, complete
 
-  ngOnInit() {
-    this.courseService.getCourses(this.loginService.getUserId())
-      .then((courses: Course[]) => {
-        this.courses = courses;
-      });
-
-    this.assignmentService.getAssignments(this.loginService.getUserId())
-      .then((assignments: Assignment[]) => {
-        this.assignments = assignments;
-        console.log('Assignments Loaded:', this.assignments);
-
-        const topThree = this.topThreeAssignments;
-        console.log('About to emit top 3 assignments:', topThree);
-
-        this.dueSoonAssignments.emit(topThree);
-      });
-}
-
+  test(): void {
+    this.assignmentService.toggleViewCompleted();
+  }
 
   get sortedAssignments() {
     return this.assignments.slice().sort((a, b) =>
@@ -59,4 +43,26 @@ export class TaskListComponent implements OnInit {
     console.log('Top 3 Assignments:', topThree);
     return topThree;
   }
+
+  filterAssignments(assignments: Assignment[]) {
+    for (const assignment of assignments) {
+      if (assignment.complete && Date.now() >= (new Date(assignment.availability.adaptiveRelease.end)).getTime())
+        this.assignments[1].push(assignment)
+      else
+        this.assignments[0].push(assignment);
+    }
+  }
+
+  getCourseNameByID(id: String): String {
+    for (const course of this.courses) {
+      if (course.id === id)
+        return course.name
+    }
+    return "Unknown";
+  }
+
+  getIndex() {
+    return (this.assignmentService.getViewCompleted() ? 1 : 0);
+  }
+
 }

@@ -4,18 +4,25 @@ import { SettingsSidebarComponent } from './settings-sidebar.component';
 import { Router, provideRouter } from '@angular/router';
 import { routes } from '../../app.routes';
 
+import { LoginService } from '../../login.service';
 
 describe('SettingsSidebarComponent', () => {
   let component: SettingsSidebarComponent;
   let fixture: ComponentFixture<SettingsSidebarComponent>;
 
+  let mockLoginService: LoginService;
   let router: Router;
 
+  const MOCK_USER_ID = "0123456789abcdef"
+
   beforeEach(async () => {
+    
+    mockLoginService = jasmine.createSpyObj(LoginService, { getUserId: MOCK_USER_ID });  // getUserId() will return a non-null ID to avoid home page redirect
     
     await TestBed.configureTestingModule({
       imports: [SettingsSidebarComponent],
       providers: [
+        { provide: LoginService, useValue: mockLoginService },
         provideRouter(routes)
       ]
     })
@@ -34,7 +41,9 @@ describe('SettingsSidebarComponent', () => {
   });
 
   // Upon load, the visually selected route should correspond to the url path; TODO this will fail
-  it('should reflect the url path in styling upon load', async () => {
+  it('should reflect the url path in styling upon load when user is logged in', async () => {
+    
+    // Redirect manually
     await router.navigateByUrl("/settings/appearance");
     component.getSelectedPageFromURL();  // Calling router.navigateByUrl by itself does not refresh sidebar so this has to be called manually
     await fixture.whenStable();

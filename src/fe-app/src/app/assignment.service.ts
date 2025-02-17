@@ -4,30 +4,56 @@ import { Assignment } from './course';
 
 @Injectable({
   providedIn: 'root',
-
-
 })
 export class AssignmentService {
   readonly url = 'https://classmate.osterholt.us/api/';
 
-  constructor() { }
+  private viewCompleted: boolean;
+
+  constructor() {
+    this.viewCompleted = false;
+  }
+
+  getViewCompleted(): boolean {
+    return this.viewCompleted;
+  }
+
+  toggleViewCompleted() {
+    this.viewCompleted = !this.viewCompleted;
+  }
 
   async getAssignments(userId: string | null) : Promise<Assignment[]> {
-    const response = await fetch(`${this.url}getAssignments?userId=${userId}`);
-    const data = await response.json() ?? [];
-    // const assignments: Assignment[] = data.map((assignment: Assignment) => ({
-    //   ...assignment,
-    //   completed: assignment.isComplete ?? false
-    // }));
+     try {
+      const response = await fetch(`${this.url}getAssignments?userId=${userId}`);
+      const data = await response.json() ?? [];
 
-    if(Array.isArray(data) && data.length === 0) {
-      throw new Error('assignments are []');
+      if(Array.isArray(data) && data.length === 0) {
+        throw new Error('assignments are []');
+      }
+
+      console.log(data);
+      return data;
+    } catch (error: any) {
+      console.error('Error fetching assignments:', error);
+      throw error;
     }
-    console.log(data);
-    return data;
-  } catch (error: any) {
-    console.error('Error fetching assignments:', error);
-    throw error;
+  }
+
+  async getAssignmentById(assignmentId: string | null) : Promise<Assignment> {
+    try {
+      const response = await fetch(`${this.url}getAssignmentById?assignmentId=${assignmentId}`);
+      const data = await response.json() ?? {};
+
+      if(Object.keys(data).length === 0) {
+        throw new Error('assignment is {}');
+      }
+
+      console.log(data);
+      return data;
+    } catch (error: any) {
+      console.error('Error fetching assignment:', error);
+      throw error;
+    }
   }
 
   // In future adjust add task form to not work when any param is empty
