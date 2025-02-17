@@ -9,14 +9,17 @@ import { TaskComponent } from './task/task.component';
 import { FormsModule } from '@angular/forms';
 import { DueSoonSidebarComponent } from '../due-soon-sidebar/due-soon-sidebar.component';
 
+const ACTIVE = 0;
+const COMPLETE = 1;
+
 @Component({
   selector: 'app-task-list',
   standalone: true,
   imports: [CommonModule, TaskComponent, FormsModule, DueSoonSidebarComponent],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css'
+})
 export class TaskListComponent {
-
 
   loginService = inject(LoginService);
   courseService = inject(CourseService);
@@ -27,19 +30,37 @@ export class TaskListComponent {
   courses: Course[] = []
   assignments: Assignment[][] = [ [], [] ]  // Active, complete
 
+  constructor() {
+    
+    // Populate course list with service call
+    this.courseService.getCourses(this.loginService.getUserId())
+    .then((courses: Course[]) => {
+      this.courses = courses;
+    });
+
+    // Populate assignment list with service call and filter by completion
+    this.assignmentService.getAssignments(this.loginService.getUserId())
+    .then((assignments: Assignment[]) => {
+      this.filterAssignments(assignments);
+    });
+
+    // TODO debug this due to merge conflict
+    this.dueSoonAssignments.emit(this.topThreeAssignments);
+  }
+
   test(): void {
     this.assignmentService.toggleViewCompleted();
   }
 
   get sortedAssignments() {
-    return this.assignments.slice().sort((a, b) =>
+    return this.assignments[ACTIVE].slice().sort((a, b) =>
       new Date(a.availability.adaptiveRelease.end).getTime() -
       new Date(b.availability.adaptiveRelease.end).getTime()
     );
   }
 
   get topThreeAssignments(): Assignment[] {
-    const topThree = this.sortedAssignments.slice(0, 3);
+    const topThree: Assignment[] = this.sortedAssignments.slice(0, 3);
     console.log('Top 3 Assignments:', topThree);
     return topThree;
   }
@@ -47,9 +68,9 @@ export class TaskListComponent {
   filterAssignments(assignments: Assignment[]) {
     for (const assignment of assignments) {
       if (assignment.complete && Date.now() >= (new Date(assignment.availability.adaptiveRelease.end)).getTime())
-        this.assignments[1].push(assignment)
+        this.assignments[COMPLETE].push(assignment)
       else
-        this.assignments[0].push(assignment);
+        this.assignments[ACTIVE].push(assignment);
     }
   }
 
@@ -64,5 +85,4 @@ export class TaskListComponent {
   getIndex() {
     return (this.assignmentService.getViewCompleted() ? 1 : 0);
   }
-
 }
