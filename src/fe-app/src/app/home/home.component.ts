@@ -1,27 +1,38 @@
-import { Component } from '@angular/core';
-import { RouterOutlet, RouterModule } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { LoginService } from '../login.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterOutlet, RouterModule],
+  imports: [RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+  router = inject(Router);
+  title = 'Home Page'; // Assume this will be used appropriately in future styling
+  currentValue: string = ''; // is this needed?
+  loginService = inject(LoginService);
 
-  title = 'Default Title';
-  currentValue: string = '';
+  ngOnInit(): void {
+    //const userId = this.loginService.getUserId();
+    //if(userId) {
+      //this.router.navigateByUrl('/main/task-list');
+    //}
+  }
+
   constructor(public activatedRoute: ActivatedRoute) {}
 
-  
-  logClick() {
-    console.log('Log In Button clicked');
+  // we can go back to routerLink in the html, but I am yet to find a good way to test it
+  // we likely can expect the framework to handle routerLink properly, but discussion will be needed
+  // router.navigate does do a sufficient job as well
+  click() {
+    this.router.navigate(['/login']);
+    console.log('Button clicked');
   }
 
-  updateValue(newValue: string): void {
-    this.currentValue = newValue; // Ensure currentValue is declared
-  }
-  
+
 }
+

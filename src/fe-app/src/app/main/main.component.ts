@@ -1,33 +1,76 @@
-import { Component, inject } from '@angular/core';
-import { RouterOutlet, RouterModule } from '@angular/router';
+import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Router, RouterOutlet, RouterModule } from '@angular/router';
+import { HeartbeatService } from '../heartbeat.service';
+import { AddTaskComponent } from './add-task/add-task.component';
 import { LoginService } from '../login.service';
 import { CoursesSidebarComponent } from "../main/courses-sidebar/courses-sidebar.component";
-import { DueSoonSidebarComponent } from '../main/due-soon-sidebar/due-soon-sidebar.component';
-import { TaskListComponent } from './task-list/task-list.component';
-
-
-const VIEW_CALENDAR: number = 0;
-const VIEW_TASK_LIST: number = 1;
-const VIEW_NOTIFICATIONS: number = 2; // This will not be necessary if I can get notification overlay working
+import { DueSoonSidebarComponent } from './due-soon-sidebar/due-soon-sidebar.component';
+import { CommonModule } from '@angular/common';
+import { TaskComponent } from './task-list/task/task.component';
+import { TaskListComponent } from './task-list/task-list.component'; // Import TaskListComponent
+import { Assignment } from '../course'; // Ensure Assignment is correctly imported
 
 @Component({
     selector: 'app-main',
     standalone: true,
     templateUrl: './main.component.html',
     styleUrl: './main.component.css',
-    imports: [RouterOutlet, RouterModule, CoursesSidebarComponent, DueSoonSidebarComponent, TaskListComponent]
+    imports: [
+        RouterOutlet, RouterModule, CoursesSidebarComponent, TaskComponent, DueSoonSidebarComponent, AddTaskComponent, CommonModule, TaskListComponent 
+    ]
 })
-export class MainComponent {
-  loginService = inject(LoginService);
-  output: string | null = ''; // to be removed for testing only
+export class MainComponent implements OnInit {
+    loginService = inject(LoginService);
+    heartbeatService = inject(HeartbeatService);
+    router = inject(Router);
+    
+    output: string | null = ''; // For testing purposes
 
-  getUserId(): void { // function used just to test that we can access userId will be removed
-    console.log(this.loginService.getUserId());
-    if(this.loginService.getUserId()) {
-      this.output = this.loginService.getUserId();
+    showPopup = false;
+    popupType: 'add-task' | null = null;
+
+    topThreeAssignments: Assignment[] = [];
+    
+
+    constructor() {
+        if (this.router.url != "/main/task-list" && this.router.url != "/main/calendar") {
+            this.router.navigateByUrl("/main/task-list");
+        }
     }
-  }
 
-  // Will be refactored with consts when I figure out how; 0 = calendar, 1 = task list, 2 =
-  viewSelect: number = 1;
+    ngOnInit() {
+        const userId = this.loginService.getUserId();
+        console.log('UserId from app: ' + userId);
+        if (userId) {
+            this.heartbeatService.startHeartbeat(userId);
+        } else {
+            console.warn('No user ID found');
+        }
+    }
+
+    handleDueSoonAssignments(assignments: Assignment[]): void {
+        console.log('Top 3 Due Soon Assignments:', assignments);
+        this.topThreeAssignments = assignments;
+      }
+      
+      
+
+    getUserId(): void { 
+        console.log(this.loginService.getUserId());
+        if (this.loginService.getUserId()) {
+            this.output = this.loginService.getUserId();
+        }
+    }
+
+    viewSelect: number = 1;
+
+    openPopup(type: 'add-task'): void {
+        this.popupType = type;
+        this.showPopup = true;
+    }
+
+    closePopup(): void {
+        this.showPopup = false;
+        this.popupType = null;
+    }
 }

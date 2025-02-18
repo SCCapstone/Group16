@@ -26,24 +26,6 @@ export class SettingsComponent {
     })
   }
 
-  toggleEmailNotifications() {
-    this.settingsService.toggleEmailNotifications(this.loginService.getUserId()).then(() => {
-      this.getInfo(); // manual update further testing to see if this is needed
-    });
-  }
-
-  toggleInstitutionEmailNotifications() {
-    this.settingsService.toggleInstitutionEmailNotifications(this.loginService.getUserId()).then(() => {
-      this.getInfo();
-    });
-  }
-
-  toggleSmsNotifications() {
-    this.settingsService.toggleSmsNotifications(this.loginService.getUserId()).then(() => {
-      this.getInfo();
-    });
-  }
-
   testPreferredNameUpdate() {
     this.settingsService.updatePreferredName(this.loginService.getUserId(), 'Cameron').then(() => {
       this.getInfo();

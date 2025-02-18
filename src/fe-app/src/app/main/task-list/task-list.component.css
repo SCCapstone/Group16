@@ -1,0 +1,34 @@
+.assignment-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-bottom: 2px solid #ddd;
+}
+
+.header-column {
+    padding: 10px;
+    text-transform: uppercase;
+    flex: 1; 
+    border-right: 1px solid #ddd;
+    text-align: center;
+}
+
+.header-column-check,
+.header-column-edit {
+    flex: 0.3; 
+    border-right: 1px solid #ddd;
+    text-align: center;
+    padding-top: 10px;
+}
+
+.header-column-edit:last-child{
+    border-right: none;
+}
+
+
+.header-column:last-child {
+    border-right: none;
+}

@@ -13,6 +13,24 @@ public class Assignment {
     public Assignment() {
         availability = new Availability();
         availability.adaptiveRelease = new AdaptiveRelease();
+        this.userCreated = false;
+    }
+    public Assignment(String userId, String courseId, String title, String description, String dueDate, boolean userCreated) {
+        this();
+        this.id = UUID.randomUUID().toString();
+        setTitle(title);
+        setDescription(description);
+        setDueDate(dueDate);
+        setUserId(userId);
+        setCourseId(courseId);
+        this.userCreated = userCreated;
+    }
+    public boolean editAssignment(String title, String description, String dueDate, String courseId) {
+        setTitle(title);
+        setDescription(description);
+        setDueDate(dueDate);
+        setCourseId(courseId);
+        return true;
     }
     @Id
     public String id;
@@ -35,6 +53,10 @@ public class Assignment {
     public Assignment setUserId(String userId) {
         this.userId = userId;
         return this;
+    }
+    private boolean userCreated;
+    public boolean isUserCreated() {
+        return userCreated;
     }
     @Field("courseId")
     public String courseId;
@@ -80,6 +102,13 @@ public class Assignment {
     public Assignment setDueDate(String dueDate) {
         availability.adaptiveRelease.setEnd(dueDate);
         return this;
+    }
+    private boolean isComplete;
+    public boolean isComplete() {
+        return isComplete;
+    }
+    public void setComplete(boolean isComplete) {
+        this.isComplete = isComplete;
     }
 
     public static class Availability {

@@ -1,13 +1,11 @@
-<div class="settings-main">
-    <div class="sidebar">
-        <app-settings-sidebar />
+<main>
+    <div class="settings-main">
+        <div class="sidebar">
+            <app-settings-sidebar />
+        </div>
+        <div class="settings-container">
+            <router-outlet />
+        </div>
     </div>
-    <div class="settings-container">
-        <router-outlet />
-    </div>
-    <div>
-      <button (click)="getInfo()">Test Info</button>
-      <button (click)="toggleEmailNotifications()">Test toggle</button>
-      <button (click)="testPreferredNameUpdate()">Test name</button>
-    </div>
-</div>
+</main>
+

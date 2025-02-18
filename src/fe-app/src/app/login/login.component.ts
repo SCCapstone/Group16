@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LoginService } from '../login.service';
 import { User } from '../user';
 
@@ -12,21 +12,28 @@ import { User } from '../user';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
-  router = inject(Router);
+export class LoginComponent implements OnInit {
+  ngOnInit(): void {
+    const userId = this.loginService.getUserId();
+    if(userId) {
+      this.router.navigateByUrl('/main/task-list');
+    }
+  }
 
+  router = inject(Router);
   user: User | undefined;
   loginService = inject(LoginService);
   loginForm = new FormGroup ({
-    username: new FormControl(''),
-    password: new FormControl('')
+    username: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required)
   });
 
   output: string | undefined = '';
 
   // username: osterholt; password: cameron1234
   login() {
-    if (this.loginForm.value.username == '' || this.loginForm.value.password == '') {
+    if (this.loginForm.invalid) {
+      this.output = 'Field is blank';
      return;
     }
 
@@ -34,11 +41,10 @@ export class LoginComponent {
       this.loginForm.value.username ?? '',
       this.loginForm.value.password ?? ''
     )
-    .then((user: User) => {
-      this.user = user;
-      console.log(this.user); // to be removed
-      if (user) {
-        this.router.navigate(['/main']);
+    .then((user: User | undefined) => {
+      if (user && user.id) {
+        this.user = user;
+        this.router.navigateByUrl("/main/task-list");
       }
     })
     .catch((error) => {
@@ -54,9 +60,11 @@ export class LoginComponent {
       "cameron1234"
     )
     .then((user: User) => {
-      this.user = user;
       if (user) {
-        this.router.navigate(['/main']);
+        this.user = user;
+        this.router.navigateByUrl("/main/task-list");
+      } else {
+        this.output = 'Login failed, please try again';
       }
     })
     .catch((error) => {

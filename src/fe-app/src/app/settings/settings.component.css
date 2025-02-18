@@ -1,15 +1,19 @@
 .settings-main {
     display: flex;
     flex-direction: row;
-    background-color: red;
 }
 
 .sidebar {
-    background-color: orange;
+    background-color: gray;
     width: 20%;
+    margin-top: 20px;
 }
 
 .settings-container {
-    background-color: yellow;
     width: 80%;
+}
+
+main{
+    background-color: #40403e;
+    color: black;
 }

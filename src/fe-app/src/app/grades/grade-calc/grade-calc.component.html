@@ -1,0 +1,35 @@
+<main>
+  <h2>Grade Calculator</h2>
+
+  <div class="table">
+    <table>
+      <thead>
+        <tr>
+          <th>Assignment Label</th>
+          <th>Grade</th>
+          <th>Weight</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let assignment of assignments; let i = index">
+          <td><input type="text" [(ngModel)]="assignment.name"></td>
+          <td><input type="number" [(ngModel)]="assignment.grade" min="0"></td>
+          <td><input type="number" [(ngModel)]="assignment.weight" min="0"></td>
+          <td><button class="remove-btn" (click)="assignments.splice(i, 1)"> Remove </button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="add-btn-container">
+    <button (click)="assignments.push({ name: '', grade: 0, weight: 0 })"> Add Assignment </button>
+  </div>
+
+  <h3>Final Grade: {{ calculateFinalGrade() | number:'1.2-2' }}%</h3>
+
+  <div class = "btn-back">
+    <button routerLink="/grades" style = 'background-color: #40403e;'>Back to Grades</button>
+
+  </div>
+</main>

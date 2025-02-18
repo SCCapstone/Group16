@@ -1,12 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Assignment } from '../../course';
 
 @Component({
   selector: 'app-due-soon-sidebar',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './due-soon-sidebar.component.html',
-  styleUrl: './due-soon-sidebar.component.css'
+  styleUrls: ['./due-soon-sidebar.component.css']
 })
-export class DueSoonSidebarComponent {
+export class DueSoonSidebarComponent implements OnChanges {
+  @Input() assignments: Assignment[] = [];
 
+  ngOnChanges(changes: SimpleChanges) {
+  }
 }

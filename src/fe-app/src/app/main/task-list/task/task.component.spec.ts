@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Assignment } from '../../../assignment';
+import { ActivatedRoute } from '@angular/router';
+import { Assignment } from '../../../course';
 import { TaskComponent } from './task.component';
 
 describe('TaskComponent', () => {
@@ -7,8 +8,15 @@ describe('TaskComponent', () => {
   let fixture: ComponentFixture<TaskComponent>;
 
   beforeEach(async () => {
+    const activatedRouteMock = {
+      snapshot: { paramMap: {} }
+    };
+
     await TestBed.configureTestingModule({
-      imports: [TaskComponent]
+      imports: [TaskComponent],
+      providers: [
+        { provide: ActivatedRoute, useValue: activatedRouteMock}
+      ]
     })
     .compileComponents();
 
@@ -19,7 +27,7 @@ describe('TaskComponent', () => {
       title: 'Test Assignment',
       availability: {
         adaptiveRelease: {
-          end: 'date'
+          end: new Date() as Date
         }
       }
     } as any;

@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.5</version>
+		<version>3.4.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>group16</groupId>
 	<artifactId>be</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.2</version>
 	<name>be</name>
 	<description>Backend for Group16's capstone project</description>
 
@@ -21,7 +21,6 @@
 	</properties>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.eclipse.angus</groupId>
 			<artifactId>angus-mail</artifactId>
@@ -36,13 +35,12 @@
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongodb-driver-sync</artifactId>
-			<version>5.3.0-beta0</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.18.2</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -59,10 +57,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongodb-driver-sync</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>com.vaadin.external.google</groupId>
+					<artifactId>android-json</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.json</groupId>
@@ -84,6 +84,17 @@
 			<groupId>javax.activation</groupId>
 			<artifactId>activation</artifactId>
 			<version>1.1.1</version>
+		</dependency>
+		<!-- Swagger UI for API Documentation -->
+		<!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<version>3.4.2</version>
+		</dependency> -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.6.0</version>
 		</dependency>
 	</dependencies>
 

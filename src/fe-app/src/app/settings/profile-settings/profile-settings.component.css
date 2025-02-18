@@ -1,7 +1,6 @@
 .profile-settings {
     display: flex;
     flex-direction: column;
-    background-color: green;
     height: 100%;
     align-items: center;
     justify-content: center;
