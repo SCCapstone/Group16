@@ -15,7 +15,7 @@ public class Connection {
     }
     
     public Connection(String uID) {
-        userId = uID;
+        setUserId(uID);
         connected = true;
     }
 
