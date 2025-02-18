@@ -3,14 +3,14 @@ import { Component, inject } from '@angular/core';
 import { LoginService } from '../../login.service';
 import { CourseService } from '../../course.service';
 import { AssignmentService } from '../../assignment.service';
-
+import { CommonModule } from '@angular/common';
 import { Course } from '../../course';
 import { Assignment } from '../../course';
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })
