@@ -191,18 +191,8 @@ public class RequestHandler {
 
         boolean userCreated = true;
         var assignment = new Assignment(userId, courseId, title, description, dueDate, userCreated);
-        var objectMapper = new ObjectMapper();
         
-        try {
-            connection.insertNewData("assignments", objectMapper.writeValueAsString(assignment));
-            return true;
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        return scraper.saveAssignment(assignment);
     }
 
     /**
