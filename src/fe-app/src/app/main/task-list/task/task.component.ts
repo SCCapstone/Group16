@@ -24,7 +24,7 @@ export class TaskComponent implements OnInit {
   courseService = inject(CourseService);
   loginService = inject(LoginService)
   showPopup = false;
-  popupType: 'edit-task' | null = null;
+  popupType: 'edit-task' | 'task' | null = null;
   //assignmentId = this.assignment.id ?? null;
 
 
@@ -63,10 +63,12 @@ export class TaskComponent implements OnInit {
   }
 
 
-openPopup(type: 'edit-task'): void {
-  this.popupType = type;
-  this.showPopup = true;
-}
+  openPopup(type: 'edit-task' | 'task'): void {
+    this.popupType = type;
+    this.showPopup = true;
+  }
+
+  
 
 
   closePopup(): void {
