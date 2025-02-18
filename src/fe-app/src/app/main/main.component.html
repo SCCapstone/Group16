@@ -52,8 +52,7 @@
               </div>
             <div class="main-view row bg-light">
                 <router-outlet></router-outlet>
-                <app-task-list (dueSoonAssignments)="onDueSoonAssignmentsUpdated($event)" style="display: none;"></app-task-list>
-
+                <app-task-list (dueSoonAssignments)="handleDueSoonAssignments($event)" style="display: none;"></app-task-list>
             </div>
         </div>
     </div>

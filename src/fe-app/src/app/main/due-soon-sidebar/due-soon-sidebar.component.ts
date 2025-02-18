@@ -13,6 +13,5 @@ export class DueSoonSidebarComponent implements OnChanges {
   @Input() assignments: Assignment[] = [];
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('Received Assignments in DueSoonSidebar:', this.assignments);
   }
 }

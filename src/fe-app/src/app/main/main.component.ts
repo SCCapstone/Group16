@@ -48,10 +48,12 @@ export class MainComponent implements OnInit {
         }
     }
 
-    onDueSoonAssignmentsUpdated(assignments: Assignment[]) {
-      console.log('Received top 3 assignments in MainComponent:', assignments);
-      this.topThreeAssignments = assignments;
-  }
+    handleDueSoonAssignments(assignments: Assignment[]): void {
+        console.log('Top 3 Due Soon Assignments:', assignments);
+        this.topThreeAssignments = assignments;
+      }
+      
+      
 
     getUserId(): void { 
         console.log(this.loginService.getUserId());

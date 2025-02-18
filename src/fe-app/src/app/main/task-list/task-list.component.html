@@ -10,12 +10,13 @@
         <div class="header-column-edit">EDIT</div>
     </div>
     <div class="assignment-container">
-        @for (assignment of this.assignments[this.getIndex()]; track assignment.id) {
+        @for (assignment of this.getSortedAssignments(); track assignment.id) {
             @if (courseService.getSelectIndex() === -1 || assignment.courseId === courses[courseService.getSelectIndex()].id) {
                 <app-task [assignment]="assignment" [courseName]="this.getCourseNameByID(assignment.courseId)" /> 
             }
         }
     </div>
+    
 </div>
 
 
