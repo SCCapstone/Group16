@@ -1,4 +1,4 @@
-name: BE Docker Image CLI
+name: BE Docker Image
 
 on:
   push:
