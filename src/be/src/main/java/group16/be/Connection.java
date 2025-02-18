@@ -2,8 +2,6 @@ package group16.be;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import group16.be.db.UserRepository;
-
 public class Connection {
 
     @Autowired
