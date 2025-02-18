@@ -3,13 +3,6 @@
     "configurations": [
       {
         "type": "java",
-        "name": "SendMailExample",
-        "request": "launch",
-        "mainClass": "group16.be.SendMailExample",
-        "projectName": "be"
-      },
-      {
-        "type": "java",
         "name": "BeApplication",
         "request": "launch",
         "mainClass": "group16.be.BeApplication",
