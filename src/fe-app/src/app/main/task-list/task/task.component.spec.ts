@@ -29,8 +29,10 @@ describe('TaskComponent', () => {
         adaptiveRelease: {
           end: new Date() as Date
         }
-      }
-    } as any;
+      },
+      complete: true
+    } as Assignment;
+    component.courseName = "CSCE 490-abc"
 
     fixture.detectChanges();
   });
