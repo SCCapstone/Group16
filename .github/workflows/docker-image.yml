@@ -38,7 +38,6 @@ jobs:
       - name: Build Docker image
         run: |
           REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-          cd Group16/src/be  # Ensure we're in the correct directory
           docker build --build-arg JAR_FILE=target/be-0.2.jar -t ghcr.io/$REPO_NAME/classmate-api:latest -f Dockerfile .
 
       - name: Push Docker image
