@@ -9,4 +9,5 @@ spec:
     - protocol: TCP
       port: 1616   # External port (incoming traffic)
       targetPort: 1616  # Port your pods are listening on
-  type: LoadBalancer # NodePort
+      nodePort: 30016  # NodePort (range 30000-32767)
+  type: NodePort # LoadBalancer
