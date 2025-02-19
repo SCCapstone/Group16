@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: classmate-api-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+  - host: classmate.osterholt.us
+    http:
+      paths:
+      - path: /api(/|$)(.*)  # Matches /api and any subpath under it
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: classmate-api
+            port:
+              number: 1616
