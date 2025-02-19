@@ -17,3 +17,5 @@ spec:
           image: ghcr.io/sccapstone/group16/classmate-api:latest
           ports:
             - containerPort: 1616
+      imagePullSecrets:
+        - name: ghcr-secret
