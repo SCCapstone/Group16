@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: classmate-api
+spec:
+  selector:
+    app: classmate-api
+  ports:
+    - protocol: TCP
+      port: 1616   # External port (incoming traffic)
+      targetPort: 1616  # Port your pods are listening on
+  type: NodePort  # Change to LoadBalancer if on a cloud provider
