@@ -461,5 +461,11 @@ public class RequestHandler {
         Grade grade = new Grade(userId, courseId, assignmentId, percent);
         return scraper.saveGrade(grade);
     }
+
+    @CrossOrigin
+    @GetMapping("/api/debugCamDaBest")
+    public String debugCamDaBest() {
+        return "Cam Da Best";
+    }
 }
 
