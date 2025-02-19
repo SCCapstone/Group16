@@ -23,9 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import group16.be.db.Assignment;
 import group16.be.db.Course;
 import group16.be.db.Grade;
@@ -40,10 +37,8 @@ public class RequestHandler {
     @Autowired
     private static HeartbeatController heartbeatController;
 
-    private static Connection connection;
-
     public RequestHandler() {
-        connection = new Connection(Environment.MONGO_URL);
+        
     }
 
     /**
@@ -191,18 +186,8 @@ public class RequestHandler {
 
         boolean userCreated = true;
         var assignment = new Assignment(userId, courseId, title, description, dueDate, userCreated);
-        var objectMapper = new ObjectMapper();
         
-        try {
-            connection.insertNewData("assignments", objectMapper.writeValueAsString(assignment));
-            return true;
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        return scraper.saveAssignment(assignment);
     }
 
     /**
