@@ -22,3 +22,6 @@ EXPOSE 4000
 
 # Run the server
 CMD ["npm", "run", "serve:ssr:fe-app"]
+
+# docker build -t fe-app .
+# docker run -p 4000:4000 fe-app
