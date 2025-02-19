@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: classmate-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: classmate-api
+  template:
+    metadata:
+      labels:
+        app: classmate-api
+    spec:
+      containers:
+        - name: classmate-api
+          image: ghcr.io/sccapstone/group16/classmate-api:latest
+          ports:
+            - containerPort: 1616
