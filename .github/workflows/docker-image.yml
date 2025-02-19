@@ -26,10 +26,7 @@ jobs:
 
       - name: Build project with Maven
         run: |
-          cd src/be && mvn -q clean install
-
-      - name: Debug - List Files
-        run: ls -R
+          cd src/be && mvn -q clean install 
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
@@ -41,7 +38,7 @@ jobs:
       - name: Build Docker image
         run: |
           REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-          docker build --build-arg JAR_FILE=target/be-0.2.jar -t ghcr.io/$REPO_NAME/classmate-api:latest -f Dockerfile .
+          docker build --build-arg JAR_FILE=target/be-0.2.jar -t ghcr.io/$REPO_NAME/classmate-api:latest -f src/be/Dockerfile src/be
 
       - name: Push Docker image
         run: |
