@@ -1,10 +1,10 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from '../../login.service';
 import { CourseService } from '../../course.service';
 import { AssignmentService } from '../../assignment.service';
 import { Assignment, Course } from '../../course';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 })
 export class EditTaskComponent implements OnInit {
   @Input () assignment! : Assignment;
+  @Output() close = new EventEmitter<void>();
 
   route: ActivatedRoute = inject(ActivatedRoute);
   router = inject(Router);
@@ -25,10 +26,10 @@ export class EditTaskComponent implements OnInit {
   courses: Course[] = [];
 
   editTaskForm = new FormGroup ({
-    title: new FormControl(''),
+    title: new FormControl('', Validators.required),
     description: new FormControl(''),
-    course: new FormControl(''),
-    due: new FormControl('')
+    course: new FormControl('', Validators.required),
+    due: new FormControl('', Validators.required)
   });
 
   async ngOnInit() {
@@ -68,6 +69,10 @@ export class EditTaskComponent implements OnInit {
 
 
   editTask() {
+    if(this.editTaskForm.invalid) {
+      return;
+    }
+
     let dueDate: Date | null = null;
 
     if (this.editTaskForm.value.due) {
@@ -78,15 +83,19 @@ export class EditTaskComponent implements OnInit {
 
     console.log(this.editTaskForm.value.course);
 
-    this.assignmentService.editTask(
-      this.editTaskForm.value.title ?? '',
-      this.editTaskForm.value.description ?? '',
-      dueDate,
-      this.loginService.getUserId(),
-      this.editTaskForm.value.course ?? '',
-      this.assignment?.id ?? ''
-    )
+    try {
+      this.assignmentService.editTask(
+        this.editTaskForm.value.title ?? '',
+        this.editTaskForm.value.description ?? '',
+        dueDate,
+        this.loginService.getUserId(),
+        this.editTaskForm.value.course ?? '',
+        this.assignment?.id ?? ''
+      )
 
-    this.router.navigate(['/main/task-list']);
+      this.close.emit();
+    } catch(error) {
+      console.error('Edit task failed', error);
+    }
   }
 }

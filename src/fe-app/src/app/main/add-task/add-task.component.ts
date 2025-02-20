@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, Output, EventEmitter } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Course } from '../../course';
 import { CourseService } from '../../course.service';
 import { LoginService } from '../../login.service';
 import { CommonModule } from '@angular/common';
 import { AssignmentService } from '../../assignment.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-task',
@@ -14,16 +15,20 @@ import { AssignmentService } from '../../assignment.service';
   styleUrl: './add-task.component.css'
 })
 export class AddTaskComponent {
+  @Output() close = new EventEmitter<void>();
+
   assignmentService = inject(AssignmentService);
   courseService = inject(CourseService);
   loginService = inject(LoginService);
   courses: Course[] = [];
+  route: ActivatedRoute = inject(ActivatedRoute);
+  router = inject(Router);
 
   addTaskForm = new FormGroup ({
-    title: new FormControl(''),
+    title: new FormControl('', Validators.required),
     description: new FormControl(''),
-    course: new FormControl(''),
-    due: new FormControl('')
+    course: new FormControl('', Validators.required),
+    due: new FormControl('', Validators.required)
   });
 
   // name: string = "";
@@ -42,6 +47,10 @@ export class AddTaskComponent {
   }
 
   addTask() {
+    if(this.addTaskForm.invalid) {
+      return;
+    }
+
     let dueDate: Date | null = null;
 
     if (this.addTaskForm.value.due) {
@@ -50,12 +59,18 @@ export class AddTaskComponent {
       dueDate = selectedDate;
     }
 
-    this.assignmentService.addTask(
-      this.addTaskForm.value.title ?? '',
-      this.addTaskForm.value.description ?? '',
-      dueDate,
-      this.loginService.getUserId(),
-      this.addTaskForm.value.course ?? ''
-    )
+    try {
+      this.assignmentService.addTask(
+        this.addTaskForm.value.title ?? '',
+        this.addTaskForm.value.description ?? '',
+        dueDate,
+        this.loginService.getUserId(),
+        this.addTaskForm.value.course ?? ''
+      )
+
+      this.close.emit();
+    } catch (error) {
+      console.error('Add task failed', error);
+    }
   }
 }
