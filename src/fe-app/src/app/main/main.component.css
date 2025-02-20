@@ -111,5 +111,9 @@
 
   .main-view{
     height: 620px;          
-    overflow-y: auto;   
+    overflow-y: auto;
+    width: 99%; /* Adjust this value as needed */
+    margin-left: 5px;
   }
+
+  
