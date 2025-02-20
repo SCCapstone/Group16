@@ -1,10 +1,29 @@
-p{
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px; /* Adjust spacing from bottom */
+    min-height: 45.3vh;
+}
+
+p {
     color: #c30000;
     font-size: 30px;
     text-align: center;
+    font-weight: bold;
 }
 
-li{
+li {
     font-size: 20px;
 }
 
+#words{
+    margin-top: 25px;
+}
