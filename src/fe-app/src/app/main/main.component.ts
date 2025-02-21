@@ -33,7 +33,7 @@ export class MainComponent implements OnInit {
     
 
     constructor() {
-        if (this.router.url != "/main/task-list" && this.router.url != "/main/calendar") {
+        if (this.router.url != "/main/task-list" && this.router.url != "/main/calendar" && this.router.url != "/main/grades") {
             this.router.navigateByUrl("/main/task-list");
         }
     }

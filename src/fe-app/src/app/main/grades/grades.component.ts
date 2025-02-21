@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterModule } from '@angular/router';
-import { Grade } from '../course';
-import { GradesService } from '../grades.service';
-import { LoginService } from '../login.service';
+import { Grade } from '../../course';
+import { GradesService } from '../../grades.service';
+import { LoginService } from '../../login.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
