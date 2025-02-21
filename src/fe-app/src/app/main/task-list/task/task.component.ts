@@ -68,9 +68,6 @@ export class TaskComponent implements OnInit {
     this.showPopup = true;
   }
 
-  
-
-
   closePopup(): void {
     this.showPopup = false;
     this.popupType = null;
