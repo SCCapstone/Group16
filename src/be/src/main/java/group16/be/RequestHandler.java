@@ -186,8 +186,9 @@ public class RequestHandler {
 
         boolean userCreated = true;
         var assignment = new Assignment(userId, courseId, title, description, dueDate, userCreated);
-        
-        return scraper.saveAssignment(assignment);
+        var grade = new Grade(userId, courseId, assignment.getId(), -1.0);
+
+        return scraper.saveAssignment(assignment) && scraper.saveGrade(grade);
     }
 
     /**
