@@ -464,9 +464,16 @@ public class RequestHandler {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Grade ID is missing or invalid");
         if(percent < 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Percent is invalid");
-        Grade grade = scraper.getGradeByGradeId(gradeId);
+
+        
+        var grade = scraper.getGradeByGradeId(gradeId);
         if(grade == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Grade not found");
+        
+        var assignment = scraper.findByAssignmentId(grade.getAssignmentId());
+        if(!assignment.isUserCreated()) 
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User does not have permission to edit this grade");
+        
         grade.setPercent(percent);
         if(scraper.saveGrade(grade))
             return HttpStatus.OK;
