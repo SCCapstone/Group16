@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface GradeRepository extends MongoRepository<Grade, String> {
     @Query("{ 'userId' : ?0 }")
     public ArrayList<Grade> findByUserId(String userId);
+
+    @Query("{ 'assignmentId' : ?0 }")
+    public ArrayList<Grade> findByAssignmentId(String assignmentId);
 }

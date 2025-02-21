@@ -231,11 +231,12 @@ public class RequestHandler {
         if(assignmentId == null || assignmentId.equals("NULL")) 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Assignment ID is missing or invalid");
         var assignment = scraper.findByAssignmentId(assignmentId);
+        var grade = scraper.getGradeByAssignmentId(assignmentId);
         if(assignment == null) 
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No assignments found for this ID");
         if(!assignment.isUserCreated())
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User does not have permission to delete this assignment");
-        if(scraper.deleteAssignment(assignment))
+        if(scraper.deleteAssignment(assignment) && scraper.deleteGrade(grade))
             return HttpStatus.OK;   
         else
             return HttpStatus.INTERNAL_SERVER_ERROR;
@@ -457,27 +458,20 @@ public class RequestHandler {
      */
     @CrossOrigin
     @PostMapping("/api/setGrade")
-    public boolean setGrade(@RequestParam(value = "userId", defaultValue = "NULL") String userId, 
-                            @RequestParam(value = "courseId", defaultValue = "NULL") String courseId, 
-                            @RequestParam(value = "assignmentId", defaultValue = "NULL") String assignmentId, 
-                            @RequestParam(value = "percent", defaultValue = "NULL") double percent) {
-
-        if(courseId == null || courseId.equals("NULL") || assignmentId == null || assignmentId.equals("NULL") || userId == null || userId.equals("NULL")) 
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID, course ID, or assignment ID is missing or invalid");
-        
-        if(!scraper.isUserId(userId) || !scraper.isCourseId(courseId) || !scraper.isAssignmentId(assignmentId))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course ID or assignment ID is invalid");
-        
-        var grades = scraper.getGrades(userId);
-        for (Grade grade : grades) {
-            if (grade.getCourseId().equals(courseId) && grade.getAssignmentId().equals(assignmentId)) {
-                // Grade already exists. Returning HTTP error.
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Grade already exists");
-            }
-        }
-
-        Grade grade = new Grade(userId, courseId, assignmentId, percent);
-        return scraper.saveGrade(grade);
+    public HttpStatus setGrade(@RequestParam(value = "gradeId", defaultValue = "NULL") String gradeId,  
+                               @RequestParam(value = "percent", defaultValue = "NULL") double percent) {
+        if(gradeId == null || gradeId.equals("NULL"))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Grade ID is missing or invalid");
+        if(percent < 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Percent is invalid");
+        Grade grade = scraper.getGradeByGradeId(gradeId);
+        if(grade == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Grade not found");
+        grade.setPercent(percent);
+        if(scraper.saveGrade(grade))
+            return HttpStatus.OK;
+        else
+            return HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
     @CrossOrigin
