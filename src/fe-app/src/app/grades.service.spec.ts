@@ -58,14 +58,14 @@ describe('GradesService', () => {
       status: 500
     } as Response));
 
-    await expectAsync(service.setGrade('123', '456', '789', 90))
+    await expectAsync(service.setGrade('789', 90))
       .toBeRejectedWithError('POST failed: 500');
   });
 
   it('should throw an error when setGrade fetch encounters a network failure', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
 
-    await expectAsync(service.setGrade('123', '456', '789', 90))
+    await expectAsync(service.setGrade('789', 90))
       .toBeRejectedWithError('Network Error');
   });
 
@@ -74,10 +74,10 @@ describe('GradesService', () => {
       ok: true,
     } as Response));
 
-    await expectAsync(service.setGrade('123', '456', '789', 90))
+    await expectAsync(service.setGrade('789', 90))
       .toBeResolved();
 
-    expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/setGrade?userId=123&courseId=456&assignmentId=789&percent=90',
-    Object({ method: 'POST' }));
+    expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/setGrade?gradeId=789&percent=90',
+    Object({ method: 'PUT' }));
   });
 });

@@ -62,6 +62,9 @@ export class TaskComponent implements OnInit {
     }
   }
 
+  removeTask() {
+    this.assignmentService.removeTask(this.assignment.id);
+  }
 
   openPopup(type: 'edit-task' | 'task'): void {
     this.popupType = type;
@@ -72,5 +75,4 @@ export class TaskComponent implements OnInit {
     this.showPopup = false;
     this.popupType = null;
   }
-
 }

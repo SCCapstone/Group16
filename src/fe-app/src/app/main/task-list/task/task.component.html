@@ -10,6 +10,9 @@
             <img *ngIf="assignment.userCreated" src="images/pencil.png" alt="pencil icon" style="width: 25px; height: auto; margin-left: 15px;"/>
         </a>
     </div>
+    <div class="assignment-column-remove">
+      <a (click)="removeTask()"><div *ngIf="assignment.userCreated">X</div></a>
+    </div>
 </div>
 
 <div *ngIf="showPopup" class="popup-modal">

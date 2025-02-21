@@ -155,4 +155,24 @@ export class AssignmentService {
         throw error;
       }
     }
+
+    async removeTask(assignmentId: string | null | undefined) {
+      const queryParams = new URLSearchParams({
+        assignmentId: assignmentId ?? "NULL"
+      }).toString();
+
+      try {
+        const response = await fetch(`${this.url}removeAssignment?${queryParams}`, {
+          method: 'DELETE'
+        });
+
+        if(!response.ok) {
+          throw new Error(`DELETE failed: ${response.status}`)
+        }
+
+      } catch(error: any) {
+        console.error('Error removing task: ', error);
+        throw error;
+      }
+    }
 }

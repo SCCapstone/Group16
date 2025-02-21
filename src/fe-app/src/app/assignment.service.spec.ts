@@ -217,4 +217,34 @@ describe('AssignmentService', () => {
     expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/openAssignment?assID=456',
     Object({ method: 'PUT' }));
   });
+
+  // removeTask()
+  it('should throw an error when removeTask DELETE request fails', async () => {
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+      ok: false,
+      status: 500
+    } as Response));
+
+    await expectAsync(service.removeTask('456'))
+      .toBeRejectedWithError('DELETE failed: 500');
+  });
+
+  it('should throw an error when removeTask fetch encounters a network failure', async () => {
+    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+
+    await expectAsync(service.removeTask('456'))
+      .toBeRejectedWithError('Network Error');
+  });
+
+  it('should successfully call removeTask with correct parameters', async () => {
+    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+      ok: true,
+    } as Response));
+
+    await expectAsync(service.removeTask('456'))
+      .toBeResolved();
+
+    expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/removeAssignment?assignmentId=456',
+    Object({ method: 'DELETE' }));
+  });
 });
