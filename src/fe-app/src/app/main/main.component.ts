@@ -1,14 +1,14 @@
 import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet, RouterModule } from '@angular/router';
-import { HeartbeatService } from '../heartbeat.service';
-import { AddTaskComponent } from './add-task/add-task.component';
+
 import { LoginService } from '../login.service';
+import { HeartbeatService } from '../heartbeat.service';
+import { Assignment } from '../course'; // Ensure Assignment is correctly imported
+
 import { CoursesSidebarComponent } from "../main/courses-sidebar/courses-sidebar.component";
 import { DueSoonSidebarComponent } from './due-soon-sidebar/due-soon-sidebar.component';
-import { CommonModule } from '@angular/common';
-import { TaskComponent } from './task-list/task/task.component';
-import { TaskListComponent } from './task-list/task-list.component'; // Import TaskListComponent
-import { Assignment } from '../course'; // Ensure Assignment is correctly imported
+import { AddTaskComponent } from './add-task/add-task.component';
 
 @Component({
     selector: 'app-main',
@@ -16,7 +16,7 @@ import { Assignment } from '../course'; // Ensure Assignment is correctly import
     templateUrl: './main.component.html',
     styleUrl: './main.component.css',
     imports: [
-        RouterOutlet, RouterModule, CoursesSidebarComponent, TaskComponent, DueSoonSidebarComponent, AddTaskComponent, CommonModule, TaskListComponent 
+        RouterOutlet, RouterModule, CoursesSidebarComponent, DueSoonSidebarComponent, AddTaskComponent, CommonModule 
     ]
 })
 export class MainComponent implements OnInit {

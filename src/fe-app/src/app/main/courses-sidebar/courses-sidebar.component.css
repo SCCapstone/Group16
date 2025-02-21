@@ -4,6 +4,7 @@
     border: 2px solid #00000000;
     width: 80%;
     margin: 10px auto;
+    user-select: none;
 }
 
 /* Additional styling for the selected course div */
