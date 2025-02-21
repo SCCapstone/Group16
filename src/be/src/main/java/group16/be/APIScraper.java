@@ -212,6 +212,19 @@ public class APIScraper implements CommandLineRunner {
         }
     }
 
+    public boolean deleteAssignment(Assignment assignment) {
+        try {
+            assignmentRepo.delete(assignment);
+            return true;
+        } catch(MongoClientException e) {
+            e.printStackTrace();
+            return false;
+        } catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean saveGrade(Grade grade) {
         try {
             gradeRepo.save(grade);

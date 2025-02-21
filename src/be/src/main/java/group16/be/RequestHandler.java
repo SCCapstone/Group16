@@ -223,6 +223,22 @@ public class RequestHandler {
         return scraper.saveAssignment(assignment);
     }
 
+    @CrossOrigin
+    @GetMapping("/api/removeAssignment") 
+    public HttpStatus removeAssignment(@RequestParam(value = "assignmentId", defaultValue = "NULL") String assignmentId) {
+        if(assignmentId == null || assignmentId.equals("NULL")) 
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Assignment ID is missing or invalid");
+        var assignment = scraper.findByAssignmentId(assignmentId);
+        if(assignment == null) 
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No assignments found for this ID");
+        if(!assignment.isUserCreated())
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User does not have permission to delete this assignment");
+        if(scraper.deleteAssignment(assignment))
+            return HttpStatus.OK;   
+        else
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+    }
+
     /**
      * Get all assignments from the database
      * @param userId the user's ID
