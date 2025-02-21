@@ -5,7 +5,7 @@ import { Router, RouterOutlet, RouterModule } from '@angular/router';
 import { LoginService } from '../login.service';
 import { HeartbeatService } from '../heartbeat.service';
 import { Assignment } from '../course'; // Ensure Assignment is correctly imported
-
+import { TaskListComponent } from './task-list/task-list.component';
 import { CoursesSidebarComponent } from "../main/courses-sidebar/courses-sidebar.component";
 import { DueSoonSidebarComponent } from './due-soon-sidebar/due-soon-sidebar.component';
 import { AddTaskComponent } from './add-task/add-task.component';
@@ -16,7 +16,7 @@ import { AddTaskComponent } from './add-task/add-task.component';
     templateUrl: './main.component.html',
     styleUrl: './main.component.css',
     imports: [
-        RouterOutlet, RouterModule, CoursesSidebarComponent, DueSoonSidebarComponent, AddTaskComponent, CommonModule 
+        RouterOutlet, RouterModule, TaskListComponent, CoursesSidebarComponent, DueSoonSidebarComponent, AddTaskComponent, CommonModule 
     ]
 })
 export class MainComponent implements OnInit {
