@@ -16,6 +16,7 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -225,7 +226,7 @@ public class RequestHandler {
     }
 
     @CrossOrigin
-    @GetMapping("/api/removeAssignment") 
+    @DeleteMapping("/api/removeAssignment") 
     public HttpStatus removeAssignment(@RequestParam(value = "assignmentId", defaultValue = "NULL") String assignmentId) {
         if(assignmentId == null || assignmentId.equals("NULL")) 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Assignment ID is missing or invalid");
