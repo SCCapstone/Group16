@@ -47,7 +47,7 @@
             <div *ngIf="showPopup" class="popup-modal">
                 <div class="popup-content">
                   <span class="close" (click)="closePopup()">&times;</span>
-                  <p *ngIf="popupType === 'add-task'"><app-add-task (close)="closePopup()" (taskAdded)="handleNewTask($event)"></app-add-task></p>
+                  <p *ngIf="popupType === 'add-task'"><app-add-task (closePopup)="closePopup()" (onTaskAdd)="handleNewTask($event)"></app-add-task></p>
                 </div>
               </div>
             <div class="main-view row bg-light">

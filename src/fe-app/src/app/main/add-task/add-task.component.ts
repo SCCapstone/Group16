@@ -15,8 +15,8 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './add-task.component.css'
 })
 export class AddTaskComponent {
-  @Output() close = new EventEmitter<void>();
-  @Output() taskAdded = new EventEmitter<Assignment>();
+  @Output() closePopup = new EventEmitter<void>();
+  @Output() onTaskAdd = new EventEmitter<Assignment>();
 
   assignmentService = inject(AssignmentService);
   courseService = inject(CourseService);
@@ -69,6 +69,7 @@ export class AddTaskComponent {
         this.addTaskForm.value.course ?? ''
       )
 
+      // Temporary task with displayed info to display immediately after adding
       const newTask: Assignment = {
         id: crypto.randomUUID(),
         userId: this.loginService.getUserId() ?? '',
@@ -76,13 +77,15 @@ export class AddTaskComponent {
         description: this.addTaskForm.value.description ?? '',
         courseId: this.addTaskForm.value.course ?? '',
         complete: false,
-        availability: { adaptiveRelease: { end: dueDate ?? new Date() } },
+        availability: {
+          adaptiveRelease: { end: dueDate ?? new Date() }
+        },
         userCreated: false
       };
 
       console.log('Emitting new task:', newTask);
-      this.taskAdded.emit(newTask);
-      this.close.emit();
+      this.onTaskAdd.emit(newTask);
+      this.closePopup.emit();
     } catch (error) {
       console.error('Add task failed', error);
     }
