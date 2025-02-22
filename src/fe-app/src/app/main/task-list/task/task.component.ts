@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { Assignment, Course } from '../../../course';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -20,6 +20,8 @@ import { EditTaskComponent } from '../../edit-task/edit-task.component';
 export class TaskComponent implements OnInit {
   @Input() assignment!: Assignment;
   @Input() courseName!: String;
+  @Output() taskRemoved = new EventEmitter<string>();
+  @Output() taskUpdated = new EventEmitter<Assignment>();
 
   courseService = inject(CourseService);
   loginService = inject(LoginService)
@@ -62,8 +64,17 @@ export class TaskComponent implements OnInit {
     }
   }
 
-  removeTask() {
-    this.assignmentService.removeTask(this.assignment.id);
+  async removeTask() {
+    try {
+      this.assignmentService.removeTask(this.assignment.id);
+      this.taskRemoved.emit(this.assignment.id as string);
+    } catch (error) {
+      console.error('Error removing task: ', error);
+    }
+  }
+
+  updateTask(updatedAssignment: Assignment) {
+    this.taskUpdated.emit(updatedAssignment);
   }
 
   openPopup(type: 'edit-task' | 'task'): void {

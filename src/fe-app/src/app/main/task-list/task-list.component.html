@@ -10,14 +10,16 @@
         <div class="header-column-remove">X</div>
     </div>
     <div class="assignment-container">
-        @for (assignment of this.getSortedAssignments(); track assignment.id) {
+        @for (assignment of this.assignments[this.getIndex()]; track assignment.id) {
             @if (courseService.getSelectIndex() === -1 || assignment.courseId === courses[courseService.getSelectIndex()].id) {
-                <app-task [assignment]="assignment" [courseName]="this.getCourseNameByID(assignment.courseId)" />
+                <app-task
+                [assignment]="assignment"
+                [courseName]="this.getCourseNameByID(assignment.courseId)"
+                (taskRemoved)="onTaskRemoved($event)"
+                (taskUpdated)="onTaskUpdated($event)"
+                />
             }
         }
     </div>
 
 </div>
-
-
-

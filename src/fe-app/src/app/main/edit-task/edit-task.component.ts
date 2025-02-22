@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
 })
 export class EditTaskComponent implements OnInit {
   @Input () assignment! : Assignment;
-  @Output() close = new EventEmitter<void>();
+  @Output() close = new EventEmitter<Assignment>();
 
   route: ActivatedRoute = inject(ActivatedRoute);
   router = inject(Router);
@@ -68,7 +68,7 @@ export class EditTaskComponent implements OnInit {
   }
 
 
-  editTask() {
+  async editTask() {
     if(this.editTaskForm.invalid) {
       return;
     }
@@ -84,7 +84,7 @@ export class EditTaskComponent implements OnInit {
     console.log(this.editTaskForm.value.course);
 
     try {
-      this.assignmentService.editTask(
+      await this.assignmentService.editTask(
         this.editTaskForm.value.title ?? '',
         this.editTaskForm.value.description ?? '',
         dueDate,
@@ -93,7 +93,19 @@ export class EditTaskComponent implements OnInit {
         this.assignment?.id ?? ''
       )
 
-      this.close.emit();
+      const updatedAssignment: Assignment = {
+        ...this.assignment,
+        title: this.editTaskForm.value.title ?? '',
+        description: this.editTaskForm.value.description ?? '',
+        availability: {
+          adaptiveRelease: {
+            end: dueDate ?? new Date(this.assignment.availability.adaptiveRelease.end)          }
+        },
+        courseId: this.editTaskForm.value.course ?? this.assignment.courseId
+      };
+
+
+      this.close.emit(updatedAssignment);
     } catch(error) {
       console.error('Edit task failed', error);
     }
