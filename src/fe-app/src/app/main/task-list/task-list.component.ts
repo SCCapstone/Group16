@@ -25,7 +25,7 @@ export class TaskListComponent{
   @Output() dueSoonAssignments = new EventEmitter<Assignment[]>();
   loginService = inject(LoginService);
   courseService = inject(CourseService);
-  assignmentService = inject(AssignmentService);  
+  assignmentService = inject(AssignmentService);
   courses: Course[] = []
   assignments: Assignment[][] = [ [], [] ]  // Active, complete
 
@@ -39,7 +39,11 @@ export class TaskListComponent{
     });
 
     // Populate assignment list with service call and filter by completion
-    this.assignmentService.getAssignments(this.loginService.getUserId())
+    this.getAssignments();
+  }
+
+  private async getAssignments() {
+    await this.assignmentService.getAssignments(this.loginService.getUserId())
       .then((assignments: Assignment[]) => {
       this.filterAssignments(assignments);
       const sortedAssignments = this.getSortedAssignments();
@@ -50,7 +54,25 @@ export class TaskListComponent{
       console.log("Sent", this.dueSoonAssignments.emit(top3Assignments));
     });
   }
-  
+
+  onTaskRemoved(id: string) {
+    this.assignments = this.assignments.map(list =>
+      list.filter(assignment => assignment.id !== id)
+    )
+
+    this.cdr.detectChanges();
+  }
+
+  onTaskUpdated(updatedAssignment: Assignment) {
+    this.assignments = this.assignments.map(list =>
+      list.map(assignment =>
+        assignment.id === updatedAssignment.id ? updatedAssignment : assignment
+      )
+    );
+
+    this.cdr.detectChanges();
+  }
+
   ngOnInit() {
     console.log('Assignments on init:', this.assignments);
   }
@@ -68,11 +90,11 @@ export class TaskListComponent{
         this.assignments[ACTIVE].push(assignment);
     }
   }
-  
-  
+
+
   getSortedAssignments(): Assignment[] {
-    return [...this.assignments[this.getIndex()]].sort((a, b) => 
-      (new Date(a.availability.adaptiveRelease.end)).getTime() - 
+    return [...this.assignments[this.getIndex()]].sort((a, b) =>
+      (new Date(a.availability.adaptiveRelease.end)).getTime() -
       (new Date(b.availability.adaptiveRelease.end)).getTime());
   }
 
