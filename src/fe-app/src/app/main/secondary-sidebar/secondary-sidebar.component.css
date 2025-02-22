@@ -13,9 +13,23 @@ body, html {
     min-height: 45.3vh;
 }
 
-p {
+h1 {
     color: #c30000;
     font-size: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+h2 {
+    color: #7e0000;
+    font-size: 24px;
+    text-align: center;
+    font-weight: bold;
+}
+
+p {
+    color: #000000;
+    font-size: 24px;
     text-align: center;
     font-weight: bold;
 }

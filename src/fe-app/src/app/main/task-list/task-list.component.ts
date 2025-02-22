@@ -7,7 +7,6 @@ import { Assignment } from '../../course';
 import { AssignmentService } from '../../assignment.service';
 import { TaskComponent } from './task/task.component';
 import { FormsModule } from '@angular/forms';
-import { DueSoonSidebarComponent } from '../due-soon-sidebar/due-soon-sidebar.component';
 import { ChangeDetectorRef } from '@angular/core';
 
 
@@ -17,7 +16,7 @@ const COMPLETE = 1;
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, TaskComponent, FormsModule, DueSoonSidebarComponent],
+  imports: [CommonModule, TaskComponent, FormsModule],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css'
 })
