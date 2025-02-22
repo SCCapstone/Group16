@@ -41,23 +41,38 @@ export class GradesComponent {
     })
   }
 
+  /**
+   * Iterates over the user's courses and returns the name of the course matching the given ID.
+   * @param id The ID of a course.
+   * @returns The name of the course, or "unknown" if not found.
+   */
   getCourseNameByID(id: string): string {
     console.log("SEARCHING COURSES ARRAY OF SIZE " + this.courses.length)
     for (const course of this.courses) {
       if (course.id === id)
         return course.name.split('-')[0];
     }
-    return  "Unknown";
+    return  "unknown";
   }
 
+  /**
+   * Iterates over the user's assignments and returns the name of the course matching the given ID.
+   * @param id The ID of an assignment.
+   * @returns The name of the assignment, or "unknown" if not found.
+   */
   getAssignmentTitleByID(id: string): string {
     for (const assignment of this.assignments) {
       if (assignment.id === id)
         return assignment.title
     }
-    return "Unknown";
+    return "unknown";
   }
 
+  /**
+   * Takes in a grade value and returns it in the correct format for display.
+   * @param grade A decimal, percent-based grade.
+   * @returns A string adding a % sign to the given grade, or -- if it is negative
+   */
   displayGrade(grade: number): string {
     if (grade < 0)
       return "--";
