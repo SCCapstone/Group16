@@ -52,12 +52,10 @@ export class MainComponent implements OnInit {
         }
     }
 
-    handleDueSoonAssignments(assignments: Assignment[]): void {
-        console.log('Top 3 Due Soon Assignments:', assignments);
-        this.topThreeAssignments = assignments;
-      }
-
-
+    // handleDueSoonAssignments(assignments: Assignment[]): void {
+    //     console.log('Top 3 Due Soon Assignments:', assignments);
+    //     this.topThreeAssignments = assignments;
+    // }
 
     getUserId(): void {
         console.log(this.loginService.getUserId());
@@ -65,8 +63,6 @@ export class MainComponent implements OnInit {
             this.output = this.loginService.getUserId();
         }
     }
-
-    viewSelect: number = 1;
 
     handleNewTask(task: Assignment) {
       this.newTask = task;

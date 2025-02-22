@@ -22,7 +22,7 @@
                 <app-courses-sidebar></app-courses-sidebar>
             </div>
             <div class="due-soon bg-light">
-                <app-secondary-sidebar [assignments]="topThreeAssignments" />
+                <app-secondary-sidebar />
             </div>
         </div>
         <div class="task-info col-9">
@@ -52,7 +52,7 @@
               </div>
             <div class="main-view row bg-light">
                 <router-outlet />
-                <app-task-list [newTask]="newTask" (dueSoonAssignments)="handleDueSoonAssignments($event)" style="display: none;"></app-task-list>
+                <app-task-list [newTask]="newTask" style="display: none;"></app-task-list>
             </div>
         </div>
     </div>
