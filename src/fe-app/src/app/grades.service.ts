@@ -24,11 +24,9 @@ export class GradesService {
     throw error;
   }
 
-  async setGrade(userId: string | null, courseId: string | null, assignmentId: string | null, percent: number | null) : Promise<void> {
+  async setGrade(gradeId: string | null, percent: number | null) : Promise<void> {
       const queryParams = new URLSearchParams({
-        userId: userId ?? "NULL",
-        courseId: courseId ?? "NULL",
-        assignmentId: assignmentId ?? "NULL",
+        gradeId: gradeId ?? "NULL",
         percent: percent?.toString() ?? "NULL"
       }).toString();
 
@@ -36,7 +34,7 @@ export class GradesService {
 
       try {
         const response = await fetch(`${this.url}setGrade?${queryParams}`, {
-          method: 'POST'
+          method: 'PUT'
         });
 
         if(!response.ok) {

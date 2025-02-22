@@ -17,14 +17,14 @@
 }
 
 .header-column-check,
-.header-column-edit {
+.header-column-edit, .header-column-remove {
     flex: 0.3; 
     border-right: 1px solid #ddd;
     text-align: center;
     padding-top: 10px;
 }
 
-.header-column-edit:last-child{
+.header-column-remove:last-child{
     border-right: none;
 }
 

@@ -4,6 +4,7 @@
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid #ddd;
+    text-align: center;
 }
 
 .assignment-row:hover {
@@ -59,17 +60,22 @@
     border-right: none;
 }
 
-.assignment-column-edit:last-child{
+.assignment-column-remove:last-child{
     border-right: none;
 }
 
 
 
 .assignment-column-complete,
-.assignment-column-edit {
+.assignment-column-edit, .assignment-column-remove {
     flex: 0.3;
     border-right: 1px solid #ddd;
+    cursor: pointer;
 
+}
+
+.assignment-column-edit{
+  margin-left: -15px;
 }
 
 .assignment-column input[type="checkbox"] {
