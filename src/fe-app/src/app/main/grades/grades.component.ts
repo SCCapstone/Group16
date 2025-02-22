@@ -78,4 +78,15 @@ export class GradesComponent {
       return "--";
     return ("" + grade + "%");
   }
+
+  /**
+   * Sanitizes the letter grade that should be displayed, only returning the letter if the grade percent is positive.
+   * @param grade The grade object to be referenced.
+   * @returns The output letter grade, accounting for ungraded assignments or null letter grades.
+   */
+  displayGradeChar(grade: Grade): string {
+    if (grade.percent < 0 || grade.gradeChar == null)
+      return "N/A";
+    return grade.gradeChar;
+  }
 }

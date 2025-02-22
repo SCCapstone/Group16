@@ -6,7 +6,7 @@
     <!-- DUE SOON -->
     @if (this.router.url != "/main/grades")
     {
-      <p>Due Soon</p>
+      <h1>Due Soon</h1>
       @if (this.assignments != null && this.assignments.length > 0)
       {
         <ul>
@@ -25,10 +25,10 @@
     <!-- GRADES -->
     @else
     {
-      <p>Final Grades</p>
+      <h1>Final Grades</h1>
 
       @for (course of this.courses; track course.id) {
-        <p>{{ course.name.split('-')[0] }}</p>
+        <h2>{{ course.name.split('-')[0] }}</h2>
         <p>{{ this.calculateFinalGrade(course.id) }}</p>
       }
     }

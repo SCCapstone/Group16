@@ -5,8 +5,8 @@
         <th scope="col">Course</th>
         <th scope="col">Assignment</th>
         <th scope="col">Grade</th>
+        <th scope="col">Letter</th>
         <th scope="col"></th>
-        <th scope="col"></th> 
       </tr>
     </thead>
     <tbody>
@@ -15,11 +15,9 @@
         <td>{{ this.getCourseNameByID(grade.courseId) }}</td>
         <td>{{ this.getAssignmentTitleByID(grade.assignmentId) }}</td>
         <td>{{ this.displayGrade(grade.percent) }}</td>
-        <td>
-          <button class="btn btn-warning">Edit</button>
-        </td>
-        <td>
-          <button class="btn btn-danger">Delete</button>
+        <td>{{ this.displayGradeChar(grade) }}</td>
+        <td class="button-container">
+          <button class="btn btn-warning">Edit</button><button class="btn btn-danger">Delete</button>
         </td>
       </tr>
     }
