@@ -4,7 +4,7 @@ import { HeartbeatService } from '../heartbeat.service';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { LoginService } from '../login.service';
 import { CoursesSidebarComponent } from "../main/courses-sidebar/courses-sidebar.component";
-import { DueSoonSidebarComponent } from './due-soon-sidebar/due-soon-sidebar.component';
+import { SecondarySidebarComponent } from './secondary-sidebar/secondary-sidebar.component';
 import { CommonModule } from '@angular/common';
 import { TaskListComponent } from './task-list/task-list.component'; // Import TaskListComponent
 import { Assignment } from '../course'; // Ensure Assignment is correctly imported
@@ -15,7 +15,7 @@ import { Assignment } from '../course'; // Ensure Assignment is correctly import
     templateUrl: './main.component.html',
     styleUrl: './main.component.css',
     imports: [
-        RouterOutlet, RouterModule, CoursesSidebarComponent, DueSoonSidebarComponent, AddTaskComponent, CommonModule, TaskListComponent 
+        RouterOutlet, RouterModule, CoursesSidebarComponent, SecondarySidebarComponent, AddTaskComponent, CommonModule, TaskListComponent 
     ]
 })
 export class MainComponent implements OnInit {

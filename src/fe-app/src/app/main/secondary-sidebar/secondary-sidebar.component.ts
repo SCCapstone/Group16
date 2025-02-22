@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { Assignment } from '../../course';
 
 @Component({
-  selector: 'app-due-soon-sidebar',
+  selector: 'app-secondary-sidebar',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './due-soon-sidebar.component.html',
-  styleUrls: ['./due-soon-sidebar.component.css']
+  templateUrl: './secondary-sidebar.component.html',
+  styleUrls: ['./secondary-sidebar.component.css']
 })
-export class DueSoonSidebarComponent implements OnChanges {
+export class SecondarySidebarComponent implements OnChanges {
   @Input() assignments: Assignment[] = [];
 
   ngOnChanges(changes: SimpleChanges) {
