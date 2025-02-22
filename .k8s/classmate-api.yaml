@@ -1,4 +1,5 @@
 # Kubernetes Deployment Files for the Springboot BE
+# To apply config file: kubectl apply -f .k8s/classmate-api.yaml
 
 apiVersion: apps/v1
 kind: Deployment

@@ -1,4 +1,5 @@
 # Kubernetes Deployment Files for the Angular FE
+# To apply config file: kubectl apply -f .k8s/classmate-fe.yaml
 
 apiVersion: apps/v1
 kind: Deployment
@@ -33,6 +34,6 @@ spec:
   ports:
     - protocol: TCP
       port: 80   # External port (incoming traffic)
-      targetPort: 40000  # Port your pods are listening on
+      targetPort: 4000  # Port your pods are listening on
       nodePort: 30017  # Use a node port for local setup
   type: NodePort  # For local setup, use NodePort
