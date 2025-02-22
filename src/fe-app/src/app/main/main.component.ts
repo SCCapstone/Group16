@@ -1,13 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet, RouterModule } from '@angular/router';
-import { HeartbeatService } from '../heartbeat.service';
-import { AddTaskComponent } from './add-task/add-task.component';
+
 import { LoginService } from '../login.service';
+import { HeartbeatService } from '../heartbeat.service';
+
+import { Assignment } from '../course';
+import { TaskListComponent } from './task-list/task-list.component';
+import { AddTaskComponent } from './add-task/add-task.component';
 import { CoursesSidebarComponent } from "../main/courses-sidebar/courses-sidebar.component";
 import { SecondarySidebarComponent } from './secondary-sidebar/secondary-sidebar.component';
-import { CommonModule } from '@angular/common';
-import { TaskListComponent } from './task-list/task-list.component'; // Import TaskListComponent
-import { Assignment } from '../course'; // Ensure Assignment is correctly imported
+
 
 @Component({
     selector: 'app-main',

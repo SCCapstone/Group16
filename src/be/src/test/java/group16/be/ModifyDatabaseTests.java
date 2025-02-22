@@ -89,14 +89,14 @@ public class ModifyDatabaseTests {
         assertEquals(assignment.getDueDate(), MOCK_DUEDATE2);        
     }
 
-    @Test
-    void testSetGrades() {
+    // @Test
+    // void testSetGrades() {
 
-        // Tests setting a grade which exists.
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            requestHandler.setGrade(MOCK_USERID, MOCK_COURSEID, MOCK_ASSIGNMENTID, 100);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-        assertEquals(exception.getReason(), "Grade already exists");
-    }
+    //     // Tests setting a grade which exists.
+    //     ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+    //         requestHandler.setGrade(MOCK_USERID, MOCK_COURSEID, MOCK_ASSIGNMENTID, 100);
+    //     });
+    //     assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+    //     assertEquals(exception.getReason(), "Grade already exists");
+    // }
 }

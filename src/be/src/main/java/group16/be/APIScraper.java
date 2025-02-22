@@ -186,6 +186,32 @@ public class APIScraper implements CommandLineRunner {
         return gradeRepo.findByUserId(userId);
     }
 
+    public Grade getGradeByGradeId(String gradeId) {
+        if(gradeId == null || gradeId.length() == 0) {
+            System.out.println("Error: No grade ID provided");
+            return null;
+        }
+        var grade = gradeRepo.findById(gradeId);
+        if(grade.isEmpty()) {
+            System.out.println("Error: No grade with that ID");
+            return null;
+        }
+        return grade.get();
+    }
+
+    public Grade getGradeByAssignmentId(String assignmentId) {
+        if(assignmentId == null || assignmentId.length() == 0) {
+            System.out.println("Error: No assignment ID provided");
+            return null;
+        }
+        var grades = gradeRepo.findByAssignmentId(assignmentId);
+        if(grades.size() != 1) {
+            System.out.println("Error: Multiple grades with the same assignment ID");
+            return null;
+        }
+        return grades.get(0);
+    }
+
     public boolean saveUser(User user) {
         try {
             userRepo.save(user);
@@ -212,6 +238,19 @@ public class APIScraper implements CommandLineRunner {
         }
     }
 
+    public boolean deleteAssignment(Assignment assignment) {
+        try {
+            assignmentRepo.delete(assignment);
+            return true;
+        } catch(MongoClientException e) {
+            e.printStackTrace();
+            return false;
+        } catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean saveGrade(Grade grade) {
         try {
             gradeRepo.save(grade);
@@ -222,6 +261,19 @@ public class APIScraper implements CommandLineRunner {
         } catch(Exception e) {
             e.printStackTrace();
             return false; 
+        }
+    }
+
+    public boolean deleteGrade(Grade grade) {
+        try {
+            gradeRepo.delete(grade);
+            return true;
+        } catch(MongoClientException e) {
+            e.printStackTrace();
+            return false;
+        } catch(Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 

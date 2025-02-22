@@ -36,6 +36,12 @@ public class Grade {
     public double getPercent() {
         return percent;
     }
+    public void setPercent(double percent) {
+        if(percent < 0) {
+            this.percent = -1.0;
+        }
+        this.percent = percent;
+    }   
     
     public String getGradeChar() {
         if (percent >= 90) 
