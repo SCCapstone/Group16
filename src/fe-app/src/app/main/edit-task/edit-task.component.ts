@@ -68,7 +68,7 @@ export class EditTaskComponent implements OnInit {
   }
 
 
-  editTask() {
+  async editTask() {
     if(this.editTaskForm.invalid) {
       return;
     }
@@ -84,7 +84,7 @@ export class EditTaskComponent implements OnInit {
     console.log(this.editTaskForm.value.course);
 
     try {
-      this.assignmentService.editTask(
+      await this.assignmentService.editTask(
         this.editTaskForm.value.title ?? '',
         this.editTaskForm.value.description ?? '',
         dueDate,
