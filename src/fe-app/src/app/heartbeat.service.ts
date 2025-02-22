@@ -31,7 +31,7 @@ export class HeartbeatService {
     this.currentUserId = userId;
 
     this.sendHeartbeat(userId);
-    console.log('sending first');
+    //console.log('sending first');
 
     this.heartbeatTimer = setInterval(() => {
       if(!this.loginService.getUserId()) {
@@ -41,7 +41,7 @@ export class HeartbeatService {
       }
 
       this.sendHeartbeat(userId);
-      console.log('sending on timer');
+      //console.log('sending on timer');
     }, this.heartbeatInterval);
   }
 
@@ -73,7 +73,7 @@ export class HeartbeatService {
         throw new Error(`POST failed: ${response.status}`);
       }
 
-      console.log(response);
+      //console.log(response);
     } catch (error: any) {
       console.error('Error sending heartbeat:', error);
       throw error;

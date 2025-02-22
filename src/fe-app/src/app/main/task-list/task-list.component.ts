@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Output, OnInit, Input, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginService } from '../../login.service';
 import { Course } from '../../course';
@@ -23,11 +23,14 @@ const COMPLETE = 1;
 })
 export class TaskListComponent{
   @Output() dueSoonAssignments = new EventEmitter<Assignment[]>();
+  @Input() newTask: Assignment | null = null;
+
   loginService = inject(LoginService);
   courseService = inject(CourseService);
   assignmentService = inject(AssignmentService);
-  courses: Course[] = []
-  assignments: Assignment[][] = [ [], [] ]  // Active, complete
+  courses: Course[] = [];
+  assignments: Assignment[][] = [ [], [] ];  // Active, complete
+  sortedAssignments: Assignment[] = [];
 
   constructor(private cdr: ChangeDetectorRef) {
     console.log('dueSoonAssignments in constructor:', this.dueSoonAssignments);
@@ -45,14 +48,32 @@ export class TaskListComponent{
   private async getAssignments() {
     await this.assignmentService.getAssignments(this.loginService.getUserId())
       .then((assignments: Assignment[]) => {
-      this.filterAssignments(assignments);
-      const sortedAssignments = this.getSortedAssignments();
-      console.log('Sorted Assignments:', sortedAssignments);
-      const top3Assignments = sortedAssignments.slice(0, 3);
-      console.log('Top 3 Sorted Assignments:', top3Assignments);
-      this.dueSoonAssignments.emit(top3Assignments);
-      console.log("Sent", this.dueSoonAssignments.emit(top3Assignments));
+        this.filterAssignments(assignments);
+        this.sortedAssignments = this.getSortedAssignments();
+        console.log('Sorted Assignments:', this.sortedAssignments);
+        const top3Assignments = this.sortedAssignments.slice(0, 3);
+        console.log('Top 3 Sorted Assignments:', top3Assignments);
+        this.dueSoonAssignments.emit(top3Assignments);
+        console.log("Sent", this.dueSoonAssignments.emit(top3Assignments));
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes['newTask'] && this.newTask) {
+      console.log('New task received:', this.newTask);
+      this.addNewTask(this.newTask);
+    }
+  }
+
+  addNewTask (task: Assignment) {
+    if (task) {
+      this.assignments[ACTIVE].push(task);
+      console.log('Updated assignments (ACTIVE):', this.assignments[ACTIVE]);
+    }
+    this.assignments = [...this.assignments];
+    this.sortedAssignments = this.getSortedAssignments();
+    console.log('New list: ', this.assignments)
+    this.cdr.detectChanges();
   }
 
   onTaskRemoved(id: string) {
@@ -60,6 +81,7 @@ export class TaskListComponent{
       list.filter(assignment => assignment.id !== id)
     )
 
+    this.sortedAssignments = this.getSortedAssignments();
     this.cdr.detectChanges();
   }
 
@@ -70,6 +92,7 @@ export class TaskListComponent{
       )
     );
 
+    this.sortedAssignments = this.getSortedAssignments();
     this.cdr.detectChanges();
   }
 
@@ -93,6 +116,7 @@ export class TaskListComponent{
 
 
   getSortedAssignments(): Assignment[] {
+    console.log('Sorted Assignments: ', this.assignments);
     return [...this.assignments[this.getIndex()]].sort((a, b) =>
       (new Date(a.availability.adaptiveRelease.end)).getTime() -
       (new Date(b.availability.adaptiveRelease.end)).getTime());

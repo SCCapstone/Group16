@@ -47,12 +47,12 @@
             <div *ngIf="showPopup" class="popup-modal">
                 <div class="popup-content">
                   <span class="close" (click)="closePopup()">&times;</span>
-                  <p *ngIf="popupType === 'add-task'"><app-add-task (close)="closePopup()"></app-add-task></p>
+                  <p *ngIf="popupType === 'add-task'"><app-add-task (close)="closePopup()" (taskAdded)="handleNewTask($event)"></app-add-task></p>
                 </div>
               </div>
             <div class="main-view row bg-light">
                 <router-outlet />
-                <app-task-list (dueSoonAssignments)="handleDueSoonAssignments($event)" style="display: none;"></app-task-list>
+                <app-task-list [newTask]="newTask" (dueSoonAssignments)="handleDueSoonAssignments($event)" style="display: none;"></app-task-list>
             </div>
         </div>
     </div>

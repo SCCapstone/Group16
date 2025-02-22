@@ -1,6 +1,6 @@
 import { Component, inject, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Course } from '../../course';
+import { Assignment, Course } from '../../course';
 import { CourseService } from '../../course.service';
 import { LoginService } from '../../login.service';
 import { CommonModule } from '@angular/common';
@@ -16,6 +16,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AddTaskComponent {
   @Output() close = new EventEmitter<void>();
+  @Output() taskAdded = new EventEmitter<Assignment>();
 
   assignmentService = inject(AssignmentService);
   courseService = inject(CourseService);
@@ -46,7 +47,7 @@ export class AddTaskComponent {
     })
   }
 
-  addTask() {
+  async addTask() {
     if(this.addTaskForm.invalid) {
       return;
     }
@@ -60,7 +61,7 @@ export class AddTaskComponent {
     }
 
     try {
-      this.assignmentService.addTask(
+      await this.assignmentService.addTask(
         this.addTaskForm.value.title ?? '',
         this.addTaskForm.value.description ?? '',
         dueDate,
@@ -68,6 +69,19 @@ export class AddTaskComponent {
         this.addTaskForm.value.course ?? ''
       )
 
+      const newTask: Assignment = {
+        id: crypto.randomUUID(),
+        userId: this.loginService.getUserId() ?? '',
+        title: this.addTaskForm.value.title ?? '',
+        description: this.addTaskForm.value.description ?? '',
+        courseId: this.addTaskForm.value.course ?? '',
+        complete: false,
+        availability: { adaptiveRelease: { end: dueDate ?? new Date() } },
+        userCreated: false
+      };
+
+      console.log('Emitting new task:', newTask);
+      this.taskAdded.emit(newTask);
       this.close.emit();
     } catch (error) {
       console.error('Add task failed', error);

@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet, RouterModule } from '@angular/router';
 
@@ -16,21 +16,23 @@ import { AddTaskComponent } from './add-task/add-task.component';
     templateUrl: './main.component.html',
     styleUrl: './main.component.css',
     imports: [
-        RouterOutlet, RouterModule, TaskListComponent, CoursesSidebarComponent, DueSoonSidebarComponent, AddTaskComponent, CommonModule 
+        RouterOutlet, RouterModule, TaskListComponent, CoursesSidebarComponent, DueSoonSidebarComponent, AddTaskComponent, CommonModule
     ]
 })
 export class MainComponent implements OnInit {
     loginService = inject(LoginService);
     heartbeatService = inject(HeartbeatService);
     router = inject(Router);
-    
+    newTask: Assignment | null = null;
+    @ViewChild(TaskListComponent) taskListComponent!: TaskListComponent;
+
     output: string | null = ''; // For testing purposes
 
     showPopup = false;
     popupType: 'add-task' | null = null;
 
     topThreeAssignments: Assignment[] = [];
-    
+
 
     constructor() {
         if (this.router.url != "/main/task-list" && this.router.url != "/main/calendar") {
@@ -52,10 +54,10 @@ export class MainComponent implements OnInit {
         console.log('Top 3 Due Soon Assignments:', assignments);
         this.topThreeAssignments = assignments;
       }
-      
-      
 
-    getUserId(): void { 
+
+
+    getUserId(): void {
         console.log(this.loginService.getUserId());
         if (this.loginService.getUserId()) {
             this.output = this.loginService.getUserId();
@@ -63,6 +65,11 @@ export class MainComponent implements OnInit {
     }
 
     viewSelect: number = 1;
+
+    handleNewTask(task: Assignment) {
+      this.newTask = task;
+      console.log('handleNewTask called with task in main:', task);
+    }
 
     openPopup(type: 'add-task'): void {
         this.popupType = type;
