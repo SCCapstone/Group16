@@ -30,10 +30,7 @@ export class GradesComponent {
       this.courses = courses;
     })
 
-    this.assignmentService.getAssignments(this.loginService.getUserId())
-    .then((assignments: Assignment[]) => {
-      this.assignments = assignments;
-    })
+    this.assignments = this.assignmentService.getAssignments(this.loginService.getUserId())
     
     this.gradeService.getGrades(this.loginService.getUserId())
     .then((grades: Grade[]) => {

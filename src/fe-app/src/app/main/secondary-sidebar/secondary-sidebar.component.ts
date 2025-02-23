@@ -1,9 +1,10 @@
-import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges, SimpleChanges, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { LoginService } from '../../login.service';
 import { CourseService } from '../../course.service';
+import { AssignmentService } from '../../assignment.service';
 import { GradesService } from '../../grades.service';
 import { Course, Assignment, Grade } from '../../course';
 
@@ -15,14 +16,13 @@ import { Course, Assignment, Grade } from '../../course';
   styleUrls: ['./secondary-sidebar.component.css']
 })
 export class SecondarySidebarComponent implements OnChanges {
-  @Input() assignments: Assignment[] = [];
-
-  // TODO refactor so that main passes courses into sidebar components rather than making service calls in each one (where applicable)
   courses: Course[] = [];
+  assignments: Assignment[] = [];
   grades: Grade[] = [];
 
   loginService = inject(LoginService)
   courseService = inject(CourseService);
+  assignmentService = inject(AssignmentService);
   gradesService = inject(GradesService);
   router = inject(Router);
 
@@ -34,10 +34,34 @@ export class SecondarySidebarComponent implements OnChanges {
       this.courses = courses;
     })
 
+    // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
+    effect(() => {
+      const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
+      console.log("SIGNAL RUN: Value " + signal);
+      this.filterTopThree(this.assignmentService.getAssignments(this.loginService.getUserId()));  // Runs when service constructor finishes, no need to call twice
+    })
+
     this.gradesService.getGrades(this.loginService.getUserId())
     .then((grades: Grade[]) => {
       this.grades = grades;
     })
+  }
+
+  /**
+   * Takes in a list of assignments and returns a list of three incomplete assignments with the closest due dates
+   * @param assignments 
+   */
+  filterTopThree(assignments: Assignment[]) {
+    let candidates: Assignment[] = [];
+    for (const assignment of assignments) {
+      if (!assignment.complete)
+        candidates.push(assignment);
+    }
+    candidates.sort((a: Assignment, b: Assignment) => {
+      return new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime();
+    })
+    
+    this.assignments = candidates.slice(0, 3);
   }
 
   /**
