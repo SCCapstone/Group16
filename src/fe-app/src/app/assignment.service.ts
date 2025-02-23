@@ -88,13 +88,13 @@ export class AssignmentService {
    * @param userId ID of the user that the assignment was created for
    * @param courseId ID of the course associated with the assignment
    */
-  async addTask(title: string, description: string, dueDate: Date, userID: string, courseID: string) : Promise<void> {
+  async addTask(title: string, description: string, dueDate: Date, userId: string, courseId: string) : Promise<void> {
       const queryParams = new URLSearchParams({
         title: title,
-        description: description,
+        description: description ?? "",
         dueDate: dueDate?.toISOString(),
-        userId: userID,
-        courseId: courseID
+        userId: userId,
+        courseId: courseId
       }).toString();
 
       console.log(queryParams);
@@ -105,12 +105,12 @@ export class AssignmentService {
         if(!response.ok) {
           throw new Error(`POST failed: ${response.status}`)
         }
-        
+
         // Create dummy assignment with the given information to be inserted into list, will only exist until page reload
         const dummyAssignment: Assignment = {
           id: crypto.randomUUID(),
-          userId: userID,
-          courseId: courseID,
+          userId: userId,
+          courseId: courseId,
           title: title,
           description: description,
           availability: {
@@ -119,7 +119,7 @@ export class AssignmentService {
             }
           },
           complete: false,
-          userCreated: true
+          userCreated: false
         }
         this.assignments.push(dummyAssignment);
         this.updateSignal.set(++this.signalValue);  // Notify observing components that data has updated
@@ -137,7 +137,7 @@ export class AssignmentService {
         courseId: courseId ?? "NULL",
         assignmentId: assignmentId ?? "NULL",
         title: title ?? "NULL",
-        description: description ?? "NULL",
+        description: description ?? "",
         dueDate: dueDate?.toISOString() ?? "NULL"
       }).toString();
 
