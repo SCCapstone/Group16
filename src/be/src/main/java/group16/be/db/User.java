@@ -132,6 +132,10 @@ public class User {
             .matcher(email)
             .matches();
     }
+    public String getEmail() {
+        if (contact == null) return null;
+        return contact.getEmail();
+    }
 
     public boolean setMobilePhone(String mobilePhone) {
         if (contact == null) return false;

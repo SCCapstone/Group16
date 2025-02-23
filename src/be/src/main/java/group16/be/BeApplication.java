@@ -20,6 +20,5 @@ public class BeApplication {
 		
 		HeartbeatController heartbeatController = (HeartbeatController) ctx.getBean("heartbeatController");
 		heartbeatController.start();
-		EmailController.sendEmail();
 	}
 }

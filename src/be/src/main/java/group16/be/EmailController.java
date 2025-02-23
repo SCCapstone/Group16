@@ -2,6 +2,7 @@ package group16.be;
 
 import java.util.Properties;
 
+import group16.be.db.User;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -17,14 +18,13 @@ import jakarta.mail.internet.MimeMultipart;
 
 public class EmailController {
     
-    
-    public static void sendEmail() throws AddressException, MessagingException {
+    public static void sendEmail(User user) throws AddressException, MessagingException {
         Properties prop = new Properties();
         prop.put("mail.smtp.auth", true);
         prop.put("mail.smtp.starttls.enable", "true");
-        prop.put("mail.smtp.host", "smtp.mailersend.net");
-        prop.put("mail.smtp.port", "587");
-        prop.put("mail.smtp.ssl.trust", "smtp.mailersend.net");
+        prop.put("mail.smtp.host", Environment.MAIL_STMP_HOST);
+        prop.put("mail.smtp.port", Environment.MAIL_STMP_PORT);
+        prop.put("mail.smtp.ssl.trust", Environment.MAIL_STMP_HOST);
         Session session = Session.getInstance(prop, new Authenticator() {
 
 /**
@@ -35,7 +35,7 @@ public class EmailController {
 
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("MS_VlGYll@trial-zr6ke4nd9y9gon12.mlsender.net", "mssp.uEACt7v.v69oxl5y10k4785k.edHBwr3");
+                return new PasswordAuthentication(Environment.MAIL_STMP_USERNAME, Environment.MAIL_STMP_PASSWORD);
             }
         });
 
@@ -43,9 +43,8 @@ public class EmailController {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress("from@trial-zr6ke4nd9y9gon12.mlsender.net"));
         message.setRecipients(
-        Message.RecipientType.TO, InternetAddress.parse("scruggscayden@gmail.com"));
+        Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
         message.setSubject("Mail Subject");
-
         String msg = "This is my first email using JavaMailer";
 
         MimeBodyPart mimeBodyPart = new MimeBodyPart();
