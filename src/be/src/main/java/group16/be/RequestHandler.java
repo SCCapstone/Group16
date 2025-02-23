@@ -13,8 +13,10 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -311,13 +313,16 @@ public class RequestHandler {
      */
     @CrossOrigin
     @GetMapping("/api/getGrades")
-    public ArrayList<Grade> getGrades(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
-        getUser(userId);
+    public ResponseEntity<?> getGrades(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
+        if(userId == null || userId.equals("NULL")) 
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID is missing or invalid");
+        if(validateUserId(userId).getStatusCode() != HttpStatus.OK)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with that Id exists");
+        
         // pass the user's ID to the database to get the user's grades
         var grades = scraper.getGrades(userId);
-        if(grades == null) 
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No grades found for user");
-        return grades;
+        if(grades == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No grades found for user");
+        return ResponseEntity.ok(grades);
     }
 
     /**
@@ -331,27 +336,23 @@ public class RequestHandler {
      */
     @CrossOrigin
     @PostMapping("/api/setGrade")
-    public HttpStatus setGrade(@RequestParam(value = "gradeId", defaultValue = "NULL") String gradeId,  
-                               @RequestParam(value = "percent", defaultValue = "NULL") double percent) {
+    public ResponseEntity<?> setGrade(@RequestParam(value = "gradeId", defaultValue = "NULL") String gradeId,  
+                                      @RequestParam(value = "percent", defaultValue = "NULL") double percent) {
         if(gradeId == null || gradeId.equals("NULL"))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Grade ID is missing or invalid");
-        if(percent < 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Percent is invalid");
-
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Grade ID is missing or invalid");
+        if(percent < 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Percent is invalid");
         
         var grade = scraper.getGradeByGradeId(gradeId);
-        if(grade == null)
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Grade not found");
+        if(grade == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Grade not found");
         
         var assignment = scraper.findByAssignmentId(grade.getAssignmentId());
-        if(!assignment.isUserCreated()) 
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User does not have permission to edit this grade");
+        if(!assignment.isUserCreated()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User does not have permission to edit this grade");
         
         grade.setPercent(percent);
         if(scraper.saveGrade(grade))
-            return HttpStatus.OK;
+            return ResponseEntity.ok(grade);
         else
-            return HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving grade");
     }
 
     /**
@@ -365,13 +366,13 @@ public class RequestHandler {
      */
     @CrossOrigin
     @PutMapping("/api/editPassword")
-    public static boolean editPassword(@RequestParam(value = "oldPassword", defaultValue = "NULL") String oldPassword, @RequestParam(value = "newPassword", defaultValue = "NULL") String newPassword) {
+    public static ResponseEntity<?> editPassword(@RequestParam(value = "oldPassword", defaultValue = "NULL") String oldPassword, @RequestParam(value = "newPassword", defaultValue = "NULL") String newPassword) {
         // if(oldPassword == null || oldPassword.equals("NULL"))
         //     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Old password is missing or invalid");
         // else if (newPassword == null || newPassword.equals("NULL"))
         //     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New password is missing or invalid");
         //pass the old and new password to the database to update the user's password
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Function not implemented");
+        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
         // return false;
     }
 
@@ -382,7 +383,7 @@ public class RequestHandler {
      */
     @CrossOrigin
     @PutMapping("/api/setPrimaryColor")
-    public static boolean setPrimaryColor(@RequestParam(value = "colorHex", defaultValue = "NULL") String colorHex) {
+    public ResponseEntity<?> setPrimaryColor(@RequestParam(value = "colorHex", defaultValue = "NULL") String colorHex) {
         if(colorHex == null || colorHex.equals("NULL")) 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Color is missing or invalid");
         try {
@@ -390,10 +391,11 @@ public class RequestHandler {
             Color color = Color.decode(colorHex);
             // pass the new color to the database to update the user's primary color
             // return true;
-            throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, "Function not implemented");
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+            // return ResponseEntity.ok().build();
         } catch (NumberFormatException e) {
             // handle invalid hex code
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid color format");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid color format");
         }
     }
 
@@ -404,15 +406,15 @@ public class RequestHandler {
      * @Unimplemented This method is not yet implemented.
      */
 
-    public static boolean setAccentColor(String colorHex) {
+    public ResponseEntity<?> setAccentColor(String colorHex) {
         try {
             @SuppressWarnings("unused")
             Color color = Color.decode(colorHex);
             // pass the new color to the database to update the user's accent color
-            return true;
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
         } catch (NumberFormatException e) {
             // handle invalid hex code
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid color format");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid color format");
         }
     }
 
@@ -423,11 +425,21 @@ public class RequestHandler {
      */
     @CrossOrigin
     @PostMapping("/api/updateNotificationSettings")
-    public boolean updateNotificationSettings(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "email", defaultValue = "NULL") boolean email, @RequestParam(value = "sms", defaultValue = "NULL") boolean sms, @RequestParam(value = "institutionEmail", defaultValue = "NULL") boolean institutionEmail) {
-        System.out.println("DEBUG: updateNotificationSettings User ID: " + userId + " Email: " + email + " SMS: " + sms + " Institution Email: " + institutionEmail);
-        User user = scraper.getUser(userId);
+    public ResponseEntity<?> updateNotificationSettings(@RequestParam(value = "userId", defaultValue = "NULL") String userId, 
+                                              @RequestParam(value = "email", defaultValue = "NULL") boolean email, 
+                                              @RequestParam(value = "sms", defaultValue = "NULL") boolean sms, 
+                                              @RequestParam(value = "institutionEmail", defaultValue = "NULL") boolean institutionEmail) {
+        if(userId == null || userId.equals("NULL"))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID is missing or invalid");
+        if(validateUserId(userId).getStatusCode() != HttpStatus.OK)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with that Id exists");
+        
+        var user = scraper.getUser(userId);
         user.setNotificationSettings(email, sms, institutionEmail);
-        return scraper.saveUser(user);
+        if(scraper.saveUser(user))
+            return ResponseEntity.ok(user);
+        else
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving user");
     }
 
     /**
@@ -439,12 +451,18 @@ public class RequestHandler {
      */
     @CrossOrigin
     @PostMapping("/api/updatePreferredName")
-    public boolean updatePreferredName(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "preferredName", defaultValue = "NULL") String preferredName) {
+    public ResponseEntity<?> updatePreferredName(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "preferredName", defaultValue = "NULL") String preferredName) {
         if(preferredName == null || preferredName.equals("NULL")) 
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Preferred name is missing or invalid");
-        User user = scraper.getUser(userId);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Preferred name is missing or invalid");
+        if(validateUserId(userId).getStatusCode() != HttpStatus.OK)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with that Id exists");
+        
+        var user = scraper.getUser(userId);
         user.setPreferredName(preferredName);
-        return scraper.saveUser(user);
+        if(scraper.saveUser(user))
+            return ResponseEntity.ok(user);
+        else
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving user");
     }
 
     /**
@@ -457,14 +475,19 @@ public class RequestHandler {
      */
     @CrossOrigin
     @PostMapping("/api/updateEmail")
-    public boolean updateEmail(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "email", defaultValue = "NULL") String email) {
+    public ResponseEntity<?> updateEmail(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "email", defaultValue = "NULL") String email) {
         if(email == null || email.equals("NULL")) 
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is missing or invalid");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email is missing or invalid");
         if(!User.testEmailRegex(email))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is invalid");
-        User user = scraper.getUser(userId);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email format");
+        if(validateUserId(userId).getStatusCode() != HttpStatus.OK)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with that Id exists");
+        var user = scraper.getUser(userId);
         user.setEmail(email);
-        return scraper.saveUser(user);
+        if(scraper.saveUser(user))
+            return ResponseEntity.ok(user);
+        else
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving user");
     }
 
     /**
@@ -475,12 +498,18 @@ public class RequestHandler {
      */
     @CrossOrigin
     @PostMapping("/api/updatePhoneNumber")
-    public boolean updatePhoneNumber(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "phoneNumber", defaultValue = "NULL") String phoneNumber) {
+    public ResponseEntity<?> updatePhoneNumber(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "phoneNumber", defaultValue = "NULL") String phoneNumber) {
         if(phoneNumber == null || phoneNumber.equals("NULL")) 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number is missing or invalid");
-        User user = scraper.getUser(userId);
+        if(validateUserId(userId).getStatusCode() != HttpStatus.OK)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No user with that Id exists");
+        
+        var user = scraper.getUser(userId);
         user.setMobilePhone(phoneNumber);
-        return scraper.saveUser(user);
+        if(scraper.saveUser(user))
+            return ResponseEntity.ok(user);
+        else
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving user");
     }
 
     /* ---------------------- Private Methods ---------------------- */

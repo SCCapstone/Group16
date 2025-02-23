@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.server.ResponseStatusException;
 
+import group16.be.db.Assignment;
 import group16.be.db.Course;
 
 @SpringBootTest
@@ -97,28 +98,27 @@ public class RequestHandlerTests {
     @Test
     void testGetCourses() {
         // Get courses
-        ArrayList<Course> courses = handler.getCourses(EXPECTED_ID);
-        assertTrue(courses.size() > 0);
+        var courseResponse = handler.getCourses(EXPECTED_ID);
+        assertTrue(courseResponse != null);
+        assertTrue(courseResponse.getStatusCode() == HttpStatus.OK);
+        assertTrue(courseResponse.getBody() != null);
+        assertTrue(courseResponse.getBody() instanceof ArrayList);
+        @SuppressWarnings("unchecked")
+        ArrayList<Course> courses = (ArrayList<Course>) courseResponse.getBody();
+        assertTrue(courses != null && courses.size() > 0);
 
         // Tests null user ID
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            handler.getCourses(null);
-        });
+        var exception = handler.getCourses(null);
         // Verify the exception contains HttpStatus.BAD_REQUEST
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
 
-        // Tests empty user ID
-        ResponseStatusException exception2 = assertThrows(ResponseStatusException.class, () -> {
-            handler.getCourses("");
-        });
+        var exception2 = handler.getCourses("");
         // Verify the exception contains HttpStatus.BAD_REQUEST
         assertEquals(HttpStatus.NOT_FOUND, exception2.getStatusCode());
 
         // Tests abnormally large user ID
         String largeString = "A".repeat(1000000); // 1 million 'A's
-        ResponseStatusException exception3 = assertThrows(ResponseStatusException.class, () -> {
-            handler.getCourses(largeString);
-        });
+        var exception3 = handler.getCourses(largeString);
         // Verify the exception contains HttpStatus.NOT_FOUND
         assertEquals(HttpStatus.NOT_FOUND, exception3.getStatusCode());
     }
@@ -134,9 +134,14 @@ public class RequestHandlerTests {
     @Test
     void testGetAssignments() {
         // Correct Login
-        var assignments = handler.getAssignments(EXPECTED_ID);
-        assertTrue(assignments != null
-                && assignments.size() > 0);
+        var assignmentsResponse = handler.getAssignments(EXPECTED_ID);
+        assertTrue(assignmentsResponse != null);
+        assertTrue(assignmentsResponse.getStatusCode() == HttpStatus.OK);
+        assertTrue(assignmentsResponse.getBody() != null);
+        assertTrue(assignmentsResponse.getBody() instanceof ArrayList);
+        @SuppressWarnings("unchecked")
+        ArrayList<Assignment> assignments = (ArrayList<Assignment>) assignmentsResponse.getBody();
+        assertTrue(assignments != null && assignments.size() > 0);
         
         // Tests null user ID
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
@@ -165,9 +170,14 @@ public class RequestHandlerTests {
     @Test
     void testGetGrades() {
         // Correct userID
-        var grades = handler.getGrades(EXPECTED_ID);
-        assertTrue(grades != null
-                && grades.size() > 0);
+        var gradesResponse = handler.getGrades(EXPECTED_ID);
+        assertTrue(gradesResponse != null);
+        assertTrue(gradesResponse.getStatusCode() == HttpStatus.OK);
+        assertTrue(gradesResponse.getBody() != null);
+        assertTrue(gradesResponse.getBody() instanceof ArrayList);
+        @SuppressWarnings("unchecked")
+        ArrayList<Assignment> grades = (ArrayList<Assignment>) gradesResponse.getBody();
+        assertTrue(grades != null && grades.size() > 0);
     }   
 
     @Test
