@@ -46,7 +46,7 @@ public class APIScraper implements CommandLineRunner {
             return users.get(0).getId();
         }
         if(users.size() > 1) {
-            throw new Error("Error: Multiple users with the same username and password");
+            return "Error: Multiple users with the same username and password";
         }
         return "Error: No user with this ID";
     }
@@ -98,14 +98,13 @@ public class APIScraper implements CommandLineRunner {
             System.out.println("Error: No assignment ID provided");
             return null;
         }
-        Course course = null;
         try {
-            course = courseRepo.findByCourseId(courseId);
+            return courseRepo.findByCourseId(courseId);
         } catch (Exception e) {
-            System.out.println("getAssignment() Error: No assignment with that ID");
+            System.out.println("Error: No assignment with that ID");
             e.printStackTrace();
+            return null;
         }
-        return course;
     }
 
     /**
@@ -151,20 +150,17 @@ public class APIScraper implements CommandLineRunner {
         return assignment;
     }
 
-    public ArrayList<User> getUser(String uID) {
+    public User getUser(String uID) {
         if(uID == null || uID.length() == 0) {
             System.out.println("Error: No user ID provided");
             return null;
         }
-        var users = new ArrayList<User>();
-        try{
-            users = userRepo.findUserByUserId(uID);
-        } catch (Exception e) {
-            System.out.println("getUser() Error: No user with that ID");
-            // e.printStackTrace();
+        var user = userRepo.findById(uID);
+        if(user.isEmpty() || user.get() == null) {
+            System.out.println("Error: No user with that ID");
             return null;
         }
-        return users;
+        return user.get();
     }
 
     public ArrayList<Grade> getGrades(String userId) {
@@ -281,30 +277,19 @@ public class APIScraper implements CommandLineRunner {
     public boolean isUserId(String userId) {
         if(userId == null || userId.length() == 0) 
             return false;
-        try {
-            var users = userRepo.findUserByUserId(userId);
-            return users.size() == 1;
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return userRepo.existsById(userId);
     }
 
     public boolean isCourseId(String courseId) {
         if(courseId == null || courseId.length() == 0) 
             return false;
-        try {
-            return courseRepo.findByCourseId(courseId) != null;
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return courseRepo.existsById(courseId);
     }
 
     public boolean isAssignmentId(String assignmentId) {
         if(assignmentId == null || assignmentId.length() == 0) 
             return false;
-        return assignmentRepo.findByAssignmentId(assignmentId) != null;
+        return assignmentRepo.existsById(assignmentId);
     }
 
     public static File scrapeUser(String uID) {

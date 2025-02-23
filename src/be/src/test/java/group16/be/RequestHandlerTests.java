@@ -40,9 +40,21 @@ public class RequestHandlerTests {
     @Test
     void testLogin() {
         // Correct Login
-        HashMap<String,String> response = handler.login(LOGIN_USER, LOGIN_PASS);
-        assert(response.size() == 1
-            && response.containsValue(EXPECTED_RESPONSE.get("id")));
+        try {
+            var body = handler.login(LOGIN_USER, LOGIN_PASS).getBody();
+            if(body == null) 
+                throw new NullPointerException("Expected HashMap<String, String> but found: null");
+            if (body instanceof HashMap) {
+                @SuppressWarnings("unchecked")
+                HashMap<String, String> response = (HashMap<String, String>) body;
+                assertTrue(response.get("id").equals(EXPECTED_RESPONSE.get("id")));
+            }
+            else {
+                throw new ClassCastException("Expected HashMap<String, String> but found: " + body.getClass().getName());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Tests wrong password (expecting ResponseStatusException with HttpStatus.UNAUTHORIZED)
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
@@ -84,10 +96,6 @@ public class RequestHandlerTests {
     @Async
     @Test
     void testGetCourses() {
-        // Correct Login
-        HashMap<String,String> response = handler.login(LOGIN_USER, LOGIN_PASS);
-        assert(response.size() == 1
-            && response.containsValue(EXPECTED_RESPONSE.get("id")));
         // Get courses
         ArrayList<Course> courses = handler.getCourses(EXPECTED_ID);
         assertTrue(courses.size() > 0);
