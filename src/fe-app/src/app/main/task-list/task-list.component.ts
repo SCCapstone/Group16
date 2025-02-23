@@ -1,13 +1,14 @@
-import { Component, EventEmitter, inject, Output, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Output, OnInit, Input, SimpleChanges, ChangeDetectorRef, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { LoginService } from '../../login.service';
 import { Course } from '../../course';
 import { CourseService } from '../../course.service';
 import { Assignment } from '../../course';
 import { AssignmentService } from '../../assignment.service';
+
 import { TaskComponent } from './task/task.component';
-import { FormsModule } from '@angular/forms';
-import { ChangeDetectorRef } from '@angular/core';
 
 
 const ACTIVE = 0;
@@ -25,20 +26,24 @@ export class TaskListComponent{
 
   loginService = inject(LoginService);
   courseService = inject(CourseService);
-  assignmentService = inject(AssignmentService);
+  // assignmentService = inject(AssignmentService);
   courses: Course[] = [];
   assignments: Assignment[][] = [ [], [] ];  // Active, complete
   sortedAssignments: Assignment[] = [];
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private assignmentService: AssignmentService, private cdr: ChangeDetectorRef) {
     // Populate course list with service call
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
       this.courses = courses;
     });
 
-    // Populate assignment list with service call and filter by completion
-    this.loadAssignments();
+    // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
+    effect(() => {
+      const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
+      console.log("SIGNAL RUN: Value " + signal);
+      this.loadAssignments();                                   // Runs when service constructor finishes, no need to call twice
+    })
   }
 
   private async loadAssignments() {
@@ -100,7 +105,7 @@ export class TaskListComponent{
   }
 
   filterAssignments(assignments: Assignment[]) {
-    console.log('Assignments received for filtering:', assignments);  // Check if this logs
+    this.assignments = [ [], [] ];
     for (const assignment of assignments) {
       if (assignment.complete && Date.now() >= (new Date(assignment.availability.adaptiveRelease.end)).getTime())
         this.assignments[COMPLETE].push(assignment);

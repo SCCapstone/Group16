@@ -1,5 +1,5 @@
 import { core } from '@angular/compiler';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 
 import { LoginService } from './login.service';
 import { Assignment } from './course';
@@ -14,13 +14,22 @@ export class AssignmentService {
   private assignments: Assignment[] = [];
   private viewCompleted: boolean;
 
+  // Used to signal that the assignment list has been updated; components watching this signal can then act as desired.
+  private signalValue: number = 0;
+  private updateSignal: WritableSignal<number> = signal<number>(this.signalValue);
+
   constructor() {
+    this.viewCompleted = false;
     this.fetchAssignments(this.loginService.getUserId())
     .then((assignments: Assignment[]) => {
       this.assignments = assignments;
+      this.updateSignal.set(++this.signalValue);  // Update signal so components know to grab data
     })
+  }
 
-    this.viewCompleted = false;
+  // Returns assignment service's signal so that components may watch it for changes
+  getUpdateSignal() {
+    return this.updateSignal;
   }
 
   getAssignments(userId: string | null): Assignment[] {
@@ -64,7 +73,8 @@ export class AssignmentService {
 
       console.log(data);
       return data;
-    } catch (error: any) {
+    }
+    catch (error: any) {
       console.error('Error fetching assignment:', error);
       throw error;
     }
@@ -112,6 +122,7 @@ export class AssignmentService {
           userCreated: true
         }
         this.assignments.push(dummyAssignment);
+        this.updateSignal.set(++this.signalValue);  // Notify observing components that data has updated
       }
       catch (error: any) {
         console.error('Error adding task:', error);

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 
 import { LoginService } from '../../login.service';
 import { CourseService } from '../../course.service';
@@ -28,6 +28,15 @@ export class CalendarComponent {
     this.weekStart = this.getWeekStart(new Date(Date.now()));
     this.pageNumber = 0;
 
+    // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
+    effect(() => {
+      const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
+      console.log("SIGNAL RUN: Value " + signal);
+      this.loadAssignments();                                   // Runs when service constructor finishes, no need to call twice
+    })
+  }
+
+  loadAssignments() {
     this.assignments = this.assignmentService.getAssignments(this.loginService.getUserId());
 
     // Turn assignment date strings into date objects and sort entire list by date
@@ -39,7 +48,6 @@ export class CalendarComponent {
     });
 
     this.organizeWeekAssignments();
-    console.log(this.assignments);
   }
 
   // Get the midnight of Monday of the current week, used as anchor for assignments
