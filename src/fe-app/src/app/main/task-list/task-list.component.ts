@@ -21,7 +21,6 @@ const COMPLETE = 1;
   styleUrl: './task-list.component.css'
 })
 export class TaskListComponent{
-  @Output() dueSoonAssignments = new EventEmitter<Assignment[]>();
   @Input() newTask: Assignment | null = null;
 
   loginService = inject(LoginService);
@@ -32,8 +31,6 @@ export class TaskListComponent{
   sortedAssignments: Assignment[] = [];
 
   constructor(private cdr: ChangeDetectorRef) {
-    console.log('dueSoonAssignments in constructor:', this.dueSoonAssignments);
-
     // Populate course list with service call
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
@@ -41,20 +38,23 @@ export class TaskListComponent{
     });
 
     // Populate assignment list with service call and filter by completion
-    this.getAssignments();
+    this.loadAssignments();
   }
 
-  private async getAssignments() {
-    await this.assignmentService.getAssignments(this.loginService.getUserId())
-      .then((assignments: Assignment[]) => {
-        this.filterAssignments(assignments);
-        this.sortedAssignments = this.getSortedAssignments();
-        console.log('Sorted Assignments:', this.sortedAssignments);
-        const top3Assignments = this.sortedAssignments.slice(0, 3);
-        console.log('Top 3 Sorted Assignments:', top3Assignments);
-        this.dueSoonAssignments.emit(top3Assignments);
-        console.log("Sent", this.dueSoonAssignments.emit(top3Assignments));
-    });
+  private async loadAssignments() {
+    // await this.assignmentService.getAssignments(this.loginService.getUserId())
+    //   .then((assignments: Assignment[]) => {
+    //     this.filterAssignments(assignments);
+    //     this.sortedAssignments = this.getSortedAssignments();
+    //     console.log('Sorted Assignments:', this.sortedAssignments);
+    //     const top3Assignments = this.sortedAssignments.slice(0, 3);
+    //     console.log('Top 3 Sorted Assignments:', top3Assignments);
+    //     this.dueSoonAssignments.emit(top3Assignments);
+    //     console.log("Sent", this.dueSoonAssignments.emit(top3Assignments));
+    // });
+
+    const retrievedAssignments = this.assignmentService.getAssignments(this.loginService.getUserId());
+    this.filterAssignments(retrievedAssignments);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -93,10 +93,6 @@ export class TaskListComponent{
 
     this.sortedAssignments = this.getSortedAssignments();
     this.cdr.detectChanges();
-  }
-
-  ngOnInit() {
-    console.log('Assignments on init:', this.assignments);
   }
 
   test(): void {

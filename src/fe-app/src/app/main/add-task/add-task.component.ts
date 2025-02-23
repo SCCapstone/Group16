@@ -66,8 +66,8 @@ export class AddTaskComponent {
       await this.assignmentService.addTask(
         this.addTaskForm.value.title ?? '',
         this.addTaskForm.value.description ?? '',
-        dueDate,
-        this.loginService.getUserId(),
+        dueDate ?? new Date(Date.now()),          // TODO temp fix
+        this.loginService.getUserId() ?? "",
         this.addTaskForm.value.course ?? ''
       )
 

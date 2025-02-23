@@ -34,10 +34,7 @@ export class SecondarySidebarComponent implements OnChanges {
       this.courses = courses;
     })
 
-    this.assignmentService.getAssignments(this.loginService.getUserId())
-    .then((assignments: Assignment[]) => {
-      this.filterTopThree(assignments);
-    })
+    this.filterTopThree(this.assignmentService.getAssignments(this.loginService.getUserId()));
 
     this.gradesService.getGrades(this.loginService.getUserId())
     .then((grades: Grade[]) => {

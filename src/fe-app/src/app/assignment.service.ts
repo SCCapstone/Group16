@@ -1,5 +1,7 @@
 import { core } from '@angular/compiler';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+
+import { LoginService } from './login.service';
 import { Assignment } from './course';
 
 @Injectable({
@@ -7,12 +9,41 @@ import { Assignment } from './course';
 })
 export class AssignmentService {
   readonly url = 'https://classmate.osterholt.us/api/';
+  private loginService = inject(LoginService);
 
+  private assignments: Assignment[] = [];
   private viewCompleted: boolean;
 
   constructor() {
+    this.fetchAssignments(this.loginService.getUserId())
+    .then((assignments: Assignment[]) => {
+      this.assignments = assignments;
+    })
+
     this.viewCompleted = false;
   }
+
+  getAssignments(userId: string | null): Assignment[] {
+    if (userId === this.loginService.getUserId())
+      return this.assignments;
+    return [];
+  }
+
+  async fetchAssignments(userId: string | null) : Promise<Assignment[]> {
+    try {
+      const response = await fetch(`${this.url}getAssignments?userId=${userId}`);
+      const data = await response.json() ?? [];
+
+      if(Array.isArray(data) && data.length === 0) {
+        throw new Error('assignments are []');
+      }
+      return data;
+    }
+    catch (error: any) {
+      console.error('Error fetching assignments:', error);
+      throw error;
+    }
+ }
 
   getViewCompleted(): boolean {
     return this.viewCompleted;
@@ -20,23 +51,6 @@ export class AssignmentService {
 
   toggleViewCompleted() {
     this.viewCompleted = !this.viewCompleted;
-  }
-
-  async getAssignments(userId: string | null) : Promise<Assignment[]> {
-     try {
-      const response = await fetch(`${this.url}getAssignments?userId=${userId}`);
-      const data = await response.json() ?? [];
-
-      if(Array.isArray(data) && data.length === 0) {
-        throw new Error('assignments are []');
-      }
-
-      console.log(data);
-      return data;
-    } catch (error: any) {
-      console.error('Error fetching assignments:', error);
-      throw error;
-    }
   }
 
   async getAssignmentById(assignmentId: string | null) : Promise<Assignment> {
@@ -56,15 +70,21 @@ export class AssignmentService {
     }
   }
 
-  // In future adjust add task form to not work when any param is empty
-  async addTask(title: string | null, description: string | null, dueDate: Date | null,
-    userId: string | null, courseId : string | null) : Promise<void> {
+  /**
+   * Posts a new task to the database and inserts it into the assignments array.
+   * @param title Assignment title
+   * @param description Assignment description
+   * @param dueDate Date the assignment is due
+   * @param userId ID of the user that the assignment was created for
+   * @param courseId ID of the course associated with the assignment
+   */
+  async addTask(title: string, description: string, dueDate: Date, userID: string, courseID: string) : Promise<void> {
       const queryParams = new URLSearchParams({
-        title: title ?? "NULL",
-        description: description ?? "NULL",
-        dueDate: dueDate?.toISOString() ?? "NULL",
-        userId: userId ?? "NULL",
-        courseId: courseId ?? "NULL"
+        title: title,
+        description: description,
+        dueDate: dueDate?.toISOString(),
+        userId: userID,
+        courseId: courseID
       }).toString();
 
       console.log(queryParams);
@@ -72,13 +92,28 @@ export class AssignmentService {
         const response = await fetch(`${this.url}createAssignmentWithoutId?${queryParams}`, {
           method: 'POST'
         });
-
         if(!response.ok) {
           throw new Error(`POST failed: ${response.status}`)
         }
-
-        console.log(response);
-      } catch (error: any) {
+        
+        // Create dummy assignment with the given information to be inserted into list, will only exist until page reload
+        const dummyAssignment: Assignment = {
+          id: crypto.randomUUID(),
+          userId: userID,
+          courseId: courseID,
+          title: title,
+          description: description,
+          availability: {
+            adaptiveRelease: {
+              end: dueDate
+            }
+          },
+          complete: false,
+          userCreated: true
+        }
+        this.assignments.push(dummyAssignment);
+      }
+      catch (error: any) {
         console.error('Error adding task:', error);
         throw error;
       }

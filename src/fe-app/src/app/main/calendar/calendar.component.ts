@@ -27,20 +27,19 @@ export class CalendarComponent {
   constructor() {
     this.weekStart = this.getWeekStart(new Date(Date.now()));
     this.pageNumber = 0;
-    this.assignmentService.getAssignments(this.loginService.getUserId()).then((assignments) => {
-      this.assignments = assignments;
 
-      // Turn assignment date strings into date objects and sort entire list by date
-      for (let assignment of this.assignments) {
-        assignment.availability.adaptiveRelease.end = new Date(assignment.availability.adaptiveRelease.end)
-      }
-      this.assignments.sort((a: Assignment, b: Assignment) => {
-        return (a.availability.adaptiveRelease.end.getTime() <= b.availability.adaptiveRelease.end.getTime() ? -1 : 1);
-      });
+    this.assignments = this.assignmentService.getAssignments(this.loginService.getUserId());
 
-      this.organizeWeekAssignments();
-      console.log(this.assignments);
+    // Turn assignment date strings into date objects and sort entire list by date
+    for (let assignment of this.assignments) {
+      assignment.availability.adaptiveRelease.end = new Date(assignment.availability.adaptiveRelease.end)
+    }
+    this.assignments.sort((a: Assignment, b: Assignment) => {
+      return (a.availability.adaptiveRelease.end.getTime() <= b.availability.adaptiveRelease.end.getTime() ? -1 : 1);
     });
+
+    this.organizeWeekAssignments();
+    console.log(this.assignments);
   }
 
   // Get the midnight of Monday of the current week, used as anchor for assignments
