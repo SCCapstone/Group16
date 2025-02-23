@@ -1,14 +1,16 @@
-import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Router, RouterOutlet, RouterModule } from '@angular/router';
-import { HeartbeatService } from '../heartbeat.service';
-import { AddTaskComponent } from './add-task/add-task.component';
-import { LoginService } from '../login.service';
-import { CoursesSidebarComponent } from "../main/courses-sidebar/courses-sidebar.component";
-import { DueSoonSidebarComponent } from './due-soon-sidebar/due-soon-sidebar.component';
+import { Component, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TaskComponent } from './task-list/task/task.component';
-import { TaskListComponent } from './task-list/task-list.component'; // Import TaskListComponent
-import { Assignment } from '../course'; // Ensure Assignment is correctly imported
+import { Router, RouterOutlet, RouterModule } from '@angular/router';
+
+import { LoginService } from '../login.service';
+import { HeartbeatService } from '../heartbeat.service';
+
+import { Assignment } from '../course';
+import { TaskListComponent } from './task-list/task-list.component';
+import { AddTaskComponent } from './add-task/add-task.component';
+import { CoursesSidebarComponent } from "../main/courses-sidebar/courses-sidebar.component";
+import { SecondarySidebarComponent } from './secondary-sidebar/secondary-sidebar.component';
+
 
 @Component({
     selector: 'app-main',
@@ -16,24 +18,26 @@ import { Assignment } from '../course'; // Ensure Assignment is correctly import
     templateUrl: './main.component.html',
     styleUrl: './main.component.css',
     imports: [
-        RouterOutlet, RouterModule, CoursesSidebarComponent, TaskComponent, DueSoonSidebarComponent, AddTaskComponent, CommonModule, TaskListComponent 
+        RouterOutlet, RouterModule, CoursesSidebarComponent, SecondarySidebarComponent, AddTaskComponent, CommonModule
     ]
 })
 export class MainComponent implements OnInit {
     loginService = inject(LoginService);
     heartbeatService = inject(HeartbeatService);
     router = inject(Router);
-    
+    newTask: Assignment | null = null;
+    @ViewChild(TaskListComponent) taskListComponent!: TaskListComponent;
+
     output: string | null = ''; // For testing purposes
 
     showPopup = false;
     popupType: 'add-task' | null = null;
 
     topThreeAssignments: Assignment[] = [];
-    
+
 
     constructor() {
-        if (this.router.url != "/main/task-list" && this.router.url != "/main/calendar") {
+        if (this.router.url != "/main/task-list" && this.router.url != "/main/calendar" && this.router.url != "/main/grades") {
             this.router.navigateByUrl("/main/task-list");
         }
     }
@@ -48,21 +52,22 @@ export class MainComponent implements OnInit {
         }
     }
 
-    handleDueSoonAssignments(assignments: Assignment[]): void {
-        console.log('Top 3 Due Soon Assignments:', assignments);
-        this.topThreeAssignments = assignments;
-      }
-      
-      
+    // handleDueSoonAssignments(assignments: Assignment[]): void {
+    //     console.log('Top 3 Due Soon Assignments:', assignments);
+    //     this.topThreeAssignments = assignments;
+    // }
 
-    getUserId(): void { 
+    getUserId(): void {
         console.log(this.loginService.getUserId());
         if (this.loginService.getUserId()) {
             this.output = this.loginService.getUserId();
         }
     }
 
-    viewSelect: number = 1;
+    handleNewTask(task: Assignment) {
+      this.newTask = task;
+      console.log('handleNewTask called with task in main:', task);
+    }
 
     openPopup(type: 'add-task'): void {
         this.popupType = type;

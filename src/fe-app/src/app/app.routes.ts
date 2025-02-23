@@ -3,7 +3,7 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { MainComponent } from './main/main.component';
 import { SettingsComponent } from './settings/settings.component';
-import { GradesComponent } from './grades/grades.component';
+import { GradesComponent } from './main/grades/grades.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { AddTaskComponent } from './main/add-task/add-task.component';  // TODO this and its route is temporary
 import { ProfileSettingsComponent } from './settings/profile-settings/profile-settings.component';
@@ -13,7 +13,7 @@ import { SignOutComponent } from './settings/sign-out/sign-out.component';
 import { CalendarComponent } from './main/calendar/calendar.component';
 import { TaskListComponent } from './main/task-list/task-list.component';
 import { EditTaskComponent } from './main/edit-task/edit-task.component';
-import { GradeCalcComponent } from './grades/grade-calc/grade-calc.component';
+import { GradeCalcComponent } from './grade-calc/grade-calc.component';
 import { authGuard } from './auth.guard';
 
 export const routes: Routes = [
@@ -41,6 +41,11 @@ export const routes: Routes = [
       {
         path: 'task-list',
         component: TaskListComponent,
+        canActivate: [authGuard]
+      },
+      {
+        path: 'grades',
+        component: GradesComponent,
         canActivate: [authGuard]
       }
     ]
@@ -78,12 +83,6 @@ export const routes: Routes = [
         canActivate: [authGuard]
       }
     ]
-  },
-  {
-    path: 'grades',
-    component: GradesComponent,
-    title: 'Grades',
-    canActivate: [authGuard]
   },
   {
     path: 'main/add-task',

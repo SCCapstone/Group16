@@ -1,0 +1,39 @@
+# Kubernetes Deployment Files for the Springboot BE
+# To apply config file: kubectl apply -f .k8s/classmate-api.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: classmate-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: classmate-api
+  template:
+    metadata:
+      labels:
+        app: classmate-api
+    spec:
+      containers:
+        - name: classmate-api
+          image: ghcr.io/sccapstone/group16/classmate-api:latest
+          ports:
+            - containerPort: 1616
+      imagePullSecrets:
+        - name: ghcr-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: classmate-api
+spec:
+  selector:
+    app: classmate-api
+  ports:
+    - protocol: TCP
+      port: 80   # External port (incoming traffic)
+      targetPort: 1616  # Port your pods are listening on
+      nodePort: 30016  # Use a node port for local setup
+  type: NodePort  # For local setup, use NodePort

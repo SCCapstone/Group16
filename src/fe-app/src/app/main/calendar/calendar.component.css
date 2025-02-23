@@ -1,0 +1,35 @@
+.day{
+    color: #c30000;
+    font-weight: bold;
+    text-align: center;
+    font-size: 22px;
+}
+
+h1{
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.page-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    width: 100%;
+    padding: 10px; 
+}
+
+#lastWeekButton {
+    flex: 1;
+    text-align: left; 
+}
+
+#nextWeekButton {
+    flex: 1; 
+    text-align: right; 
+}
+
+.page-container p {
+    flex: 0; 
+    margin: 0 auto; 
+}

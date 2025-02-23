@@ -16,15 +16,13 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import group16.be.db.Assignment;
 import group16.be.db.Course;
@@ -40,10 +38,8 @@ public class RequestHandler {
     @Autowired
     private static HeartbeatController heartbeatController;
 
-    private static Connection connection;
-
     public RequestHandler() {
-        connection = new Connection(Environment.MONGO_URL);
+        
     }
 
     /**
@@ -191,18 +187,9 @@ public class RequestHandler {
 
         boolean userCreated = true;
         var assignment = new Assignment(userId, courseId, title, description, dueDate, userCreated);
-        var objectMapper = new ObjectMapper();
-        
-        try {
-            connection.insertNewData("assignments", objectMapper.writeValueAsString(assignment));
-            return true;
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        var grade = new Grade(userId, courseId, assignment.getId(), -1.0);
+
+        return scraper.saveAssignment(assignment) && scraper.saveGrade(grade);
     }
 
     /**
@@ -236,6 +223,23 @@ public class RequestHandler {
         assignment.editAssignment(title, description, dueDate, courseId);
 
         return scraper.saveAssignment(assignment);
+    }
+
+    @CrossOrigin
+    @DeleteMapping("/api/removeAssignment") 
+    public HttpStatus removeAssignment(@RequestParam(value = "assignmentId", defaultValue = "NULL") String assignmentId) {
+        if(assignmentId == null || assignmentId.equals("NULL")) 
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Assignment ID is missing or invalid");
+        var assignment = scraper.findByAssignmentId(assignmentId);
+        var grade = scraper.getGradeByAssignmentId(assignmentId);
+        if(assignment == null) 
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No assignments found for this ID");
+        if(!assignment.isUserCreated())
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User does not have permission to delete this assignment");
+        if(scraper.deleteAssignment(assignment) && scraper.deleteGrade(grade))
+            return HttpStatus.OK;   
+        else
+            return HttpStatus.INTERNAL_SERVER_ERROR;
     }
 
     /**
@@ -454,27 +458,33 @@ public class RequestHandler {
      */
     @CrossOrigin
     @PostMapping("/api/setGrade")
-    public boolean setGrade(@RequestParam(value = "userId", defaultValue = "NULL") String userId, 
-                            @RequestParam(value = "courseId", defaultValue = "NULL") String courseId, 
-                            @RequestParam(value = "assignmentId", defaultValue = "NULL") String assignmentId, 
-                            @RequestParam(value = "percent", defaultValue = "NULL") double percent) {
+    public HttpStatus setGrade(@RequestParam(value = "gradeId", defaultValue = "NULL") String gradeId,  
+                               @RequestParam(value = "percent", defaultValue = "NULL") double percent) {
+        if(gradeId == null || gradeId.equals("NULL"))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Grade ID is missing or invalid");
+        if(percent < 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Percent is invalid");
 
-        if(courseId == null || courseId.equals("NULL") || assignmentId == null || assignmentId.equals("NULL") || userId == null || userId.equals("NULL")) 
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID, course ID, or assignment ID is missing or invalid");
         
-        if(!scraper.isUserId(userId) || !scraper.isCourseId(courseId) || !scraper.isAssignmentId(assignmentId))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course ID or assignment ID is invalid");
+        var grade = scraper.getGradeByGradeId(gradeId);
+        if(grade == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Grade not found");
         
-        var grades = scraper.getGrades(userId);
-        for (Grade grade : grades) {
-            if (grade.getCourseId().equals(courseId) && grade.getAssignmentId().equals(assignmentId)) {
-                // Grade already exists. Returning HTTP error.
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Grade already exists");
-            }
-        }
+        var assignment = scraper.findByAssignmentId(grade.getAssignmentId());
+        if(!assignment.isUserCreated()) 
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User does not have permission to edit this grade");
+        
+        grade.setPercent(percent);
+        if(scraper.saveGrade(grade))
+            return HttpStatus.OK;
+        else
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+    }
 
-        Grade grade = new Grade(userId, courseId, assignmentId, percent);
-        return scraper.saveGrade(grade);
+    @CrossOrigin
+    @GetMapping("/api/debugCamDaBest")
+    public String debugCamDaBest() {
+        return "Cam Da Best";
     }
 }
 

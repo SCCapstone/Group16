@@ -1,16 +1,16 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 
 import { LoginService } from '../../login.service';
 import { CourseService } from '../../course.service';
 import { AssignmentService } from '../../assignment.service';
-
+import { CommonModule } from '@angular/common';
 import { Course } from '../../course';
 import { Assignment } from '../../course';
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })
@@ -27,20 +27,27 @@ export class CalendarComponent {
   constructor() {
     this.weekStart = this.getWeekStart(new Date(Date.now()));
     this.pageNumber = 0;
-    this.assignmentService.getAssignments(this.loginService.getUserId()).then((assignments) => {
-      this.assignments = assignments;
 
-      // Turn assignment date strings into date objects and sort entire list by date
-      for (let assignment of this.assignments) {
-        assignment.availability.adaptiveRelease.end = new Date(assignment.availability.adaptiveRelease.end)
-      }
-      this.assignments.sort((a: Assignment, b: Assignment) => {
-        return (a.availability.adaptiveRelease.end.getTime() <= b.availability.adaptiveRelease.end.getTime() ? -1 : 1);
-      });
+    // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
+    effect(() => {
+      const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
+      console.log("SIGNAL RUN: Value " + signal);
+      this.loadAssignments();                                   // Runs when service constructor finishes, no need to call twice
+    })
+  }
 
-      this.organizeWeekAssignments();
-      console.log(this.assignments);
+  loadAssignments() {
+    this.assignments = this.assignmentService.getAssignments(this.loginService.getUserId());
+
+    // Turn assignment date strings into date objects and sort entire list by date
+    for (let assignment of this.assignments) {
+      assignment.availability.adaptiveRelease.end = new Date(assignment.availability.adaptiveRelease.end)
+    }
+    this.assignments.sort((a: Assignment, b: Assignment) => {
+      return (a.availability.adaptiveRelease.end.getTime() <= b.availability.adaptiveRelease.end.getTime() ? -1 : 1);
     });
+
+    this.organizeWeekAssignments();
   }
 
   // Get the midnight of Monday of the current week, used as anchor for assignments

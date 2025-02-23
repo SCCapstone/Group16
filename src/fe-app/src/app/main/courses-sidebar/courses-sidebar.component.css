@@ -4,6 +4,7 @@
     border: 2px solid #00000000;
     width: 80%;
     margin: 10px auto;
+    user-select: none;
 }
 
 /* Additional styling for the selected course div */
@@ -14,4 +15,6 @@
 /* Text for course names themselves */
 p {
     margin: 10px auto;
+    text-align: center;
+    font-weight: bold;
 }

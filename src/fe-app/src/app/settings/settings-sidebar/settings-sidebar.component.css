@@ -5,6 +5,7 @@
     width: 80%;
     margin: 10px auto;
     text-align: center;
+    user-select: none;
 }
 
 /* Additional styling for the selected setting div */
