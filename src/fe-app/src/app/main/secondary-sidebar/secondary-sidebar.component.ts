@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges, SimpleChanges, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -34,7 +34,12 @@ export class SecondarySidebarComponent implements OnChanges {
       this.courses = courses;
     })
 
-    this.filterTopThree(this.assignmentService.getAssignments(this.loginService.getUserId()));
+    // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
+    effect(() => {
+      const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
+      console.log("SIGNAL RUN: Value " + signal);
+      this.filterTopThree(this.assignmentService.getAssignments(this.loginService.getUserId()));  // Runs when service constructor finishes, no need to call twice
+    })
 
     this.gradesService.getGrades(this.loginService.getUserId())
     .then((grades: Grade[]) => {

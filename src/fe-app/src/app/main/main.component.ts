@@ -18,7 +18,7 @@ import { SecondarySidebarComponent } from './secondary-sidebar/secondary-sidebar
     templateUrl: './main.component.html',
     styleUrl: './main.component.css',
     imports: [
-        RouterOutlet, RouterModule, CoursesSidebarComponent, SecondarySidebarComponent, AddTaskComponent, CommonModule, TaskListComponent 
+        RouterOutlet, RouterModule, CoursesSidebarComponent, SecondarySidebarComponent, AddTaskComponent, CommonModule
     ]
 })
 export class MainComponent implements OnInit {
