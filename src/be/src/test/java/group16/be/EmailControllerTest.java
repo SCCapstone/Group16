@@ -12,6 +12,7 @@ public class EmailControllerTest {
     private APIScraper scraper;
 
     private final String REAL_USERID = "673fdd30cc2da4c3a3514fb7";
+    private final String USER_EMAIL = "cam@osterholt.us";
 
     @Test
     public void testEmailController() {
@@ -23,5 +24,11 @@ public class EmailControllerTest {
             e.printStackTrace();
             assertTrue(false);
         }
+    }
+    
+    @Test
+    public void testGetEmail() {
+        var email = scraper.getUser(REAL_USERID).get(0).getEmail();
+        assertTrue(email.equals(USER_EMAIL));
     }
 }
