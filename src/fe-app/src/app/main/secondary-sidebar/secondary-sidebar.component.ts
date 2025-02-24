@@ -38,7 +38,10 @@ export class SecondarySidebarComponent implements OnChanges {
     effect(() => {
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
       console.log("SIGNAL RUN: Value " + signal);
-      this.filterTopThree(this.assignmentService.getAssignments(this.loginService.getUserId()));  // Runs when service constructor finishes, no need to call twice
+      // Runs when service constructor finishes, no need to call twice
+      this.assignmentService.getAssignments(this.loginService.getUserId()).then((assignments: Assignment[]) => {
+        this.filterTopThree(assignments)
+      })
     })
 
     this.gradesService.getGrades(this.loginService.getUserId())
@@ -49,7 +52,7 @@ export class SecondarySidebarComponent implements OnChanges {
 
   /**
    * Takes in a list of assignments and returns a list of three incomplete assignments with the closest due dates
-   * @param assignments 
+   * @param assignments
    */
   filterTopThree(assignments: Assignment[]) {
     let candidates: Assignment[] = [];
@@ -60,7 +63,7 @@ export class SecondarySidebarComponent implements OnChanges {
     candidates.sort((a: Assignment, b: Assignment) => {
       return new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime();
     })
-    
+
     this.assignments = candidates.slice(0, 3);
   }
 

@@ -36,8 +36,8 @@ export class CalendarComponent {
     })
   }
 
-  loadAssignments() {
-    this.assignments = this.assignmentService.getAssignments(this.loginService.getUserId());
+  async loadAssignments() {
+    this.assignments = await this.assignmentService.getAssignments(this.loginService.getUserId());
 
     // Turn assignment date strings into date objects and sort entire list by date
     for (let assignment of this.assignments) {
@@ -62,7 +62,7 @@ export class CalendarComponent {
     const millisecondsPerDay = 86400000;
     for (const assignment of this.assignments) {
       const difference = assignment.availability.adaptiveRelease.end.getTime() - this.weekStart.getTime();
-      
+
       // Ignore options out of range (can break if too high because array was sorted in constructor)
       if (difference < 0)
         continue;
