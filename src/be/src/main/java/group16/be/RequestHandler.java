@@ -10,13 +10,10 @@
 package group16.be;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import group16.be.db.Assignment;
-import group16.be.db.Course;
 import group16.be.db.Grade;
 import group16.be.db.User;
 
