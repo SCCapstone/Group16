@@ -19,12 +19,17 @@ import jakarta.mail.internet.MimeMultipart;
 public class EmailController {
     
     public static void sendEmail(User user) throws AddressException, MessagingException {
+        String username = System.getenv("MAIL_STMP_USERNAME");
+        String password = System.getenv("MAIL_STMP_PASSWORD");
+        String host = System.getenv("MAIL_STMP_HOST");
+        String port = System.getenv("MAIL_STMP_PORT");
+        
         Properties prop = new Properties();
         prop.put("mail.smtp.auth", true);
         prop.put("mail.smtp.starttls.enable", "true");
-        prop.put("mail.smtp.host", Environment.MAIL_STMP_HOST);
-        prop.put("mail.smtp.port", Environment.MAIL_STMP_PORT);
-        prop.put("mail.smtp.ssl.trust", Environment.MAIL_STMP_HOST);
+        prop.put("mail.smtp.host", host);
+        prop.put("mail.smtp.port", port);
+        prop.put("mail.smtp.ssl.trust", host);
         Session session = Session.getInstance(prop, new Authenticator() {
 
 /**
@@ -35,7 +40,7 @@ public class EmailController {
 
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(Environment.MAIL_STMP_USERNAME, Environment.MAIL_STMP_PASSWORD);
+                return new PasswordAuthentication(username, password);
             }
         });
 
@@ -43,7 +48,7 @@ public class EmailController {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress("from@trial-zr6ke4nd9y9gon12.mlsender.net"));
         message.setRecipients(
-        Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
+            Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
         message.setSubject("Mail Subject");
         String msg = "This is my first email using JavaMailer";
 

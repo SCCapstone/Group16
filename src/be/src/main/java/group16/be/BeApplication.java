@@ -10,8 +10,7 @@ import jakarta.mail.internet.AddressException;
 
 @SpringBootApplication
 @EnableMongoRepositories(
-	basePackages = "group16.be.db",
-	queryLookupStrategy = org.springframework.data.repository.query.QueryLookupStrategy.Key.CREATE_IF_NOT_FOUND
+	basePackages = "group16.be.db"
 )
 public class BeApplication {
 
