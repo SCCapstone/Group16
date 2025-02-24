@@ -39,10 +39,10 @@ export class TaskListComponent{
     });
 
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
-    effect(() => {
+    effect(async () => {
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
       console.log("SIGNAL RUN: Value " + signal);
-      this.loadAssignments();                                   // Runs when service constructor finishes, no need to call twice
+      await this.loadAssignments();                                   // Runs when service constructor finishes, no need to call twice
     })
   }
 
@@ -58,7 +58,7 @@ export class TaskListComponent{
     //     console.log("Sent", this.dueSoonAssignments.emit(top3Assignments));
     // });
 
-    const retrievedAssignments = this.assignmentService.getAssignments(this.loginService.getUserId());
+    const retrievedAssignments = await this.assignmentService.getAssignments(this.loginService.getUserId());
     this.filterAssignments(retrievedAssignments);
   }
 
