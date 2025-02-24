@@ -32,9 +32,13 @@ export class AssignmentService {
     return this.updateSignal;
   }
 
-  getAssignments(userId: string | null): Assignment[] {
-    if (userId === this.loginService.getUserId())
+  async getAssignments(userId: string | null): Promise<Assignment[]> {
+    if (userId === this.loginService.getUserId()) {
+      if(this.assignments.length === 0) {
+        await this.fetchAssignments(userId)
+      }
       return this.assignments;
+    }
     return [];
   }
 
@@ -106,6 +110,7 @@ export class AssignmentService {
           throw new Error(`POST failed: ${response.status}`)
         }
 
+        //const dummyAssignment: Assignment = await response.json() ?? {};
         // Create dummy assignment with the given information to be inserted into list, will only exist until page reload
         const dummyAssignment: Assignment = {
           id: crypto.randomUUID(),
