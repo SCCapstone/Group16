@@ -23,9 +23,9 @@ public class EmailController {
         Properties prop = new Properties();
         prop.put("mail.smtp.auth", true);
         prop.put("mail.smtp.starttls.enable", "true");
-        prop.put("mail.smtp.host", Environment.MAIL_STMP_HOST);
-        prop.put("mail.smtp.port", Environment.MAIL_STMP_PORT);
-        prop.put("mail.smtp.ssl.trust", Environment.MAIL_STMP_HOST);
+        prop.put("mail.smtp.host", System.getenv("MAIL_STMP_HOST"));
+        prop.put("mail.smtp.port", System.getenv("MAIL_STMP_PORT"));
+        prop.put("mail.smtp.ssl.trust", System.getenv("MAIL_STMP_HOST"));
         Session session = Session.getInstance(prop, new Authenticator() {
 
 /**
@@ -36,7 +36,7 @@ public class EmailController {
 
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(Environment.MAIL_STMP_USERNAME, Environment.MAIL_STMP_PASSWORD);
+                return new PasswordAuthentication(System.getenv("MAIL_STMP_USERNAME"), System.getenv("MAIL_STMP_PASSWORD"));
             }
         });
 
