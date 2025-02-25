@@ -1,0 +1,38 @@
+
+<div class="container">
+
+  <div id = "words">
+
+    <!-- DUE SOON -->
+    @if (this.router.url != "/main/grades")
+    {
+      <h1>Due Soon</h1>
+      @if (this.assignments != null && this.assignments.length > 0)
+      {
+        <ul>
+          @for (assignment of this.assignments; track assignment.id)
+          {
+            <li>{{ assignment.title }} <br>- Due: {{ assignment.availability.adaptiveRelease.end | date:'short' }}</li>
+          }
+        </ul>
+      }
+      @else
+      {
+        <p>No upcoming assignments.</p>
+      }
+    }
+
+    <!-- GRADES -->
+    @else
+    {
+      <h1>Final Grades</h1>
+
+      @for (course of this.courses; track course.id) {
+        <h2>{{ course.name.split('-')[0] }}</h2>
+        <p>{{ this.calculateFinalGrade(course.id) }}</p>
+      }
+    }
+
+  </div>
+
+</div>

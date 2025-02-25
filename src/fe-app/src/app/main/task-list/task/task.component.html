@@ -3,37 +3,29 @@
         <input type="checkbox" [(ngModel)]="assignment.complete" (click)="toggleCompletion(assignment)" />
     </div>
     <div class="assignment-column">{{ courseName.split("-")[0] }}</div>
-    <div class="assignment-column">{{ assignment.title }}</div>
-    <div class="assignment-column"><a href="assignment link here">{{ assignment.description }}</a></div>
+    <div class="assignment-column-title"><a (click)="openPopup('task')" >{{ assignment.title }}</a></div>
     <div class="assignment-column">{{ assignment.availability.adaptiveRelease.end | date }}</div>
     <div class="assignment-column-edit">
         <a (click)="openPopup('edit-task')">
             <img *ngIf="assignment.userCreated" src="images/pencil.png" alt="pencil icon" style="width: 25px; height: auto; margin-left: 15px;"/>
         </a>
-
-         
+    </div>
+    <div class="assignment-column-remove">
+      <a (click)="removeTask()"><div *ngIf="assignment.userCreated">X</div></a>
     </div>
 </div>
 
 <div *ngIf="showPopup" class="popup-modal">
     <div class="popup-content">
       <span class="close" (click)="closePopup()">&times;</span>
-      <p *ngIf="popupType === 'edit-task'">   <app-edit-task [assignment]="assignment"></app-edit-task>
-      </p>
-
+      <p *ngIf="popupType === 'edit-task'">   <app-edit-task [assignment]="assignment" (close)="closePopup(); updateTask($event)"></app-edit-task>
+        <p *ngIf="popupType === 'task'" class="assignmentPopup">
+            <span class="course">{{ courseName.split("-")[0] }} </span><br>
+            {{ assignment.title }} <br>
+            <span class="due-date"> Due: {{ assignment.availability.adaptiveRelease.end | date }} </span><br> <br>
+            <span class="description">Description: </span><br>
+            {{assignment.description}}
+          </p>
     </div>
   </div>
 
-  <!--(click)="openPopup('edit-task')"
-  <a [routerLink] = "['/main/edit-task', assignment.id]" >
-     <app-task [assignment]="assignment" /> 
-           <p *ngIf="popupType === 'edit-task'">   <app-task [assignment]="assignment" /> </p>
-
-  
-  <button (click)="createBook()">Create Book</button>
-
-    createBook(bookData){
-        // Create Book logic
-    this.router.navigate(['/my-book-listing']);
-    }
-   -->

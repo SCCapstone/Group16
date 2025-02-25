@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 
 import { AddTaskComponent } from './add-task.component';
 
@@ -7,8 +8,15 @@ describe('AddTaskComponent', () => {
   let fixture: ComponentFixture<AddTaskComponent>;
 
   beforeEach(async () => {
+    const activatedRouteMock = {
+      snapshot: { paramMap: {} }
+    };
+
     await TestBed.configureTestingModule({
-      imports: [AddTaskComponent]
+      imports: [AddTaskComponent],
+      providers: [
+        { provide: ActivatedRoute, useValue: activatedRouteMock }
+      ],
     })
     .compileComponents();
 

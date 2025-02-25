@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, NgZone } from '@angular/core';
 import { LoginService } from './login.service';
 
 @Injectable({
@@ -12,6 +12,7 @@ export class HeartbeatService {
   private activityTimer: any;
   private currentUserId: string | null = null;
   loginService = inject(LoginService);
+  private ngZone = inject(NgZone)
 
   constructor() {
     this.listenForActivity();
@@ -29,20 +30,21 @@ export class HeartbeatService {
     }
 
     this.currentUserId = userId;
-
     this.sendHeartbeat(userId);
-    console.log('sending first');
+    //console.log('sending first');
 
-    this.heartbeatTimer = setInterval(() => {
-      if(!this.loginService.getUserId()) {
-        console.log('user signedOut');
-        this.stopHeartbeat();
-        return;
-      }
+    this.ngZone.runOutsideAngular(() => {
+      this.heartbeatTimer = setInterval(() => {
+        if(!this.loginService.getUserId()) {
+          console.log('user signedOut');
+          this.stopHeartbeat();
+          return;
+        }
 
-      this.sendHeartbeat(userId);
-      console.log('sending on timer');
-    }, this.heartbeatInterval);
+        this.sendHeartbeat(userId);
+        //console.log('sending on timer');
+      }, this.heartbeatInterval);
+    });
   }
 
   private async sendHeartbeat(userId: string): Promise<void> {
@@ -73,7 +75,7 @@ export class HeartbeatService {
         throw new Error(`POST failed: ${response.status}`);
       }
 
-      console.log(response);
+      //console.log(response);
     } catch (error: any) {
       console.error('Error sending heartbeat:', error);
       throw error;
@@ -91,9 +93,11 @@ export class HeartbeatService {
   private listenForActivity() {
     const resetActivityTimer = () => {
       clearTimeout(this.activityTimer);
-      this.activityTimer = setTimeout(() => {
-        this.onInactivity();
-      }, this.activityTimeout)
+      this.ngZone.runOutsideAngular(() => {
+        this.activityTimer = setTimeout(() => {
+          this.onInactivity();
+        }, this.activityTimeout)
+      });
     };
 
     //document.addEventListener('mousemove', resetActivityTimer);

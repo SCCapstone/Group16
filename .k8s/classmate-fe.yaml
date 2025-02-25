@@ -1,0 +1,39 @@
+# Kubernetes Deployment Files for the Angular FE
+# To apply config file: kubectl apply -f .k8s/classmate-fe.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: classmate-fe
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: classmate-fe
+  template:
+    metadata:
+      labels:
+        app: classmate-fe
+    spec:
+      containers:
+        - name: classmate-fe
+          image: ghcr.io/sccapstone/group16/classmate-fe:latest
+          ports:
+            - containerPort: 4000
+      imagePullSecrets:
+        - name: ghcr-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: classmate-fe
+spec:
+  selector:
+    app: classmate-fe
+  ports:
+    - protocol: TCP
+      port: 80   # External port (incoming traffic)
+      targetPort: 4000  # Port your pods are listening on
+      nodePort: 30017  # Use a node port for local setup
+  type: NodePort  # For local setup, use NodePort

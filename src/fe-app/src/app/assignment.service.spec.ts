@@ -14,22 +14,22 @@ describe('AssignmentService', () => {
     expect(service).toBeTruthy();
   });
 
-  // getAssignments()
-  it('should throw an error when getAssignments response is empty ( [] )', async () => {
+  // fetchAssignments()
+  it('should throw an error when fetchAssignments response is empty ( [] )', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve({
       json: () => Promise.resolve([]),
     } as Response));
 
-    await expectAsync(service.getAssignments('123')).toBeRejectedWithError('assignments are []');
+    await expectAsync(service.fetchAssignments('123')).toBeRejectedWithError('assignments are []');
   });
 
-  it('should throw an error when getAssignments fetch fails', async () => {
+  it('should throw an error when fetchAssignments fetch fails', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
 
-    await expectAsync(service.getAssignments('123')).toBeRejectedWithError('Network Error');
+    await expectAsync(service.fetchAssignments('123')).toBeRejectedWithError('Network Error');
   });
 
-  it('should successfully getAssignments for a user', async () => {
+  it('should successfully fetchAssignments for a user', async () => {
     const mockAssignmentList: Assignment [] = [{
       id: 'abc',
       userId: '123',
@@ -49,7 +49,7 @@ describe('AssignmentService', () => {
       json: () => Promise.resolve(mockAssignmentList),
     } as Response));
 
-    const assignmentList = await service.getAssignments('123');
+    const assignmentList = await service.fetchAssignments('123');
 
     expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/getAssignments?userId=123')
     expect(assignmentList).toEqual(mockAssignmentList);
@@ -68,7 +68,7 @@ describe('AssignmentService', () => {
   it('should throw an error when getAssignmentById fetch fails', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
 
-    await expectAsync(service.getAssignments('abc')).toBeRejectedWithError('Network Error');
+    await expectAsync(service.getAssignmentById('abc')).toBeRejectedWithError('Network Error');
   });
 
   it('should successfully getAssignmentById for an assignmentId', async () => {
@@ -216,5 +216,35 @@ describe('AssignmentService', () => {
 
     expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/openAssignment?assID=456',
     Object({ method: 'PUT' }));
+  });
+
+  // removeTask()
+  it('should throw an error when removeTask DELETE request fails', async () => {
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+      ok: false,
+      status: 500
+    } as Response));
+
+    await expectAsync(service.removeTask('456'))
+      .toBeRejectedWithError('DELETE failed: 500');
+  });
+
+  it('should throw an error when removeTask fetch encounters a network failure', async () => {
+    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+
+    await expectAsync(service.removeTask('456'))
+      .toBeRejectedWithError('Network Error');
+  });
+
+  it('should successfully call removeTask with correct parameters', async () => {
+    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+      ok: true,
+    } as Response));
+
+    await expectAsync(service.removeTask('456'))
+      .toBeResolved();
+
+    expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/removeAssignment?assignmentId=456',
+    Object({ method: 'DELETE' }));
   });
 });

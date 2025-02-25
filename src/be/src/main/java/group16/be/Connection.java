@@ -1,74 +1,39 @@
 package group16.be;
 
-import org.bson.Document;
-
-import com.mongodb.MongoClientSettings;
-import com.mongodb.MongoException;
-import com.mongodb.ServerApi;
-import com.mongodb.ServerApiVersion;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class Connection {
 
-    private static MongoClient mongoClient;
-    private static MongoDatabase database;
-    public boolean connected = false;
+    @Autowired
+    private APIScraper scraper;
 
-    public Connection(String uri) {
-        MongoClientSettings settings = MongoClientSettings.builder()
-            .applyConnectionString(new com.mongodb.ConnectionString(uri))
-            .serverApi(ServerApi.builder()
-                .version(ServerApiVersion.V1)
-                .strict(true)
-                .deprecationErrors(true)
-                .build())
-            .build();
+    private boolean connected;
+    private String userId;
 
-        try {
-            mongoClient = MongoClients.create(settings);
-            database = mongoClient.getDatabase(Environment.MONGO_DATABASE);
-
-            // Ping the database to confirm the connection
-            Document ping = new Document("ping", 1);
-            database.runCommand(ping);
-            connected = true;
-        } catch (MongoException e) {
-            e.printStackTrace();
-        }
+    public Connection() {
+        connected = false;
+    }
+    
+    public Connection(String uID) {
+        setUserId(uID);
+        connected = true;
     }
 
     public boolean isConnected() {
         return connected;
     }
 
-    /**
-     * Inserts a new document into the specified collection.
-     *
-     * @param collectionName The name of the collection to insert the document into.
-     * @param data           The JSON string to insert.
-     */
-    public void insertNewData(String collectionName, String data) {
-        try {
-            if (database == null) {
-                throw new IllegalStateException("Database connection is not initialized.");
-            }
+    public String getUserId() {
+        return userId;
+    }
 
-            // Specify the collection
-            MongoCollection<Document> collection = database.getCollection(collectionName);
-
-            // Format data
-            Document newData = Document.parse(data);
-
-            // Insert the document into the collection
-            collection.insertOne(newData);
-            System.out.println("New document inserted successfully into collection: " + collectionName);
-        } catch (MongoException e) {
-            System.err.println("Failed to insert document: " + e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.err.println("Invalid JSON data: " + e.getMessage());
+    public void setUserId(String userId) {
+        var user = scraper.getUser(userId);
+        if(user != null && user.size() == 1 && user.get(0).getId().equals(userId)) {
+            this.connected = true;
+            this.userId = userId;
         }
+        else
+            this.userId = null;
     }
 }

@@ -1,0 +1,43 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px; /* Adjust spacing from bottom */
+    min-height: 45.3vh;
+}
+
+h1 {
+    color: #c30000;
+    font-size: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+h2 {
+    color: #7e0000;
+    font-size: 24px;
+    text-align: center;
+    font-weight: bold;
+}
+
+p {
+    color: #000000;
+    font-size: 24px;
+    text-align: center;
+    font-weight: bold;
+}
+
+li {
+    font-size: 20px;
+}
+
+#words{
+    margin-top: 25px;
+}

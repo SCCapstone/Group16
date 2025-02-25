@@ -46,7 +46,6 @@ public class EmailController {
         message.setRecipients(
         Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
         message.setSubject("Mail Subject");
-
         String msg = "This is my first email using JavaMailer";
 
         MimeBodyPart mimeBodyPart = new MimeBodyPart();
