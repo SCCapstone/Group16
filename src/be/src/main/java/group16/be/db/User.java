@@ -116,6 +116,10 @@ public class User {
 
         // Getters and Setters
     }
+
+    public String getEmail() {
+        return contact.email;
+    }
     public Contact getContact() {
         return contact;
     }
