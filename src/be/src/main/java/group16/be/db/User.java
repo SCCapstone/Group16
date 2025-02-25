@@ -116,6 +116,7 @@ public class User {
 
         // Getters and Setters
     }
+
     public Contact getContact() {
         return contact;
     }
@@ -131,6 +132,10 @@ public class User {
         return Pattern.compile(regexPattern)
             .matcher(email)
             .matches();
+    }
+    public String getEmail() {
+        if (contact == null) return null;
+        return contact.getEmail();
     }
 
     public boolean setMobilePhone(String mobilePhone) {
