@@ -13,6 +13,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Document(collection = "users")
 @SuppressWarnings("unused")
 public class User {
+
+    public User () {
+        super();
+    }
+
+    public User(String userName, String password, String studentId, String email, String universityEmail, String mobilePhone) {
+        this.userName = userName;
+        this.password = password;
+        this.contact = new Contact();
+        this.contact.email = email;
+    }
     
     @Id
     private String id;
@@ -188,10 +199,6 @@ public class User {
 
 
     // Getters and Setters for UserProfile
-
-    public User () {
-        super();
-    }
 
     public ArrayList<CourseId> getCourseIDs() {
         return this.courseIDs;
