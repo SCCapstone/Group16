@@ -20,7 +20,35 @@ public class User {
         super();
     }
 
-    public User(String userName, 
+    // public User(String userName, 
+    //             String password, 
+    //             String studentId, 
+    //             String email, 
+    //             String universityEmail, 
+    //             String mobilePhone,
+    //             String givenName,
+    //             String familyName,
+    //             String preferredDisplayName) {
+    //     super();
+    //     this.userName = userName;
+    //     this.password = password;
+    //     this.studentId = studentId;
+    //     this.contact = new Contact();
+    //     this.contact.email = email;
+    //     this.contact.institutionEmail = universityEmail;
+    //     this.contact.mobilePhone = mobilePhone;
+    //     this.name = new Name();
+    //     this.name.given = givenName;
+    //     this.name.family = familyName;
+    //     this.name.preferredDisplayName = preferredDisplayName;
+    //     this.settings = new Settings();
+    //     this.settings.emailNotifications = true;
+    //     this.settings.institutionEmailNotifications = true;
+    //     this.settings.smsNotifications = true;
+    // }
+
+    public User(User copyFrom,
+                String userName, 
                 String password, 
                 String studentId, 
                 String email, 
@@ -30,21 +58,16 @@ public class User {
                 String familyName,
                 String preferredDisplayName) {
         super();
+        copyUser(copyFrom);
         this.userName = userName;
         this.password = password;
-        this.studentId = studentId;
-        this.contact = new Contact();
+        this.studentId = studentId;            
         this.contact.email = email;
         this.contact.institutionEmail = universityEmail;
         this.contact.mobilePhone = mobilePhone;
-        this.name = new Name();
         this.name.given = givenName;
         this.name.family = familyName;
         this.name.preferredDisplayName = preferredDisplayName;
-        this.settings = new Settings();
-        this.settings.emailNotifications = true;
-        this.settings.institutionEmailNotifications = true;
-        this.settings.smsNotifications = true;
     }
 
     private void init() {
@@ -68,7 +91,6 @@ public class User {
         this.id = id;
     }
 
-    private String uuid;
     private String dataSourceId;
     private String userName;
     public String getUserName() {
@@ -240,11 +262,23 @@ public class User {
     public ArrayList<CourseId> getCourseIDs() {
         return this.courseIDs;
     }
+    public ArrayList<CourseId> addCourseId(String courseId) {
+        if (courseIDs == null) {
+            courseIDs = new ArrayList<CourseId>();
+        }
+        CourseId course = new CourseId();
+        course.courseId = courseId;
+        courseIDs.add(course);
+        return courseIDs;
+    }
 
     public Settings getSettings() {
         return settings;
     }
 
+    /**
+     * Modifies the user's last login time to current time. 
+     */
     public void setLoginTime() {
         this.lastLogin = Instant.now().toString();
     }
@@ -255,7 +289,6 @@ public class User {
         StringBuilder sb = new StringBuilder();
         sb.append("User {")
         .append("\n  id: ").append(id)
-        .append(",\n  uuid: ").append(uuid)
         .append(",\n  dataSourceId: ").append(dataSourceId)
         .append(",\n  userName: ").append(userName)
         .append(",\n  studentId: ").append(studentId)
@@ -287,6 +320,26 @@ public class User {
         return sb.toString();
     }
 
-
+    private void copyUser(User user) {
+        this.dataSourceId = user.dataSourceId;
+        this.userName = user.userName;
+        this.password = user.password;
+        this.studentId = user.studentId;
+        this.gender = user.gender;
+        this.pronouns = user.pronouns;
+        this.birthDate = user.birthDate;
+        this.created = Instant.now().toString();
+        this.modified = Instant.now().toString();
+        this.lastLogin = Instant.now().toString();
+        this.availability = user.availability;
+        this.settings = user.settings;
+        this.name = user.name;
+        this.name.middle = "";
+        this.job = user.job;
+        this.contact = user.contact;
+        this.locale = user.locale;
+        this.avatar = user.avatar;
+        this.courseIDs = user.courseIDs;
+    }   
 
 }

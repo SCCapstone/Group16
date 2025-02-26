@@ -56,6 +56,8 @@ public class RequestHandler {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(id);
         else if (id.equals("Error: Invalid Credentials"))
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(id);
+        else if (id.equals("Error: Could not save user"))
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(id);
 
         HashMap<String, String> ret = new HashMap<>();
         ret.put("id", id);

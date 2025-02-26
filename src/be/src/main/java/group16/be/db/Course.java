@@ -1,6 +1,6 @@
 package group16.be.db;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,8 +9,41 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "courses")
 @SuppressWarnings("unused")
 public class Course {
-    
-
+    public Course(Course copyFrom,
+                  String name, 
+                  String description,
+                  String termId) {
+        super();
+        copyFrom(copyFrom);
+        this.name = name;
+        this.description = description;
+        this.termId = termId;
+        this.created = Instant.now().toString();
+        this.modified = Instant.now().toString();
+    }
+        
+    private void copyFrom(Course copyFrom) {
+        this.externalId = copyFrom.getExternalId();
+        this.dataSourceId = copyFrom.getDataSourceId();
+        this.courseId = copyFrom.getCourseId();
+        this.name = copyFrom.getName();
+        this.description = copyFrom.getDescription();
+        this.created = Instant.now().toString();
+        this.modified = Instant.now().toString();
+        this.organization = copyFrom.isOrganization();
+        this.ultraStatus = copyFrom.getUltraStatus();
+        this.allowGuests = copyFrom.isAllowGuests();
+        this.allowObservers = copyFrom.isAllowObservers();
+        this.closedComplete = copyFrom.isClosedComplete();
+        this.termId = copyFrom.getTermId();
+        this.availability = copyFrom.getAvailability();
+        this.enrollment = copyFrom.getEnrollment();
+        this.locale = copyFrom.getLocale();
+        this.hasChildren = copyFrom.isHasChildren();
+        this.externalAccessUrl = copyFrom.getExternalAccessUrl();
+        this.guestAccessUrl = copyFrom.getGuestAccessUrl();
+    }
+        
     @Id
     private String id;
     public String getId() {
@@ -39,8 +72,8 @@ public class Course {
         return name;
     }
     private String description;
-    private LocalDateTime created;
-    private LocalDateTime modified;
+    private String created;
+    private String modified;
     private boolean organization;
     private String ultraStatus;
     private boolean allowGuests;
@@ -60,11 +93,11 @@ public class Course {
         return description;
     }
 
-    public LocalDateTime getCreated() {
+    public String getCreated() {
         return created;
     }
 
-    public LocalDateTime getModified() {
+    public String getModified() {
         return modified;
     }
 
@@ -136,15 +169,15 @@ public class Course {
 
     public static class Enrollment {
         private String type;
-        private LocalDateTime start;
-        private LocalDateTime end;
+        private String start;
+        private String end;
         public String getType() {
             return type;
         }
-        public LocalDateTime getStart() {
+        public String getStart() {
             return start;
         }
-        public LocalDateTime getEnd() {
+        public String getEnd() {
             return end;
         }
     }

@@ -43,7 +43,15 @@ public class APIScraper implements CommandLineRunner {
     public String login(String username, String password) {
         ArrayList<User> users = userRepo.findByUserNameAndPassword(username, password);
         if (users.size() == 1) {
-            return users.get(0).getId();
+            var user = users.get(0);
+            user.setLoginTime();
+            try {
+                userRepo.save(user);
+                return user.getId();   
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Error: Could not save user";
+            }
         }
         if(users.size() > 1) {
             return "Error: Multiple users with the same username and password";
