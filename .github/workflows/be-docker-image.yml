@@ -21,6 +21,15 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Set up environment variables
+        run: |
+          echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> $GITHUB_ENV
+          echo "MONGO_DATABASE=${{ secrets.MONGO_DATABASE }}" >> $GITHUB_ENV
+          echo "MAIL_SMTP_HOST=${{ secrets.MAIL_SMTP_HOST }}" >> $GITHUB_ENV
+          echo "MAIL_SMTP_PORT=${{ secrets.MAIL_SMTP_PORT }}" >> $GITHUB_ENV
+          echo "MAIL_SMTP_USERNAME=${{ secrets.MAIL_SMTP_USERNAME }}" >> $GITHUB_ENV
+          echo "MAIL_SMTP_PASSWORD=${{ secrets.MAIL_SMTP_PASSWORD }}" >> $GITHUB_ENV
+
       - name: Build project with Maven
         run: |
           cd src/be && mvn -q clean install 
@@ -35,7 +44,16 @@ jobs:
       - name: Build Docker image
         run: |
           REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-          docker build --build-arg JAR_FILE=target/be-0.2.jar -t ghcr.io/$REPO_NAME/classmate-api:latest -f src/be/Dockerfile src/be
+          docker build \
+            --build-arg JAR_FILE=target/be-0.2.jar \
+            --build-arg MONGO_URI=${{ secrets.MONGO_URI }} \
+            --build-arg MONGO_DATABASE=${{ secrets.MONGO_DATABASE }} \
+            --build-arg MAIL_SMTP_HOST=${{ secrets.MAIL_SMTP_HOST }} \
+            --build-arg MAIL_SMTP_PORT=${{ secrets.MAIL_SMTP_PORT }} \
+            --build-arg MAIL_SMTP_USERNAME=${{ secrets.MAIL_SMTP_USERNAME }} \
+            --build-arg MAIL_SMTP_PASSWORD=${{ secrets.MAIL_SMTP_PASSWORD }} \
+            -t ghcr.io/$REPO_NAME/classmate-api:latest \
+            -f src/be/Dockerfile src/be
 
       - name: Push Docker image
         run: |

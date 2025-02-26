@@ -29,7 +29,7 @@ public class Connection {
 
     public void setUserId(String userId) {
         var user = scraper.getUser(userId);
-        if(user != null && user.size() == 1 && user.get(0).getId().equals(userId)) {
+        if(user != null && user.getId().equals(userId)) {
             this.connected = true;
             this.userId = userId;
         }

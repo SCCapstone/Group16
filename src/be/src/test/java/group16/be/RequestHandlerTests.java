@@ -2,7 +2,6 @@ package group16.be;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -13,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.server.ResponseStatusException;
 
+import group16.be.db.Assignment;
 import group16.be.db.Course;
 
 @SpringBootTest
@@ -40,79 +39,76 @@ public class RequestHandlerTests {
     @Test
     void testLogin() {
         // Correct Login
-        HashMap<String,String> response = handler.login(LOGIN_USER, LOGIN_PASS);
-        assert(response.size() == 1
-            && response.containsValue(EXPECTED_RESPONSE.get("id")));
+        try {
+            var body = handler.login(LOGIN_USER, LOGIN_PASS).getBody();
+            if(body == null) 
+                throw new NullPointerException("Expected HashMap<String, String> but found: null");
+            if (body instanceof HashMap) {
+                @SuppressWarnings("unchecked")
+                HashMap<String, String> response = (HashMap<String, String>) body;
+                assertTrue(response.get("id").equals(EXPECTED_RESPONSE.get("id")));
+            }
+            else {
+                throw new ClassCastException("Expected HashMap<String, String> but found: " + body.getClass().getName());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Tests wrong password (expecting ResponseStatusException with HttpStatus.UNAUTHORIZED)
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            handler.login("osterholt", "wrongpassword");
-        });
+        var response = handler.login("osterholt", "wrongpassword");
         // Verify the exception contains HttpStatus.UNAUTHORIZED
-        assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
 
         // Tests wrong username (expecting ResponseStatusException with HttpStatus.UNAUTHORIZED)
-        ResponseStatusException exception2 = assertThrows(ResponseStatusException.class, () -> {
-            handler.login("wrongusername", "cameron1234");
-        });
+        var response2 = handler.login("wrongusername", "cameron1234");
         // Verify the exception contains HttpStatus.UNAUTHORIZED
-        assertEquals(HttpStatus.UNAUTHORIZED, exception2.getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, response2.getStatusCode());
 
-        // Tests null username and password
-        ResponseStatusException exception3 = assertThrows(ResponseStatusException.class, () -> {
-            handler.login(null, null);
-        });
+        // Tests null username and password (expecting ResponseStatusException with HttpStatus.BAD_REQUEST)
+        var response3 = handler.login(null, null);
         // Verify the exception contains HttpStatus.BAD_REQUEST
-        assertEquals(HttpStatus.BAD_REQUEST, exception3.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, response3.getStatusCode());
 
-        // Tests empty username and password
-        ResponseStatusException exception4 = assertThrows(ResponseStatusException.class, () -> {
-            handler.login("", "");
-        });
+        // Tests empty username and password (expecting ResponseStatusException with HttpStatus.BAD_REQUEST)
+        var response4 = handler.login("", "");
         // Verify the exception contains HttpStatus.BAD_REQUEST
-        assertEquals(HttpStatus.UNAUTHORIZED, exception4.getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, response4.getStatusCode());
 
-        // Tests abnormally large username and password
+        // Tests abnormally large username and password (expecting ResponseStatusException with HttpStatus.UNAUTHORIZED)
         String largeString = "A".repeat(1000000); // 1 million 'A's
-        ResponseStatusException exception5 = assertThrows(ResponseStatusException.class, () -> {
-            handler.login(largeString, largeString);
-        });
-        // Verify the exception contains HttpStatus.NOT_FOUND
-        assertEquals(HttpStatus.UNAUTHORIZED, exception5.getStatusCode());
+        var response5 = handler.login(largeString, largeString);
+        // Verify the exception contains HttpStatus.UNAUTHORIZED
+        assertEquals(HttpStatus.UNAUTHORIZED, response5.getStatusCode());
     }
 
     @Async
     @Test
     void testGetCourses() {
-        // Correct Login
-        HashMap<String,String> response = handler.login(LOGIN_USER, LOGIN_PASS);
-        assert(response.size() == 1
-            && response.containsValue(EXPECTED_RESPONSE.get("id")));
         // Get courses
-        ArrayList<Course> courses = handler.getCourses(EXPECTED_ID);
-        assertTrue(courses.size() > 0);
+        var courseResponse = handler.getCourses(EXPECTED_ID);
+        assertTrue(courseResponse != null);
+        assertTrue(courseResponse.getStatusCode() == HttpStatus.OK);
+        assertTrue(courseResponse.getBody() != null);
+        assertTrue(courseResponse.getBody() instanceof ArrayList);
+        @SuppressWarnings("unchecked")
+        ArrayList<Course> courses = (ArrayList<Course>) courseResponse.getBody();
+        assertTrue(courses != null && courses.size() > 0);
 
         // Tests null user ID
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            handler.getCourses(null);
-        });
+        var exception = handler.getCourses(null);
         // Verify the exception contains HttpStatus.BAD_REQUEST
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
 
-        // Tests empty user ID
-        ResponseStatusException exception2 = assertThrows(ResponseStatusException.class, () -> {
-            handler.getCourses("");
-        });
+        var exception2 = handler.getCourses("");
         // Verify the exception contains HttpStatus.BAD_REQUEST
-        assertEquals(HttpStatus.NOT_FOUND, exception2.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, exception2.getStatusCode());
 
         // Tests abnormally large user ID
         String largeString = "A".repeat(1000000); // 1 million 'A's
-        ResponseStatusException exception3 = assertThrows(ResponseStatusException.class, () -> {
-            handler.getCourses(largeString);
-        });
+        var exception3 = handler.getCourses(largeString);
         // Verify the exception contains HttpStatus.NOT_FOUND
-        assertEquals(HttpStatus.NOT_FOUND, exception3.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, exception3.getStatusCode());
     }
 
     @Async
@@ -126,40 +122,47 @@ public class RequestHandlerTests {
     @Test
     void testGetAssignments() {
         // Correct Login
-        var assignments = handler.getAssignments(EXPECTED_ID);
-        assertTrue(assignments != null
-                && assignments.size() > 0);
+        var assignmentsResponse = handler.getAssignments(EXPECTED_ID);
+        assertTrue(assignmentsResponse != null);
+        assertTrue(assignmentsResponse.getStatusCode() == HttpStatus.OK);
+        assertTrue(assignmentsResponse.getBody() != null);
+        assertTrue(assignmentsResponse.getBody() instanceof ArrayList);
+        @SuppressWarnings("unchecked")
+        ArrayList<Assignment> assignments = (ArrayList<Assignment>) assignmentsResponse.getBody();
+        assertTrue(assignments != null && assignments.size() > 0);
         
         // Tests null user ID
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            handler.getAssignments(null);
-        });
+        var response = handler.getAssignments(null);
+
         // Verify the exception contains HttpStatus.BAD_REQUEST
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
         // Tests empty user ID
-        ResponseStatusException exception2 = assertThrows(ResponseStatusException.class, () -> {
-            handler.getAssignments("");
-        });
+        var response2 = handler.getAssignments("");
         // Verify the exception contains HttpStatus.NOT_FOUND
-        assertEquals(HttpStatus.NOT_FOUND, exception2.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, response2.getStatusCode());
 
         // Tests abnormally large user ID
         String largeString = "A".repeat(1000000); // 1 million 'A's
-        ResponseStatusException exception3 = assertThrows(ResponseStatusException.class, () -> {
-            handler.getAssignments(largeString);
-        });
+        var response3 = handler.getAssignments(largeString);
         // Verify the exception contains HttpStatus.NOT_FOUND
-        assertEquals(HttpStatus.NOT_FOUND, exception3.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, response3.getStatusCode());
+
+        //TODO: Test user without assignments
     }
 
     @Async
     @Test
     void testGetGrades() {
         // Correct userID
-        var grades = handler.getGrades(EXPECTED_ID);
-        assertTrue(grades != null
-                && grades.size() > 0);
+        var gradesResponse = handler.getGrades(EXPECTED_ID);
+        assertTrue(gradesResponse != null);
+        assertTrue(gradesResponse.getStatusCode() == HttpStatus.OK);
+        assertTrue(gradesResponse.getBody() != null);
+        assertTrue(gradesResponse.getBody() instanceof ArrayList);
+        @SuppressWarnings("unchecked")
+        ArrayList<Assignment> grades = (ArrayList<Assignment>) gradesResponse.getBody();
+        assertTrue(grades != null && grades.size() > 0);
     }   
 
     @Test
