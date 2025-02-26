@@ -45,6 +45,7 @@ public class ModifyDatabaseTests {
         // Return true when saving a user
         Mockito.when(scraper.saveUser(Mockito.any(User.class))).thenReturn(true);
         Mockito.when(scraper.saveAssignment(Mockito.any(Assignment.class))).thenReturn(true);
+        Mockito.when(scraper.saveGrade(Mockito.any(Grade.class))).thenReturn(true);
         
         // Return a specific assignment when getting assignments
         var assignments = new ArrayList<Assignment>();
@@ -65,6 +66,11 @@ public class ModifyDatabaseTests {
 
     @Test
     void testAddAssignment() {
+        // Tests adding an assignment which does not exist.
+        var response1 = requestHandler.addAssignmentWithoutId(MOCK_TITLE2, MOCK_DESCRIPTION2, MOCK_DUEDATE2, MOCK_USERID, MOCK_COURSEID);
+        assertTrue(response1 != null);
+        assertTrue(response1.getStatusCode() == HttpStatus.OK);
+        var assignment = (Assignment) response1.getBody();
         // Tests adding an assignment which exists.
         var response = requestHandler.addAssignmentWithoutId(MOCK_TITLE, MOCK_DESCRIPTION, MOCK_DUEDATE, MOCK_USERID, MOCK_COURSEID);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
