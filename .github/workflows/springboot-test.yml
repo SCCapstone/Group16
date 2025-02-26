@@ -35,4 +35,4 @@ jobs:
           run: cd src/be && mvn install -DskipTests
 
         - name: Run tests
-          run: mvn test
+          run: cd src/be mvn test
