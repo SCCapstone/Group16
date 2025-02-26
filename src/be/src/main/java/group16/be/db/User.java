@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import java.time.Instant;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -23,8 +25,37 @@ public class User {
                 String studentId, 
                 String email, 
                 String universityEmail, 
-                String mobilePhone) {
+                String mobilePhone,
+                String givenName,
+                String familyName,
+                String preferredDisplayName) {
         super();
+        this.userName = userName;
+        this.password = password;
+        this.studentId = studentId;
+        this.contact = new Contact();
+        this.contact.email = email;
+        this.contact.institutionEmail = universityEmail;
+        this.contact.mobilePhone = mobilePhone;
+        this.name = new Name();
+        this.name.given = givenName;
+        this.name.family = familyName;
+        this.name.preferredDisplayName = preferredDisplayName;
+        this.settings = new Settings();
+        this.settings.emailNotifications = true;
+        this.settings.institutionEmailNotifications = true;
+        this.settings.smsNotifications = true;
+    }
+
+    private void init() {
+        this.job = new Job();
+        job.title = "Student";
+        job.department = "Computer Science";
+        job.company = "University of South Carolina";
+        this.birthDate = "";
+        this.created = Instant.now().toString();
+        this.modified = Instant.now().toString();
+        this.lastLogin = Instant.now().toString();
     }
     
     @Id
@@ -208,6 +239,10 @@ public class User {
 
     public Settings getSettings() {
         return settings;
+    }
+
+    public void setLoginTime() {
+        this.lastLogin = Instant.now().toString();
     }
 
 
