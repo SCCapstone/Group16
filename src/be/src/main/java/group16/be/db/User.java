@@ -18,11 +18,13 @@ public class User {
         super();
     }
 
-    public User(String userName, String password, String studentId, String email, String universityEmail, String mobilePhone) {
-        this.userName = userName;
-        this.password = password;
-        this.contact = new Contact();
-        this.contact.email = email;
+    public User(String userName, 
+                String password, 
+                String studentId, 
+                String email, 
+                String universityEmail, 
+                String mobilePhone) {
+        super();
     }
     
     @Id
