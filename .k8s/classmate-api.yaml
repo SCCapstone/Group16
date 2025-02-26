@@ -20,9 +20,37 @@ spec:
           image: ghcr.io/sccapstone/group16/classmate-api:latest
           ports:
             - containerPort: 1616
-      imagePullSecrets:
-        - name: ghcr-secret
-
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: classmate-secrets
+                  key: MONGO_URI
+            - name: MONGO_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: classmate-secrets
+                  key: MONGO_DATABASE
+            - name: MAIL_SMTP_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: classmate-secrets
+                  key: MAIL_SMTP_HOST
+            - name: MAIL_SMTP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: classmate-secrets
+                  key: MAIL_SMTP_PORT
+            - name: MAIL_SMTP_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: classmate-secrets
+                  key: MAIL_SMTP_USERNAME
+            - name: MAIL_SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: classmate-secrets
+                  key: MAIL_SMTP_PASSWORD
 ---
 apiVersion: v1
 kind: Service
