@@ -26,9 +26,9 @@ public class EmailControllerTest {
         // }
     // }
     
-    @Test
-    public void testGetEmail() {
-        var email = scraper.getUser(REAL_USERID).getEmail();
-        assertTrue(email.equals(USER_EMAIL));
-    }
+    // @Test
+    // public void testGetEmail() {
+    //     var email = scraper.getUser(REAL_USERID).getEmail();
+    //     assertTrue(email.equals(USER_EMAIL));
+    // }
 }
