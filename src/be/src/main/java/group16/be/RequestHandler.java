@@ -41,8 +41,7 @@ public class RequestHandler {
      * This method is to login or register a new user
      * @param username 
      * @param password 
-     * @return the user's ID if login was successful, null if login failed
-     * @throws ResponseStatusException if the username or password is missing or invalid
+     * @return the user's ID if login was successful
      */
     @CrossOrigin
     @PostMapping("/api/login")
@@ -53,7 +52,9 @@ public class RequestHandler {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password is missing or invalid");
         
         String id = scraper.login(username, password); 
-        if(id.startsWith("Error")) 
+        if(id.startsWith("Error: Multiple")) 
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(id);
+        else if (id.equals("Error: Invalid Credentials"))
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(id);
 
         HashMap<String, String> ret = new HashMap<>();
@@ -107,12 +108,12 @@ public class RequestHandler {
     @GetMapping("/api/getCourseById")
     public ResponseEntity<?> getCourseById(@RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
         if(courseId == null || courseId.equals("NULL")) 
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course ID is missing or invalid");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course ID is missing or invalid");
         if(validateCourseId(courseId).getStatusCode() != HttpStatus.OK)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No course with that Id exists");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No course with that Id exists");
         
         var course = scraper.findByCourseId(courseId);
-        if(course == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No courses found for this ID");
+        if(course == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No course with this Id exists");
         return ResponseEntity.ok(course);
     }
 
@@ -145,13 +146,13 @@ public class RequestHandler {
     public ResponseEntity<?> getAssignments(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
         //pass the user's ID to the database to get the user's assignments
         if(userId == null || userId.equals("NULL")) 
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID is missing or invalid");
         if(validateUserId(userId).getStatusCode() != HttpStatus.OK)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No user with that Id exists");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with that Id exists");
         
         var assignments = scraper.getAssignments(userId);
         if(assignments == null || assignments.size() == 0) 
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No assignments found for user");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No assignments found for user");
         return ResponseEntity.ok(assignments);
     }
 
@@ -162,12 +163,12 @@ public class RequestHandler {
      */
     public ResponseEntity<?> getAssignmentById(@RequestParam(value = "assignmentId", defaultValue = "NULL") String assignmentId) {
         if(assignmentId == null || assignmentId.equals("NULL")) 
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Assignment ID is missing or invalid");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Assignment ID is missing or invalid");
         if(validateAssignmentId(assignmentId).getStatusCode() != HttpStatus.OK)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No assignment with that Id exists");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No assignment with that Id exists");
     
         var assignment = scraper.findByAssignmentId(assignmentId);
-        if(assignment == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No assignments found for this ID");
+        if(assignment == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Assignment not found");
         return ResponseEntity.ok(assignment);
     }
 
@@ -181,7 +182,7 @@ public class RequestHandler {
     @PutMapping("/api/completeAssignment")
     public ResponseEntity<?> completeAssignment(@RequestParam(value = "assID", defaultValue = "NULL") String assID) {
         if(assID == null || assID.equals("NULL")) 
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID is missing or invalid");
         
         //pass the assignment ID to the database to mark the assignment as completed
         return setAssignmentComplete(assID, true);
@@ -198,7 +199,7 @@ public class RequestHandler {
     @PutMapping("/api/openAssignment")
     public ResponseEntity<?> openAssignment(@RequestParam(value = "assID", defaultValue = "NULL") String assID) {
         if(assID == null || assID.equals("NULL")) 
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User ID is missing or invalid");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID is missing or invalid");
         
         //pass the assignment ID to the database to mark the assignment as incomplete
         return setAssignmentComplete(assID, false);
@@ -221,7 +222,7 @@ public class RequestHandler {
                                                     @RequestParam(value = "userId", defaultValue = "NULL") String userId, 
                                                     @RequestParam(value = "courseId", defaultValue = "NULL") String courseId) {
         var response = validateAssignmentParams(title, description, dueDate, userId, courseId);
-        if(response.getStatusCode().equals(HttpStatus.OK))
+        if(!response.getStatusCode().equals(HttpStatus.OK))
             return response;
         
         if(!scraper.isUserId(userId) || !scraper.isCourseId(courseId))
@@ -232,7 +233,7 @@ public class RequestHandler {
         for (var assignment : assignments) {
             // Assignment already exists. Returning HTTP error.
             if (assignment.getCourseId().equals(courseId) && assignment.getTitle().equalsIgnoreCase(title))
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("Assignment already exists");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Assignment already exists");
         }
 
         var assignment = new Assignment(userId, courseId, title, description, dueDate, true);
@@ -257,14 +258,14 @@ public class RequestHandler {
                                             @RequestParam(value = "description", defaultValue = "NULL") String description, 
                                             @RequestParam(value = "dueDate", defaultValue = "NULL") String dueDate) {
         var response = validateAssignmentParams(title, description, dueDate, userId, courseId);
-        if(response.getStatusCode().equals(HttpStatus.OK))
+        if(!response.getStatusCode().equals(HttpStatus.OK))
             return response;
 
         if(assignmentId == null || assignmentId.equals("NULL")) 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Assignment ID is missing or invalid");
 
         if(!scraper.isUserId(userId) || !scraper.isCourseId(courseId) || !scraper.isAssignmentId(assignmentId))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Course ID or assignment ID is invalid");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course ID, assignment ID, or user ID is invalid");
 
         var assignment = scraper.findByAssignmentId(assignmentId);
         if(assignment == null) 
@@ -286,15 +287,15 @@ public class RequestHandler {
     @DeleteMapping("/api/removeAssignment") 
     public ResponseEntity<?> removeAssignment(@RequestParam(value = "assignmentId", defaultValue = "NULL") String assignmentId) {
         if(assignmentId == null || assignmentId.equals("NULL")) 
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Assignment ID is missing or invalid");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Assignment ID is missing or invalid");
         
         var assignment = scraper.findByAssignmentId(assignmentId);
         var grade = scraper.getGradeByAssignmentId(assignmentId);
         
         if(assignment == null) 
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No assignments found for this ID");
-        else if(!assignment.isUserCreated())
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User does not have permission to delete this assignment");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Assignment not found");
+        else if(!assignment.isUserCreated()) 
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User does not have permission to delete this assignment");
         
         if(scraper.deleteAssignment(assignment) && scraper.deleteGrade(grade))
             return ResponseEntity.ok().build();
@@ -356,20 +357,12 @@ public class RequestHandler {
      *
      * @param oldPassword the user's current password
      * @param newPassword the user's new password
-     * @return true if the password was successfully updated, false otherwise
-     * @throws ResponseStatusException if the old or new password is missing or invalid, or if the function is not implemented
      * @Unimplemented This method is not yet implemented.
      */
     @CrossOrigin
     @PutMapping("/api/editPassword")
     public static ResponseEntity<?> editPassword(@RequestParam(value = "oldPassword", defaultValue = "NULL") String oldPassword, @RequestParam(value = "newPassword", defaultValue = "NULL") String newPassword) {
-        // if(oldPassword == null || oldPassword.equals("NULL"))
-        //     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Old password is missing or invalid");
-        // else if (newPassword == null || newPassword.equals("NULL"))
-        //     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New password is missing or invalid");
-        //pass the old and new password to the database to update the user's password
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
-        // return false;
     }
 
     /**
@@ -381,7 +374,7 @@ public class RequestHandler {
     @PutMapping("/api/setPrimaryColor")
     public ResponseEntity<?> setPrimaryColor(@RequestParam(value = "colorHex", defaultValue = "NULL") String colorHex) {
         if(colorHex == null || colorHex.equals("NULL")) 
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Color is missing or invalid");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Color is missing or invalid");
         try {
             @SuppressWarnings("unused")
             Color color = Color.decode(colorHex);
@@ -496,9 +489,9 @@ public class RequestHandler {
     @PostMapping("/api/updatePhoneNumber")
     public ResponseEntity<?> updatePhoneNumber(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "phoneNumber", defaultValue = "NULL") String phoneNumber) {
         if(phoneNumber == null || phoneNumber.equals("NULL")) 
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Phone number is missing or invalid");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Phone number is missing or invalid");
         if(validateUserId(userId).getStatusCode() != HttpStatus.OK)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No user with that Id exists");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with that Id exists");
         
         var user = scraper.getUser(userId);
         user.setMobilePhone(phoneNumber);
@@ -519,10 +512,10 @@ public class RequestHandler {
     private ResponseEntity<?> setAssignmentComplete(String assID, boolean isComplete) {
         var ass = scraper.findByAssignmentId(assID);
         if(ass == null || !ass.getId().equals(assID))
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Assignment not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Assignment not found.");
         ass.setComplete(isComplete);
         if(!scraper.saveAssignment(ass))
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not save assignment.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Could not save assignment.");
         return ResponseEntity.ok().build();
     }
 

@@ -48,7 +48,7 @@ public class APIScraper implements CommandLineRunner {
         if(users.size() > 1) {
             return "Error: Multiple users with the same username and password";
         }
-        return "Error: No user with this ID";
+        return "Error: Invalid Credentials";
     }
 
     /**

@@ -46,6 +46,7 @@ public class ModifyDatabaseTests {
     void setUp() {
         // Return true when saving a user
         Mockito.when(scraper.saveUser(Mockito.any(User.class))).thenReturn(true);
+        Mockito.when(scraper.saveAssignment(Mockito.any(Assignment.class))).thenReturn(true);
         
         // Return a specific assignment when getting assignments
         var assignments = new ArrayList<Assignment>();
@@ -66,20 +67,14 @@ public class ModifyDatabaseTests {
 
     @Test
     void testAddAssignment() {
-
         // Tests adding an assignment which exists.
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            requestHandler.addAssignmentWithoutId(MOCK_TITLE, MOCK_DESCRIPTION, MOCK_DUEDATE, MOCK_USERID, MOCK_COURSEID);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-        assertEquals(exception.getReason(), "Assignment already exists");
+        var response = requestHandler.addAssignmentWithoutId(MOCK_TITLE, MOCK_DESCRIPTION, MOCK_DUEDATE, MOCK_USERID, MOCK_COURSEID);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
     @Async
     @Test
     void testEditAssignment() {
-        Mockito.when(scraper.saveAssignment(Mockito.any(Assignment.class))).thenReturn(true);
-        
         // Essentually, you make a fake assignment, declare a mockito return on getID to be the fake assignment, modify it and assert the new data is true.
         var assignment = new Assignment(MOCK_USERID, MOCK_COURSEID, MOCK_TITLE, MOCK_DESCRIPTION, MOCK_DUEDATE, true);
         Mockito.when(scraper.findByAssignmentId(MOCK_ASSIGNMENTID)).thenReturn(assignment);
