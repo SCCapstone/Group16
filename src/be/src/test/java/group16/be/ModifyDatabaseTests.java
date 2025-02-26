@@ -70,7 +70,7 @@ public class ModifyDatabaseTests {
         var response1 = requestHandler.addAssignmentWithoutId(MOCK_TITLE2, MOCK_DESCRIPTION2, MOCK_DUEDATE2, MOCK_USERID, MOCK_COURSEID);
         assertTrue(response1 != null);
         assertTrue(response1.getStatusCode() == HttpStatus.OK);
-        var assignment = (Assignment) response1.getBody();
+        assertTrue(response1.getBody() instanceof Assignment);
         // Tests adding an assignment which exists.
         var response = requestHandler.addAssignmentWithoutId(MOCK_TITLE, MOCK_DESCRIPTION, MOCK_DUEDATE, MOCK_USERID, MOCK_COURSEID);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
