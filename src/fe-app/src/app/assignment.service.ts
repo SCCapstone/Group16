@@ -110,23 +110,9 @@ export class AssignmentService {
           throw new Error(`POST failed: ${response.status}`)
         }
 
-        //const dummyAssignment: Assignment = await response.json() ?? {};
-        // Create dummy assignment with the given information to be inserted into list, will only exist until page reload
-        const dummyAssignment: Assignment = {
-          id: crypto.randomUUID(),
-          userId: userId,
-          courseId: courseId,
-          title: title,
-          description: description,
-          availability: {
-            adaptiveRelease: {
-              end: dueDate
-            }
-          },
-          complete: false,
-          userCreated: false
-        }
-        this.assignments.push(dummyAssignment);
+        const assignment: Assignment = await response.json() ?? {};
+
+        this.assignments.push(assignment);
         this.updateSignal.set(++this.signalValue);  // Notify observing components that data has updated
       }
       catch (error: any) {
