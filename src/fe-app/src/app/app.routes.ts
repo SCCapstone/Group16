@@ -109,7 +109,7 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
-    path: 'grades/grade-calc',
+    path: 'main/grades/grade-calc',
     component: GradeCalcComponent,
     title: 'Grade-Calc',
     canActivate: [authGuard],

@@ -13,3 +13,11 @@
 button {
     margin: auto 5px;
 }
+
+.disabled-button {
+  background-color: #ccc !important;
+  color: #666 !important;
+  cursor: not-allowed !important;
+  opacity: 0.6 !important;
+  pointer-events: none !important;
+}
