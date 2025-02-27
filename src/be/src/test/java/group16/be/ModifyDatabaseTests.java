@@ -1,7 +1,6 @@
 package group16.be;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.web.server.ResponseStatusException;
 
 import group16.be.db.Assignment;
 import group16.be.db.AssignmentRepository;
@@ -46,6 +44,8 @@ public class ModifyDatabaseTests {
     void setUp() {
         // Return true when saving a user
         Mockito.when(scraper.saveUser(Mockito.any(User.class))).thenReturn(true);
+        Mockito.when(scraper.saveAssignment(Mockito.any(Assignment.class))).thenReturn(true);
+        Mockito.when(scraper.saveGrade(Mockito.any(Grade.class))).thenReturn(true);
         
         // Return a specific assignment when getting assignments
         var assignments = new ArrayList<Assignment>();
@@ -66,24 +66,26 @@ public class ModifyDatabaseTests {
 
     @Test
     void testAddAssignment() {
-
+        // Tests adding an assignment which does not exist.
+        var response1 = requestHandler.addAssignmentWithoutId(MOCK_TITLE2, MOCK_DESCRIPTION2, MOCK_DUEDATE2, MOCK_USERID, MOCK_COURSEID);
+        assertTrue(response1 != null);
+        assertTrue(response1.getStatusCode() == HttpStatus.OK);
+        assertTrue(response1.getBody() instanceof Assignment);
         // Tests adding an assignment which exists.
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            requestHandler.addAssignmentWithoutId(MOCK_TITLE, MOCK_DESCRIPTION, MOCK_DUEDATE, MOCK_USERID, MOCK_COURSEID);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-        assertEquals(exception.getReason(), "Assignment already exists");
+        var response = requestHandler.addAssignmentWithoutId(MOCK_TITLE, MOCK_DESCRIPTION, MOCK_DUEDATE, MOCK_USERID, MOCK_COURSEID);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
     @Async
     @Test
     void testEditAssignment() {
-        Mockito.when(scraper.saveAssignment(Mockito.any(Assignment.class))).thenReturn(true);
-        
         // Essentually, you make a fake assignment, declare a mockito return on getID to be the fake assignment, modify it and assert the new data is true.
         var assignment = new Assignment(MOCK_USERID, MOCK_COURSEID, MOCK_TITLE, MOCK_DESCRIPTION, MOCK_DUEDATE, true);
         Mockito.when(scraper.findByAssignmentId(MOCK_ASSIGNMENTID)).thenReturn(assignment);
-        assertTrue(requestHandler.editAssignment(MOCK_USERID, MOCK_COURSEID, MOCK_ASSIGNMENTID, MOCK_TITLE2, MOCK_DESCRIPTION2, MOCK_DUEDATE2));
+        var response = requestHandler.editAssignment(MOCK_USERID, MOCK_COURSEID, MOCK_ASSIGNMENTID, MOCK_TITLE2, MOCK_DESCRIPTION2, MOCK_DUEDATE2);
+        assertTrue(response != null && response.getStatusCode() == HttpStatus.OK);
+        assignment = (Assignment) response.getBody();
+        assertTrue(assignment != null);
         assertEquals(assignment.getTitle(), MOCK_TITLE2);
         assertEquals(assignment.getDescription(), MOCK_DESCRIPTION2);
         assertEquals(assignment.getDueDate(), MOCK_DUEDATE2);        

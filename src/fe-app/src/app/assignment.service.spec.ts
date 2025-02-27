@@ -119,6 +119,7 @@ describe('AssignmentService', () => {
   it('should successfully call addTask with correct parameters', async () => {
     const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
       ok: true,
+      json: () => Promise.resolve({})
     } as Response));
 
     await expectAsync(service.addTask('Test Title', 'Test Description', new Date('2025-12-31'), '123', '456'))
