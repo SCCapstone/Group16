@@ -34,9 +34,8 @@ export class AssignmentService {
 
   async getAssignments(userId: string | null): Promise<Assignment[]> {
     if (userId === this.loginService.getUserId()) {
-      if(this.assignments.length === 0) {
-        await this.fetchAssignments(userId)
-      }
+      if (this.assignments.length === 0)
+        this.assignments = await this.fetchAssignments(userId);
       return this.assignments;
     }
     return [];
@@ -122,94 +121,102 @@ export class AssignmentService {
   }
 
   async editTask(title: string | null, description: string | null, dueDate: Date | null,
-    userId: string | null, courseId : string | null, assignmentId: string | null) {
-      const queryParams = new URLSearchParams({
-        userId: userId ?? "NULL",
-        courseId: courseId ?? "NULL",
-        assignmentId: assignmentId ?? "NULL",
-        title: title ?? "NULL",
-        description: description ?? "",
-        dueDate: dueDate?.toISOString() ?? "NULL"
-      }).toString();
+  userId: string | null, courseId : string | null, assignmentId: string | null) {
+    const queryParams = new URLSearchParams({
+      userId: userId ?? "NULL",
+      courseId: courseId ?? "NULL",
+      assignmentId: assignmentId ?? "NULL",
+      title: title ?? "NULL",
+      description: description ?? "",
+      dueDate: dueDate?.toISOString() ?? "NULL"
+    }).toString();
 
-      console.log(queryParams);
-      try {
-        const response = await fetch(`${this.url}editAssignment?${queryParams}`, {
-          method: 'PUT'
-        });
+    console.log(queryParams);
+    try {
+      const response = await fetch(`${this.url}editAssignment?${queryParams}`, {
+        method: 'PUT'
+      });
 
-        if(!response.ok) {
-          throw new Error(`PUT failed: ${response.status}`)
-        }
-
-        console.log(response);
-      } catch (error: any) {
-        console.error('Error editing task:', error);
-        throw error;
+      if(!response.ok) {
+        throw new Error(`PUT failed: ${response.status}`)
       }
+
+      console.log(response);
+    } catch (error: any) {
+      console.error('Error editing task:', error);
+      throw error;
     }
+  }
 
-    async completeTask(assignmentId: string | null) {
-      const queryParams = new URLSearchParams({
-        assID: assignmentId ?? "NULL"
-      }).toString();
+  async completeTask(assignmentId: string | null) {
+    const queryParams = new URLSearchParams({
+      assID: assignmentId ?? "NULL"
+    }).toString();
 
-      console.log(queryParams);
-      try {
-        const response = await fetch(`${this.url}completeAssignment?${queryParams}`, {
-          method: 'PUT'
-        });
+    console.log(queryParams);
+    try {
+      const response = await fetch(`${this.url}completeAssignment?${queryParams}`, {
+        method: 'PUT'
+      });
 
-        if(!response.ok) {
-          throw new Error(`PUT failed: ${response.status}`)
-        }
-
-        console.log(response);
-      } catch (error: any) {
-        console.error('Error completing task:', error);
-        throw error;
+      if(!response.ok) {
+        throw new Error(`PUT failed: ${response.status}`)
       }
+
+      console.log(response);
+    } catch (error: any) {
+      console.error('Error completing task:', error);
+      throw error;
     }
+  }
 
-    async openTask(assignmentId: string | null) {
-      const queryParams = new URLSearchParams({
-        assID: assignmentId ?? "NULL"
-      }).toString();
+  async openTask(assignmentId: string | null) {
+    const queryParams = new URLSearchParams({
+      assID: assignmentId ?? "NULL"
+    }).toString();
 
-      console.log(queryParams);
-      try {
-        const response = await fetch(`${this.url}openAssignment?${queryParams}`, {
-          method: 'PUT'
-        });
+    console.log(queryParams);
+    try {
+      const response = await fetch(`${this.url}openAssignment?${queryParams}`, {
+        method: 'PUT'
+      });
 
-        if(!response.ok) {
-          throw new Error(`PUT failed: ${response.status}`)
-        }
-
-        console.log(response);
-      } catch (error: any) {
-        console.error('Error opening task:', error);
-        throw error;
+      if(!response.ok) {
+        throw new Error(`PUT failed: ${response.status}`)
       }
+
+      console.log(response);
+    } catch (error: any) {
+      console.error('Error opening task:', error);
+      throw error;
     }
+  }
 
-    async removeTask(assignmentId: string | null | undefined) {
-      const queryParams = new URLSearchParams({
-        assignmentId: assignmentId ?? "NULL"
-      }).toString();
+  async removeTask(assignmentId: string | null | undefined) {
+    const queryParams = new URLSearchParams({
+      assignmentId: assignmentId ?? "NULL"
+    }).toString();
 
-      try {
-        const response = await fetch(`${this.url}removeAssignment?${queryParams}`, {
-          method: 'DELETE'
-        });
+    try {
+      const response = await fetch(`${this.url}removeAssignment?${queryParams}`, {
+        method: 'DELETE'
+      });
 
-        if(!response.ok) {
-          throw new Error(`DELETE failed: ${response.status}`)
-        }
-
-      } catch(error: any) {
-        console.error('Error removing task: ', error);
-        throw error;
+      if(!response.ok) {
+        throw new Error(`DELETE failed: ${response.status}`)
       }
+
+    } catch(error: any) {
+      console.error('Error removing task: ', error);
+      throw error;
     }
+  }
+
+  /**
+   * Resets the service variables so that information is not preserved across logins.
+   */
+  reset() {
+    this.assignments = []
+    this.viewCompleted = false;
+  }
 }
