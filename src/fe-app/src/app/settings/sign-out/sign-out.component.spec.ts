@@ -46,13 +46,13 @@ describe('SignOutComponent', () => {
   });
 
   it('should call signout() when the button is clicked', () => {
-    spyOn(component, 'signOut');
+    spyOn(component, 'handleSignout');
     const button = fixture.debugElement.nativeElement.querySelector('button');
 
     button.click();
     fixture.detectChanges();
 
-    expect(component.signOut).toHaveBeenCalled();
+    expect(component.handleSignout).toHaveBeenCalled();
   });
 
   it('should call loginService.signout when signout() is invoked on click', async () => {
@@ -60,7 +60,7 @@ describe('SignOutComponent', () => {
       return Promise.resolve();
     });
 
-    await component.signOut();
+    await component.handleSignout();
 
     fixture.whenStable().then(() => {
       fixture.detectChanges();

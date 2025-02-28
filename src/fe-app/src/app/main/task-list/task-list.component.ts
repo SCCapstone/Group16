@@ -42,23 +42,15 @@ export class TaskListComponent{
     effect(async () => {
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
       console.log("SIGNAL RUN: Value " + signal);
-      await this.loadAssignments();                                   // Runs when service constructor finishes, no need to call twice
+      await this.loadAssignments();                             // Runs when service constructor finishes, no need to call twice
     })
   }
 
   private async loadAssignments() {
-    // await this.assignmentService.getAssignments(this.loginService.getUserId())
-    //   .then((assignments: Assignment[]) => {
-    //     this.filterAssignments(assignments);
-    //     this.sortedAssignments = this.getSortedAssignments();
-    //     console.log('Sorted Assignments:', this.sortedAssignments);
-    //     const top3Assignments = this.sortedAssignments.slice(0, 3);
-    //     console.log('Top 3 Sorted Assignments:', top3Assignments);
-    //     this.dueSoonAssignments.emit(top3Assignments);
-    //     console.log("Sent", this.dueSoonAssignments.emit(top3Assignments));
-    // });
-
-    const retrievedAssignments = await this.assignmentService.getAssignments(this.loginService.getUserId());
+    let retrievedAssignments = await this.assignmentService.getAssignments(this.loginService.getUserId());
+    retrievedAssignments.sort((a: Assignment, b: Assignment) => {
+      return new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime();
+    });
     this.filterAssignments(retrievedAssignments);
   }
 
