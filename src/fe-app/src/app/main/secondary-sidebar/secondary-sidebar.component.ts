@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, SimpleChanges, effect } from '@angular/core';
+import { Component, inject, Input, OnChanges, SimpleChanges, ChangeDetectorRef, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -22,13 +22,13 @@ export class SecondarySidebarComponent implements OnChanges {
 
   loginService = inject(LoginService)
   courseService = inject(CourseService);
-  assignmentService = inject(AssignmentService);
+  // assignmentService = inject(AssignmentService);
   gradesService = inject(GradesService);
   router = inject(Router);
 
   ngOnChanges(changes: SimpleChanges) {}
 
-  constructor() {
+  constructor(private assignmentService: AssignmentService, private cdr: ChangeDetectorRef) {
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
       this.courses = courses;
@@ -37,11 +37,12 @@ export class SecondarySidebarComponent implements OnChanges {
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
     effect(() => {
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
-      console.log("SIGNAL RUN: Value " + signal);
+      console.log("COMPUTED SIGNAL RUN: Value " + signal);
       // Runs when service constructor finishes, no need to call twice
       this.assignmentService.getAssignments(this.loginService.getUserId()).then((assignments: Assignment[]) => {
         this.filterTopThree(assignments)
-      })
+      });
+      this.cdr.markForCheck();  // Explicitly mark for change detection checks
     })
 
     this.gradesService.getGrades(this.loginService.getUserId())

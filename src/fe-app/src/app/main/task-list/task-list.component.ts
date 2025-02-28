@@ -39,10 +39,11 @@ export class TaskListComponent{
     });
 
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
-    effect(async () => {
+    effect(() => {
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
       console.log("SIGNAL RUN: Value " + signal);
-      await this.loadAssignments();                             // Runs when service constructor finishes, no need to call twice
+      this.loadAssignments();                                   // Runs when service constructor finishes, no need to call twice
+      this.cdr.markForCheck();                                  // Explicitly mark for change detection checks
     })
   }
 
@@ -51,7 +52,18 @@ export class TaskListComponent{
     retrievedAssignments.sort((a: Assignment, b: Assignment) => {
       return new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime();
     });
-    this.filterAssignments(retrievedAssignments);
+    this.assignments = this.filterAssignments(retrievedAssignments);
+  }
+
+  filterAssignments(assignments: Assignment[]) {
+    let newAssignments: Assignment[][] = [ [], [] ];
+    for (const assignment of assignments) {
+      if (assignment.complete && Date.now() >= (new Date(assignment.availability.adaptiveRelease.end)).getTime())
+        newAssignments[COMPLETE].push(assignment);
+      else
+        newAssignments[ACTIVE].push(assignment);
+    }
+    return newAssignments;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -95,17 +107,6 @@ export class TaskListComponent{
   test(): void {
     this.assignmentService.toggleViewCompleted();
   }
-
-  filterAssignments(assignments: Assignment[]) {
-    this.assignments = [ [], [] ];
-    for (const assignment of assignments) {
-      if (assignment.complete && Date.now() >= (new Date(assignment.availability.adaptiveRelease.end)).getTime())
-        this.assignments[COMPLETE].push(assignment);
-      else
-        this.assignments[ACTIVE].push(assignment);
-    }
-  }
-
 
   getSortedAssignments(): Assignment[] {
     console.log('Sorted Assignments: ', this.assignments);

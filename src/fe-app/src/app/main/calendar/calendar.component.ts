@@ -1,4 +1,4 @@
-import { Component, inject, effect } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, effect } from '@angular/core';
 
 import { LoginService } from '../../login.service';
 import { CourseService } from '../../course.service';
@@ -22,17 +22,18 @@ export class CalendarComponent {
 
   loginService = inject(LoginService);
   courseService = inject(CourseService);
-  assignmentService = inject(AssignmentService);
+  // assignmentService = inject(AssignmentService);
 
-  constructor() {
+  constructor(private assignmentService: AssignmentService, private cdr: ChangeDetectorRef) {
     this.weekStart = this.getWeekStart(new Date(Date.now()));
     this.pageNumber = 0;
 
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
     effect(() => {
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
-      console.log("SIGNAL RUN: Value " + signal);
+      console.log("COMPUTED SIGNAL RUN: Value " + signal);
       this.loadAssignments();                                   // Runs when service constructor finishes, no need to call twice
+      this.cdr.markForCheck();                                  // Explicitly mark for change detection checks
     })
   }
 
