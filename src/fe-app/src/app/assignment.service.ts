@@ -1,5 +1,5 @@
 import { core } from '@angular/compiler';
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal, ChangeDetectorRef } from '@angular/core';
 
 import { LoginService } from './login.service';
 import { Assignment } from './course';
@@ -29,7 +29,7 @@ export class AssignmentService {
 
   // Returns assignment service's signal so that components may watch it for changes
   getUpdateSignal() {
-    return this.updateSignal;
+    return this.updateSignal();  // FUCK YOU
   }
 
   async getAssignments(userId: string | null): Promise<Assignment[]> {
@@ -112,7 +112,8 @@ export class AssignmentService {
         const assignment: Assignment = await response.json() ?? {};
 
         this.assignments.push(assignment);
-        this.updateSignal.set(++this.signalValue);  // Notify observing components that data has updated
+        this.updateSignal.set(100);  // Notify observing components that data has updated
+        // this.cdr.detectChanges();
       }
       catch (error: any) {
         console.error('Error adding task:', error);
