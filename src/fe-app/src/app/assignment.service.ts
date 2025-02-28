@@ -112,8 +112,7 @@ export class AssignmentService {
         const assignment: Assignment = await response.json() ?? {};
 
         this.assignments.push(assignment);
-        this.updateSignal.set(100);  // Notify observing components that data has updated
-        // this.cdr.detectChanges();
+        this.updateSignal.set(++this.signalValue);  // Notify observing components that data has updated
       }
       catch (error: any) {
         console.error('Error adding task:', error);
