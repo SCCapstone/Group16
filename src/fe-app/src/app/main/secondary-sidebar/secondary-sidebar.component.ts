@@ -42,7 +42,6 @@ export class SecondarySidebarComponent implements OnChanges {
       this.assignmentService.getAssignments(this.loginService.getUserId()).then((assignments: Assignment[]) => {
         this.filterTopThree(assignments)
       });
-      this.cdr.markForCheck();  // Explicitly mark for change detection checks
     })
 
     this.gradesService.getGrades(this.loginService.getUserId())

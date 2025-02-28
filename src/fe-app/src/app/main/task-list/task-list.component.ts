@@ -43,7 +43,6 @@ export class TaskListComponent{
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
       console.log("SIGNAL RUN: Value " + signal);
       this.loadAssignments();                                   // Runs when service constructor finishes, no need to call twice
-      this.cdr.markForCheck();                                  // Explicitly mark for change detection checks
     })
   }
 
