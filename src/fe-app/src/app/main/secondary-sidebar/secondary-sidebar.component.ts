@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, SimpleChanges, ChangeDetectorRef, effect } from '@angular/core';
+import { Component, inject, Input, OnChanges, SimpleChanges, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -28,7 +28,7 @@ export class SecondarySidebarComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {}
 
-  constructor(private assignmentService: AssignmentService, private cdr: ChangeDetectorRef) {
+  constructor(private assignmentService: AssignmentService) {
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
       this.courses = courses;

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output, OnInit, Input, SimpleChanges, ChangeDetectorRef, effect } from '@angular/core';
+import { Component, inject, Input, SimpleChanges, ChangeDetectorRef, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 

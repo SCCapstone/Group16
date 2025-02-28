@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectorRef, effect } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 
 import { LoginService } from '../../login.service';
 import { CourseService } from '../../course.service';
@@ -24,7 +24,7 @@ export class CalendarComponent {
   courseService = inject(CourseService);
   // assignmentService = inject(AssignmentService);
 
-  constructor(private assignmentService: AssignmentService, private cdr: ChangeDetectorRef) {
+  constructor(private assignmentService: AssignmentService) {
     this.weekStart = this.getWeekStart(new Date(Date.now()));
     this.pageNumber = 0;
 
