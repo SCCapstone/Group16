@@ -30,7 +30,7 @@ public class RequestHandlerTests {
 
     private final String REAL_USERID = "673fdd30cc2da4c3a3514fb7";
     private final String REAL_COURSEID = "67460db839c6b3085338aa81";
-    private final String REAL_ASSIGNMENTID = "679bf4b631c4d665a59606ff";
+    private final String REAL_ASSIGNMENTID = "674d133818689e57b9e2e33d";
     private final HashMap<String, String> EXPECTED_RESPONSE = new HashMap<String, String>() {{
         put("id", "673fdd30cc2da4c3a3514fb7");
     }};
