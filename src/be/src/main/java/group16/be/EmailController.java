@@ -19,10 +19,10 @@ import jakarta.mail.internet.MimeMultipart;
 public class EmailController {
     
     public static void sendEmail(User user) throws AddressException, MessagingException {
-        String username = System.getenv("MAIL_STMP_USERNAME");
-        String password = System.getenv("MAIL_STMP_PASSWORD");
-        String host = System.getenv("MAIL_STMP_HOST");
-        String port = System.getenv("MAIL_STMP_PORT");
+        String username = System.getenv("MAIL_SMTP_USERNAME");
+        String password = System.getenv("MAIL_SMTP_PASSWORD");
+        String host = System.getenv("MAIL_SMTP_HOST");
+        String port = System.getenv("MAIL_SMTP_PORT");
         
         Properties prop = new Properties();
         prop.put("mail.smtp.auth", true);
