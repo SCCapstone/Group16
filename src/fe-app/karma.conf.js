@@ -1,6 +1,10 @@
 // Karma configuration
 // Generated on Thu Jan 16 2025 16:57:07 GMT-0500 (Eastern Standard Time)
 
+const puppeteer = require('puppeteer');
+
+process.env.CHROME_BIN = puppeteer.executablePath();
+
 module.exports = function(config) {
   config.set({
 
@@ -34,7 +38,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://www.npmjs.com/search?q=keywords:karma-reporter
-    reporters: ['progress'],
+    reporters: ['spec'],
 
 
     // web server port
@@ -51,17 +55,23 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
+    autoWatch: false,
 
 
     // start these browsers
     // available browser launchers: https://www.npmjs.com/search?q=keywords:karma-launcher
-    browsers: ['Chrome', 'Firefox', 'Safari'],
+    browsers: ['ChromeHeadless'],
+    customLaunchers: {
+      ChromeHeadless: {
+        base: 'Chrome',
+        flags: ['--headless', '--no-sandbox', 'disable-gpu', '--disable-dev-shm-usage']
+      }
+    },
 
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser instances should be started simultaneously
