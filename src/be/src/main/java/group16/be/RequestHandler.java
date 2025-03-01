@@ -224,6 +224,8 @@ public class RequestHandler {
         var response = validateAssignmentParams(title, description, dueDate, userId, courseId);
         if(!response.getStatusCode().equals(HttpStatus.OK))
             return response;
+
+        if(description == null || description.equals("NULL")) description = "";
         
         if(!scraper.isUserId(userId) || !scraper.isCourseId(courseId))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course ID or assignment ID is invalid");
@@ -546,8 +548,6 @@ public class RequestHandler {
     private ResponseEntity<?> validateAssignmentParams(String title, String description, String dueDate, String userId, String courseId) {
         if(title == null || title.equals("NULL"))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Title is missing or invalid");
-        if(description == null || description.equals("NULL"))
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Description is missing or invalid");
         if(dueDate == null || dueDate.equals("NULL"))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Due date is missing or invalid");
         if(userId == null || userId.equals("NULL"))
