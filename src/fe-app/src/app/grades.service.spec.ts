@@ -17,7 +17,7 @@ describe('GradesService', () => {
 
   // getGrades()
   it('should throw an error when getGrades response is empty ( [] )', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       json: () => Promise.resolve([]),
     } as Response));
 
@@ -25,7 +25,7 @@ describe('GradesService', () => {
   });
 
   it('should throw an error when getGrades fetch fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.getGrades('123')).toBeRejectedWithError('Network Error');
   });
@@ -40,7 +40,7 @@ describe('GradesService', () => {
       gradeChar: "A"
     }];
 
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       json: () => Promise.resolve(mockGradeList),
     } as Response));
 
@@ -53,7 +53,7 @@ describe('GradesService', () => {
 
   // setGrade()
   it('should throw an error when setGrade POST request fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: false,
       status: 500
     } as Response));
@@ -63,14 +63,14 @@ describe('GradesService', () => {
   });
 
   it('should throw an error when setGrade fetch encounters a network failure', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.setGrade('789', 90))
       .toBeRejectedWithError('Network Error');
   });
 
   it('should successfully call setGrade with correct parameters', async () => {
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: true,
     } as Response));
 

@@ -9,8 +9,8 @@ describe('NotificationSettingsComponent', () => {
   let component: NotificationSettingsComponent;
   let fixture: ComponentFixture<NotificationSettingsComponent>;
 
-  let mockLoginService: jasmine.SpyObj<LoginService>;
-  let mockSettingsService: jasmine.SpyObj<SettingsService>;
+  let mockLoginService: jest.Mocked<LoginService>;
+  let mockSettingsService: jest.Mocked<SettingsService>;
 
   // Returned in a promise from SettingsService.getUserInfo(); only user ID and notification settings are necessary for these tests
   const MOCK_USER_INFO: UserInfo = {
@@ -29,11 +29,13 @@ describe('NotificationSettingsComponent', () => {
   beforeEach(async () => {
     
     // Note: object notation in createSpyObj() is similar to list but allows mock return values to be defined alongside spy object
-    mockLoginService = jasmine.createSpyObj(LoginService, { getUserId: MOCK_USER_INFO.id });
-    mockSettingsService = jasmine.createSpyObj(SettingsService, {
-      getUserInfo: MOCK_PROMISE,
-      updateNotificationSettings: undefined
-    });
+    mockLoginService = {
+      'getUserId': jest.fn(() => MOCK_USER_INFO.id)
+    };
+    mockSettingsService = {
+      'getUserInfo': jest.fn(() => MOCK_PROMISE),
+      'updateNotificationSettings': jest.fn(() => undefined)
+    };
     
     await TestBed.configureTestingModule({
       imports: [NotificationSettingsComponent],
@@ -66,12 +68,12 @@ describe('NotificationSettingsComponent', () => {
 
   // Clicking save button should call component's saveNotifications() method
   it('should call component.saveNotifications() when button is clicked', () => {
-    spyOn(component, 'saveNotifications');
+    jest.spyOn(component, 'saveNotifications').mockImplementation(() => {});
 
     const saveButton = fixture.debugElement.nativeElement.querySelector("button");
     saveButton.click();
 
-    expect(component.saveNotifications).toHaveBeenCalledOnceWith();
+    expect(component.saveNotifications.mock.calls).toEqual([[]]);
   })
 
   // Component save method should call settings service save method with appropriate arguments
@@ -82,6 +84,6 @@ describe('NotificationSettingsComponent', () => {
 
     component.saveNotifications();
 
-    expect(mockSettingsService.updateNotificationSettings).toHaveBeenCalledOnceWith(MOCK_USER_INFO.id, true, true, true);
+    expect(mockSettingsService.updateNotificationSettings.mock.calls).toEqual([[MOCK_USER_INFO.id, true, true, true]]);
   })
 });

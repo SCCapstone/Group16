@@ -16,7 +16,7 @@ describe('CourseService', () => {
 
   // getCourses()
   it('should throw an error when getCourses response is empty ( [] )', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       json: () => Promise.resolve([]),
     } as Response));
 
@@ -24,7 +24,7 @@ describe('CourseService', () => {
   });
 
   it('should throw an error when getCourses fetch fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.getCourses('123')).toBeRejectedWithError('Network Error');
   });
@@ -35,7 +35,7 @@ describe('CourseService', () => {
       name: 'testCourse'
     }];
 
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       json: () => Promise.resolve(mockCourseList),
     } as Response));
 
@@ -48,7 +48,7 @@ describe('CourseService', () => {
 
   // getCourses()
   it('should throw an error when getCourseById response is empty ( {} )', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       json: () => Promise.resolve([]),
     } as Response));
 
@@ -56,7 +56,7 @@ describe('CourseService', () => {
   });
 
   it('should throw an error when getCourses fetch fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.getCourses('abc')).toBeRejectedWithError('Network Error');
   });
@@ -67,7 +67,7 @@ describe('CourseService', () => {
       name: 'testCourse'
     };
 
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       json: () => Promise.resolve(mockCourse),
     } as Response));
 

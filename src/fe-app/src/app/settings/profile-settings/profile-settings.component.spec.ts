@@ -9,8 +9,8 @@ describe('ProfileSettingsComponent', () => {
   let component: ProfileSettingsComponent;
   let fixture: ComponentFixture<ProfileSettingsComponent>;
 
-  let mockLoginService: jasmine.SpyObj<LoginService>;
-  let mockSettingsService: jasmine.SpyObj<SettingsService>;
+  let mockLoginService: jest.Mocked<LoginService>;
+  let mockSettingsService: jest.Mocked<SettingsService>;
 
   // Returned in a promise from SettingsService.getUserInfo(); only user ID and profile settings are necessary for these tests
   const MOCK_USER_INFO: UserInfo = {
@@ -34,13 +34,15 @@ describe('ProfileSettingsComponent', () => {
   beforeEach(async () => {
     
     // Note: object notation in createSpyObj() is similar to list but allows mock return values to be defined alongside spy object
-    mockLoginService = jasmine.createSpyObj(LoginService, { getUserId: MOCK_USER_INFO.id });
-    mockSettingsService = jasmine.createSpyObj(SettingsService, {
-      getUserInfo: MOCK_PROMISE,
-      updatePreferredName: undefined,
-      updatePersonalEmail: undefined,
-      updatePhoneNumber: undefined
-    });
+    mockLoginService = {
+      'getUserId': jest.fn(() => MOCK_USER_INFO.id)
+    };
+    mockSettingsService = {
+      'getUserInfo': jest.fn(() => MOCK_PROMISE),
+      'updatePreferredName': jest.fn(() => undefined),
+      'updatePersonalEmail': jest.fn(() => undefined),
+      'updatePhoneNumber': jest.fn(() => undefined)
+    };
     
     await TestBed.configureTestingModule({
       imports: [ProfileSettingsComponent],
@@ -74,15 +76,15 @@ describe('ProfileSettingsComponent', () => {
 
   // Clicking save button should call component's saveProfile() method
   it('should call component.saveProfile() when button is clicked', async () => {
-    spyOn(component, 'saveProfile');
+    jest.spyOn(component, 'saveProfile').mockImplementation(() => {});
     await fixture.whenStable();
     fixture.detectChanges();
 
     const submitButton = fixture.debugElement.nativeElement.querySelector('button[type="submit"]');
     submitButton.click();
 
-    expect(submitButton.disabled).toBeFalse();
-    expect(component.saveProfile).toHaveBeenCalledOnceWith();
+    expect(submitButton.disabled).toBe(false);
+    expect(component.saveProfile.mock.calls).toEqual([[]]);
   })
 
   // Component save method should call settings service save method with appropriate arguments
@@ -94,8 +96,8 @@ describe('ProfileSettingsComponent', () => {
 
     await component.saveProfile();
 
-    expect(mockSettingsService.updatePreferredName).toHaveBeenCalledOnceWith(MOCK_USER_INFO.id, component.preferredName);
-    expect(mockSettingsService.updatePersonalEmail).toHaveBeenCalledOnceWith(MOCK_USER_INFO.id, component.personalEmail);
-    expect(mockSettingsService.updatePhoneNumber).toHaveBeenCalledOnceWith(MOCK_USER_INFO.id, component.phoneNumber.replaceAll("-", ""));
+    expect(mockSettingsService.updatePreferredName.mock.calls).toEqual([[MOCK_USER_INFO.id, component.preferredName]]);
+    expect(mockSettingsService.updatePersonalEmail.mock.calls).toEqual([[MOCK_USER_INFO.id, component.personalEmail]]);
+    expect(mockSettingsService.updatePhoneNumber.mock.calls).toEqual([[MOCK_USER_INFO.id, component.phoneNumber.replaceAll("-", "")]]);
   })
 });

@@ -4,8 +4,8 @@ import { authGuard } from './auth.guard';
 import { LoginService } from './login.service';
 
 describe('authGuard', () => {
-  let mockLoginService: jasmine.SpyObj<LoginService>;
-  let mockRouter: jasmine.SpyObj<Router>;
+  let mockLoginService: jest.Mocked<LoginService>;
+  let mockRouter: jest.Mocked<Router>;
 
   const mockRoute = {} as ActivatedRouteSnapshot;
   const mockState = { url: '/main' } as RouterStateSnapshot;
@@ -14,8 +14,12 @@ describe('authGuard', () => {
       TestBed.runInInjectionContext(() => authGuard(...guardParameters));
 
   beforeEach(() => {
-    mockLoginService = jasmine.createSpyObj('LoginService', ['getUserId']); // spy on the mock service
-    mockRouter = jasmine.createSpyObj('Router', ['navigate']); // spy on the mock router
+    mockLoginService = {
+      'getUserId': jest.fn()
+    }; // spy on the mock service
+    mockRouter = {
+      'navigate': jest.fn()
+    }; // spy on the mock router
 
     TestBed.configureTestingModule({
       providers: [
@@ -30,20 +34,20 @@ describe('authGuard', () => {
   });
 
   it('should allow access when user is logged in', () => {
-    mockLoginService.getUserId.and.returnValue('12345'); // Simulate logged-in user
+    mockLoginService.getUserId.mockReturnValue('12345'); // Simulate logged-in user
 
     const result = executeGuard(mockRoute, mockState);
 
-    expect(result).toBeTrue();
+    expect(result).toBe(true);
     expect(mockRouter.navigate).not.toHaveBeenCalled(); // Should not redirect
   });
 
   it('should deny access and redirect when user is not logged in', () => {
-    mockLoginService.getUserId.and.returnValue(null); // Simulate no user logged in
+    mockLoginService.getUserId.mockReturnValue(null); // Simulate no user logged in
 
     const result = executeGuard(mockRoute, mockState);
 
-    expect(result).toBeFalse();
+    expect(result).toBe(false);
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/']); // Should redirect to home
   });
 });

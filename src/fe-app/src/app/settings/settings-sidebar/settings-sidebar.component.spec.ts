@@ -17,7 +17,9 @@ describe('SettingsSidebarComponent', () => {
 
   beforeEach(async () => {
     
-    mockLoginService = jasmine.createSpyObj(LoginService, { getUserId: MOCK_USER_ID });  // getUserId() will return a non-null ID to avoid home page redirect
+    mockLoginService = {
+      'getUserId': jest.fn(() => MOCK_USER_ID)
+    };  // getUserId() will return a non-null ID to avoid home page redirect
     
     await TestBed.configureTestingModule({
       imports: [SettingsSidebarComponent],
@@ -56,14 +58,14 @@ describe('SettingsSidebarComponent', () => {
 
   // Clicking on a link (e.g. profile settings) should route to that page and change the selectedPage index
   it('should route to the correct page and update sidebar when a link is clicked', async () => {
-    spyOn(router, 'navigateByUrl');
+    jest.spyOn(router, 'navigateByUrl').mockImplementation(() => {});
 
     const notificationsLink = fixture.debugElement.nativeElement.querySelector('p[routerLink="notifications"]')
     notificationsLink.click();
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(router.navigateByUrl).toHaveBeenCalledOnceWith(jasmine.stringMatching(/notifications/), jasmine.anything());
+    expect(router.navigateByUrl.mock.calls).toEqual([[expect.stringMatching(/notifications/), expect.anything()]]);
     expect(component.selectedPage).toEqual(2);  // 2 corresponds with notification settings
   });
 

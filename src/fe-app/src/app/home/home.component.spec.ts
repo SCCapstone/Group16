@@ -6,10 +6,12 @@ import { HomeComponent } from './home.component';
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let mockRouter: jasmine.SpyObj<Router>;
+  let mockRouter: jest.Mocked<Router>;
 
   beforeEach(async () => {
-    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
+    mockRouter = {
+      'navigate': jest.fn()
+    };
     const activatedRouteMock = {
       snapshot: { paramMap: {} }
     };
@@ -37,7 +39,7 @@ describe('HomeComponent', () => {
   });
 
   it('should call click() when the button is clicked', () => {
-    spyOn(component, 'click').and.callThrough();
+    jest.spyOn(component, 'click');
     const button = fixture.debugElement.nativeElement.querySelector('button');
 
     button.click();

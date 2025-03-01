@@ -9,9 +9,9 @@ describe('LoginService', () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(LoginService);
 
-    spyOn(sessionStorage, 'setItem');
-    spyOn(sessionStorage, 'getItem').and.returnValue('123');
-    spyOn(sessionStorage, 'removeItem');
+    jest.spyOn(sessionStorage, 'setItem').mockImplementation(() => {});
+    jest.spyOn(sessionStorage, 'getItem').mockReturnValue('123');
+    jest.spyOn(sessionStorage, 'removeItem').mockImplementation(() => {});
 
   });
 
@@ -21,7 +21,7 @@ describe('LoginService', () => {
 
   // login()
   it('should throw an error when login POST request fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: false,
       status: 500
     } as Response));
@@ -31,7 +31,7 @@ describe('LoginService', () => {
   });
 
   it('should throw an error when login fetch encounters a network failure', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.login('username', 'password'))
       .toBeRejectedWithError('Network Error');
@@ -40,7 +40,7 @@ describe('LoginService', () => {
   it('should successfully log in a user', async () => {
     const mockUser: User = { id: '123'};
 
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve(new Response(
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve(new Response(
       JSON.stringify(mockUser),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     )))

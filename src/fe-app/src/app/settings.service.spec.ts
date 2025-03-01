@@ -16,7 +16,7 @@ describe('SettingsService', () => {
 
   // getUserInfo()
   it('should throw an error when getUserInfo response is empty ( {} )', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       json: () => Promise.resolve({}),
     } as Response));
 
@@ -24,7 +24,7 @@ describe('SettingsService', () => {
   });
 
   it('should throw an error when getUserInfo fetch fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.getUserInfo('123')).toBeRejectedWithError('Network Error');
   });
@@ -50,7 +50,7 @@ describe('SettingsService', () => {
       }
     }
 
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       json: () => Promise.resolve(mockUserInfo),
     } as Response));
 
@@ -64,7 +64,7 @@ describe('SettingsService', () => {
 
   // upodateNotificationSettings()
   it('should throw an error when uNS POST request fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: false,
       status: 500
     } as Response));
@@ -74,14 +74,14 @@ describe('SettingsService', () => {
   });
 
   it('should throw an error when uNS fetch encounters a network failure', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.updateNotificationSettings('123', false, false, false))
       .toBeRejectedWithError('Network Error');
   });
 
   it('should successfully call uNS', async () => {
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: true
     } as Response));
 
@@ -94,7 +94,7 @@ describe('SettingsService', () => {
 
   // updatePreferredName()
   it('should throw an error when uPN POST request fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: false,
       status: 500
     } as Response));
@@ -104,14 +104,14 @@ describe('SettingsService', () => {
   });
 
   it('should throw an error when uPN fetch encounters a network failure', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.updatePreferredName('123', 'preferredName'))
       .toBeRejectedWithError('Network Error');
   });
 
   it('should successfully call uPN', async () => {
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: true
     } as Response));
 
@@ -124,7 +124,7 @@ describe('SettingsService', () => {
 
   // updatePersonalEmail()
   it('should throw an error when uPE POST request fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: false,
       status: 500
     } as Response));
@@ -134,14 +134,14 @@ describe('SettingsService', () => {
   });
 
   it('should throw an error when uPE fetch encounters a network failure', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.updatePersonalEmail('123', 'personalemail@email.com'))
       .toBeRejectedWithError('Network Error');
   });
 
   it('should successfully call uPE', async () => {
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: true
     } as Response));
 
@@ -154,7 +154,7 @@ describe('SettingsService', () => {
 
   // updatePhoneNumber()
   it('should throw an error when uPhN POST request fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: false,
       status: 500
     } as Response));
@@ -164,14 +164,14 @@ describe('SettingsService', () => {
   });
 
   it('should throw an error when uPhN fetch encounters a network failure', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.updatePhoneNumber('123', '1234567890'))
       .toBeRejectedWithError('Network Error');
   });
 
   it('should successfully call uPhN', async () => {
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: true
     } as Response));
 

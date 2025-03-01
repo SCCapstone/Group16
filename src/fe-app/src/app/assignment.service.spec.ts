@@ -16,7 +16,7 @@ describe('AssignmentService', () => {
 
   // fetchAssignments()
   it('should throw an error when fetchAssignments response is empty ( [] )', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       json: () => Promise.resolve([]),
     } as Response));
 
@@ -24,7 +24,7 @@ describe('AssignmentService', () => {
   });
 
   it('should throw an error when fetchAssignments fetch fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.fetchAssignments('123')).toBeRejectedWithError('Network Error');
   });
@@ -45,7 +45,7 @@ describe('AssignmentService', () => {
       userCreated: false
     }];
 
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       json: () => Promise.resolve(mockAssignmentList),
     } as Response));
 
@@ -58,7 +58,7 @@ describe('AssignmentService', () => {
 
   // getAssignmentById
   it('should throw an error when getAssignmentById response is empty ( {} )', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       json: () => Promise.resolve([]),
     } as Response));
 
@@ -66,7 +66,7 @@ describe('AssignmentService', () => {
   });
 
   it('should throw an error when getAssignmentById fetch fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.getAssignmentById('abc')).toBeRejectedWithError('Network Error');
   });
@@ -87,7 +87,7 @@ describe('AssignmentService', () => {
       userCreated: false
     };
 
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       json: () => Promise.resolve(mockAssignment),
     } as Response));
 
@@ -100,7 +100,7 @@ describe('AssignmentService', () => {
 
   // addTask()
   it('should throw an error when addTask POST request fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: false,
       status: 500
     } as Response));
@@ -110,14 +110,14 @@ describe('AssignmentService', () => {
   });
 
   it('should throw an error when addTask fetch encounters a network failure', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.addTask('Test Title', 'Test Description', new Date(), '123', '456'))
       .toBeRejectedWithError('Network Error');
   });
 
   it('should successfully call addTask with correct parameters', async () => {
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: true,
       json: () => Promise.resolve({})
     } as Response));
@@ -131,7 +131,7 @@ describe('AssignmentService', () => {
 
   // editTask()
   it('should throw an error when editTask PUT request fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: false,
       status: 500
     } as Response));
@@ -141,14 +141,14 @@ describe('AssignmentService', () => {
   });
 
   it('should throw an error when addTask fetch encounters a network failure', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.editTask('Test Title', 'Test Description', new Date(), '123', '456', '789'))
       .toBeRejectedWithError('Network Error');
   });
 
   it('should successfully call addTask with correct parameters', async () => {
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: true,
     } as Response));
 
@@ -161,7 +161,7 @@ describe('AssignmentService', () => {
 
   // completeTask()
   it('should throw an error when completeTask PUT request fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: false,
       status: 500
     } as Response));
@@ -171,14 +171,14 @@ describe('AssignmentService', () => {
   });
 
   it('should throw an error when completeTask fetch encounters a network failure', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.completeTask('456'))
       .toBeRejectedWithError('Network Error');
   });
 
   it('should successfully call completeTask with correct parameters', async () => {
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: true,
     } as Response));
 
@@ -191,7 +191,7 @@ describe('AssignmentService', () => {
 
   // openTask()
   it('should throw an error when openTask PUT request fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: false,
       status: 500
     } as Response));
@@ -201,14 +201,14 @@ describe('AssignmentService', () => {
   });
 
   it('should throw an error when openTask fetch encounters a network failure', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.openTask('456'))
       .toBeRejectedWithError('Network Error');
   });
 
   it('should successfully call openTask with correct parameters', async () => {
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: true,
     } as Response));
 
@@ -221,7 +221,7 @@ describe('AssignmentService', () => {
 
   // removeTask()
   it('should throw an error when removeTask DELETE request fails', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: false,
       status: 500
     } as Response));
@@ -231,14 +231,14 @@ describe('AssignmentService', () => {
   });
 
   it('should throw an error when removeTask fetch encounters a network failure', async () => {
-    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+    jest.spyOn(window, 'fetch').mockReturnValue(Promise.reject(new Error('Network Error')));
 
     await expectAsync(service.removeTask('456'))
       .toBeRejectedWithError('Network Error');
   });
 
   it('should successfully call removeTask with correct parameters', async () => {
-    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+    const fetchSpy = jest.spyOn(window, 'fetch').mockReturnValue(Promise.resolve({
       ok: true,
     } as Response));
 

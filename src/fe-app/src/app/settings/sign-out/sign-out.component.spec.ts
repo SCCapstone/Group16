@@ -7,13 +7,18 @@ import { Router, ActivatedRoute } from '@angular/router';
 describe('SignOutComponent', () => {
   let component: SignOutComponent;
   let fixture: ComponentFixture<SignOutComponent>;
-  let mockLoginService: jasmine.SpyObj<LoginService>;
-  let mockRouter: jasmine.SpyObj<Router>;
+  let mockLoginService: jest.Mocked<LoginService>;
+  let mockRouter: jest.Mocked<Router>;
 
   // What to do before each test is run
   beforeEach(async () => {
-    mockLoginService = jasmine.createSpyObj('LoginService', ['signOut', 'getUserId']);
-    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
+    mockLoginService = {
+      'signOut': jest.fn(),
+      'getUserId': jest.fn()
+    };
+    mockRouter = {
+      'navigate': jest.fn()
+    };
     const activatedRouteMock = {
       snapshot: { paramMap: {} }
     };
@@ -46,7 +51,7 @@ describe('SignOutComponent', () => {
   });
 
   it('should call signout() when the button is clicked', () => {
-    spyOn(component, 'handleSignout');
+    jest.spyOn(component, 'handleSignout').mockImplementation(() => {});
     const button = fixture.debugElement.nativeElement.querySelector('button');
 
     button.click();
@@ -56,7 +61,7 @@ describe('SignOutComponent', () => {
   });
 
   it('should call loginService.signout when signout() is invoked on click', async () => {
-    mockLoginService.signOut.and.callFake(() => {
+    mockLoginService.signOut.mockImplementation(() => {
       return Promise.resolve();
     });
 

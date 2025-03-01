@@ -7,12 +7,17 @@ import { ReactiveFormsModule } from '@angular/forms';
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let mockLoginService: jasmine.SpyObj<LoginService>; // create mock login service as LoginService
-  let mockRouter: jasmine.SpyObj<Router>; // create mock router as Router
+  let mockLoginService: jest.Mocked<LoginService>; // create mock login service as LoginService
+  let mockRouter: jest.Mocked<Router>; // create mock router as Router
 
   beforeEach(async () => {
-    mockLoginService = jasmine.createSpyObj('LoginService', ['login', 'getUserId']); // spy on the mock service
-    mockRouter = jasmine.createSpyObj('Router', ['navigateByUrl']); // spy on the mock router
+    mockLoginService = {
+      'login': jest.fn(),
+      'getUserId': jest.fn()
+    }; // spy on the mock service
+    mockRouter = {
+      'navigateByUrl': jest.fn()
+    }; // spy on the mock router
 
     await TestBed.configureTestingModule({
       imports: [LoginComponent, ReactiveFormsModule],
@@ -33,7 +38,7 @@ describe('LoginComponent', () => {
   });
 
   it('should redirect to main/task-list if user is already logged in', () => {
-    mockLoginService.getUserId.and.returnValue('12345');
+    mockLoginService.getUserId.mockReturnValue('12345');
 
     component.ngOnInit();
     fixture.detectChanges();
@@ -46,7 +51,7 @@ describe('LoginComponent', () => {
   });
 
   it('should call login() on submit button click', () => {
-    spyOn(component, 'login');
+    jest.spyOn(component, 'login').mockImplementation(() => {});
 
     const button = fixture.nativeElement.querySelector('button[type="submit"]');
     button.click();
@@ -60,7 +65,7 @@ describe('LoginComponent', () => {
     // Arrange
     const mockResponse = { id: '12345'}; // mock response in form of what is promised on valid login user object
     component.loginForm.setValue({ username: 'testuser', password: 'password123' }); // pass in fake valid info
-    mockLoginService.login.and.callFake(() => {
+    mockLoginService.login.mockImplementation(() => {
       return Promise.resolve(mockResponse);
     }); // call the mock service and give a valid return and fake call sessionStorage.setItem()
 
@@ -70,13 +75,13 @@ describe('LoginComponent', () => {
     // Assert
 
     fixture.detectChanges(); // detect the changes on the page
-    expect(mockLoginService.login).toHaveBeenCalledOnceWith('testuser', 'password123'); // expect login to have been called with the same fake info
+    expect(mockLoginService.login.mock.calls).toEqual([['testuser', 'password123']]); // expect login to have been called with the same fake info
     expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/main/task-list'); // expect the mock router to have routed to /main
   });
 
   it('should set output to an error message when login fails', async () => { // async due to changes occurring on actual page (maybe?)
     component.loginForm.setValue({ username: 'testuser', password: 'wrongpassword'}); // pass in fake invalid info
-    mockLoginService.login.and.returnValue(Promise.reject('Invalid credentials')); // call the mock service and give a rejected return (why)
+    mockLoginService.login.mockReturnValue(Promise.reject('Invalid credentials')); // call the mock service and give a rejected return (why)
 
     await component.login(); // call the login with fake invalid info (await bc function is async)
 
