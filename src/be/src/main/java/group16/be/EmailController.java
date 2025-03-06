@@ -63,4 +63,8 @@ public class EmailController {
         Transport.send(message);
         
     }
+
+    public static void sendEmail(String emailAddress, String message) throws AddressException, MessagingException {
+        throw new UnsupportedOperationException("Not supported yet.");   
+    }
 }

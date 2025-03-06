@@ -1,7 +1,10 @@
 package group16.be.db;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.regex.Pattern;
 
 import org.springframework.data.annotation.Id;
@@ -60,6 +63,18 @@ public class User {
     private Avatar avatar;
     @Field("courseIds")
     private ArrayList<CourseId> courseIDs;
+    private PriorityQueue<Notification> notifications;
+
+    public PriorityQueue<Notification> getNotifications() {
+        if(notifications == null) 
+            notifications = new PriorityQueue<>();
+        return notifications;
+    }
+    public boolean clearNotifications() {
+        if (notifications == null) notifications = new PriorityQueue<>();
+        notifications.clear();
+        return true;        
+    }
 
     // Inner classes for nested JSON objects
     private static class Availability {
@@ -167,6 +182,16 @@ public class User {
             return courseId;
         }
     }
+
+
+    public void addNotification(String message) {
+        // if notifications is empty, initalize the queue
+        System.out.println("Adding notification: " + message);
+        if (notifications == null) 
+            notifications = new PriorityQueue<>();
+        Notification notification = new Notification(message);
+        notifications.add(notification);
+    }
     
     private static class Settings {
         private Boolean emailNotifications;
@@ -188,6 +213,21 @@ public class User {
         settings.setSmsNotifications(sms);
         settings.setInstitutionEmailNotifications(institutionEmail);
         return true;
+    }
+
+    public boolean getEmailNotifications() {
+        if (settings == null) return false;
+        return settings.getEmailNotifications();
+    }
+
+    public boolean getInstitutionEmailNotifications() {
+        if (settings == null) return false;
+        return settings.getInstitutionEmailNotifications();
+    }
+
+    public boolean getSmsNotifications() {
+        if (settings == null) return false;
+        return settings.getSmsNotifications();
     }
 
 
