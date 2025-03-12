@@ -3,10 +3,10 @@ package group16.be;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import group16.be.db.GradeRepository;
-
+@SpringBootTest
 public class NotificationTests {
     private final String MONGO_URI = System.getenv("MONGO_URI");
     private final String[] COLLECTIONS = { "assignments", "courses", "users", "grades" };
@@ -27,7 +27,8 @@ public class NotificationTests {
     @Test
 	void testNotifications() {
 		var user = scraper.getUser(REAL_USERID);
-		assertTrue(user.getNotifications() == null);
+		assertTrue(user.getNotifications() != null);
+		assertTrue(user.getNotifications().size() == 0);
 
 		notificationManager.sendNotification(user, "Test Notification 1");
 
