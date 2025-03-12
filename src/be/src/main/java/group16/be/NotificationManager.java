@@ -149,13 +149,13 @@ public class NotificationManager {
     }
 
     private void parseReplace(ChangeStreamDocument<Document> change) {
-        try {
-            FileWriter fw = new FileWriter(new File("updateGrade.json"));
-            fw.write(change.getFullDocumentBeforeChange().toJson());
-            fw.close();
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
+        // try {
+        //     FileWriter fw = new FileWriter(new File("updateGrade.json"));
+        //     fw.write(change.getFullDocumentBeforeChange().toJson());
+        //     fw.close();
+        // } catch (Exception e) {
+        //     // TODO: handle exception
+        // }
 
         var changeId = change.getDocumentKey().get("_id").asObjectId().getValue().toString();
         System.out.println("DEBUG: CHANGE ID: " + changeId);

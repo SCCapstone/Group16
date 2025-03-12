@@ -2,6 +2,7 @@ package group16.be;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,15 @@ public class NotificationTests {
 
 	@Autowired
 	private NotificationManager notificationManager;
+
+	@BeforeEach
+	void clearNotifications() {
+		var user = scraper.getUser(REAL_USERID);
+		if (user.getNotifications() != null) {
+			user.clearNotifications();
+		}
+		scraper.saveUser(user);
+	}
     
     @Test
 	void testNotifications() {
