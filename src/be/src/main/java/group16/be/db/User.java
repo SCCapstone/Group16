@@ -13,6 +13,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Document(collection = "users")
 @SuppressWarnings("unused")
 public class User {
+
+    public User(String userId, String username, String password) {
+        this.id = userId;
+        this.userName = username;
+        this.password = password;
+    }
     
     @Id
     private String id;
@@ -34,6 +40,12 @@ public class User {
     @JsonIgnore
     @Field("password")
     private String password;
+    public boolean checkPassword(String password) {
+        return this.password.equals(password);
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
     
     private String studentId;
     private String gender;
