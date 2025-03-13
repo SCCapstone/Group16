@@ -76,8 +76,12 @@ export class HeartbeatService {
       }
 
       //console.log(response);
-    } catch (error: any) {
-      console.error('Error sending heartbeat:', error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error sending heartbeat:', error.message); // network error
+      } else {
+        console.error('Unexpected error', error); // unexpected error
+      }
       throw error;
     }
   }

@@ -19,8 +19,12 @@ export class GradesService {
 
     console.log(data);
     return data;
-  } catch (error: any) {
-    console.error('Error fetching assignments:', error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error fetching assignments:', error.message);
+    } else {
+      console.error('Unexpected error', error);
+    }
     throw error;
   }
 
@@ -42,8 +46,12 @@ export class GradesService {
         }
 
         console.log(response);
-      } catch (error: any) {
-        console.error('Error setting grade:', error);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error('Error setting grade:', error.message);
+        } else {
+          console.error('Unexpected error', error);
+        }
         throw error;
       }
   }

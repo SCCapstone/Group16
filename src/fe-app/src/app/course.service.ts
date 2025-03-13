@@ -24,8 +24,12 @@ export class CourseService {
 
       console.log(data);
       return data;
-    } catch (error: any) {
-      console.error('Error fetching courses:', error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error fetching courses:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
@@ -41,8 +45,12 @@ export class CourseService {
 
       console.log(data);
       return data;
-    } catch (error: any) {
-      console.error('Error fetching course:', error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error fetching course:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
