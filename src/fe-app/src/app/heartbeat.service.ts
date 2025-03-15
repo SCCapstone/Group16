@@ -2,6 +2,7 @@ import { inject, Injectable, NgZone, PLATFORM_ID, Inject } from '@angular/core';
 import { LoginService } from './login.service';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
+import { AssignmentService } from './assignment.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class HeartbeatService {
   private activityTimer: any;
   private currentUserId: string | null = null;
   loginService = inject(LoginService);
+  assignmentService = inject(AssignmentService);
   private ngZone = inject(NgZone);
   private router = inject(Router);
 
@@ -125,6 +127,7 @@ export class HeartbeatService {
   private onInactivity() {
     console.log('User is inactive for too long');
     this.loginService.signOut();
+    this.assignmentService.reset();
     this.stopHeartbeat();
     this.router.navigate(['/'])
   }
