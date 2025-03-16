@@ -20,8 +20,12 @@ export class SettingsService {
 
     console.log(data);
     return data;
-  } catch (error: any) {
-    console.error('Error fetching userInfo:', error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error fetching userInfo:', error.message);
+    } else {
+      console.error('Unexpected error', error);
+    }
     throw error;
   }
 
@@ -43,8 +47,12 @@ export class SettingsService {
       }
       console.log(response);
     }
-    catch (error: any) {
-      console.error('Error updating notification settings:', error);
+    catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error updating notification settings:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
@@ -64,8 +72,12 @@ export class SettingsService {
       }
       console.log(response);
     }
-    catch (error: any) {
-      console.error('Error updating Preferred Name:', error);
+    catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error updating preferred name:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
@@ -85,8 +97,12 @@ export class SettingsService {
       }
       console.log(response);
     }
-    catch (error: any) {
-      console.error('Error updating Email:', error);
+    catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error updating Email:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
@@ -106,8 +122,12 @@ export class SettingsService {
       }
       console.log(response);
     }
-    catch (error: any) {
-      console.error('Error updating Phone Number:', error);
+    catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error updating Phone Number:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
