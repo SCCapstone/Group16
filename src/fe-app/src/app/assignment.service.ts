@@ -51,8 +51,12 @@ export class AssignmentService {
       }
       return data;
     }
-    catch (error: any) {
-      console.error('Error fetching assignments:', error);
+    catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error fetching assignments:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
  }
@@ -77,8 +81,12 @@ export class AssignmentService {
       console.log(data);
       return data;
     }
-    catch (error: any) {
-      console.error('Error fetching assignment:', error);
+    catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error fetching assignment:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
@@ -114,8 +122,12 @@ export class AssignmentService {
         this.assignments.push(assignment);
         this.updateSignal.set(++this.signalValue);  // Notify observing components that data has updated
       }
-      catch (error: any) {
-        console.error('Error adding task:', error);
+      catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error('Error adding task:', error.message);
+        } else {
+          console.error('Unexpected error', error);
+        }
         throw error;
       }
   }
@@ -142,8 +154,12 @@ export class AssignmentService {
       }
 
       console.log(response);
-    } catch (error: any) {
-      console.error('Error editing task:', error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error editing task:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
@@ -164,8 +180,12 @@ export class AssignmentService {
       }
 
       console.log(response);
-    } catch (error: any) {
-      console.error('Error completing task:', error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error completing task:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
@@ -186,8 +206,12 @@ export class AssignmentService {
       }
 
       console.log(response);
-    } catch (error: any) {
-      console.error('Error opening task:', error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error opening task:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
@@ -206,8 +230,12 @@ export class AssignmentService {
         throw new Error(`DELETE failed: ${response.status}`)
       }
 
-    } catch(error: any) {
-      console.error('Error removing task: ', error);
+    } catch(error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error removing task:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
