@@ -76,8 +76,10 @@
           "builder": "@angular-devkit/build-angular:extract-i18n"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular-devkit/build-angular:web-test-runner",
           "options": {
+            "include": ["src/**/*.spec.ts"],
+            "exclude": ["tests/**/*.spec.ts"],
             "polyfills": [
               "zone.js",
               "zone.js/testing"
