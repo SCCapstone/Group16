@@ -10,6 +10,9 @@
   },
   "include": [
     "src/**/*.spec.ts",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+  ],
+  "exclude": [
+    "tests/**/*.spec.ts"  // Exclude behavioral tests
   ]
 }
