@@ -363,8 +363,15 @@ public class RequestHandler {
      */
     @CrossOrigin
     @PutMapping("/api/editPassword")
-    public static ResponseEntity<?> editPassword(@RequestParam(value = "oldPassword", defaultValue = "NULL") String oldPassword, @RequestParam(value = "newPassword", defaultValue = "NULL") String newPassword) {
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+    public ResponseEntity<?> editPassword(@RequestParam(value = "userId", defaultValue = "NULL") String userId, @RequestParam(value = "oldPassword", defaultValue = "NULL") String oldPassword, @RequestParam(value = "newPassword", defaultValue = "NULL") String newPassword) {
+        var user = scraper.getUser(userId);
+        if(user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        if(!user.checkPassword(oldPassword)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
+        user.setPassword(newPassword);
+        if(scraper.saveUser(user))
+            return ResponseEntity.ok(user);
+        else
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving user");
     }
 
     /**

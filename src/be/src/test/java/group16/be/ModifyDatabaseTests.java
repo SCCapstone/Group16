@@ -30,6 +30,9 @@ public class ModifyDatabaseTests {
     private final String MOCK_DESCRIPTION2 = "Description2";
     private final String MOCK_DUEDATE = "Due Date";
     private final String MOCK_DUEDATE2 = "Due Date2";
+    private final String MOCK_USERNAME = "Username";
+    private final String MOCK_PASSWORD = "Password";
+    private final String MOCK_PASSWORD2 = "Password2";
     
     @MockitoBean
     private AssignmentRepository assignmentRepo;
@@ -89,6 +92,20 @@ public class ModifyDatabaseTests {
         assertEquals(assignment.getTitle(), MOCK_TITLE2);
         assertEquals(assignment.getDescription(), MOCK_DESCRIPTION2);
         assertEquals(assignment.getDueDate(), MOCK_DUEDATE2);        
+    }
+
+    @Async
+    @Test
+    void testEditPassword() {
+        // Change the password of the mock user.
+        var user = new User(MOCK_USERID, MOCK_USERID, MOCK_PASSWORD);
+        Mockito.when(scraper.getUser(MOCK_USERID)).thenReturn(user);
+
+        var response = requestHandler.editPassword(MOCK_USERID, MOCK_PASSWORD, MOCK_PASSWORD2);
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        user = (User) response.getBody();
+        assertTrue(user != null);
+        assertTrue(user.checkPassword(MOCK_PASSWORD2));
     }
 
     // @Test
