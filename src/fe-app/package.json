@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "ng test --browsers=ChromeHeadlessNoSandbox --watch=false --source-map=false",
     "serve:ssr:fe-app": "node dist/fe-app/server/server.mjs",
     "start:all": "concurrently --kill-others \"npm:backend\" \"npm:frontend\"",
     "backend": "echo \"starting backend\" && cd ../be && mvn spring-boot:run",
