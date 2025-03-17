@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
   // username: osterholt; password: cameron1234
   login() {
     if (this.loginForm.invalid) {
-      this.output = 'Field is blank';
+      alert('A field is blank');
      return;
     }
 
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
       }
     })
     .catch((error) => {
-      this.output = 'Login failed, please try again';
+      alert('Invalid login credentials');
       console.error('Login failed', error);
     });
   };

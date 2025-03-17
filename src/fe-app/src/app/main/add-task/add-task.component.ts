@@ -49,8 +49,9 @@ export class AddTaskComponent {
 
   async addTask() {
     console.log("AddTaskComponent - ADD TASK");
-    
+
     if(this.addTaskForm.invalid) {
+      alert('Missing required field')
       return;
     }
 

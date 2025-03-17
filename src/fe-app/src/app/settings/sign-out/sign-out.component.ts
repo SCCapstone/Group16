@@ -17,10 +17,14 @@ export class SignOutComponent {
   assignmentService = inject(AssignmentService);
 
   handleSignout() {
-    this.loginService.signOut();
-    if (!this.loginService.getUserId()) {
-      this.router.navigate(['/']);
+    if(confirm('Are you sure?')) {
+      this.loginService.signOut();
+      if (!this.loginService.getUserId()) {
+        this.router.navigate(['/']);
+      }
+      this.assignmentService.reset();  // Reset assignment service so assignments are not transferred across logins
+    } else {
+      return;
     }
-    this.assignmentService.reset();  // Reset assignment service so assignments are not transferred across logins
   }
 }
