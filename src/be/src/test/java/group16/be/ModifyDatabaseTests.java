@@ -121,6 +121,13 @@ public class ModifyDatabaseTests {
         assertTrue(user != null);
         assertEquals(user.getMobileCarrier(), "AT&T");
 
+        // Test setting a valid mobile carrier without special caracters
+        var response2 = requestHandler.setMobileCarrier(MOCK_USERID, "att");
+        assertEquals(response2.getStatusCode(), HttpStatus.OK);
+        user = (User) response2.getBody();
+        assertTrue(user != null);
+        assertEquals(user.getMobileCarrier(), "AT&T");
+
         // Test setting an invalid mobile carrier
         var invalidResponse = requestHandler.setMobileCarrier(MOCK_USERID, "InvalidCarrier");
         assertEquals(invalidResponse.getStatusCode(), HttpStatus.BAD_REQUEST);
