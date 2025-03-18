@@ -74,7 +74,8 @@ describe('LoginComponent', () => {
     expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/main/task-list'); // expect the mock router to have routed to /main
   });
 
-  it('should set output to an error message when login fails', async () => { // async due to changes occurring on actual page (maybe?)
+  it('should show an alert message when login fails', async () => { // async due to changes occurring on actual page (maybe?)
+    spyOn(window, 'alert');
     component.loginForm.setValue({ username: 'testuser', password: 'wrongpassword'}); // pass in fake invalid info
     mockLoginService.login.and.returnValue(Promise.reject('Invalid credentials')); // call the mock service and give a rejected return (why)
 
@@ -82,11 +83,12 @@ describe('LoginComponent', () => {
 
     await fixture.isStable()
     fixture.detectChanges(); // detect the changes on the page
-    expect(component.output).toBe('Login failed, please try again'); // expect output to have been set as intended on invalid login
+    expect(window.alert).toHaveBeenCalledWith('Invalid login credentials');
     expect(mockRouter.navigateByUrl).not.toHaveBeenCalled(); // expect mock router to have not been called
   });
 
   it('should not call loginService.login if the form is empty ', async () => { // also async due to page tracking (maybe?)
+    spyOn(window, 'alert');
     component.loginForm.setValue({ username: '', password: ''}); // pass in no info
 
     await component.login(); // call login with no info (await bc function is async)
@@ -94,6 +96,6 @@ describe('LoginComponent', () => {
     await fixture.isStable();
     fixture.detectChanges(); // detect the changes on the page
     expect(mockLoginService.login).not.toHaveBeenCalled(); // expect the login service to not get called
-    expect(component.output).toBe('Field is blank'); // expect output to be unchanged
+    expect(window.alert).toHaveBeenCalledWith('A field is blank');
   });
 });

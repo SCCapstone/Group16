@@ -28,8 +28,6 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', Validators.required)
   });
 
-  output: string | undefined = '';
-
   // username: osterholt; password: cameron1234
   login() {
     if (this.loginForm.invalid) {
@@ -63,12 +61,9 @@ export class LoginComponent implements OnInit {
       if (user) {
         this.user = user;
         this.router.navigateByUrl("/main/task-list");
-      } else {
-        this.output = 'Login failed, please try again';
       }
     })
     .catch((error) => {
-      this.output = 'Login failed, please try again';
       console.error('Login failed', error);
     })
   }
