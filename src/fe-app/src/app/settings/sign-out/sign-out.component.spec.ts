@@ -56,6 +56,8 @@ describe('SignOutComponent', () => {
   });
 
   it('should call loginService.signout when signout() is invoked on click', async () => {
+    spyOn(window, 'confirm').and.returnValue(true);
+
     mockLoginService.signOut.and.callFake(() => {
       return Promise.resolve();
     });
@@ -67,5 +69,14 @@ describe('SignOutComponent', () => {
       expect(mockLoginService.signOut).toHaveBeenCalled();
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
     });
+  });
+
+  it('should call loginService.signout when signout() is invoked on click', async () => {
+    spyOn(window, 'confirm').and.returnValue(false);
+
+    await component.handleSignout();
+
+    expect(mockLoginService.signOut).not.toHaveBeenCalled();
+    expect(mockRouter.navigate).not.toHaveBeenCalled();
   });
 });
