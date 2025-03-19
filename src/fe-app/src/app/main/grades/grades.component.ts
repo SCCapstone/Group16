@@ -6,11 +6,12 @@ import { LoginService } from '../../login.service';
 import { CommonModule } from '@angular/common';
 import { CourseService } from '../../course.service';
 import { AssignmentService } from '../../assignment.service';
+import { GradeCalcComponent } from "../../grade-calc/grade-calc.component";
 
 @Component({
   selector: 'app-grades',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, GradeCalcComponent],
   templateUrl: './grades.component.html',
   styleUrl: './grades.component.css'
 })
@@ -23,6 +24,9 @@ export class GradesComponent {
   courses: Course[] = [];
   assignments: Assignment[] = [];
   grades: Grade[] = [];
+
+  showPopup = false;
+  popupType: 'calculator' | null = null;
 
   constructor() {
     this.courseService.getCourses(this.loginService.getUserId())
@@ -87,5 +91,15 @@ export class GradesComponent {
     if (grade.percent < 0 || grade.gradeChar == null)
       return "N/A";
     return grade.gradeChar;
+  }
+
+  openPopup(type: 'calculator'): void {
+    this.popupType = type;
+    this.showPopup = true;
+  }
+
+  closePopup(): void {
+    this.showPopup = false;
+    this.popupType = null;
   }
 }
