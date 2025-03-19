@@ -30,7 +30,7 @@ public class ModifyDatabaseTests {
     private final String MOCK_DESCRIPTION2 = "Description2";
     private final String MOCK_DUEDATE = "Due Date";
     private final String MOCK_DUEDATE2 = "Due Date2";
-    private final String MOCK_USERNAME = "Username";
+    // private final String MOCK_USERNAME = "Username";
     private final String MOCK_PASSWORD = "Password";
     private final String MOCK_PASSWORD2 = "Password2";
     
@@ -106,6 +106,31 @@ public class ModifyDatabaseTests {
         user = (User) response.getBody();
         assertTrue(user != null);
         assertTrue(user.checkPassword(MOCK_PASSWORD2));
+    }
+
+    @Async
+    @Test
+    void testSetMobileCarrier() {
+        // Change the mobile carrier of the mock user.
+        var user = new User(MOCK_USERID, MOCK_USERID, MOCK_PASSWORD);
+        Mockito.when(scraper.getUser(MOCK_USERID)).thenReturn(user);
+
+        var response = requestHandler.setMobileCarrier(MOCK_USERID, "AT&T");
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        user = (User) response.getBody();
+        assertTrue(user != null);
+        assertEquals(user.getMobileCarrier(), "AT&T");
+
+        // Test setting a valid mobile carrier without special caracters
+        var response2 = requestHandler.setMobileCarrier(MOCK_USERID, "att");
+        assertEquals(response2.getStatusCode(), HttpStatus.OK);
+        user = (User) response2.getBody();
+        assertTrue(user != null);
+        assertEquals(user.getMobileCarrier(), "AT&T");
+
+        // Test setting an invalid mobile carrier
+        var invalidResponse = requestHandler.setMobileCarrier(MOCK_USERID, "InvalidCarrier");
+        assertEquals(invalidResponse.getStatusCode(), HttpStatus.BAD_REQUEST);
     }
 
     // @Test

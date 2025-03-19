@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Document(collection = "users")
 @SuppressWarnings("unused")
 public class User {
+    private final String[] CARRIERS = { "AT&T", "T-Mobile", "Verizon" };
 
     public User(String userId, String username, String password) {
         this.id = userId;
@@ -118,6 +119,8 @@ public class User {
         private String homePhone;
         private String mobilePhone;
         public String getMobilePhone() { return mobilePhone; }
+        private String carrier;
+        public String getMobileCarrier() { return carrier; }
         private String businessPhone;
         private String businessFax;
         private String email;
@@ -153,6 +156,27 @@ public class User {
         if (contact == null) return false;
         contact.mobilePhone = mobilePhone;
         return true;
+    }
+
+    public String getMobileCarrier() {
+        if (contact == null) return null;
+        return contact.getMobileCarrier();
+    }
+
+    public boolean setMobileCarrier(String carrier) {
+        if (contact == null) 
+            contact = new Contact();
+        if (carrier == null || carrier.length() == 0) return false;
+        boolean validCarrier = false;
+        for (String c : CARRIERS) {
+            var cNoSpecial = c.replaceAll("[&-]", "");
+            if (cNoSpecial.equalsIgnoreCase(carrier) || c.equalsIgnoreCase(carrier)) {
+                validCarrier = true;
+                contact.carrier = c;
+                break;
+            }
+        }
+        return validCarrier;
     }
 
 

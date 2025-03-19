@@ -510,6 +510,30 @@ public class RequestHandler {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving user");
     }
 
+    /**
+     * This method updates a user's mobile carrier
+     * @param userId the user's ID
+     * @param carrier the user's mobile carrier. List case insensitive: [AT&T/ATT, Verizon, T-Mobile/TMobile] 
+     * @return Response entity with the updated user object or an error message
+     */
+    @CrossOrigin
+    @PostMapping("/api/setMobileCarrier")
+    public ResponseEntity<?> setMobileCarrier(@RequestParam(value = "userId", defaultValue = "NULL") String userId, 
+                                              @RequestParam(value = "carrier", defaultValue = "NULL") String carrier) {
+        if(carrier == null || carrier.equals("NULL")) 
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Carrier is missing or invalid");
+        if(validateUserId(userId).getStatusCode() != HttpStatus.OK)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with that Id exists");
+        
+        var user = scraper.getUser(userId);
+        if(!user.setMobileCarrier(carrier))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid carrier. Valid carriers are: AT&T, Verizon, T-Mobile (case insensitive and special carriers optional)");
+        if(scraper.saveUser(user))
+            return ResponseEntity.ok(user);
+        else
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving user");
+    }
+
     /* ---------------------- Private Methods ---------------------- */
 
     /**
