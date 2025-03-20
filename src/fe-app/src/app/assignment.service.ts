@@ -20,11 +20,13 @@ export class AssignmentService {
 
   constructor() {
     this.viewCompleted = false;
-    this.fetchAssignments(this.loginService.getUserId())
-    .then((assignments: Assignment[]) => {
-      this.assignments = assignments;
-      this.updateSignal.set(++this.signalValue);  // Update signal so components know to grab data
-    })
+    if(this.loginService.getUserId()) {
+      this.fetchAssignments(this.loginService.getUserId())
+      .then((assignments: Assignment[]) => {
+        this.assignments = assignments;
+        this.updateSignal.set(++this.signalValue);  // Update signal so components know to grab data
+      })
+    }
   }
 
   // Returns assignment service's signal so that components may watch it for changes

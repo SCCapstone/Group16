@@ -22,8 +22,6 @@ export class HeartbeatService {
   constructor(@Inject(PLATFORM_ID) private platformId: object) {
     if (isPlatformBrowser(this.platformId)) {
       this.listenForActivity();
-    } else {
-      console.warn('Service initialized on server (SSR)');
     }
   }
 
