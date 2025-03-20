@@ -12,12 +12,41 @@ import { CommonModule } from '@angular/common';
   styleUrl: './grade-calc.component.css'
 })
 export class GradeCalcComponent {
-  assignments: { name: string; grade: number; weight: number }[] = [
-    { name: 'Homework', grade: 0, weight: 0 },
-    { name: 'Quizzes', grade: 0, weight: 0 },
-    { name: 'Midterm', grade: 0, weight: 0 },
-    { name: 'Final', grade: 0, weight: 0 }
-  ];
+  assignments: { name: string; grade: number; weight: number }[] = [];
+
+  constructor() {
+    this.loadAssignments();
+  }
+
+  loadAssignments(): void {
+    const savedAssignments = localStorage.getItem('assignments');
+    if (savedAssignments) {
+      this.assignments = JSON.parse(savedAssignments);
+    } else {
+      this.resetAssignments();
+    }
+  }
+
+  saveAssignments(): void {
+    localStorage.setItem('assignments', JSON.stringify(this.assignments));
+  }
+
+  resetAssignments(): void {
+    this.assignments = [
+      { name: 'Homework', grade: 0, weight: 0 },
+      { name: 'Quizzes', grade: 0, weight: 0 },
+      { name: 'Midterm', grade: 0, weight: 0 },
+      { name: 'Final', grade: 0, weight: 0 }
+    ];
+    this.saveAssignments();
+  }
+
+  // assignments: { name: string; grade: number; weight: number }[] = [
+  //   { name: 'Homework', grade: 0, weight: 0 },
+  //   { name: 'Quizzes', grade: 0, weight: 0 },
+  //   { name: 'Midterm', grade: 0, weight: 0 },
+  //   { name: 'Final', grade: 0, weight: 0 }
+  // ];
 
 
   calculateFinalGrade(): number {

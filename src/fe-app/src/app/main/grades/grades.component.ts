@@ -50,7 +50,7 @@ export class GradesComponent {
    * @returns The name of the course, or "unknown" if not found.
    */
   getCourseNameByID(id: string): string {
-    console.log("SEARCHING COURSES ARRAY OF SIZE " + this.courses.length)
+    //console.log("SEARCHING COURSES ARRAY OF SIZE " + this.courses.length)
     for (const course of this.courses) {
       if (course.id === id)
         return course.name.split('-')[0];
