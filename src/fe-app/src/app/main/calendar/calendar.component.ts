@@ -47,13 +47,9 @@ export class CalendarComponent {
     this.semesterEnd = this.getWeekStart(this.semesterEnd);
     this.semesterEnd.setDate(this.semesterEnd.getDate() + 7);
 
-    console.log("SEMESTER START: " + this.semesterStart);
-    console.log("SEMESTER END: " + this.semesterEnd);
-
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
     effect(() => {
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
-      console.log("COMPUTED SIGNAL RUN: Value " + signal);
 
       // Runs when service constructor finishes, no need to call twice
       this.loadAssignments().then(() => {
@@ -67,7 +63,6 @@ export class CalendarComponent {
    */
   async loadAssignments() {
     this.assignments = await this.assignmentService.getAssignments(this.loginService.getUserId());
-    console.log("TEST ASSIGNMENTS:" + this.assignments);
 
     // Turn assignment date strings into date objects and sort entire list by date
     for (let assignment of this.assignments) {
