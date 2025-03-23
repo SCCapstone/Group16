@@ -15,27 +15,34 @@ import { Assignment } from '../../course';
   styleUrl: './calendar.component.css'
 })
 export class CalendarComponent {
-  weekStart: Date;
-  pageNumber: number;
+  weekStart: Date;                  // Start of the currently-selected week
+  pageNumber: number;               // Offset from current week in number of weeks
   assignments: Assignment[] = [];
-  weekAssignments: Assignment[][] = [[], [], [], [], [], [], []];  // TODO can't find a way to do this with Array(...)?
+  weekAssignments: Assignment[][] = [[], [], [], [], [], [], []];
 
   loginService = inject(LoginService);
   courseService = inject(CourseService);
-  // assignmentService = inject(AssignmentService);
+
+  // INITIALIZATION
 
   constructor(private assignmentService: AssignmentService) {
-    this.weekStart = this.getWeekStart(new Date(Date.now()));
+    this.weekStart = this.getWeekStart(new Date(Date.now()));  // Store start of the current week
     this.pageNumber = 0;
 
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
     effect(() => {
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
       console.log("COMPUTED SIGNAL RUN: Value " + signal);
-      this.loadAssignments();                                   // Runs when service constructor finishes, no need to call twice
+
+      // Runs when service constructor finishes, no need to call twice
+      this.loadAssignments();
+      this.organizeWeekAssignments();
     })
   }
 
+  /**
+   * Retrieves and sorts all assignments from AssignmentService and stores in "assignments"
+   */
   async loadAssignments() {
     this.assignments = await this.assignmentService.getAssignments(this.loginService.getUserId());
 
@@ -46,19 +53,27 @@ export class CalendarComponent {
     this.assignments.sort((a: Assignment, b: Assignment) => {
       return (a.availability.adaptiveRelease.end.getTime() <= b.availability.adaptiveRelease.end.getTime() ? -1 : 1);
     });
-
-    this.organizeWeekAssignments();
   }
 
-  // Get the midnight of Monday of the current week, used as anchor for assignments
-  getWeekStart(currentDate: Date) {
+  /**
+   * Calculates the start of the week of the given date as defined by midnight of that week's Monday.
+   * @param currentDate Any date
+   * @returns 12:00am on Monday of the provided date's corresponding week.
+   */
+  getWeekStart(currentDate: Date): Date {
     currentDate.setHours(0, 0, 0, 0);
     const difference = currentDate.getDate() - currentDate.getDay() + (currentDate.getDay() === 0 ? -6 : 1);
     return new Date(currentDate.setDate(difference))
   }
 
-  // Organize assignments into a list of assignments in the current week
+
+  // PERSISTENT
+
+  /**
+   * Populates weekAssignments with all assignments due during the currently-selected week.
+   */
   organizeWeekAssignments() {
+    this.weekAssignments = [[], [], [], [], [], [], []]
     const millisecondsPerDay = 86400000;
     for (const assignment of this.assignments) {
       const difference = assignment.availability.adaptiveRelease.end.getTime() - this.weekStart.getTime();
@@ -74,18 +89,30 @@ export class CalendarComponent {
     }
   }
 
+  /**
+   * Moves calendar page forward by one week.
+   */
   pageForward() {
-    this.weekAssignments = [[], [], [], [], [], [], []];
-    console.log(this.weekAssignments);
     this.weekStart.setDate(this.weekStart.getDate() + 7);
     this.pageNumber++;
     this.organizeWeekAssignments();
   }
 
+  /**
+   * Moves calendar page back by one week
+   */
   pageBack() {
-    this.weekAssignments = [[], [], [], [], [], [], []];
     this.weekStart.setDate(this.weekStart.getDate() - 7);
     this.pageNumber--;
+    this.organizeWeekAssignments();
+  }
+
+  /**
+   * Resets calendar page to the current week.
+   */
+  reset() {
+    this.weekStart = this.getWeekStart(new Date(Date.now()));
+    this.pageNumber = 0;
     this.organizeWeekAssignments();
   }
 }
