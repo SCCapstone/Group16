@@ -80,13 +80,11 @@ export class CalendarComponent {
     for (const assignment of this.assignments) {
       const difference = assignment.availability.adaptiveRelease.end.getTime() - this.weekStart.getTime();
 
-      // Ignore options out of range (can break if too high because array was sorted in constructor)
+      // Add assignment to array if it's in range based on the day it falls into
       if (difference < 0)
         continue;
       if (difference >= 7 * millisecondsPerDay)
         break;
-
-      // Add assignment to array if it's in range based on the day it falls into
       this.weekAssignments[difference / millisecondsPerDay].push(assignment);
     }
   }
@@ -98,6 +96,8 @@ export class CalendarComponent {
     this.weekStart.setDate(this.weekStart.getDate() + 7);
     this.pageNumber++;
     this.organizeWeekAssignments();
+
+    console.log("WEEK START TEST: " + this.weekStart);
   }
 
   /**
@@ -116,6 +116,27 @@ export class CalendarComponent {
     this.weekStart = this.getWeekStart(new Date(Date.now()));
     this.pageNumber = 0;
     this.organizeWeekAssignments();
+  }
+
+  /**
+   * Format the given date in the format of "<Month> <Day>[st/nd/rd/th]"
+   * @param date The date to format
+   * @return Formatted string with relevant date information.
+   */
+  formatDate(date: Date) {
+    let output: String = date.toLocaleString('en-US', {month: "long", day: "numeric"})
+
+    // ugh
+    if (this.weekStart.getDate() % 10 == 1 && this.weekStart.getDate() != 11)
+      output += "st"
+    else if (this.weekStart.getDate() % 10 == 2 && this.weekStart.getDate() != 12)
+      output += "nd"
+    else if (this.weekStart.getDate() % 10 == 3 && this.weekStart.getDate() != 13)
+      output += "rd"
+    else
+      output += "th"
+
+    return output;
   }
 
   // TODO implement logic to disable previous/next buttons at beginning/end of semester
