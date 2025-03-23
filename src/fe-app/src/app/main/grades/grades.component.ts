@@ -93,6 +93,10 @@ export class GradesComponent {
     return grade.gradeChar;
   }
 
+  setGrade(): void {
+
+  }
+
   openPopup(type: 'calculator'): void {
     this.popupType = type;
     this.showPopup = true;

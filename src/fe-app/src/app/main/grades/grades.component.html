@@ -1,7 +1,7 @@
 <div class="container py-5">
   <div class="icon" style="float: right; margin-bottom: 10px; margin-top: -30px;">
     <a (click)="openPopup('calculator')">
-      <img src="images/calc.png" alt="grade calc icon" style="width: 55px; height: auto; cursor: pointer;" />  
+      <img src="images/calc.png" alt="grade calc icon" style="width: 55px; height: auto; cursor: pointer;" />
     </a>
 </div>
 
@@ -23,7 +23,7 @@
         <td>{{ this.displayGrade(grade.percent) }}</td>
         <td>{{ this.displayGradeChar(grade) }}</td>
         <td class="button-container">
-          <button class="disabled-button">Set Grade</button>
+          <button (click)="setGrade()">Set Grade</button>
         </td>
       </tr>
     }
@@ -35,6 +35,6 @@
   <div class="popup-content">
     <span class="close" (click)="closePopup()">&times;</span>
     <p *ngIf="popupType === 'calculator'">   <app-grade-calc></app-grade-calc>
-      
+
   </div>
 </div>
