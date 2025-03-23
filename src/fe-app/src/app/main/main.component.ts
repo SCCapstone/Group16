@@ -10,6 +10,7 @@ import { TaskListComponent } from './task-list/task-list.component';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { CoursesSidebarComponent } from "../main/courses-sidebar/courses-sidebar.component";
 import { SecondarySidebarComponent } from './secondary-sidebar/secondary-sidebar.component';
+import { GradeCalcComponent } from "../grade-calc/grade-calc.component";
 
 
 @Component({
@@ -18,8 +19,9 @@ import { SecondarySidebarComponent } from './secondary-sidebar/secondary-sidebar
     templateUrl: './main.component.html',
     styleUrl: './main.component.css',
     imports: [
-        RouterOutlet, RouterModule, CoursesSidebarComponent, SecondarySidebarComponent, AddTaskComponent, CommonModule
-    ]
+    RouterOutlet, RouterModule, CoursesSidebarComponent, SecondarySidebarComponent, AddTaskComponent, CommonModule,
+    GradeCalcComponent
+]
 })
 export class MainComponent implements OnInit {
     loginService = inject(LoginService);
@@ -31,7 +33,7 @@ export class MainComponent implements OnInit {
     output: string | null = ''; // For testing purposes
 
     showPopup = false;
-    popupType: 'add-task' | null = null;
+    popupType: 'add-task' |'grade-calc' | null = null;
 
     topThreeAssignments: Assignment[] = [];
 
@@ -69,7 +71,7 @@ export class MainComponent implements OnInit {
       console.log('handleNewTask called with task in main:', task);
     }
 
-    openPopup(type: 'add-task'): void {
+    openPopup(type: 'add-task' | 'grade-calc'): void {
         this.popupType = type;
         this.showPopup = true;
     }

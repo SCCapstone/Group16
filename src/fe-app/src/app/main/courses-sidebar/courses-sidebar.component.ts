@@ -43,4 +43,5 @@ export class CoursesSidebarComponent {
       return "course selected";
     return "course";
   }
+  
 }

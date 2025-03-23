@@ -1,6 +1,6 @@
 
 header{
-  background-color: #40403e;
+  background-color: #aaaaaa;
   margin-bottom: -20px;
   padding-bottom: 20px;
   padding-left: 10px;
@@ -12,14 +12,16 @@ header{
   border-radius:12px;
   width: 95%;
   margin: 0px auto;
-  background-color: #40403e;
+  background-color: #aaaaaa;
 }
 
 a{
   margin-bottom: 10px;
 }
 
-
+app-task-list {
+  padding: 0 !important;
+}
 
 section {
     height: 90vh;

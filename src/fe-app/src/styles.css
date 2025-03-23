@@ -16,7 +16,11 @@
   }
 
   main {
-    background-color: #40403e;
+    background-color: #aaaaaa;
+}
+
+app-task-list, app-calender, app-grades {
+  padding: 0 !important;
 }
   
 
