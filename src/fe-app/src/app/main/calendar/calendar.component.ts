@@ -35,8 +35,9 @@ export class CalendarComponent {
       console.log("COMPUTED SIGNAL RUN: Value " + signal);
 
       // Runs when service constructor finishes, no need to call twice
-      this.loadAssignments();
-      this.organizeWeekAssignments();
+      this.loadAssignments().then(() => {
+        this.organizeWeekAssignments();
+      });
     })
   }
 
@@ -45,6 +46,7 @@ export class CalendarComponent {
    */
   async loadAssignments() {
     this.assignments = await this.assignmentService.getAssignments(this.loginService.getUserId());
+    console.log("TEST ASSIGNMENTS:" + this.assignments);
 
     // Turn assignment date strings into date objects and sort entire list by date
     for (let assignment of this.assignments) {
@@ -115,4 +117,6 @@ export class CalendarComponent {
     this.pageNumber = 0;
     this.organizeWeekAssignments();
   }
+
+  // TODO implement logic to disable previous/next buttons at beginning/end of semester
 }
