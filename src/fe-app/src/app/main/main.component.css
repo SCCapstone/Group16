@@ -1,71 +1,12 @@
-/* .main {
-    display: flex;
-    height: 100%;
-    flex-direction: row;
-    text-align: center;
-}
 
-.sidebar {
-    width: 20%;
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-}
-
-.courses {
-    background-color: darkgray;
-    height: 65%;
-    margin: 5%;
-}
-
-.due-soon {
-    background-color: darkgray;
-    height: 35%;
-    margin: 0 5% 5% 5%;
-}
-
-.task-info {
-    width: 80%;
-    background-color: gray;
-}
-
-.view-select {
-    background-color: white;
-    width: 30%;
-    height: 7%;
-    margin-top: 10px;
-    margin-left: 2%;
-    display: flex;      
-    justify-content: center; 
-    align-items: center; 
-}
 
 .selectOptions {
-    display: flex;
-    width: 100%;
-    margin-left: 35px;
+    background-color: #aaaaaa;
 }
 
-.main-view {
-    background-color: white;
-    height: 80%;
-    margin: 3% 2% 0 2%;;
-}
-
-.logos{
-    text-align: right;
-    padding-right: 10px;
-    margin-top:-46px;
-}
-
- */
-
- .selectOptions {
-    background-color: #40403e;
-}
 
 .task-info {
-    background-color: #40403e;
+    background-color: #aaaaaa;
 }
 
 .selectOptions{
@@ -74,8 +15,9 @@
 }
 
 .sidebar{
-    background-color: #40403e;
+    background-color: #aaaaaa;
 }
+
 
 .popup-modal {
     display: flex;
@@ -112,8 +54,21 @@
   .main-view{
     height: 620px;          
     overflow-y: auto;
-    width: 99%; /* Adjust this value as needed */
+    width: 99%;
     margin-left: 5px;
   }
+
+
+router-outlet {
+  display: contents;
+}
+
+/* Custom margin for the right-aligned icons */
+.right-icons .col-md-auto {
+  margin-right: 100px; /* Adjust this value to control the space */
+}
+
+
+
 
   
