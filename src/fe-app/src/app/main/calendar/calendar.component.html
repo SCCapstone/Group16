@@ -77,13 +77,13 @@
 <!-- TODO Make buttons icons rather than text -->
 <div class="page-container">
     <div id="lastWeekButton">
-        <button (click)="pageBack()">Previous Week</button>
+        <button (click)="pageBack()" [disabled]="this.checkSemesterStart(this.weekStart)">Previous Week</button>
     </div>
     <div id="resetButton">
         <button (click)="reset()" [disabled]="this.pageNumber == 0">Reset</button>
     </div>
     <div id="nextWeekButton">
-        <button (click)="pageForward()">Next Week</button>
+        <button (click)="pageForward()" [disabled]="this.checkSemesterEnd(this.weekStart)">Next Week</button>
     </div>
 </div>
 

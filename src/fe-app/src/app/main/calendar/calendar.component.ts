@@ -17,6 +17,9 @@ import { Assignment } from '../../course';
 export class CalendarComponent {
   weekStart: Date;                  // Start of the currently-selected week
   pageNumber: number;               // Offset from current week in number of weeks
+  semesterStart: Date;              // Start of the first week of the current semester
+  semesterEnd: Date;                // Start of the week after the end of the current semester
+
   assignments: Assignment[] = [];
   weekAssignments: Assignment[][] = [[], [], [], [], [], [], []];
 
@@ -26,8 +29,26 @@ export class CalendarComponent {
   // INITIALIZATION
 
   constructor(private assignmentService: AssignmentService) {
-    this.weekStart = this.getWeekStart(new Date(Date.now()));  // Store start of the current week
+    const now: Date = new Date(Date.now());
+
+    this.weekStart = this.getWeekStart(now);  // Store start of the current week
     this.pageNumber = 0;
+
+    // Find start and end of semesters (really lazy method but magic strings should work)
+    if (now.getMonth() < 8) {
+      this.semesterStart = new Date("January 15, " + now.getFullYear());
+      this.semesterEnd = new Date("May 7, " + now.getFullYear());
+    }
+    else {
+      this.semesterStart = new Date("August 22, " + now.getFullYear());
+      this.semesterEnd = new Date("December 18, " + now.getFullYear());
+    }
+    this.semesterStart = this.getWeekStart(this.semesterStart);
+    this.semesterEnd = this.getWeekStart(this.semesterEnd);
+    this.semesterEnd.setDate(this.semesterEnd.getDate() + 7);
+
+    console.log("SEMESTER START: " + this.semesterStart);
+    console.log("SEMESTER END: " + this.semesterEnd);
 
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
     effect(() => {
@@ -96,8 +117,6 @@ export class CalendarComponent {
     this.weekStart.setDate(this.weekStart.getDate() + 7);
     this.pageNumber++;
     this.organizeWeekAssignments();
-
-    console.log("WEEK START TEST: " + this.weekStart);
   }
 
   /**
@@ -116,6 +135,32 @@ export class CalendarComponent {
     this.weekStart = this.getWeekStart(new Date(Date.now()));
     this.pageNumber = 0;
     this.organizeWeekAssignments();
+  }
+
+  /**
+   * Check if the given date falls within the first week of the current semester.
+   * @param date The date to check
+   * @return true if given date comes first, false otherwise
+   */
+  checkSemesterStart(date: Date): Boolean {
+    let dateCopy = this.getWeekStart(date);
+    dateCopy.setDate(dateCopy.getDate() - 7);
+    if (dateCopy < this.semesterStart)
+      return true;
+    return false;
+  }
+
+  /**
+   * Check if the given date falls within the last week of the current semester.
+   * @param date The date to check
+   * @return true if given date comes last, false otherwise
+   */
+  checkSemesterEnd(date: Date): Boolean {
+    let dateCopy = this.getWeekStart(date);
+    dateCopy.setDate(dateCopy.getDate() + 7);
+    if (dateCopy >= this.semesterEnd)
+      return true;
+    return false;
   }
 
   /**
