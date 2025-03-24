@@ -14,7 +14,7 @@ export class CoursesSidebarComponent {
   courses: Course[] = [];
 
   constructor(
-    private courseService: CourseService,  
+    protected courseService: CourseService,  
     private loginService: LoginService  
   ) {
     // Retrieve course list from CourseService and store it in courses
