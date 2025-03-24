@@ -37,6 +37,14 @@ describe('LoginService', () => {
       .toBeRejectedWithError('Network Error');
   });
 
+  // example unexpected error test
+  // it('should throw and log an unexpected error when login fails with an unknown error type', async () => {
+  //   spyOn(window, 'fetch').and.returnValue(Promise.reject(123));
+
+  //   await expectAsync(service.login('username', 'password'))
+  //     .toBeRejectedWith(123);
+  // });
+
   it('should successfully log in a user', async () => {
     const mockUser: User = { id: '123'};
 

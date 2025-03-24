@@ -21,3 +21,116 @@ button {
   opacity: 0.6 !important;
   pointer-events: none !important;
 }
+
+.popup-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+  }
+
+  .popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    width: 70%;
+    margin: auto;
+  }
+
+  .close {
+    position: absolute;
+    top: -5px;
+    right: 8px;
+    cursor: pointer;
+    font-size: 34px;
+    color: black;
+  }
+
+
+  .assignment-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    background-color: white;
+}
+
+
+.assignment-column {
+    padding: 8px;
+    word-wrap: break-word;
+    flex: 1; 
+    border-right: 1px solid #ddd;
+}
+
+
+.assignmentPopup {
+    font-size: 20px;
+    color: black; 
+    line-height: 1.7; 
+  }
+
+  .assignmentPopup {
+    font-size: 22px;
+    color: black; 
+    line-height: 1.7; 
+  }
+
+  .due-date{
+    color: #c30000;
+  }
+
+  .description, .course{
+    font-weight: bold;
+  }
+  
+
+.assignment-column:last-child {
+    border-right: none;
+}
+
+
+.assignment-column-remove:last-child{
+    border-right: none;
+}
+
+
+.assignment-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  background-color: #f2f1f1;
+  border-bottom: 2px solid #ddd;
+}
+
+
+.header-column {
+  padding: 10px;
+  text-transform: uppercase;
+  flex: 1; 
+  border-right: 1px solid #ddd;
+  text-align: center;
+}
+
+.header-column-remove:last-child{
+  border-right: none;
+}
+
+.header-column:last-child {
+  border-right: none;
+}
+
+
+

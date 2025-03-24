@@ -84,12 +84,16 @@ export class TaskListComponent{
   }
 
   onTaskRemoved(id: string) {
-    this.assignments = this.assignments.map(list =>
-      list.filter(assignment => assignment.id !== id)
-    )
+    if(confirm('Are you sure?')) {
+      this.assignments = this.assignments.map(list =>
+        list.filter(assignment => assignment.id !== id)
+      )
 
-    this.sortedAssignments = this.getSortedAssignments();
-    this.cdr.detectChanges();
+      this.sortedAssignments = this.getSortedAssignments();
+      this.cdr.detectChanges();
+      } else {
+        return;
+      }
   }
 
   onTaskUpdated(updatedAssignment: Assignment) {

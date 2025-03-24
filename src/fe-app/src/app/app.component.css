@@ -1,6 +1,6 @@
 
 header{
-  background-color: #40403e;
+  background-color: #aaaaaa;
   margin-bottom: -20px;
   padding-bottom: 20px;
   padding-left: 10px;
@@ -12,14 +12,16 @@ header{
   border-radius:12px;
   width: 95%;
   margin: 0px auto;
-  background-color: #40403e;
+  background-color: #aaaaaa;
 }
 
 a{
   margin-bottom: 10px;
 }
 
-
+app-task-list {
+  padding: 0 !important;
+}
 
 section {
     height: 90vh;
@@ -39,34 +41,5 @@ section {
     cursor: pointer;
 }
 
-.popup-modal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 1000;
-  }
 
-  .popup-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    position: relative;
-    width: 70%;
-    margin: auto;
-  }
 
-  .close {
-    position: absolute;
-    top: -5px;
-    right: 8px;
-    cursor: pointer;
-    font-size: 34px;
-    color: black;
-  }

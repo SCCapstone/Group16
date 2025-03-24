@@ -8,9 +8,12 @@ export class CourseService {
   readonly url = 'https://classmate.osterholt.us/api/';
 
   private selectIndex: number;    // Index of course selected in array; -1 indicates none
+  private readonly STORAGE_KEY = 'selectedCourseIndex';
 
   constructor() {
-    this.selectIndex = -1;
+    const storedIndex = localStorage.getItem(this.STORAGE_KEY);
+    this.selectIndex = storedIndex !== null ? parseInt(storedIndex, 10) : -1;
+    //this.selectIndex = -1;
   }
 
   async getCourses(userId: string | null) : Promise<Course[]> {
@@ -24,8 +27,12 @@ export class CourseService {
 
       console.log(data);
       return data;
-    } catch (error: any) {
-      console.error('Error fetching courses:', error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error fetching courses:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
@@ -41,8 +48,12 @@ export class CourseService {
 
       console.log(data);
       return data;
-    } catch (error: any) {
-      console.error('Error fetching course:', error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error fetching course:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
@@ -58,10 +69,13 @@ export class CourseService {
       this.selectIndex = -1;
     else
       this.selectIndex = index;
+
+    localStorage.setItem(this.STORAGE_KEY, this.selectIndex.toString());
   }
 
   // Clears course selection; used while initializing a page
   deselectCourse(): void {
     this.selectIndex = -1;
+    localStorage.removeItem(this.STORAGE_KEY);
   }
 }

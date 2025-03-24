@@ -26,7 +26,7 @@ export class LoginService {
       });
 
       if(!response.ok) {
-        throw new Error(`POST failed: ${response.status}`)
+        throw new Error(`POST failed: ${response.status}`) // response error
       }
 
       const user: Promise<User> = await response.json() ?? {};
@@ -35,8 +35,12 @@ export class LoginService {
       console.log(user);
 
       return user;
-    } catch (error: any) {
-      console.error('Error logging in:', error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error logging in:', error.message); // network error
+      } else {
+        console.error('Unexpected error', error); // unexpected error
+      }
       throw error;
     }
   }

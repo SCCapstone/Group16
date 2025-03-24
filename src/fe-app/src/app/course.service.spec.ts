@@ -6,6 +6,14 @@ describe('CourseService', () => {
   let service: CourseService;
 
   beforeEach(() => {
+    localStorage.clear();
+
+    spyOn(localStorage, 'getItem').and.callFake((key: string) => {
+      return key === 'selectedCourseIndex' ? '-1' : null; // default return value for 'selectedCourseIndex' is -1
+    });
+    spyOn(localStorage, 'setItem').and.callFake((key: string, value: string) => {});
+    spyOn(localStorage, 'removeItem').and.callFake((key: string) => {});
+
     TestBed.configureTestingModule({});
     service = TestBed.inject(CourseService);
   });
@@ -88,6 +96,7 @@ describe('CourseService', () => {
     service.selectCourse(1);
 
     expect(service.getSelectIndex()).toBe(1);
+    expect(localStorage.setItem).toHaveBeenCalledWith('selectedCourseIndex', '1');
   });
 
   // deselectCourse()
@@ -97,6 +106,7 @@ describe('CourseService', () => {
 
     service.deselectCourse();
     expect(service.getSelectIndex()).toBe(-1);
+    expect(localStorage.removeItem).toHaveBeenCalledWith('selectedCourseIndex');
   });
 
   // selectCourse()
@@ -106,5 +116,6 @@ describe('CourseService', () => {
 
     service.selectCourse(1);
     expect(service.getSelectIndex()).toBe(-1);
+    expect(localStorage.setItem).toHaveBeenCalledWith('selectedCourseIndex', '-1');
   });
 });

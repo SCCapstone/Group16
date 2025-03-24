@@ -12,24 +12,25 @@ export class AssignmentService {
   private loginService = inject(LoginService);
 
   private assignments: Assignment[] = [];
-  private viewCompleted: boolean;
+  private static readonly VIEW_COMPLETED_KEY = 'viewCompleted';
 
   // Used to signal that the assignment list has been updated; components watching this signal can then act as desired.
   private signalValue: number = 0;
   private updateSignal: WritableSignal<number> = signal<number>(this.signalValue);
 
   constructor() {
-    this.viewCompleted = false;
-    this.fetchAssignments(this.loginService.getUserId())
-    .then((assignments: Assignment[]) => {
-      this.assignments = assignments;
-      this.updateSignal.set(++this.signalValue);  // Update signal so components know to grab data
-    })
+    if(this.loginService.getUserId()) {
+      this.fetchAssignments(this.loginService.getUserId())
+      .then((assignments: Assignment[]) => {
+        this.assignments = assignments;
+        this.updateSignal.set(++this.signalValue);  // Update signal so components know to grab data
+      })
+    }
   }
 
   // Returns assignment service's signal so that components may watch it for changes
   getUpdateSignal() {
-    return this.updateSignal();  // FUCK YOU
+    return this.updateSignal();
   }
 
   async getAssignments(userId: string | null): Promise<Assignment[]> {
@@ -51,18 +52,23 @@ export class AssignmentService {
       }
       return data;
     }
-    catch (error: any) {
-      console.error('Error fetching assignments:', error);
+    catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error fetching assignments:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
  }
 
   getViewCompleted(): boolean {
-    return this.viewCompleted;
+    return localStorage.getItem(AssignmentService.VIEW_COMPLETED_KEY) === 'true';
   }
 
   toggleViewCompleted() {
-    this.viewCompleted = !this.viewCompleted;
+    const newValue = !this.getViewCompleted();
+    localStorage.setItem(AssignmentService.VIEW_COMPLETED_KEY, String(newValue));
   }
 
   async getAssignmentById(assignmentId: string | null) : Promise<Assignment> {
@@ -77,8 +83,12 @@ export class AssignmentService {
       console.log(data);
       return data;
     }
-    catch (error: any) {
-      console.error('Error fetching assignment:', error);
+    catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error fetching assignment:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
@@ -114,8 +124,12 @@ export class AssignmentService {
         this.assignments.push(assignment);
         this.updateSignal.set(++this.signalValue);  // Notify observing components that data has updated
       }
-      catch (error: any) {
-        console.error('Error adding task:', error);
+      catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error('Error adding task:', error.message);
+        } else {
+          console.error('Unexpected error', error);
+        }
         throw error;
       }
   }
@@ -142,8 +156,12 @@ export class AssignmentService {
       }
 
       console.log(response);
-    } catch (error: any) {
-      console.error('Error editing task:', error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error editing task:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
@@ -164,8 +182,12 @@ export class AssignmentService {
       }
 
       console.log(response);
-    } catch (error: any) {
-      console.error('Error completing task:', error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error completing task:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
@@ -186,8 +208,12 @@ export class AssignmentService {
       }
 
       console.log(response);
-    } catch (error: any) {
-      console.error('Error opening task:', error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error opening task:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
@@ -206,8 +232,12 @@ export class AssignmentService {
         throw new Error(`DELETE failed: ${response.status}`)
       }
 
-    } catch(error: any) {
-      console.error('Error removing task: ', error);
+    } catch(error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error removing task:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
       throw error;
     }
   }
@@ -217,6 +247,6 @@ export class AssignmentService {
    */
   reset() {
     this.assignments = []
-    this.viewCompleted = false;
+    localStorage.removeItem('viewCompleted');
   }
 }

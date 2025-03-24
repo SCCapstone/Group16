@@ -16,6 +16,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Document(collection = "users")
 @SuppressWarnings("unused")
 public class User {
+    private final String[] CARRIERS = { "AT&T", "T-Mobile", "Verizon" };
+
+    public User(String userId, String username, String password) {
+        this.id = userId;
+        this.userName = username;
+        this.password = password;
+    }
     
     @Id
     private String id;
@@ -37,6 +44,12 @@ public class User {
     @JsonIgnore
     @Field("password")
     private String password;
+    public boolean checkPassword(String password) {
+        return this.password.equals(password);
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
     
     private String studentId;
     private String gender;
@@ -121,6 +134,8 @@ public class User {
         private String homePhone;
         private String mobilePhone;
         public String getMobilePhone() { return mobilePhone; }
+        private String carrier;
+        public String getMobileCarrier() { return carrier; }
         private String businessPhone;
         private String businessFax;
         private String email;
@@ -156,6 +171,27 @@ public class User {
         if (contact == null) return false;
         contact.mobilePhone = mobilePhone;
         return true;
+    }
+
+    public String getMobileCarrier() {
+        if (contact == null) return null;
+        return contact.getMobileCarrier();
+    }
+
+    public boolean setMobileCarrier(String carrier) {
+        if (contact == null) 
+            contact = new Contact();
+        if (carrier == null || carrier.length() == 0) return false;
+        boolean validCarrier = false;
+        for (String c : CARRIERS) {
+            var cNoSpecial = c.replaceAll("[&-]", "");
+            if (cNoSpecial.equalsIgnoreCase(carrier) || c.equalsIgnoreCase(carrier)) {
+                validCarrier = true;
+                contact.carrier = c;
+                break;
+            }
+        }
+        return validCarrier;
     }
 
 

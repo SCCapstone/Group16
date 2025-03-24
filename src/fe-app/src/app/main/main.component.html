@@ -1,21 +1,6 @@
 <p>{{ this.output }}</p> <!-- to be removed -->
 <div class="container-fluid">
- <!--remove tester buttons
-    <div class="row">
-    <div class="col-md-auto">
-        <button class="btn btn-primary bg-gradient" (click)="getUserId()">UserId Tester</button>  to be removed
-    </div>
-    <div class="col-md-auto">
-        <button class="btn btn-primary bg-gradient col-md-auto" routerLink="/login">Back to Login</button>
-    </div>
-    <div class="col-md-auto">
-        <button class="btn btn-primary bg-gradient col-md-auto" routerLink="/grades">Grades</button>
-    </div>
-    <div class="col-md-auto">
-        <button class="btn btn-primary bg-gradient col-md-auto" routerLink="/main/add-task">TEST ADD TASK</button>
-    </div>
-    </div>
--->
+
     <div class="main row bg-secondary mt-2">
         <div class="sidebar col-3">
             <div class="courses bg-light">
@@ -26,28 +11,36 @@
             </div>
         </div>
         <div class="task-info col-9">
-            <div class = "selectOptions row">
+            <div class="selectOptions row w-100 d-flex justify-content-between align-items-center">
                 <div class="col-md-auto">
-                    <a routerLink="task-list"><img src="images/task-list.png" alt="task list icon"
-                        style="width: 75px; height: auto;"/></a>
+                    <a routerLink="task-list">
+                        <img src="images/task-list.png" alt="task list icon" style="width: 75px; height: auto;" />
+                    </a>
                 </div>
                 <div class="col-md-auto">
-                    <a routerLink="calendar"><img src="images/calendar.png" alt="calendar icon"
-                        style="width: 80px; height: auto;"/></a>
+                    <a routerLink="calendar">
+                        <img src="images/calendar.png" alt="calendar icon" style="width: 80px; height: auto;" />
+                    </a>
                 </div>
                 <div class="col-md-auto">
-                    <a routerLink="grades"><img src="images/gradesIcon.png" alt="grades icon" 
-                        style="width: 75px; height: auto;"/></a>
+                    <a routerLink="grades">
+                        <img src="images/gradesIcon.png" alt="grades icon" style="width: 75px; height: auto;" />
+                    </a>
                 </div>
-                <div class="col-md-auto ms-auto" (click)="openPopup('add-task')">
-                    <img src="images/add-task.png" alt="add taskicon"
-                        style="width: 80px; height: auto; cursor: pointer;"/>
+                <div class="col-md-auto ms-auto"></div>
+                <div class="col-md-auto ms-0" style = "padding:0; margin-right:7px" (click)="openPopup('add-task')">
+                    <img src="images/add-task.png" alt="add task icon" style="width: 80px; height: auto; cursor: pointer;" />
+                </div>
+                <div class="col-md-auto ms-0" style = "padding:0;" (click)="openPopup('grade-calc')">
+                    <img src="images/calc.png" alt="calculator icon" style="width: 73px; height: auto; cursor: pointer;" />
                 </div>
             </div>
+            
             <div *ngIf="showPopup" class="popup-modal">
                 <div class="popup-content">
                   <span class="close" (click)="closePopup()">&times;</span>
                   <p *ngIf="popupType === 'add-task'"><app-add-task (closePopup)="closePopup()" (onTaskAdd)="handleNewTask($event)"></app-add-task></p>
+                  <p *ngIf="popupType === 'grade-calc'"><app-grade-calc></app-grade-calc></p>
                 </div>
               </div>
             <div class="main-view row bg-light">

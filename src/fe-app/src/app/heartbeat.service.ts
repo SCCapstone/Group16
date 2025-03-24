@@ -1,5 +1,8 @@
-import { inject, Injectable, NgZone } from '@angular/core';
+import { inject, Injectable, NgZone, PLATFORM_ID, Inject } from '@angular/core';
 import { LoginService } from './login.service';
+import { isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
+import { AssignmentService } from './assignment.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +15,14 @@ export class HeartbeatService {
   private activityTimer: any;
   private currentUserId: string | null = null;
   loginService = inject(LoginService);
-  private ngZone = inject(NgZone)
+  assignmentService = inject(AssignmentService);
+  private ngZone = inject(NgZone);
+  private router = inject(Router);
 
-  constructor() {
-    this.listenForActivity();
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.listenForActivity();
+    }
   }
 
   async startHeartbeat(userId: string) {
@@ -76,8 +83,12 @@ export class HeartbeatService {
       }
 
       //console.log(response);
-    } catch (error: any) {
-      console.error('Error sending heartbeat:', error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error sending heartbeat:', error.message); // network error
+      } else {
+        console.error('Unexpected error', error); // unexpected error
+      }
       throw error;
     }
   }
@@ -87,27 +98,39 @@ export class HeartbeatService {
       clearInterval(this.heartbeatTimer);
       this.heartbeatTimer = null;
       this.currentUserId = null;
+
+      if (isPlatformBrowser(this.platformId)) {
+        document.removeEventListener('mousemove', this.resetActivityTimer);
+        document.removeEventListener('keydown', this.resetActivityTimer);
+        document.removeEventListener('click', this.resetActivityTimer);
+      }
     }
   }
 
-  private listenForActivity() {
-    const resetActivityTimer = () => {
-      clearTimeout(this.activityTimer);
-      this.ngZone.runOutsideAngular(() => {
-        this.activityTimer = setTimeout(() => {
-          this.onInactivity();
-        }, this.activityTimeout)
-      });
-    };
+  private resetActivityTimer = () => {
+    clearTimeout(this.activityTimer);
+    this.ngZone.runOutsideAngular(() => {
+      this.activityTimer = setTimeout(() => {
+        this.onInactivity();
+      }, this.activityTimeout)
+    });
+  };
 
-    //document.addEventListener('mousemove', resetActivityTimer);
-    //document.addEventListener('keydown', resetActivityTimer);
-    //document.addEventListener('click', resetActivityTimer);
+  private listenForActivity() {
+    this.resetActivityTimer();
+
+    if (isPlatformBrowser(this.platformId)) {
+      document.addEventListener('mousemove', this.resetActivityTimer);
+      document.addEventListener('keydown', this.resetActivityTimer);
+      document.addEventListener('click', this.resetActivityTimer);
+    }
   }
 
   private onInactivity() {
     console.log('User is inactive for too long');
     this.loginService.signOut();
+    this.assignmentService.reset();
     this.stopHeartbeat();
+    this.router.navigate(['/'])
   }
 }
