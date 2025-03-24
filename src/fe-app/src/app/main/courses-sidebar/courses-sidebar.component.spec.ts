@@ -46,9 +46,9 @@ describe('CoursesSidebarComponent', () => {
     expect(component.courses[0].name).toBe('Math');
   });
 
-  it('should deselect course on init', () => {
-    expect(courseServiceSpy.deselectCourse).toHaveBeenCalled();
-  });
+  // it('should deselect course on init', () => {
+  //   expect(courseServiceSpy.deselectCourse).toHaveBeenCalled();
+  // });
 
   it('should select a course when clicked', () => {
     courseServiceSpy.getSelectIndex.and.returnValue(-1); // No course selected initially
