@@ -38,7 +38,8 @@ public class RequestHandler {
     private static HeartbeatController heartbeatController;
 
     /**
-     * This method is to login or register a new user
+     * This method is to login or register a new user.
+     * See {@link group16.be.RequestHandlerTests#testLogin()} for related tests.
      * @param username 
      * @param password 
      * @return the user's ID if login was successful
@@ -79,7 +80,8 @@ public class RequestHandler {
     }
 
     /**
-     * This method is to get the user's courses
+     * This method is to get the user's courses.
+     * See {@link group16.be.RequestHandlerTests#testGetCourses()} for related tests.
      * @param id the user's ID
      * @return the user's ArrayList of courses
      * @throws ResponseStatusException if the user ID is missing or invalid
@@ -101,6 +103,7 @@ public class RequestHandler {
 
     /**
      * Gets course by Course Id
+     * See {@link group16.be.RequestHandlerTests#testFindCourseById()} for related tests.
      * @param courseId
      * @return
      */
@@ -119,6 +122,7 @@ public class RequestHandler {
 
     /**
      * This method returns a json file representing the user's data.
+     * See {@link group16.be.RequestHandlerTests#testGetUser()} for related tests.
      * @param userId
      * @return the user object
      * @throws ResponseStatusException if the user ID is missing or invalid, if the user is not found, or if there are multiple users with the same ID
@@ -138,6 +142,7 @@ public class RequestHandler {
 
     /**
      * Get all assignments from the database
+     * See {@link group16.be.RequestHandlerTests#testGetAssignments()} for related tests.
      * @param userId the user's ID
      * @return a ArrayList of all assignments
      */
@@ -158,6 +163,7 @@ public class RequestHandler {
 
     /**
      * Get assignment by ID
+     * See {@link group16.be.RequestHandlerTests#testFindAssignmentById()} for related tests.
      * @param assignmentId the assignment's ID
      * @return the assignment
      */
@@ -174,6 +180,7 @@ public class RequestHandler {
 
     /**
      * This method is to complete assignments that are user made or not yet marked complete by blackboard
+     * See {@link group16.be.RequestHandlerTests#testCompleteAssignment()} for related tests.
      * @param assID Assignment ID
      * @return if the assignment was successfully marked as complete
      * @Unimplemented This method is not yet implemented.
@@ -186,7 +193,6 @@ public class RequestHandler {
         
         //pass the assignment ID to the database to mark the assignment as completed
         return setAssignmentComplete(assID, true);
-        
     }
 
     /**
@@ -207,6 +213,7 @@ public class RequestHandler {
 
     /**
      * This method is to create assignments without a specified id
+     * See {@link group16.be.ModifyDatabaseTests#testAddAssignment()} for related tests.
      * @param title title of assignment
      * @param description short description for assignment
      * @param dueDate due date time for assignment
@@ -248,6 +255,7 @@ public class RequestHandler {
 
     /**
      * Edit Assignment's Details
+     * See {@link group16.be.ModifyDatabaseTests#testEditAssignment()} for related tests.
      * @param userId
      * @return
      */
@@ -285,6 +293,11 @@ public class RequestHandler {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving assignment");
     }
 
+    /**
+     * Remove an assignment from the database
+     * @param assignmentId
+     * @return
+     */
     @CrossOrigin
     @DeleteMapping("/api/removeAssignment") 
     public ResponseEntity<?> removeAssignment(@RequestParam(value = "assignmentId", defaultValue = "NULL") String assignmentId) {
@@ -307,6 +320,7 @@ public class RequestHandler {
 
     /**
      * Get all grades for current user
+     * See {@link group16.be.RequestHandlerTests#testGetGrades()} for related tests.
      * @param userId the user's ID
      * @return 
      */
@@ -326,6 +340,7 @@ public class RequestHandler {
 
     /**
      * Set grade for a user
+     * See {@link group16.be.ModifyDatabaseTests#testSetGrade()} for related tests.
      * @param userId the user's ID
      * @param courseId the course's ID
      * @param assignmentId the assignment's ID
@@ -356,7 +371,7 @@ public class RequestHandler {
 
     /**
      * Edits the user's password by updating it in the database.
-     *
+     * See {@link group16.be.ModifyDatabaseTests#testEditPassword()} for related tests.
      * @param oldPassword the user's current password
      * @param newPassword the user's new password
      * @Unimplemented This method is not yet implemented.
