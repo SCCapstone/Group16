@@ -24,7 +24,7 @@ export class CoursesSidebarComponent {
     })
 
     // Ensure no course is selected on page load
-    this.courseService.deselectCourse();
+    //this.courseService.deselectCourse();
   }
 
   // Updates selectIndex to clicked-on course or deselects it if already selected
@@ -43,5 +43,5 @@ export class CoursesSidebarComponent {
       return "course selected";
     return "course";
   }
-  
+
 }
