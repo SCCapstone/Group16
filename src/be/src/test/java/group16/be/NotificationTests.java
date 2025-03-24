@@ -4,13 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class NotificationTests {
-    private final String MONGO_URI = System.getenv("MONGO_URI");
-    private final String[] COLLECTIONS = { "assignments", "courses", "users", "grades" };
+    // private final String MONGO_URI = System.getenv("MONGO_URI");
+    // private final String[] COLLECTIONS = { "assignments", "courses", "users", "grades" };
 
 	/* Listener Test Variables */
 	private final String REAL_USERID = "673fdd30cc2da4c3a3514fb7";

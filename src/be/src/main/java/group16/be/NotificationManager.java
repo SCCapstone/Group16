@@ -1,8 +1,5 @@
 package group16.be;
 
-import java.io.File;
-import java.io.FileWriter;
-
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
