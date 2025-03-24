@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.Async;
 
 import group16.be.db.Assignment;
 import group16.be.db.Course;
+import group16.be.db.User;
 
 @SpringBootTest
 public class RequestHandlerTests {
@@ -113,9 +114,32 @@ public class RequestHandlerTests {
 
     @Async
     @Test
-    void testCompleteAssignment() {
-        // Not implemented yet.
-        assertTrue(true);
+    void testGetUser() {
+        // Correct userID
+        var userResponse = handler.getUser(EXPECTED_ID);
+        assertTrue(userResponse != null);
+        assertTrue(userResponse.getStatusCode() == HttpStatus.OK);
+        assertTrue(userResponse.getBody() != null);
+        assertTrue(userResponse.getBody() instanceof User);
+        User user = (User) userResponse.getBody();
+        assertTrue(user != null);
+        assertEquals(user.getId(), EXPECTED_ID);
+
+        // Tests null user ID
+        var exception = handler.getUser(null);
+        // Verify the exception contains HttpStatus.BAD_REQUEST
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+
+        // Tests empty user ID
+        var exception2 = handler.getUser("");
+        // Verify the exception contains HttpStatus.BAD_REQUEST
+        assertEquals(HttpStatus.BAD_REQUEST, exception2.getStatusCode());
+
+        // Tests abnormally large user ID
+        String largeString = "A".repeat(1000000); // 1 million 'A's
+        var exception3 = handler.getUser(largeString);
+        // Verify the exception contains HttpStatus.NOT_FOUND
+        assertEquals(HttpStatus.BAD_REQUEST, exception3.getStatusCode());
     }
 
     @Async
@@ -183,6 +207,8 @@ public class RequestHandlerTests {
         assertFalse(scraper.isAssignmentId("123"));
     }
 
+
+    // TODO: Redo, this tests the scraper not the handler
     @Test 
     void testFindCourseById() {
         // Tests findCourseById
@@ -192,6 +218,7 @@ public class RequestHandlerTests {
         assertTrue(scraper.findByCourseId("123") == null);
     }
 
+    // TODO: Redo, this tests the scraper not the handler
     @Test
     void testFindAssignmentById() {
         // Tests findCourseById

@@ -24,6 +24,7 @@ public class ModifyDatabaseTests {
     private final String MOCK_USERID = "1234";
     private final String MOCK_COURSEID = "5678";
     private final String MOCK_ASSIGNMENTID = "91011";
+    private final String MOCK_GRADEID = "121314";
     private final String MOCK_TITLE = "Title";
     private final String MOCK_TITLE2 = "Title2";
     private final String MOCK_DESCRIPTION = "Description";
@@ -96,6 +97,30 @@ public class ModifyDatabaseTests {
 
     @Async
     @Test
+    void testSetGrade() {
+        var assignment = new Assignment(MOCK_USERID, MOCK_COURSEID, MOCK_TITLE, MOCK_DESCRIPTION, MOCK_DUEDATE, true);
+        Mockito.when(scraper.findByAssignmentId(MOCK_ASSIGNMENTID)).thenReturn(assignment);
+        // Change the grade of the mock user.
+        var grade = new Grade(MOCK_USERID, MOCK_COURSEID, MOCK_ASSIGNMENTID, 100);
+        Mockito.when(scraper.getGradeByGradeId(MOCK_GRADEID)).thenReturn(grade);
+
+        var response = requestHandler.setGrade(MOCK_GRADEID, 95);
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        grade = (Grade) response.getBody();
+        assertTrue(grade != null);
+        assertEquals(grade.getPercent(), 95);
+
+        // Test setting an invalid percent
+        var invalidResponse = requestHandler.setGrade(MOCK_GRADEID, -1);
+        assertEquals(invalidResponse.getStatusCode(), HttpStatus.BAD_REQUEST);
+
+        // Test setting a percent too small to be a double
+        var invalidResponse2 = requestHandler.setGrade(MOCK_GRADEID, Double.MIN_VALUE - 1);
+        assertEquals(invalidResponse2.getStatusCode(), HttpStatus.BAD_REQUEST);
+    }
+
+    @Async
+    @Test
     void testEditPassword() {
         // Change the password of the mock user.
         var user = new User(MOCK_USERID, MOCK_USERID, MOCK_PASSWORD);
@@ -106,6 +131,21 @@ public class ModifyDatabaseTests {
         user = (User) response.getBody();
         assertTrue(user != null);
         assertTrue(user.checkPassword(MOCK_PASSWORD2));
+    }
+
+    @Async
+    @Test
+    void testCompleteAssignment() {
+        var assignment = Mockito.spy(
+            new Assignment(MOCK_USERID, MOCK_COURSEID, MOCK_TITLE, MOCK_DESCRIPTION, MOCK_DUEDATE, false)
+        );
+        Mockito.when(scraper.findByAssignmentId(MOCK_ASSIGNMENTID)).thenReturn(assignment);
+        Mockito.when(assignment.getId()).thenReturn(MOCK_ASSIGNMENTID);
+        
+        // Change the completed status of the mock assignment.
+        var response = requestHandler.completeAssignment(MOCK_ASSIGNMENTID);
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertTrue(assignment.isComplete()); // Check that the assignment is marked as completed
     }
 
     @Async
