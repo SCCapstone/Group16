@@ -248,4 +248,65 @@ describe('AssignmentService', () => {
     expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/removeAssignment?assignmentId=456',
     Object({ method: 'DELETE' }));
   });
+
+  // getViewCompleted()
+  it('should return false as default value for viewCompleted when not set in localStorage', () => {
+    localStorage.removeItem('viewCompleted'); // Ensure no value is set
+    expect(service.getViewCompleted()).toBeFalse();
+  });
+
+  it('should return true when viewCompleted is set to true in localStorage', () => {
+    localStorage.setItem('viewCompleted', 'true');
+    expect(service.getViewCompleted()).toBeTrue();
+  });
+
+  it('should return false when viewCompleted is set to false in localStorage', () => {
+    localStorage.setItem('viewCompleted', 'false');
+    expect(service.getViewCompleted()).toBeFalse();
+  });
+
+  // toggleViewCompleted()
+  it('should toggle viewCompleted from false to true', () => {
+    localStorage.setItem('viewCompleted', 'false'); // Initial value is false
+    service.toggleViewCompleted(); // Toggle should set it to true
+
+    expect(service.getViewCompleted()).toBeTrue(); // After toggle, it should be true
+    expect(localStorage.getItem('viewCompleted')).toBe('true'); // Check if localStorage is updated correctly
+  });
+
+  it('should toggle viewCompleted from true to false', () => {
+    localStorage.setItem('viewCompleted', 'true'); // Initial value is true
+    service.toggleViewCompleted(); // Toggle should set it to false
+
+    expect(service.getViewCompleted()).toBeFalse(); // After toggle, it should be false
+    expect(localStorage.getItem('viewCompleted')).toBe('false'); // Check if localStorage is updated correctly
+  });
+
+  // reset()
+  it('should reset assignments and viewCompleted, and clear localStorage', () => {
+    const mockAssignment: Assignment = {
+      userId: 'user123',
+      courseId: 'course456',
+      title: 'Sample Assignment',
+      availability: {
+        adaptiveRelease: {
+          end: new Date('2025-12-31'),
+        },
+      },
+      userCreated: true,
+    };
+
+    // Set initial values
+    service['assignments'] = [mockAssignment];
+    localStorage.setItem('viewCompleted', 'true');
+
+    expect(service['assignments']).toEqual([mockAssignment]);
+    expect(service.getViewCompleted()).toBeTrue();
+
+    service.reset();
+
+    expect(service['assignments']).toEqual([]);
+    expect(service.getViewCompleted()).toBeFalse();
+    expect(localStorage.getItem('viewCompleted')).toBeNull();
+  });
 });

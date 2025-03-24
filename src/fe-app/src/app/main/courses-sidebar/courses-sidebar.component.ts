@@ -24,7 +24,7 @@ export class CoursesSidebarComponent {
       });
 
     // Ensure no course is selected on page load
-    this.courseService.deselectCourse();
+    //this.courseService.deselectCourse();
   }
 
   selectCourse(index: number): void {
