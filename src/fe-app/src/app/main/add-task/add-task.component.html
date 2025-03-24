@@ -33,22 +33,39 @@
         <p>Due Date: {{ due }}</p>
     }
 </div>-->
-
-<form [formGroup]="addTaskForm" (ngSubmit)="addTask()">
-  <label for="title">Title:</label>
-  <input id="title" type="text" formControlName="title">
-
-  <label for="description">Description:</label>
-  <textarea id="description" formControlName="description" rows="6" cols="60"></textarea>
-
-  <label for="due">Due Date:</label>
-  <input id="due" type="date" formControlName="due">
-
-  <label for="course">Course:</label>
-  <select id="course" formControlName="course">
-    <option value="" disabled></option>
-    <option *ngFor="let course of courses" [value]="course.id">{{ course.name }}</option>
-  </select>
-
-  <button type="submit">Add Task</button>
-</form>
+<div *ngIf="showFormPopup" class="popup-modal">
+    <div class="popup-content">
+      <form [formGroup]="addTaskForm" (ngSubmit)="addTask()">
+        <label for="title">Title:</label>
+        <input id="title" type="text" formControlName="title">
+      
+        <label for="description">Description:</label>
+        <textarea id="description" formControlName="description" rows="6" cols="60"></textarea>
+      
+        <label for="due">Due Date:</label>
+        <input id="due" type="date" formControlName="due">
+      
+        <label for="course">Course:</label>
+        <select id="course" formControlName="course">
+          <option value="" disabled></option>
+          <option *ngFor="let course of courses" [value]="course.id">{{ course.name }}</option>
+        </select>
+  
+        <button type="submit">Add Task</button>
+      </form>
+    </div>
+  </div>
+  
+  <div *ngIf="showTaskPopup" class="popup-modal">
+    <div class="popup-content">
+      <p *ngIf="popupType === 'new-task'">
+        <h3>New Task Added:</h3>
+        <div><span class="task-title">Title:</span> <br> <span class="task-value">{{ newTask2?.title }}</span></div>
+        <br><div><span class="task-title">Description:</span> <br> <span class="task-value">{{ newTask2?.description }}</span></div>
+        <br><div><span class="task-title">Due Date:</span> <br> <span class="task-value">{{ newTask2?.availability?.adaptiveRelease?.end | date }}</span></div>
+        <br><div><span class="task-title">Course:</span> <br> <span class="task-value">{{ courseName }} </span></div>
+    </div>
+  </div>
+  
+ 
+  

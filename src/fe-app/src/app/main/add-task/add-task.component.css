@@ -18,3 +18,18 @@ button {
   margin-top: 10px;
   margin-left: 10px;
 }
+
+h3{
+  font-weight: bold;
+
+}
+
+.task-title{
+  font-size: 22px;
+  line-height: normal;
+}
+
+.task-value{
+  color:#c30000;
+}
+
