@@ -31,7 +31,7 @@ export class AssignmentService {
 
   // Returns assignment service's signal so that components may watch it for changes
   getUpdateSignal() {
-    return this.updateSignal();  // FUCK YOU
+    return this.updateSignal();
   }
 
   async getAssignments(userId: string | null): Promise<Assignment[]> {
