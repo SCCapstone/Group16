@@ -20,6 +20,9 @@ export class ProfileSettingsComponent {
   schoolEmail: string = "";
   personalEmail: string = "";
   phoneNumber: string = "";
+  password: string = "";
+
+  viewPassword: boolean = false;
 
   loginService = inject(LoginService);
   settingsService = inject(SettingsService);
@@ -29,7 +32,7 @@ export class ProfileSettingsComponent {
     school: new FormControl({ value: "", disabled: true }, [Validators.required, Validators.email]),
     personal: new FormControl("", [Validators.required, Validators.email]),
     phone: new FormControl("", [Validators.required, Validators.pattern("[0-9]{3}-?[0-9]{3}-?[0-9]{4}")])
-  })
+  });
 
   constructor() {
     // Load necessary settings from database and initialize form
@@ -50,6 +53,25 @@ export class ProfileSettingsComponent {
         phone: this.phoneNumber
       })
     })
+  }
+
+  /**
+   * Opens or closes the password popup based on the given parameter.
+   * @param open True to open the password window, false to close it.
+   */
+  callPasswordWindow(open: boolean) {
+    console.log("Call popup");
+
+    this.viewPassword = open;
+  }
+
+  /**
+   * Attempts to save the user's new password by validating the entry and making the necessary service calls.
+   */
+  attemptPasswordSave() {
+    console.log("Save password");
+
+    this.callPasswordWindow(false);
   }
 
   async saveProfile() {

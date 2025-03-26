@@ -11,6 +11,24 @@
     <label for="phone-number">Phone Number:</label>
     <input type="tel" id="phone-number" formControlName="phone"/>
 
+    <a (click)="callPasswordWindow(true)">Update Password</a>
+    @if(this.viewPassword) {
+        <!-- Enter current password to validate? -->
+        
+        <label for="password">New Password:</label>
+        <input type="password" id="password" formControlName="password" />
+
+        <label for="password-re">Retype Password:</label>
+        <input type="password" id="password-re" formControlName="passwordRetype" />
+
+        <div class="save-close">
+            <button (click)="callPasswordWindow(false)">Close</button>
+            <button (click)="attemptPasswordSave()">Save</button>
+        </div>
+
+        <p>TODO make popup</p>
+    }
+
     <button type="submit" [disabled]="!this.profileForm.valid">Save</button>
 </form>
 
