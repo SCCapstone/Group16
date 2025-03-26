@@ -15,13 +15,13 @@ import { SettingsService } from '../../settings.service';
 })
 export class ProfileSettingsComponent {
   
-  // TODO probably don't need these anymore with reactive forms, but too lazy to get rid of them rn
   preferredName: string = "";
   schoolEmail: string = "";
   personalEmail: string = "";
   phoneNumber: string = "";
-  password: string = "";
 
+  password: string = "";
+  passwordRetype: string = "";
   viewPassword: boolean = false;
 
   loginService = inject(LoginService);
@@ -31,7 +31,9 @@ export class ProfileSettingsComponent {
     name: new FormControl("", Validators.required),
     school: new FormControl({ value: "", disabled: true }, [Validators.required, Validators.email]),
     personal: new FormControl("", [Validators.required, Validators.email]),
-    phone: new FormControl("", [Validators.required, Validators.pattern("[0-9]{3}-?[0-9]{3}-?[0-9]{4}")])
+    phone: new FormControl("", [Validators.required, Validators.pattern("[0-9]{3}-?[0-9]{3}-?[0-9]{4}")]),
+    password: new FormControl(""),
+    passwordRetype: new FormControl("")
   });
 
   constructor() {
@@ -50,7 +52,9 @@ export class ProfileSettingsComponent {
         name: this.preferredName,
         school: this.schoolEmail,
         personal: this.personalEmail,
-        phone: this.phoneNumber
+        phone: this.phoneNumber,
+        password: this.password,
+        passwordRetype: this.passwordRetype
       })
     })
   }
@@ -74,22 +78,25 @@ export class ProfileSettingsComponent {
     this.callPasswordWindow(false);
   }
 
+  /**
+   * Attempts to save profile information, excluding password information
+   */
   async saveProfile() {
 
     // Update preferred name
-    if (this.profileForm.value.name != null) {
+    if (this.profileForm.value.name != null && this.profileForm.value.name != this.preferredName) {
       this.preferredName = this.profileForm.value.name;
       await this.settingsService.updatePreferredName(this.loginService.getUserId(), this.preferredName);
     }
 
     // Update personal email
-    if (this.profileForm.value.personal != null) {
+    if (this.profileForm.value.personal != null && this.profileForm.value.personal != this.personalEmail) {
       this.personalEmail = this.profileForm.value.personal;
       await this.settingsService.updatePersonalEmail(this.loginService.getUserId(), this.personalEmail);
     }
 
     // Update phone number
-    if (this.profileForm.value.phone != null) {
+    if (this.profileForm.value.phone != null && this.profileForm.value.phone != this.phoneNumber) {
       this.phoneNumber = this.profileForm.value.phone;
       this.phoneNumber = this.phoneNumber.replaceAll("-", "");  // Remove dashes from user input
       await this.settingsService.updatePhoneNumber(this.loginService.getUserId(), this.phoneNumber);
