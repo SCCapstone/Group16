@@ -24,6 +24,12 @@ export class AddTaskComponent {
   courses: Course[] = [];
   route: ActivatedRoute = inject(ActivatedRoute);
   router = inject(Router);
+  showPopup = false;
+  newTask2: Assignment | null = null;
+  popupType: 'new-task' | null = null;
+  showFormPopup = true;   
+  showTaskPopup = false;    
+  courseName: String | undefined;
 
   addTaskForm = new FormGroup ({
     title: new FormControl('', Validators.required),
@@ -47,6 +53,7 @@ export class AddTaskComponent {
     })
   }
 
+
   async addTask() {
     console.log("AddTaskComponent - ADD TASK");
 
@@ -56,6 +63,8 @@ export class AddTaskComponent {
     }
 
     let dueDate: Date | null = null;
+
+
 
     if (this.addTaskForm.value.due) {
       const selectedDate = new Date(this.addTaskForm.value.due);
@@ -86,11 +95,45 @@ export class AddTaskComponent {
         userCreated: false
       };
 
+      this.newTask2 = {
+        id: crypto.randomUUID(),
+        userId: this.loginService.getUserId() ?? '',
+        title: this.addTaskForm.value.title ?? '',
+        description: this.addTaskForm.value.description ?? '',
+        courseId: this.addTaskForm.value.course ?? '',
+        complete: false,
+        availability: {
+          adaptiveRelease: { end: dueDate ?? new Date() }
+        },
+        userCreated: false
+      };
+      this.courseName = this.getCourseNameByID(this.newTask2.courseId);
+      console.log("new task course name: ", this.getCourseNameByID(this.newTask2.courseId));
       console.log('Emitting new task:', newTask);
       this.onTaskAdd.emit(newTask);
-      this.closePopup.emit();
-    } catch (error) {
-      console.error('Add task failed', error);
-    }
+     this.showFormPopup = false;
+
+     this.showTaskPopup = true;
+     this.popupType = 'new-task';
+
+   } catch (error) {
+     console.error('Add task failed', error);
+   }
+ }
+
+ closeFormPopup(): void {
+   this.showFormPopup = false;
+ }
+
+ closeTaskPopup(): void {
+   this.showTaskPopup = false;
+ }
+
+ getCourseNameByID(id: String): String {
+  for (const course of this.courses) {
+    if (course.id === id)
+      return course.name
   }
+  return "Unknown";
+}
 }

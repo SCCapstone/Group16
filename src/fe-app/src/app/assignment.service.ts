@@ -12,14 +12,13 @@ export class AssignmentService {
   private loginService = inject(LoginService);
 
   private assignments: Assignment[] = [];
-  private viewCompleted: boolean;
+  private static readonly VIEW_COMPLETED_KEY = 'viewCompleted';
 
   // Used to signal that the assignment list has been updated; components watching this signal can then act as desired.
   private signalValue: number = 0;
   private updateSignal: WritableSignal<number> = signal<number>(this.signalValue);
 
   constructor() {
-    this.viewCompleted = false;
     if(this.loginService.getUserId()) {
       this.fetchAssignments(this.loginService.getUserId())
       .then((assignments: Assignment[]) => {
@@ -64,11 +63,12 @@ export class AssignmentService {
  }
 
   getViewCompleted(): boolean {
-    return this.viewCompleted;
+    return localStorage.getItem(AssignmentService.VIEW_COMPLETED_KEY) === 'true';
   }
 
   toggleViewCompleted() {
-    this.viewCompleted = !this.viewCompleted;
+    const newValue = !this.getViewCompleted();
+    localStorage.setItem(AssignmentService.VIEW_COMPLETED_KEY, String(newValue));
   }
 
   async getAssignmentById(assignmentId: string | null) : Promise<Assignment> {
@@ -247,6 +247,6 @@ export class AssignmentService {
    */
   reset() {
     this.assignments = []
-    this.viewCompleted = false;
+    localStorage.removeItem('viewCompleted');
   }
 }
