@@ -5,14 +5,30 @@
     <div class="assignment-column">{{ courseName.split("-")[0] }}</div>
     <div class="assignment-column" style = "color: #0000EE; text-decoration: underline; text-decoration-color: #0000EE; cursor: pointer;"><a (click)="openPopup('task')" >{{ assignment.title }}</a></div>
     <div class="assignment-column">{{ assignment.availability.adaptiveRelease.end | date }}</div>
+  
+    <div class="assignment-column">
+      <div style="display: flex; justify-content: center; gap: 40px;">
+        <a (click)="openPopup('edit-task')" style="cursor: pointer;">
+          <img *ngIf="assignment.userCreated" src="images/pencil.png" alt="pencil icon" style="width: 25px; height: auto;"/>
+        </a>
+        <a (click)="removeTask()" style="cursor: pointer;">
+          <img *ngIf="assignment.userCreated" src="images/x.png" alt="x icon" style="width: 20px; height: auto;"/>
+        </a>
+      </div>
+    </div>
+  
+    
+  <!--
     <div class="assignment-column">
         <a (click)="openPopup('edit-task')">
             <img *ngIf="assignment.userCreated" src="images/pencil.png" alt="pencil icon" style="width: 25px; height: auto; margin-left: 15px;"/>
         </a>
     </div>
     <div class="assignment-column">
-      <a (click)="removeTask()"><div *ngIf="assignment.userCreated" style = "cursor: pointer;">X</div></a>
+      <a (click)="removeTask()"><div *ngIf="assignment.userCreated" style = "cursor: pointer;"><img src="images/x.jpg" alt="x icon" style = "width: 20px; height: auto;"></div></a>
     </div>
+  -->
+    
 </div>
 
 <div *ngIf="showPopup" class="popup-modal">
