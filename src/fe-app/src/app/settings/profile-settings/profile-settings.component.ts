@@ -20,9 +20,9 @@ export class ProfileSettingsComponent {
   personalEmail: string = "";
   phoneNumber: string = "";
 
-  password: string = "";
-  passwordRetype: string = "";
   viewPassword: boolean = false;
+  passwordError: string = "";
+  passwordConfirm: boolean = false;
 
   loginService = inject(LoginService);
   settingsService = inject(SettingsService);
@@ -33,6 +33,7 @@ export class ProfileSettingsComponent {
     personal: new FormControl("", [Validators.required, Validators.email]),
     phone: new FormControl("", [Validators.required, Validators.pattern("[0-9]{3}-?[0-9]{3}-?[0-9]{4}")]),
     password: new FormControl(""),
+    newPassword: new FormControl(""),
     passwordRetype: new FormControl("")
   });
 
@@ -53,8 +54,9 @@ export class ProfileSettingsComponent {
         school: this.schoolEmail,
         personal: this.personalEmail,
         phone: this.phoneNumber,
-        password: this.password,
-        passwordRetype: this.passwordRetype
+        password: "",
+        newPassword: "",
+        passwordRetype: ""
       })
     })
   }
@@ -74,6 +76,27 @@ export class ProfileSettingsComponent {
    */
   attemptPasswordSave() {
     console.log("Save password");
+
+    if (this.profileForm.value.newPassword != this.profileForm.value.passwordRetype) {
+      this.passwordError = "Passwords do not match"
+      return
+    }
+
+    // TODO decide on inherent password conditions and implement
+    if (false) {
+      this.passwordError = "TODO";
+      return;
+    }
+
+
+    // Note: "as string | null" is necessary because typescript randomly allows it to also be undefined and it ruins everything 
+    this.settingsService.updatePassword(
+      this.loginService.getUserId(),
+      this.profileForm.value.password as string | null,
+      this.profileForm.value.newPassword as string | null
+    );
+
+    // TODO handle request errors
 
     this.callPasswordWindow(false);
   }

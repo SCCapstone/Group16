@@ -29,34 +29,6 @@ export class SettingsService {
     throw error;
   }
 
-  async updateNotificationSettings(userId: string | null, schoolEmail: boolean, personalEmail: boolean, sms: boolean): Promise<void> {
-    const queryParams = new URLSearchParams({
-      userId: userId ?? "NULL",
-      email: String(personalEmail) ?? "NULL",
-      sms: String(sms) ?? "NULL",
-      institutionEmail: String(schoolEmail) ?? "NULL"
-    }).toString();
-
-    try {
-      const response = await fetch(`${this.url}updateNotificationSettings?${queryParams}`, {
-        method: 'POST'
-      });
-
-      if(!response.ok) {
-        throw new Error(`POST failed: ${response.status}`);
-      }
-      console.log(response);
-    }
-    catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error('Error updating notification settings:', error.message);
-      } else {
-        console.error('Unexpected error', error);
-      }
-      throw error;
-    }
-  }
-
   async updatePreferredName(userId: string | null, updatedName: string | null): Promise<void> {
     const queryParams = new URLSearchParams({
       userId: userId ?? "NULL",
@@ -125,6 +97,62 @@ export class SettingsService {
     catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Error updating Phone Number:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
+      throw error;
+    }
+  }
+
+  async updatePassword(userId: string | null, currentPassword: string | null, newPassword: string | null): Promise<void> {
+    const queryParams = new URLSearchParams({
+      userId: userId ?? "NULL",
+      oldPassword: currentPassword ?? "NULL",
+      newPassword: newPassword ?? "NULL"
+    }).toString();
+
+    console.log("attempting password update with values " + currentPassword + ", " + newPassword);
+
+    try {
+      const response = await fetch (`${this.url}editPassword?${queryParams}`, {
+        method: 'PUT'
+      });
+      if(!response.ok) {
+        throw new Error(`POST failed: ${response.status}`);
+      }
+      console.log(response);
+    }
+    catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error updating password: ', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
+      throw error;
+    }
+  }
+
+  async updateNotificationSettings(userId: string | null, schoolEmail: boolean, personalEmail: boolean, sms: boolean): Promise<void> {
+    const queryParams = new URLSearchParams({
+      userId: userId ?? "NULL",
+      email: String(personalEmail) ?? "NULL",
+      sms: String(sms) ?? "NULL",
+      institutionEmail: String(schoolEmail) ?? "NULL"
+    }).toString();
+
+    try {
+      const response = await fetch(`${this.url}updateNotificationSettings?${queryParams}`, {
+        method: 'POST'
+      });
+
+      if(!response.ok) {
+        throw new Error(`POST failed: ${response.status}`);
+      }
+      console.log(response);
+    }
+    catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error updating notification settings:', error.message);
       } else {
         console.error('Unexpected error', error);
       }
