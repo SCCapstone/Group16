@@ -114,20 +114,21 @@ export class SettingsService {
     console.log("attempting password update with values " + currentPassword + ", " + newPassword);
 
     try {
-      const response = await fetch (`${this.url}editPassword?${queryParams}`, {
+      const response = await fetch(`${this.url}editPassword?${queryParams}`, {
         method: 'PUT'
       });
+
       if(!response.ok) {
-        throw new Error(`POST failed: ${response.status}`);
+        console.log("DEBUG: ERROR UPDATING PASSWORD (SettingsService::updatePassword)");
+        throw new Error(await response.text());
       }
-      console.log(response);
     }
     catch (error: unknown) {
-      if (error instanceof Error) {
+      console.log("DEBUG 2: ERROR UPDATING PASSWORD (SettingsService::updatePassword -> catch)");
+      if (error instanceof Error)
         console.error('Error updating password: ', error.message);
-      } else {
+      else
         console.error('Unexpected error', error);
-      }
       throw error;
     }
   }

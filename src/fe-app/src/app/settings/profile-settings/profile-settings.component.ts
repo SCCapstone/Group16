@@ -74,7 +74,7 @@ export class ProfileSettingsComponent {
   /**
    * Attempts to save the user's new password by validating the entry and making the necessary service calls.
    */
-  attemptPasswordSave() {
+  async attemptPasswordSave() {
     console.log("Save password");
 
     if (this.profileForm.value.newPassword != this.profileForm.value.passwordRetype) {
@@ -82,22 +82,22 @@ export class ProfileSettingsComponent {
       return
     }
 
-    // TODO decide on inherent password conditions and implement
-    if (false) {
-      this.passwordError = "TODO";
-      return;
+    // Note: "as string | null" is necessary because typescript randomly allows it to also be undefined and it ruins everything
+    const oldPassword = this.profileForm.value.password as string | null;
+    const newPassword = this.profileForm.value.newPassword as string | null;
+    try {
+      await this.settingsService.updatePassword(this.loginService.getUserId(), oldPassword, newPassword);
+    }
+    catch (error: unknown) {
+      console.log("DEBUG 3: ERROR UPDATING PASSWORD (ProfileSettingsComponent::attemptPasswordSave)");
+      if (error instanceof Error)
+        this.passwordError = error.message;
+      else
+        this.passwordError = "Unexpected error, please try again later";
+      return
     }
 
-
-    // Note: "as string | null" is necessary because typescript randomly allows it to also be undefined and it ruins everything 
-    this.settingsService.updatePassword(
-      this.loginService.getUserId(),
-      this.profileForm.value.password as string | null,
-      this.profileForm.value.newPassword as string | null
-    );
-
-    // TODO handle request errors
-
+    this.passwordConfirm = true;
     this.callPasswordWindow(false);
   }
 
