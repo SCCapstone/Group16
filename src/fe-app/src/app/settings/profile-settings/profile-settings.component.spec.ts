@@ -27,12 +27,12 @@ describe('ProfileSettingsComponent', () => {
       institutionEmail: "michael@sc.edu"
     },
     settings: { emailNotifications: false, institutionEmailNotifications: false, smsNotifications: false }
-  };
+  } as any;
   const MOCK_PROMISE: Promise<UserInfo> = Promise.resolve(MOCK_USER_INFO);  // Create a promise and resolve it because component constructor uses .then(...)
   const MOCK_PHONE_AUGMENTED = "012-345-6789"
 
   beforeEach(async () => {
-    
+
     // Note: object notation in createSpyObj() is similar to list but allows mock return values to be defined alongside spy object
     mockLoginService = jasmine.createSpyObj(LoginService, { getUserId: MOCK_USER_INFO.id });
     mockSettingsService = jasmine.createSpyObj(SettingsService, {
@@ -41,7 +41,7 @@ describe('ProfileSettingsComponent', () => {
       updatePersonalEmail: undefined,
       updatePhoneNumber: undefined
     });
-    
+
     await TestBed.configureTestingModule({
       imports: [ProfileSettingsComponent],
       providers: [
