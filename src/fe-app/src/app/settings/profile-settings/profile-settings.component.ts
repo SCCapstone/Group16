@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -37,7 +37,7 @@ export class ProfileSettingsComponent {
     passwordRetype: new FormControl("")
   });
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     // Load necessary settings from database and initialize form
     this.settingsService.getUserInfo(this.loginService.getUserId()).then((userInfo: UserInfo) => {
       this.preferredName = userInfo.name.preferredDisplayName;
@@ -104,6 +104,7 @@ export class ProfileSettingsComponent {
     }
 
     this.passwordConfirm = true;
+    this.cdr.detectChanges();
     this.callPasswordWindow(false);
   }
 

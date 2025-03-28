@@ -11,7 +11,13 @@
     <label for="phone-number">Phone Number:</label>
     <input type="tel" id="phone-number" formControlName="phone"/>
 
-    <a class="link" (click)="callPasswordWindow(true)">Update Password</a>
+    @if (this.passwordConfirm) {
+        <p class="success">Password successfully updated!</p>
+    }
+    @else {
+        <a class="link" (click)="callPasswordWindow(true)">Update Password</a>
+    }
+
     @if(this.viewPassword) {
         
         <div class="overlay">

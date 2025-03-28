@@ -24,9 +24,15 @@ button {
 }
 
 .link {
-    margin-top: 10px;
+    margin: 10px 0px 0px 0px;
     font-size: 14px;
     color: #800000;
+}
+
+.success {
+    margin: 10px 0px 0px 0px;
+    font-size: 14px;
+    color: #454545;
 }
 
 .overlay {
