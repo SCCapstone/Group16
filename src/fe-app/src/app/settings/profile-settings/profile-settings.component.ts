@@ -21,7 +21,7 @@ export class ProfileSettingsComponent {
   phoneNumber: string = "";
 
   viewPassword: boolean = false;
-  passwordError: string = "";
+  passwordError: string = " ";
   passwordConfirm: boolean = false;
 
   loginService = inject(LoginService);
@@ -66,9 +66,15 @@ export class ProfileSettingsComponent {
    * @param open True to open the password window, false to close it.
    */
   callPasswordWindow(open: boolean) {
-    console.log("Call popup");
-
     this.viewPassword = open;
+    
+    // Wipe fields and messages
+    this.profileForm.patchValue({
+      password: "",
+      newPassword: "",
+      passwordRetype: ""
+    });
+    this.passwordError = ""
   }
 
   /**
