@@ -10,7 +10,7 @@ import { AssignmentService } from './assignment.service';
 export class HeartbeatService {
   readonly url = 'https://classmate.osterholt.us/api/';
   private readonly heartbeatInterval: number = 30000;
-  private readonly activityTimeout: number = 900000;
+  private readonly activityTimeout: number = 10000;
   private heartbeatTimer: any;
   private activityTimer: any;
   private currentUserId: string | null = null;
@@ -19,14 +19,10 @@ export class HeartbeatService {
   private ngZone = inject(NgZone);
   private router = inject(Router);
 
-  constructor(@Inject(PLATFORM_ID) private platformId: object) {
-    if (isPlatformBrowser(this.platformId)) {
-      this.listenForActivity();
-    }
-  }
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {}
 
   async startHeartbeat(userId: string) {
-    if(!userId) {
+    if(!userId || !this.loginService.getUserId()) {
       console.log('no userId to send');
       return;
     }
@@ -38,7 +34,10 @@ export class HeartbeatService {
 
     this.currentUserId = userId;
     this.sendHeartbeat(userId);
-    //console.log('sending first');
+    if (isPlatformBrowser(this.platformId)) {
+      this.listenForActivity();
+    }
+    console.log('Heartbeat started');
 
     this.ngZone.runOutsideAngular(() => {
       this.heartbeatTimer = setInterval(() => {
@@ -55,20 +54,6 @@ export class HeartbeatService {
   }
 
   private async sendHeartbeat(userId: string): Promise<void> {
-    /*fetch(this.url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userId })
-    }).then((response) => response.json())
-    .then((data) => {
-      console.log('Heartbeat sent successfully', data);
-    })
-    .catch((error) => {
-      console.error('Heartbeat failed', error)
-    })*/
-
     const queryParams = new URLSearchParams({
       userId: userId ?? "NULL"
     }).toString();
@@ -97,26 +82,42 @@ export class HeartbeatService {
     if (this.heartbeatTimer) {
       clearInterval(this.heartbeatTimer);
       this.heartbeatTimer = null;
-      this.currentUserId = null;
+    }
 
-      if (isPlatformBrowser(this.platformId)) {
-        document.removeEventListener('mousemove', this.resetActivityTimer);
-        document.removeEventListener('keydown', this.resetActivityTimer);
-        document.removeEventListener('click', this.resetActivityTimer);
-      }
+    if (this.activityTimer) {
+      clearTimeout(this.activityTimer);
+      this.activityTimer = null;
+    }
+
+    this.currentUserId = null;
+
+    if (isPlatformBrowser(this.platformId)) {
+      document.removeEventListener('mousemove', this.resetActivityTimer);
+      document.removeEventListener('keydown', this.resetActivityTimer);
+      document.removeEventListener('click', this.resetActivityTimer);
+    }
+
+    if (isPlatformBrowser(this.platformId)) {
+      console.log('Heartbeat stopped');
     }
   }
 
   private resetActivityTimer = () => {
+    console.log('Activity detected, resetting inactivity timer...');
     clearTimeout(this.activityTimer);
     this.ngZone.runOutsideAngular(() => {
       this.activityTimer = setTimeout(() => {
-        this.onInactivity();
-      }, this.activityTimeout)
+        this.ngZone.run(() => {
+          //console.log('Activity timer expired. Logging out.');
+          this.onInactivity();
+        });
+      }, this.activityTimeout);
+      //console.log('New activity timer set:', this.activityTimer);
     });
   };
 
   private listenForActivity() {
+    console.log('Listening for user activity events.');
     this.resetActivityTimer();
 
     if (isPlatformBrowser(this.platformId)) {
@@ -127,7 +128,7 @@ export class HeartbeatService {
   }
 
   private onInactivity() {
-    console.log('User is inactive for too long');
+    console.log('User is inactive for too long. Logging out...');
     this.loginService.signOut();
     this.assignmentService.reset();
     this.stopHeartbeat();
