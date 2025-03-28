@@ -10,7 +10,7 @@ import { AssignmentService } from './assignment.service';
 export class HeartbeatService {
   readonly url = 'https://classmate.osterholt.us/api/';
   private readonly heartbeatInterval: number = 30000;
-  private readonly activityTimeout: number = 10000;
+  private readonly activityTimeout: number = 900000;
   private heartbeatTimer: any;
   private activityTimer: any;
   private currentUserId: string | null = null;
@@ -53,7 +53,7 @@ export class HeartbeatService {
     });
   }
 
-  private async sendHeartbeat(userId: string): Promise<void> {
+  async sendHeartbeat(userId: string): Promise<void> {
     const queryParams = new URLSearchParams({
       userId: userId ?? "NULL"
     }).toString();
@@ -116,7 +116,7 @@ export class HeartbeatService {
     });
   };
 
-  private listenForActivity() {
+  listenForActivity() {
     console.log('Listening for user activity events.');
     this.resetActivityTimer();
 
