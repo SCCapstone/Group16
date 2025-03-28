@@ -19,6 +19,7 @@ export class ProfileSettingsComponent {
   schoolEmail: string = "";
   personalEmail: string = "";
   phoneNumber: string = "";
+  profileConfirm: boolean = false;
 
   viewPassword: boolean = false;
   passwordError: string = " ";
@@ -77,6 +78,12 @@ export class ProfileSettingsComponent {
     this.passwordError = ""
   }
 
+  checkForChanges(): boolean {
+    return this.profileForm.value.name != this.preferredName
+          || this.profileForm.value.personal != this.personalEmail
+          || this.profileForm.value.phone?.replaceAll("-", "") != this.phoneNumber.replaceAll("-", "");
+  }
+
   /**
    * Attempts to save the user's new password by validating the entry and making the necessary service calls.
    */
@@ -131,5 +138,7 @@ export class ProfileSettingsComponent {
       this.phoneNumber = this.phoneNumber.replaceAll("-", "");  // Remove dashes from user input
       await this.settingsService.updatePhoneNumber(this.loginService.getUserId(), this.phoneNumber);
     }
+
+    this.profileConfirm = true;
   }
 }

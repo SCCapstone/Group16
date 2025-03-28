@@ -42,6 +42,10 @@
         </div>
     }
 
-    <button type="submit" [disabled]="!this.profileForm.valid">Save</button>
+    <button type="submit" [disabled]="!this.profileForm.valid || !this.checkForChanges()">Save</button>
+
+    @if (this.profileConfirm) {
+        <p>Profile settings saved!</p>
+    }
 </form>
 
