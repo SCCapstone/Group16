@@ -21,7 +21,7 @@ export class GradesService {
     return data;
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.error('Error fetching assignments:', error.message);
+      console.error('Error fetching grades:', error.message);
     } else {
       console.error('Unexpected error', error);
     }

@@ -30,4 +30,9 @@ export interface Name {
   preferredDisplayName: string;
 }
 
+export interface Notifications {
+  id: string;
+  content: string;
+}
+
 // will need appearance settings for rc1
