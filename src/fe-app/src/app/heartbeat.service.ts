@@ -103,7 +103,7 @@ export class HeartbeatService {
   }
 
   private resetActivityTimer = () => {
-    console.log('Activity detected, resetting inactivity timer...');
+    //console.log('Activity detected, resetting inactivity timer...');
     clearTimeout(this.activityTimer);
     this.ngZone.runOutsideAngular(() => {
       this.activityTimer = setTimeout(() => {
