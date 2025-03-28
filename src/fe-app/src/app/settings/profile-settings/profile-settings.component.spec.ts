@@ -32,7 +32,7 @@ describe('ProfileSettingsComponent', () => {
   const MOCK_PHONE_AUGMENTED = "012-345-6789"
 
   beforeEach(async () => {
-    
+
     // Note: object notation in createSpyObj() is similar to list but allows mock return values to be defined alongside spy object
     mockLoginService = jasmine.createSpyObj(LoginService, { getUserId: MOCK_USER_INFO.id });
     mockSettingsService = jasmine.createSpyObj(SettingsService, {
@@ -41,7 +41,7 @@ describe('ProfileSettingsComponent', () => {
       updatePersonalEmail: undefined,
       updatePhoneNumber: undefined
     });
-    
+
     await TestBed.configureTestingModule({
       imports: [ProfileSettingsComponent],
       providers: [
@@ -75,13 +75,30 @@ describe('ProfileSettingsComponent', () => {
   // Clicking save button should call component's saveProfile() method
   it('should call component.saveProfile() when button is clicked', async () => {
     spyOn(component, 'saveProfile');
+    fixture.detectChanges(); // Ensure component initializes properly
+
+    // Fill the form with valid data to ensure the button is enabled
+    component.profileForm.setValue({
+      name: "Michael",
+      school: "michael@sc.edu",
+      personal: "michael@gmail.com",
+      phone: "555-555-5555",
+      password: "",
+      newPassword: "",
+      passwordRetype: ""
+    });
+
+    fixture.detectChanges(); // Trigger UI update
+
     await fixture.whenStable();
-    fixture.detectChanges();
 
     const submitButton = fixture.debugElement.nativeElement.querySelector('button[type="submit"]');
-    submitButton.click();
 
-    expect(submitButton.disabled).toBeFalse();
+    expect(submitButton.disabled).toBeFalse(); // Ensure it's clickable
+
+    submitButton.click();
+    fixture.detectChanges(); // Allow Angular to process event
+
     expect(component.saveProfile).toHaveBeenCalledOnceWith();
   })
 
