@@ -78,6 +78,10 @@ export class ProfileSettingsComponent {
     this.passwordError = ""
   }
 
+  /**
+   * Checks to see if there have been any changes to the content of the name, personal email, or phone fields
+   * @returns True if there have been changes, false otherwise
+   */
   checkForChanges(): boolean {
     return this.profileForm.value.name != this.preferredName
           || this.profileForm.value.personal != this.personalEmail
