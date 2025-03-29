@@ -104,15 +104,18 @@ export class ProfileSettingsComponent {
     catch (error: unknown) {
       console.log("DEBUG 3: ERROR UPDATING PASSWORD (ProfileSettingsComponent::attemptPasswordSave)");
       if (error instanceof Error)
-        this.passwordError = error.message;
+        // this.passwordError = error.message;
+        alert(error.message);
       else
-        this.passwordError = "Unexpected error, please try again later";
+        // this.passwordError = "Unexpected error, please try again later";
+        alert("Unexpected error, please try again later");
       return
     }
 
-    this.passwordConfirm = true;
-    this.cdr.detectChanges();
+    // this.passwordConfirm = true;
+    // this.cdr.detectChanges();
     this.callPasswordWindow(false);
+    confirm("Password successfully updated!");
   }
 
   /**
