@@ -10,7 +10,7 @@
     </div>
     <div class="assignment-container">
         @for (assignment of this.assignments[this.getIndex()]; track assignment.id) {
-            @if (courseService.getSelectIndex() === -1 || assignment.courseId === courses[courseService.getSelectIndex()].id) {
+            @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
                 <app-task
                 [assignment]="assignment"
                 [courseName]="this.getCourseNameByID(assignment.courseId)"
