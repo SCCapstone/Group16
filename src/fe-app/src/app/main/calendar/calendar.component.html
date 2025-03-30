@@ -2,15 +2,17 @@
 <div class="calendar-container">
     @for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
         <h1 class="day">{{ this.DAYS_OF_WEEK[$index] }}</h1>
-        @if (countMatchingAssignments(dayAssignments, this.courseService.getSelectIndex()) > 0) {
-            @for (assignment of dayAssignments; track assignment.id) {
-                @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
-                    <p>{{ assignment.title }} | {{ assignment.description }}<p></p>
+        <div class="calendar-element">
+            @if (countMatchingAssignments(dayAssignments, this.courseService.getSelectIndex()) > 0) {
+                @for (assignment of dayAssignments; track assignment.id) {
+                    @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
+                        <p>{{ assignment.title }} | {{ assignment.description }}<p></p>
+                    }
                 }
+            } @else {
+                <p>No assignments this week</p>
             }
-        } @else {
-            <p>No assignments this week</p>
-        }
+        </div>
     }
 
 <!-- TODO Make buttons icons rather than text -->
