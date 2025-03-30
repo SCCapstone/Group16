@@ -6,7 +6,7 @@
             @if (countMatchingAssignments(dayAssignments, this.courseService.getSelectIndex()) > 0) {
                 @for (assignment of dayAssignments; track assignment.id) {
                     @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
-                        <p>{{ assignment.title }} | {{ assignment.description }}<p></p>
+                        <p>{{ assignment.title }} | {{ assignment.description }}</p>
                     }
                 }
             } @else {
