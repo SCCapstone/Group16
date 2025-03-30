@@ -27,7 +27,7 @@ describe('ProfileSettingsComponent', () => {
       institutionEmail: "michael@sc.edu"
     },
     settings: { emailNotifications: false, institutionEmailNotifications: false, smsNotifications: false }
-  };
+  } as any;
   const MOCK_PROMISE: Promise<UserInfo> = Promise.resolve(MOCK_USER_INFO);  // Create a promise and resolve it because component constructor uses .then(...)
   const MOCK_PHONE_AUGMENTED = "012-345-6789"
 

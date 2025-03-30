@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { SettingsService } from './settings.service';
-import { UserInfo } from './user';
+import { UserInfo, Notifications } from './user';
 
 describe('SettingsService', () => {
   let service: SettingsService;
@@ -47,7 +47,11 @@ describe('SettingsService', () => {
         emailNotifications: true,
         institutionEmailNotifications: true,
         smsNotifications: false
-      }
+      },
+      notifications: [{
+        message: 'test',
+        timestamp: ''
+      }]
     }
 
     const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
