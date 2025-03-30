@@ -13,7 +13,6 @@ export class CourseService {
   constructor() {
     const storedIndex = localStorage.getItem(this.STORAGE_KEY);
     this.selectIndex = storedIndex !== null ? parseInt(storedIndex, 10) : -1;
-    //this.selectIndex = -1;
   }
 
   async getCourses(userId: string | null) : Promise<Course[]> {
