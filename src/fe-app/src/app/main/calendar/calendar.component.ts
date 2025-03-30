@@ -32,11 +32,6 @@ export class CalendarComponent {
   // INITIALIZATION
 
   constructor(private assignmentService: AssignmentService) {
-    this.courseService.getCourses(this.loginService.getUserId())
-    .then((courses: Course[]) => {
-      this.courses = courses;
-    })
-    
     const now: Date = new Date(Date.now());
     this.weekStart = this.getWeekStart(now);  // Store start of the current week
     this.pageNumber = 0;
@@ -62,6 +57,13 @@ export class CalendarComponent {
       this.loadAssignments().then(() => {
         this.organizeWeekAssignments();
       });
+    })
+  }
+
+  ngOnInit() {
+    this.courseService.getCourses(this.loginService.getUserId())
+    .then((courses: Course[]) => {
+      this.courses = courses;
     })
   }
 
@@ -125,7 +127,7 @@ export class CalendarComponent {
     const targetID: string = this.courses[courseIndex].id;
     let count: number = 0;
     for (const assignment of assignmentList) {
-      if (assignment.id == targetID)
+      if (assignment.courseId === targetID)
         count++;
     }
     return count;
