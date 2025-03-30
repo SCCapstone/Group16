@@ -20,6 +20,13 @@ spec:
           image: ghcr.io/sccapstone/group16/classmate-fe:latest
           ports:
             - containerPort: 4000
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
       imagePullSecrets:
         - name: ghcr-secret
 
