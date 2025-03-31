@@ -29,7 +29,8 @@ export class EditTaskComponent implements OnInit {
     title: new FormControl('', Validators.required),
     description: new FormControl(''),
     course: new FormControl('', Validators.required),
-    due: new FormControl('', Validators.required)
+    due: new FormControl('', Validators.required),
+    time: new FormControl('', Validators.required)
   });
 
   async ngOnInit() {
@@ -40,15 +41,19 @@ export class EditTaskComponent implements OnInit {
         ? new Date(this.assignment.availability.adaptiveRelease.end)
         : null;
 
+        let time = '';
+
         if (dueDate) {
           dueDate.setMinutes(dueDate.getMinutes() - dueDate.getTimezoneOffset()); // Adjust to local timezone
+          time = dueDate.toTimeString().slice(0, 5);
         }
 
         this.editTaskForm.patchValue({
           title: this.assignment.title ?? '',
           description: this.assignment.description ?? '',
           course: this.assignment.courseId ?? '',
-          due: dueDate ? dueDate.toISOString().split('T')[0] : '' // Ensures correct date format
+          due: dueDate ? dueDate.toISOString().split('T')[0] : '', // Ensures correct date format
+          time: time
         });
 
         this.editTaskForm.get('course')?.valueChanges.subscribe(value => {
@@ -75,10 +80,11 @@ export class EditTaskComponent implements OnInit {
 
     let dueDate: Date | null = null;
 
-    if (this.editTaskForm.value.due) {
-      const selectedDate = new Date(this.editTaskForm.value.due);
-      selectedDate.setMinutes(selectedDate.getMinutes() + selectedDate.getTimezoneOffset()); // Adjust back to UTC
-      dueDate = selectedDate;
+    const date = this.editTaskForm.value.due;
+    const time = this.editTaskForm.value.time;
+
+    if (date && time) {
+      dueDate = new Date(`${date}T${time}:00`);
     }
 
     console.log(this.editTaskForm.value.course);
