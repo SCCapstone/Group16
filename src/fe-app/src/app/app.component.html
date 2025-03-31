@@ -67,7 +67,7 @@
     <div *ngIf="showPopup" class="popup-modal">
       <div class="popup-content">
         <span class="close" (click)="closePopup()">&times;</span>
-        <p *ngIf="popupType === 'notifications'">notifications go here</p>
+        <p *ngIf="popupType === 'notifications'"><app-notifications></app-notifications></p>
       </div>
     </div>
 

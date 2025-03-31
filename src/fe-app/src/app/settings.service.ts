@@ -21,7 +21,7 @@ export class SettingsService {
     if (typeof data === 'object' && Object.keys(data).length === 0)  {
       throw new Error('userInfo is {}');
     }
-
+    console.log("settings service");
     console.log(data);
     return data;
   } catch (error: unknown) {
