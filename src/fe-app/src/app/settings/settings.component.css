@@ -1,21 +1,23 @@
+
 .settings-main {
     display: flex;
     flex-direction: row;
+    background-color: #aaaaaa;
 }
 
 .sidebar {
-    background-color: #777777;
-    width: 20%;
+    background-color: #aaaaaa;
+    border-right: 2px solid #c30000;
+    width: 30%;
     margin-top: 20px;
+    height: 85vh;
 }
 
 .settings-container {
-    width: 80%;
+    width: 70%;
 }
 
 main{
     background-color: #aaaaaa;
     color: black;
-    min-height: 100vh;
-
 }

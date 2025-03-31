@@ -4,12 +4,13 @@
     height: 100%;
     align-items: center;
     justify-content: center;
+    font-size: 25px;
 }
 
 label {
     display: block;
     margin-bottom: 5px;
-    margin-top: 10px;
+    margin-top: 40px;
     margin-left: 10px;
 }
   
@@ -19,8 +20,9 @@ input, select {
 
 button {
     display: block;
-    margin-top: 20px;
+    margin-top: 30px;
     margin-left: 10px;
+    border-radius: 5px;
 }
 
 .link {
