@@ -1,4 +1,4 @@
-import { Component, inject, Output, EventEmitter } from '@angular/core';
+import { Component, inject, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Assignment, Course } from '../../course';
 import { CourseService } from '../../course.service';
@@ -14,7 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './add-task.component.html',
   styleUrl: './add-task.component.css'
 })
-export class AddTaskComponent {
+export class AddTaskComponent implements OnInit {
   @Output() closePopup = new EventEmitter<void>();
   @Output() onTaskAdd = new EventEmitter<Assignment>();
 
@@ -52,6 +52,14 @@ export class AddTaskComponent {
     .then((courses: Course[]) => {
       this.courses = courses;
     })
+  }
+
+  ngOnInit() {
+    const defaultTime = '23:59';
+
+    this.addTaskForm.patchValue({
+      time: defaultTime
+    });
   }
 
   async addTask() {
