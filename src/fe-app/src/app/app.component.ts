@@ -2,6 +2,7 @@ import { Component, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterModule, Router } from '@angular/router';
 import { LoginService } from './login.service';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 //import {HomeComponent} from './home/home.component';
 import { HeartbeatService } from './heartbeat.service';
@@ -9,7 +10,7 @@ import { HeartbeatService } from './heartbeat.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterModule],
+  imports: [CommonModule, RouterOutlet, RouterModule, NotificationsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
