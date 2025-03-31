@@ -9,14 +9,15 @@
 
 <div class="assignment-list">
   <div class="assignment-header">
-      <div class="header-column">COURSE</div>
-      <div class="header-column">ASSIGNMENT</div>
-      <div class="header-column">GRADE</div>
-      <div class="header-column">LETTER</div>
-      <div class="header-column"> </div>
+    <div class="header-column">COURSE</div>
+    <div class="header-column">ASSIGNMENT</div>
+    <div class="header-column">GRADE</div>
+    <div class="header-column">LETTER</div>
+    <div class="header-column"> </div>
   </div>
   <div class="assignment-container">
-      @for (grade of this.grades; track grade.id) {
+    @for (grade of this.grades; track grade.id) {
+      @if (this.courseService.getSelectIndex() === -1 || grade.courseId === this.courses[this.courseService.getSelectIndex()].id) {
         <div class="assignment-row">
         <div class="assignment-column">{{ this.getCourseNameByID(grade.courseId) }}</div>
         <div class="assignment-column">{{ this.getAssignmentTitleByID(grade.assignmentId) }}</div>
@@ -27,6 +28,7 @@
           </div>
           </div>
       }
+    }
   </div>
 </div>
 
