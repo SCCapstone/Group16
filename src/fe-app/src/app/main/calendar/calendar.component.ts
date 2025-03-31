@@ -20,17 +20,19 @@ export class CalendarComponent {
   semesterStart: Date;              // Start of the first week of the current semester
   semesterEnd: Date;                // Start of the week after the end of the current semester
 
+  courses: Course[] = [];
   assignments: Assignment[] = [];
   weekAssignments: Assignment[][] = [[], [], [], [], [], [], []];
 
   loginService = inject(LoginService);
   courseService = inject(CourseService);
 
+  readonly DAYS_OF_WEEK = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+
   // INITIALIZATION
 
   constructor(private assignmentService: AssignmentService) {
     const now: Date = new Date(Date.now());
-
     this.weekStart = this.getWeekStart(now);  // Store start of the current week
     this.pageNumber = 0;
 
@@ -55,6 +57,13 @@ export class CalendarComponent {
       this.loadAssignments().then(() => {
         this.organizeWeekAssignments();
       });
+    })
+  }
+
+  ngOnInit() {
+    this.courseService.getCourses(this.loginService.getUserId())
+    .then((courses: Course[]) => {
+      this.courses = courses;
     })
   }
 
@@ -103,6 +112,25 @@ export class CalendarComponent {
         break;
       this.weekAssignments[difference / millisecondsPerDay].push(assignment);
     }
+  }
+  
+  /**
+   * Counts the number of assignments in the given assignment list matching the given course index.
+   * @param assignmentList One-dimensional array of assignments, corresponding to a single day.
+   * @param courseIndex Index of the currently-selected course in component course list. -1 indicates no selection
+   * @return The number of assignments that are part of the course corresponding to the given index.
+   */
+  countMatchingAssignments(assignmentList: Assignment[], courseIndex: number): number {
+    if (courseIndex < 0 || courseIndex >= this.courses.length)
+      return assignmentList.length;
+
+    const targetID: string = this.courses[courseIndex].id;
+    let count: number = 0;
+    for (const assignment of assignmentList) {
+      if (assignment.courseId === targetID)
+        count++;
+    }
+    return count;
   }
 
   /**

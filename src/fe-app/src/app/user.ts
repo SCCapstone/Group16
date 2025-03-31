@@ -10,6 +10,7 @@ export interface UserInfo {
   username: string;
   contact: ContactInfo;
   settings: NotificationSettings;
+  notifications: Notifications[];
 }
 
 export interface ContactInfo {
@@ -28,6 +29,11 @@ export interface Name {
   readonly given: string;
   readonly family: string;
   preferredDisplayName: string;
+}
+
+export interface Notifications {
+  message: string;
+  timestamp: string;
 }
 
 // will need appearance settings for rc1
