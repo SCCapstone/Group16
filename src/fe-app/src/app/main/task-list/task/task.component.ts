@@ -32,13 +32,7 @@ export class TaskComponent implements OnInit {
 
   constructor(private assignmentService: AssignmentService) {}
 
-  async ngOnInit() {
-    //try {
-    //  this.courseName = await (await this.courseService.getCourseById(this.assignment.courseId)).name;
-    //} catch (error) {
-    //  console.error('Error fetching course:', error);
-    //}
-  }
+  ngOnInit() {}
 
   async toggleCompletion(assignment: Assignment) {
     // console.log("clicked");

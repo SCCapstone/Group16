@@ -13,11 +13,11 @@ import { LoginService } from '../login.service';
   styleUrl: './settings.component.css'
 })
 export class SettingsComponent {
-  constructor() {}
-
   userInfo: UserInfo | undefined;
   settingsService = inject(SettingsService);
   loginService = inject(LoginService);
+
+  constructor() {}
 
   getInfo() {
     this.settingsService.getUserInfo(this.loginService.getUserId()).then((userInfo: UserInfo) => {

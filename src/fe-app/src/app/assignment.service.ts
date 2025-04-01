@@ -18,8 +18,10 @@ export class AssignmentService {
   private signalValue: number = 0;
   private updateSignal: WritableSignal<number> = signal<number>(this.signalValue);
 
-  constructor() {
-    if(this.loginService.getUserId()) {
+  constructor() {}
+
+  ngOnInit() {
+    if (this.loginService.getUserId()) {
       this.fetchAssignments(this.loginService.getUserId())
       .then((assignments: Assignment[]) => {
         this.assignments = assignments;

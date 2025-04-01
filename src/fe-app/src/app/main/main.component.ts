@@ -54,11 +54,6 @@ export class MainComponent implements OnInit {
         }
     }
 
-    // handleDueSoonAssignments(assignments: Assignment[]): void {
-    //     console.log('Top 3 Due Soon Assignments:', assignments);
-    //     this.topThreeAssignments = assignments;
-    // }
-
     getUserId(): void {
         console.log(this.loginService.getUserId());
         if (this.loginService.getUserId()) {
