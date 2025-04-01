@@ -3,11 +3,16 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #ddd;
+    /*border-bottom: 3px solid #949494;*/
     text-align: center;
-    background-color: white;
+    background-color: #c0c0c0;
 }
 
+.line {
+  border-bottom: 3px solid #949494;
+  border-radius:12px;
+  width: 95%;
+}
 
 .assignment-row.completed {
     text-decoration: line-through;
@@ -16,41 +21,29 @@
 }
 
 .assignment-column {
-    padding: 8px;
+    padding: 10px;
     word-wrap: break-word;
     flex: 1; 
-    border-right: 1px solid #ddd;
+    border-right: 3px solid #949494;
+    font-size: 18px;
 }
 
 .assignmentPopup {
     font-size: 20px;
     color: black; 
     line-height: 1.7; 
-  }
-
-  .assignmentPopup {
-    font-size: 22px;
-    color: black; 
-    line-height: 1.7; 
-  }
-
-  .due-date{
-    color: #c30000;
-  }
+}
 
   .description, .course{
     font-weight: bold;
   }
   
-
 .assignment-column:last-child {
     border-right: none;
 }
 
-
-
 .assignment-column input[type="checkbox"] {
-    transform: scale(1.3);
+    transform: scale(1.7);
     cursor: pointer;
 }
 

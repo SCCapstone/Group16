@@ -16,8 +16,8 @@
   }
 
   main {
-    background-color: #aaaaaa;
-}
+    background-color: #949494;
+  }
 
 app-task-list, app-calender, app-grades {
   padding: 0 !important;

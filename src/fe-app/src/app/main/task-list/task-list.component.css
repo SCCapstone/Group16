@@ -4,8 +4,9 @@
     font-weight: bold;
     text-align: center;
     padding: 10px;
-    background-color: #f2f1f1;
-    border-bottom: 2px solid #ddd;
+    background-color: #cfcfcf;
+    border-bottom: 3px solid #949494;
+    font-size: 18px;
 }
 
 /* task-list.component.css */
@@ -19,7 +20,7 @@ app-task-list {
     padding: 10px;
     text-transform: uppercase;
     flex: 1; 
-    border-right: 1px solid #ddd;
+    border-right: 3px solid #949494;
     text-align: center;
 }
 

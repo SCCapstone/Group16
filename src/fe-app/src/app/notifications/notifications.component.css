@@ -1,8 +1,17 @@
-li{
+p{
     font-size: 20px;
     margin-top: 30px;
+    padding: 10px;
+    border-bottom: 3px solid #888888;
 }
 
-h3{
+h2{
     font-weight: bold;
+    margin-top: 40px;
+    color: #c30000
+
+}
+
+time{
+    color: #c30000
 }

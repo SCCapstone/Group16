@@ -1,10 +1,18 @@
 /* For a div housing a course in course sidebar */
 .course {
     font-size: 36px;
-    border: 2px solid #00000000;
     width: 80%;
-    margin: 10px auto;
+    margin: 15px auto;
     user-select: none;
+}
+
+main{
+    background-color: #c0c0c0;
+    border-radius: 30px;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
+    padding-top: 5px;
+    padding-bottom: 5px;
+
 }
 
 /* Additional styling for the selected course div */

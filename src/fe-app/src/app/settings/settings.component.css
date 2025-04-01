@@ -2,22 +2,31 @@
 .settings-main {
     display: flex;
     flex-direction: row;
-    background-color: #aaaaaa;
+    background-color: #cfcfcf;
 }
 
 .sidebar {
-    background-color: #aaaaaa;
-    border-right: 2px solid #c30000;
-    width: 30%;
+    background-color: #cfcfcf;
+    width: 100%;
     margin-top: 20px;
-    height: 85vh;
+    height: 100%;
 }
 
-.settings-container {
-    width: 70%;
-}
 
 main{
-    background-color: #aaaaaa;
+    background-color: #cfcfcf;
     color: black;
+}
+
+
+h2{
+    font-weight: bold;
+    margin-top: 40px;
+    color: #c30000
+}
+
+button{
+    margin-top: 30px;
+    border-radius: 5px;
+
 }

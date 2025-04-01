@@ -60,9 +60,8 @@ button {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #ddd;
     text-align: center;
-    background-color: white;
+    background-color: #c0c0c0;
 }
 
 
@@ -70,7 +69,9 @@ button {
     padding: 8px;
     word-wrap: break-word;
     flex: 1; 
-    border-right: 1px solid #ddd;
+    border-right: 3px solid #949494;
+    font-size: 18px;
+
 }
 
 
@@ -111,8 +112,16 @@ button {
   font-weight: bold;
   text-align: center;
   padding: 10px;
-  background-color: #f2f1f1;
-  border-bottom: 2px solid #ddd;
+  background-color: #cfcfcf;
+  border-bottom: 3px solid #949494;
+  font-size: 18px;
+
+}
+
+.line {
+  border-bottom: 3px solid #949494;
+  border-radius:12px;
+  width: 95%;
 }
 
 
@@ -120,7 +129,7 @@ button {
   padding: 10px;
   text-transform: uppercase;
   flex: 1; 
-  border-right: 1px solid #ddd;
+  border-right: 3px solid #949494;
   text-align: center;
 }
 

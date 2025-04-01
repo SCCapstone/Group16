@@ -3,14 +3,24 @@ body, html {
     margin: 0;
     display: flex;
     flex-direction: column;
+
 }
 
 .container {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding-bottom: 20px; /* Adjust spacing from bottom */
-    min-height: 45.3vh;
+    background-color: #c0c0c0;
+    border-radius: 30px;
+    margin-top: 40px;
+    overflow-y: auto;
+    height: 316px;
+    box-shadow: 7px 7px 12px rgba(0, 0, 0, 0.3);
+
+}
+
+.date{
+    color:#c30000;
 }
 
 h1 {
@@ -21,7 +31,7 @@ h1 {
 }
 
 h2 {
-    color: #7e0000;
+    color: #c30000;
     font-size: 24px;
     text-align: center;
     font-weight: bold;

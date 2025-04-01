@@ -1,9 +1,9 @@
 button {
-    margin: 280px 300px;
     width: 40%;
     height: 20%;
-    font-size: 30px;
+    font-size: 20px;
     border-radius: 5px;
+    margin-top: 50px;
 }
 
 button:hover{

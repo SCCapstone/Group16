@@ -1,13 +1,20 @@
-<div *ngIf="userInfo?.notifications?.length">
-    <h3>Notifications</h3>
+<div id = "container">
+  <h2>NOTIFICATIONS</h2>
+  <div *ngIf="userInfo?.notifications?.length">
     
-      <li *ngFor="let notification of userInfo?.notifications">
-        {{ notification.message }} ({{ notification.timestamp | date:'short' }})
-      </li>
+      <p *ngFor="let notification of userInfo?.notifications">
+        {{ notification.timestamp | date:'mediumDate' }} <br> <span class = "time" style = "  font-style: italic;">{{ notification.timestamp | date:'shortTime' }} </span>
+        <br><span class= "time" style = "color: #c30000;" >{{ notification.message }} </span>
+        <br> 
+        
+      </p>
     
   </div>
   
   <div *ngIf="!userInfo?.notifications?.length">
     <p>No notifications available.</p>
   </div>
+
+</div>
+
   
