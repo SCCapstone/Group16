@@ -46,9 +46,7 @@ export class AddTaskComponent implements OnInit {
     .then((courses: Course[]) => {
       this.courses = courses;
     })
-  }
 
-  ngOnInit() {
     const defaultTime = '23:59';
 
     this.addTaskForm.patchValue({

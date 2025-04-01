@@ -50,7 +50,6 @@ export class EditTaskComponent implements OnInit {
         let time = '';
 
         if (dueDate) {
-          dueDate.setMinutes(dueDate.getMinutes() - dueDate.getTimezoneOffset()); // Adjust to local timezone
           time = dueDate.toTimeString().slice(0, 5);
         }
 
