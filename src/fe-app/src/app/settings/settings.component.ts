@@ -6,7 +6,6 @@ import { UserInfo } from '../user';
 import { LoginService } from '../login.service';
 import { ProfileSettingsComponent } from "./profile-settings/profile-settings.component";
 import { NotificationSettingsComponent } from "./notification-settings/notification-settings.component";
-import { SignOutComponent } from "./sign-out/sign-out.component";
 import { AssignmentService } from '../assignment.service';
 import { HeartbeatService } from '../heartbeat.service';
 
@@ -14,7 +13,7 @@ import { HeartbeatService } from '../heartbeat.service';
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, SettingsSidebarComponent, ProfileSettingsComponent, NotificationSettingsComponent, SignOutComponent],
+  imports: [RouterOutlet, RouterModule, SettingsSidebarComponent, ProfileSettingsComponent, NotificationSettingsComponent],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css'
 })
@@ -28,23 +27,9 @@ export class SettingsComponent {
   assignmentService = inject(AssignmentService);
   heartbeatService = inject(HeartbeatService);
 
-  getInfo() {
-    this.settingsService.getUserInfo(this.loginService.getUserId()).then((userInfo: UserInfo) => {
-      this.userInfo = userInfo;
-      console.log(this.userInfo);
-    })
-  }
-
-  testPreferredNameUpdate() {
-    this.settingsService.updatePreferredName(this.loginService.getUserId(), 'Cameron').then(() => {
-      this.getInfo();
-    });
-  }
-
   @Output() onSignout = new EventEmitter<void>(); // EventEmitter to notify parent
 
   handleSignout() {
-  
     if(confirm('Are you sure?')) {
       this.onSignout.emit(); // Emit event to parent component
       this.loginService.signOut();
@@ -56,6 +41,5 @@ export class SettingsComponent {
       } else {
         return;
       }
-  
     }
 }

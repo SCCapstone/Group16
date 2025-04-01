@@ -9,17 +9,16 @@ import { SettingsService } from '../../settings.service';
 import { CommonModule } from '@angular/common';
 
 import { NotificationSettingsComponent } from '../notification-settings/notification-settings.component';
-import { SignOutComponent } from "../sign-out/sign-out.component";
 
 @Component({
   selector: 'app-profile-settings',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, NotificationSettingsComponent, SignOutComponent,],
+  imports: [ReactiveFormsModule, CommonModule, NotificationSettingsComponent],
   templateUrl: './profile-settings.component.html',
   styleUrl: './profile-settings.component.css'
 })
 export class ProfileSettingsComponent {
-  
+
   preferredName: string = "";
   schoolEmail: string = "";
   personalEmail: string = "";
@@ -75,7 +74,7 @@ export class ProfileSettingsComponent {
   callPasswordWindow(open: boolean) {
     this.viewPassword = open;
 
-    
+
     // Wipe fields and messages
     this.profileForm.patchValue({
       password: "",
@@ -157,5 +156,5 @@ export class ProfileSettingsComponent {
   }
 
 
-  
+
 }
