@@ -1,2 +1,13 @@
-<p>notifications works!</p>
-<button routerLink="/main">Back to Main Page</button>
+<div *ngIf="userInfo?.notifications?.length">
+    <h3>Notifications</h3>
+    
+      <li *ngFor="let notification of userInfo?.notifications">
+        {{ notification.message }} ({{ notification.timestamp | date:'short' }})
+      </li>
+    
+  </div>
+  
+  <div *ngIf="!userInfo?.notifications?.length">
+    <p>No notifications available.</p>
+  </div>
+  

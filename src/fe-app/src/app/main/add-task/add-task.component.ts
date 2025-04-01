@@ -39,15 +39,9 @@ export class AddTaskComponent implements OnInit {
     time: new FormControl('', Validators.required)
   });
 
-  // name: string = "";
-  // description: string = "";
-  // course: string = "";
-  // // course: undefined; // TODO update type to Course when interface is created
-  // due: Date = new Date();
+  constructor() {}
 
-  // displayOutput: boolean = false;  // TODO for testing, remove later
-
-  constructor() {
+  ngOnInit() {
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
       this.courses = courses;

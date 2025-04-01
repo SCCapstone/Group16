@@ -1,16 +1,17 @@
 <div class="notification-settings">
     <div class="item">
-        <label for="school">University Email</label>
-        <input type="checkbox" id="school" [(ngModel)]="useSchoolEmail" />
+        <input type="checkbox" id="school" [(ngModel)]="useSchoolEmail"/>
+        <label for="school" style = "margin-left: 30px; width: 250px;">University Email</label>
     </div>
     <div class="item">
-        <label for="personal">Personal Email</label>
         <input type="checkbox" id="personal" [(ngModel)]="usePersonalEmail" />
+        <label for="personal" style = "margin-left: 30px; width: 250px;">Personal Email</label>
     </div>
     <div class="item">
-        <label for="text">Text Messages</label>
         <input type="checkbox" id="text" [(ngModel)]="useText" />
+        <label for="text" style = "margin-left: 30px; width: 250px;" >Text Messages</label>
     </div>
-
-    <button (click)="saveNotifications()">Save</button>
+    <div class="item">
+        <button (click)="saveNotifications()">Save</button>
+    </div>
 </div>

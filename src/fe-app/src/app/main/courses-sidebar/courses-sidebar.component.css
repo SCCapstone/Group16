@@ -9,7 +9,7 @@
 
 /* Additional styling for the selected course div */
 .selected {
-    color: red;
+    color: #c30000;
 }
 
 /* Text for course names themselves */
@@ -20,7 +20,7 @@ p {
 }
 
 p:hover {
-    color: rgb(255, 0, 0);
+    color: #c30000;
     opacity: 60%;
     cursor: pointer;
 }

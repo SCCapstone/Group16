@@ -33,7 +33,13 @@ export class EditTaskComponent implements OnInit {
     time: new FormControl('', Validators.required)
   });
 
-  async ngOnInit() {
+  constructor() {}
+
+  ngOnInit() {
+    this.courseService.getCourses(this.loginService.getUserId())
+    .then((courses: Course[]) => {
+      this.courses = courses;
+    })
 
     try {
       if (this.assignment) {
@@ -60,18 +66,11 @@ export class EditTaskComponent implements OnInit {
           console.log(value);
         })
       }
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error fetching assignments:', error);
     }
   }
-
-  constructor() {
-    this.courseService.getCourses(this.loginService.getUserId())
-    .then((courses: Course[]) => {
-      this.courses = courses;
-    })
-  }
-
 
   async editTask() {
     if(this.editTaskForm.invalid) {
