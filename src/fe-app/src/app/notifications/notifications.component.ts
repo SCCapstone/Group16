@@ -29,6 +29,11 @@ export class NotificationsComponent implements OnInit{
   }
 
   async clearNotifications() {
+    if(!this.notifications || this.notifications.length === 0) {
+      alert('No notifications to be cleared');
+      return;
+    }
+
     try {
       await this.settingsService.clearNotifications(this.userId);
     } catch {
