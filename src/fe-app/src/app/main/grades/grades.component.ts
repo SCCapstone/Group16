@@ -100,12 +100,38 @@ export class GradesComponent {
 
   setGrade(gradeId: string | undefined) {
     if (gradeId === undefined) {
-      return;
+      return; // If gradeId is undefined, exit the function
     }
 
+    // Get the new grade percentage from the form
     const percent: number = this.updateGradeForm.value[gradeId];
+
     if (percent != null) {
+      const gradeToUpdate = this.grades.find(grade => grade.id === gradeId);
+
+      if (gradeToUpdate) {
+        gradeToUpdate.percent = percent;
+        gradeToUpdate.gradeChar = this.calculateGradeChar(percent);
+        const updatedGradeControl = new FormControl(percent.toString(), Validators.required);
+        this.updateGradeForm.setControl(gradeId, updatedGradeControl);
+      }
+
       this.gradeService.setGrade(gradeId, percent);
+    }
+  }
+
+  // This function calculates the letter grade based on the percent
+  calculateGradeChar(percent: number): string {
+    if (percent >= 90) {
+      return 'A';
+    } else if (percent >= 80) {
+      return 'B';
+    } else if (percent >= 70) {
+      return 'C';
+    } else if (percent >= 60) {
+      return 'D';
+    } else {
+      return 'F';
     }
   }
 }
