@@ -10,11 +10,11 @@ import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-notifications',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, CommonModule, DatePipe],
+  imports: [RouterModule, CommonModule, DatePipe],
   templateUrl: './notifications.component.html',
   styleUrl: './notifications.component.css'
 })
-export class NotificationsComponent {
+export class NotificationsComponent implements OnInit{
   userInfo: UserInfo | null = null;
   userId: string | null = '123';
   notifications: Notifications[] = []
