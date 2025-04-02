@@ -6,11 +6,13 @@ import { NotificationsComponent } from './notifications/notifications.component'
 
 //import {HomeComponent} from './home/home.component';
 import { HeartbeatService } from './heartbeat.service';
+import { SettingsComponent } from "./settings/settings.component";
+import { ProfileSettingsComponent } from './settings/profile-settings/profile-settings.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterModule, NotificationsComponent],
+  imports: [CommonModule, RouterOutlet, RouterModule, NotificationsComponent, SettingsComponent, ProfileSettingsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -23,19 +25,32 @@ export class AppComponent implements OnDestroy {
 
   title = 'fe-app';
   showPopup = false;
-  popupType: 'notifications' | null = null;
+  popupType: string = '';
 
-  openPopup(type: 'notifications'): void {
-    this.popupType = type;
-    this.showPopup = true;
-    console.log("pop up clicked")
-  }
-
-  closePopup(): void {
-    this.showPopup = false;
-    this.popupType = null;
-  }
-
+    openPopup(type: 'notifications' | 'settings') {
+      this.popupType = type;
+      this.showPopup = true;
+      console.log("popup clicked");
+      
+      setTimeout(() => {
+        const popup = document.querySelector(".popup-modal");
+        if (popup) {
+          popup.classList.add("show");
+        }
+      }, 10);
+    }
+    
+    closePopup() {
+      const popup = document.querySelector(".popup-modal");
+      if (popup) {
+        popup.classList.remove("show");
+      }
+    
+      setTimeout(() => {
+        this.showPopup = false;
+      }, 400);
+    }
+    
   hide(): boolean {
     const hiddenRoutes = ['/', '/login', '/settings/profile', '/settings/appearance', '/settings/notifications', '/settings/sign-out', '/grades', '/grades/grade-calc'];
     return !hiddenRoutes.includes(this.router.url);

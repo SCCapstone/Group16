@@ -1,16 +1,9 @@
-<!-- $index tracks index of current iteration in @for loop -->
-@for (course of courses; track course.id) {
-    <!-- div always uses class "course", also uses class "selected" if selected -->
-    <div [class]="this.getStyle($index)">
+<main>
+    @for (course of courses; track course.id) {
+        <div [class]="this.getStyle($index)">
         <p (click)="this.selectCourse($index)">{{ course.name.split("-")[0] }}</p>
-    </div>
-}
+        </div>
+    }
+</main>
 
-<!-- Test Output -->
-<br>
-<!--<p>Selected Course Index: {{ this.courseService.getSelectIndex() }}</p>-->
-<p></p>
-<!-- @if (this.courseService.getSelectIndex() >= 0) {
-    <p>Selected Course ID: {{ this.courses[this.courseService.getSelectIndex()].id }}</p>
-} -->
 

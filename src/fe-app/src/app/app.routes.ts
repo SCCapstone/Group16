@@ -9,7 +9,6 @@ import { AddTaskComponent } from './main/add-task/add-task.component';  // TODO 
 import { ProfileSettingsComponent } from './settings/profile-settings/profile-settings.component';
 import { AppearanceSettingsComponent } from './settings/appearance-settings/appearance-settings.component';
 import { NotificationSettingsComponent } from './settings/notification-settings/notification-settings.component';
-import { SignOutComponent } from './settings/sign-out/sign-out.component';
 import { CalendarComponent } from './main/calendar/calendar.component';
 import { TaskListComponent } from './main/task-list/task-list.component';
 import { EditTaskComponent } from './main/edit-task/edit-task.component';
@@ -75,11 +74,6 @@ export const routes: Routes = [
       {
         path: 'notifications',
         component: NotificationSettingsComponent,
-        canActivate: [authGuard]
-      },
-      {
-        path: 'sign-out',
-        component: SignOutComponent,
         canActivate: [authGuard]
       }
     ]

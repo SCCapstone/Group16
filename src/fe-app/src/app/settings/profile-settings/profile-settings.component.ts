@@ -6,15 +6,19 @@ import { UserInfo, Name, ContactInfo } from '../../user';
 import { LoginService } from '../../login.service';
 import { SettingsService } from '../../settings.service';
 
+import { CommonModule } from '@angular/common';
+
+import { NotificationSettingsComponent } from '../notification-settings/notification-settings.component';
+
 @Component({
   selector: 'app-profile-settings',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule, NotificationSettingsComponent],
   templateUrl: './profile-settings.component.html',
   styleUrl: './profile-settings.component.css'
 })
 export class ProfileSettingsComponent {
-  
+
   preferredName: string = "";
   schoolEmail: string = "";
   personalEmail: string = "";
@@ -27,6 +31,7 @@ export class ProfileSettingsComponent {
 
   loginService = inject(LoginService);
   settingsService = inject(SettingsService);
+
 
   profileForm = new FormGroup({
     name: new FormControl("", Validators.required),
@@ -70,7 +75,8 @@ export class ProfileSettingsComponent {
    */
   callPasswordWindow(open: boolean) {
     this.viewPassword = open;
-    
+
+
     // Wipe fields and messages
     this.profileForm.patchValue({
       password: "",
@@ -150,4 +156,7 @@ export class ProfileSettingsComponent {
 
     this.profileConfirm = true;
   }
+
+
+
 }

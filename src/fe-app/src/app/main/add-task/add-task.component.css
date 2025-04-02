@@ -2,11 +2,13 @@ form div {
   margin-bottom: 10px;
 }
 
+
 label {
   display: block;
   margin-bottom: 5px;
   margin-top: 10px;
   margin-left: 10px;
+  font-size: 20px;
 }
 
 input, select {

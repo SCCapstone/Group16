@@ -1,11 +1,19 @@
 <main>
+    <h2> SETTINGS</h2>
     <div class="settings-main">
-        <div class="sidebar">
+       <!-- <div class="sidebar">
             <app-settings-sidebar />
         </div>
         <div class="settings-container">
             <router-outlet />
+        </div>-->
+        <div class = "sidebar">
+            <app-profile-settings></app-profile-settings>
+            <app-notification-settings></app-notification-settings>
+            <button (click)="handleSignout()">Sign Out</button>
+
         </div>
+
     </div>
 </main>
 
