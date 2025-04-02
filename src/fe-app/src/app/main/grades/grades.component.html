@@ -4,7 +4,6 @@
     <div class="header-column">ASSIGNMENT</div>
     <div class="header-column">GRADE</div>
     <div class="header-column">LETTER</div>
-    <div class="header-column"> </div>
   </div>
   <div class="assignment-container">
     @for (grade of this.grades; track grade.id) {
@@ -12,17 +11,16 @@
         <div class="assignment-row">
         <div class="assignment-column">{{ this.getCourseNameByID(grade.courseId) }}</div>
         <div class="assignment-column">{{ this.getAssignmentTitleByID(grade.assignmentId) }}</div>
-          <div class="assignment-column">{{ this.displayGrade(grade.percent) }}</div>
-          <div class="assignment-column">{{ this.displayGradeChar(grade) }}</div>
           <div class="assignment-column">
-            <button class="disabled-button">Set Grade</button>
+            <form [formGroup]="updateGradeForm" (ngSubmit)="setGrade()">
+              <input id="grade" type="number" formControlName="grade">
+              <button type="submit">✔</button>
+            </form>
           </div>
+          <div class="assignment-column">{{ this.displayGradeChar(grade) }}</div>
           </div>
-          <div id = "line" style =   "border-bottom: 3px solid #949494; width: 95%; justify-self: center;" > </div>
-
+        <div id = "line" style =   "border-bottom: 3px solid #949494; width: 95%; justify-self: center;" > </div>
       }
-
     }
-
   </div>
 </div>

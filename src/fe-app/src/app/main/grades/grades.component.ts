@@ -7,11 +7,12 @@ import { CommonModule } from '@angular/common';
 import { CourseService } from '../../course.service';
 import { AssignmentService } from '../../assignment.service';
 import { GradeCalcComponent } from "../../grade-calc/grade-calc.component";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-grades',
   standalone: true,
-  imports: [RouterModule, CommonModule, GradeCalcComponent],
+  imports: [RouterModule, CommonModule, GradeCalcComponent, ReactiveFormsModule],
   templateUrl: './grades.component.html',
   styleUrl: './grades.component.css'
 })
@@ -20,6 +21,9 @@ export class GradesComponent {
   courseService = inject(CourseService)
   assignmentService = inject(AssignmentService)
   gradeService = inject(GradesService);
+  updateGradeForm = new FormGroup ({
+    grade: new FormControl('', Validators.required)
+  });
 
   courses: Course[] = [];
   assignments: Assignment[] = [];
@@ -90,5 +94,9 @@ export class GradesComponent {
     if (grade.percent < 0 || grade.gradeChar == null)
       return "N/A";
     return grade.gradeChar;
+  }
+
+  setGrade() {
+
   }
 }
