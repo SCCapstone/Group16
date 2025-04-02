@@ -185,4 +185,34 @@ describe('SettingsService', () => {
     expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/updatePhoneNumber?userId=123&phoneNumber=1234567890',
     Object({ method: 'POST' }));
   });
+
+  // clearNotifications()
+  it('should throw an error when clearNotifcations POST request fails', async () => {
+    spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+      ok: false,
+      status: 500
+    } as Response));
+
+    await expectAsync(service.clearNotifications('123'))
+      .toBeRejectedWithError('POST failed: 500');
+  });
+
+  it('should throw an error when clearNotifications fetch encounters a network failure', async () => {
+    spyOn(window, 'fetch').and.returnValue(Promise.reject(new Error('Network Error')));
+
+    await expectAsync(service.clearNotifications('123'))
+      .toBeRejectedWithError('Network Error');
+  });
+
+  it('should successfully call clearNotifications', async () => {
+    const fetchSpy = spyOn(window, 'fetch').and.returnValue(Promise.resolve({
+      ok: true
+    } as Response));
+
+    await expectAsync(service.clearNotifications('123'))
+      .toBeResolved();
+
+    expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/clearNotifications?userId=123',
+    Object({ method: 'POST' }));
+  });
 });

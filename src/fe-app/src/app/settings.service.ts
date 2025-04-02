@@ -192,4 +192,33 @@ export class SettingsService {
       throw error;
     }
   }
+
+  /**
+   * Clears all notifications for a user
+   * @param userId The ID of the desired user, will typically be the user currently logged in
+   */
+  async clearNotifications(userId: string | null): Promise<void> {
+    const queryParams = new URLSearchParams({
+      userId: userId ?? "NULL"
+    }).toString();
+
+    try {
+      const response = await fetch(`${this.url}clearNotifications?${queryParams}`, {
+        method: 'POST'
+      });
+
+      if(!response.ok) {
+        throw new Error(`POST failed: ${response.status}`);
+      }
+      console.log(response);
+    }
+    catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error clearing notifications:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
+      throw error;
+    }
+  }
 }
