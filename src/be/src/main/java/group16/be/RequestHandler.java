@@ -456,6 +456,27 @@ public class RequestHandler {
     }
 
     /**
+     * This method is to clear a user's notifications
+     * @param userId
+     * @return True if the notifications were successfully cleared
+     */
+    @CrossOrigin
+    @PostMapping("/api/clearNotifications")
+    public ResponseEntity<?> clearNotifications(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
+        if(userId == null || userId.equals("NULL")) 
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID is missing or invalid");
+        if(validateUserId(userId).getStatusCode() != HttpStatus.OK)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with that Id exists");
+        
+        var user = scraper.getUser(userId);
+        user.clearNotifications();
+        if(scraper.saveUser(user))
+            return ResponseEntity.ok(user);
+        else
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving user");
+    }
+
+    /**
      * This method updates a user's preferred name
      * @param userId the user's ID
      * @param preferredName the user's new name
