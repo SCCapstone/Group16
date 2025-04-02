@@ -1,14 +1,11 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { RouterOutlet, RouterModule, Router } from '@angular/router';
-import { SettingsService } from '../settings.service';
 import { SettingsSidebarComponent } from './settings-sidebar/settings-sidebar.component';
-import { UserInfo } from '../user';
 import { LoginService } from '../login.service';
 import { ProfileSettingsComponent } from "./profile-settings/profile-settings.component";
 import { NotificationSettingsComponent } from "./notification-settings/notification-settings.component";
 import { AssignmentService } from '../assignment.service';
 import { HeartbeatService } from '../heartbeat.service';
-
 
 @Component({
   selector: 'app-settings',
@@ -20,8 +17,6 @@ import { HeartbeatService } from '../heartbeat.service';
 export class SettingsComponent {
   constructor() {}
 
-  userInfo: UserInfo | undefined;
-  settingsService = inject(SettingsService);
   loginService = inject(LoginService);
   router = inject(Router);
   assignmentService = inject(AssignmentService);
