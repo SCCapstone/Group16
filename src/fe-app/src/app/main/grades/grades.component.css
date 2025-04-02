@@ -157,6 +157,20 @@ input[type="number"] {
   width: 80px;  /* Adjust size as needed */
   padding: 5px;
   text-align: center;
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
+/* Hide arrows for Chrome, Safari, Edge, and Opera */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide arrows for Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 button {

@@ -18,9 +18,11 @@
                   id="grade"
                   type="number"
                   [formControlName]="grade.id || ''"
-                  [placeholder]="grade.percent === -1 ? 'Enter grade' : ''"
-                  [value]="grade.percent === -1 ? '' : grade.percent">
-                <button type="submit">✔</button>
+                  [placeholder]="grade.percent === -1 ? 'Enter' : ''"
+                  [value]="grade.percent === -1 ? '' : grade.percent"
+                  (blur)="setGradeOnEvent($event, grade.id)"
+                  (keydown.enter)="setGradeOnEvent($event, grade.id)">
+                <!--<button type="submit">✔</button>-->
               }
             </form>
           </div>

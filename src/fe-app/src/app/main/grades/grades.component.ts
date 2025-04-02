@@ -12,7 +12,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 @Component({
   selector: 'app-grades',
   standalone: true,
-  imports: [RouterModule, CommonModule, GradeCalcComponent, ReactiveFormsModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule],
   templateUrl: './grades.component.html',
   styleUrl: './grades.component.css'
 })
@@ -98,7 +98,7 @@ export class GradesComponent {
     return grade.gradeChar;
   }
 
-  setGrade(gradeId: string | undefined) {
+  async setGrade(gradeId: string | undefined) {
     if (gradeId === undefined) {
       return; // If gradeId is undefined, exit the function
     }
@@ -106,32 +106,58 @@ export class GradesComponent {
     // Get the new grade percentage from the form
     const percent: number = this.updateGradeForm.value[gradeId];
 
+    if (percent < 0 || percent === undefined || percent === null) {
+      return;
+    }
+
     if (percent != null) {
       const gradeToUpdate = this.grades.find(grade => grade.id === gradeId);
 
       if (gradeToUpdate) {
         gradeToUpdate.percent = percent;
         gradeToUpdate.gradeChar = this.calculateGradeChar(percent);
-        const updatedGradeControl = new FormControl(percent.toString(), Validators.required);
-        this.updateGradeForm.setControl(gradeId, updatedGradeControl);
+        //const updatedGradeControl = new FormControl(percent.toString(), Validators.required);
+        //this.updateGradeForm.setControl(gradeId, updatedGradeControl);
+        this.updateGradeForm.patchValue({ [gradeId]: percent.toString() });
       }
 
-      this.gradeService.setGrade(gradeId, percent);
+      try {
+        await this.gradeService.setGrade(gradeId, percent);
+        console.log(`Grade ${gradeId} updated successfully.`);
+      } catch (error) {
+        console.error(`Error updating grade ${gradeId}:`, error);
+      }
     }
   }
 
   // This function calculates the letter grade based on the percent
   calculateGradeChar(percent: number): string {
-    if (percent >= 90) {
-      return 'A';
-    } else if (percent >= 80) {
-      return 'B';
-    } else if (percent >= 70) {
-      return 'C';
-    } else if (percent >= 60) {
-      return 'D';
-    } else {
-      return 'F';
+    if (percent >= 90)
+      return "A";
+    else if (percent >= 86)
+      return "B+";
+    else if (percent >= 80)
+      return "B";
+    else if (percent >= 76)
+      return "C+";
+    else if (percent >= 70)
+      return "C";
+    else if (percent >= 66)
+      return "D+";
+    else if (percent >= 60)
+      return "D";
+    else
+      return "F";
+  }
+
+  setGradeOnEvent(event: Event, gradeId: string | undefined) {
+    if (!gradeId) return;
+
+    // Prevent default form behavior on Enter key
+    if (event instanceof KeyboardEvent && event.key === "Enter") {
+      event.preventDefault();
     }
+
+    this.setGrade(gradeId);
   }
 }
