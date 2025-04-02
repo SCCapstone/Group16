@@ -19,6 +19,7 @@ public class NotificationManager {
     private APIScraper scraper;
 
     public void parseChange(ChangeStreamDocument<Document> change) {
+        System.out.println("DEBUG: parseChange: " + change.toString());
         switch (change.getOperationType().getValue()) {
             case "insert":
                 System.out.println("DEBUG: INSERT");
@@ -52,21 +53,22 @@ public class NotificationManager {
 
     public boolean sendNotification(User user, String message) {
         user.addNotification(message);
-        var ret = true;
+        return scraper.saveUser(user);
+        // var ret = true;
 
-        if (user.getEmailNotifications()) {
-            //TODO: Send email.
-        }
-        if (user.getInstitutionEmailNotifications()) {
-            //TODO: Send university email.
-        }
-        if (user.getSmsNotifications()) {
-            //TODO: Send SMS.
-        }
-        if(ret) {
-            scraper.saveUser(user);
-        }
-        return ret; 
+        // if (user.getEmailNotifications()) {
+        //     //TODO: Send email.
+        // }
+        // if (user.getInstitutionEmailNotifications()) {
+        //     //TODO: Send university email.
+        // }
+        // if (user.getSmsNotifications()) {
+        //     //TODO: Send SMS.
+        // }
+        // if(ret) {
+        //     scraper.saveUser(user);
+        // }
+        // return ret; 
     }
 
     public boolean clearNotifications(String userId) {
@@ -146,20 +148,12 @@ public class NotificationManager {
     }
 
     private void parseReplace(ChangeStreamDocument<Document> change) {
-        // try {
-        //     FileWriter fw = new FileWriter(new File("updateGrade.json"));
-        //     fw.write(change.getFullDocumentBeforeChange().toJson());
-        //     fw.close();
-        // } catch (Exception e) {
-        //     // TODO: handle exception
-        // }
-
         var changeId = change.getDocumentKey().get("_id").asObjectId().getValue().toString();
         System.out.println("DEBUG: CHANGE ID: " + changeId);
         var changeCollection = change.getNamespace().getCollectionName();
         System.out.println("DEBUG: CHANGE COLLECTION: " + changeCollection);
 
-        if(changeCollection.equals("grades")){
+        if(changeCollection.strip().equalsIgnoreCase("grades")){
             var grade = scraper.getGradeByGradeId(changeId);
             if (grade == null) {
                 return;

@@ -227,6 +227,7 @@ public class User {
             notifications = new PriorityQueue<>();
         Notification notification = new Notification(message);
         notifications.add(notification);
+        System.out.println("DEBUG: User addNotification: " + notification.getMessage());
     }
     
     private static class Settings {
@@ -306,6 +307,18 @@ public class User {
         .append(",\n  courseIDs: ").append(courseIDs != null ? formatCourseIDs(courseIDs) : "null")
         .append("\n}");
         return sb.toString();
+    }
+
+    public String simpleToString() {
+        String notificationString = "";
+        for(var notification : notifications) {
+            notificationString += "\t    { " + notification.getMessage() + " }";
+        }
+        return "User:"
+        + "\t  id: " + id
+        + ",\t  userName: " + userName
+        + ",\t  studentId: " + studentId
+        + ",\t  notifications: " + notificationString;
     }
 
     private String formatCourseIDs(List<CourseId> courseIDs) {

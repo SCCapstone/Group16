@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.integration.leader.event.OnGrantedEvent;
 
 @SpringBootTest
 public class NotificationTests {
@@ -49,7 +50,13 @@ public class NotificationTests {
 	@Test
 	void listenerTests() throws InterruptedException {
 		assertTrue(scraper.getUser(REAL_USERID).getNotifications().size() == 0);
-		mongoChangeListener.init();
+
+		// Start the change listener
+		mongoChangeListener.onLeadershipGranted(new OnGrantedEvent(new Object(), null, "testRole"));
+
+		// Wait for the listener to start
+		waitForListener();
+		Thread.sleep(2000);
 
 		// I am going to modify a grade of "osterholt" in the database. This should update the notifications.
 		var user = scraper.getUser(REAL_USERID);
@@ -60,8 +67,8 @@ public class NotificationTests {
 		grade.setPercent(90);
 		scraper.saveGrade(grade);		
 
-		Thread.sleep(500);
 		user = scraper.getUser(REAL_USERID);
+		System.out.println("DEBUG: User: " + user.simpleToString());
 	
 		assertTrue(user.getNotifications().size() > 0);
 		System.out.println("Notification: " + user.getNotifications().peek());
@@ -69,4 +76,16 @@ public class NotificationTests {
 		notificationManager.clearNotifications(REAL_USERID);
 	}
 
+
+	private void waitForListener() throws InterruptedException {
+		int retries = 10;
+		while (retries > 0) {
+			if (mongoChangeListener.isRunning()) {
+				return;
+			}
+			Thread.sleep(1000);
+			retries--;
+		}
+		throw new IllegalStateException("MongoChangeListener did not start in time.");
+	}
 }
