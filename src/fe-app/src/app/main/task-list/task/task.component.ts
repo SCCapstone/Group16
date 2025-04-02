@@ -74,10 +74,22 @@ export class TaskComponent implements OnInit {
   openPopup(type: 'edit-task' | 'task'): void {
     this.popupType = type;
     this.showPopup = true;
+    document.addEventListener('keydown', this.handleEscapeKey);
   }
 
   closePopup(): void {
     this.showPopup = false;
     this.popupType = null;
+    document.removeEventListener('keydown', this.handleEscapeKey);
+  }
+
+  private handleEscapeKey = (event: KeyboardEvent): void => {
+    if (event.key === 'Escape') {
+      this.closePopup();
+    }
+  }
+
+  handleBackdropClick(event: Event): void {
+    this.closePopup();
   }
 }

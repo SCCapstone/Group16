@@ -27,30 +27,44 @@ export class AppComponent implements OnDestroy {
   showPopup = false;
   popupType: string = '';
 
-    openPopup(type: 'notifications' | 'settings') {
-      this.popupType = type;
-      this.showPopup = true;
-      console.log("popup clicked");
-      
-      setTimeout(() => {
-        const popup = document.querySelector(".popup-modal");
-        if (popup) {
-          popup.classList.add("show");
-        }
-      }, 10);
-    }
-    
-    closePopup() {
+  openPopup(type: 'notifications' | 'settings') {
+    this.popupType = type;
+    this.showPopup = true;
+    console.log("popup clicked");
+
+    document.addEventListener('keydown', this.handleEscapeKey);
+
+    setTimeout(() => {
       const popup = document.querySelector(".popup-modal");
       if (popup) {
-        popup.classList.remove("show");
+        popup.classList.add("show");
       }
-    
-      setTimeout(() => {
-        this.showPopup = false;
-      }, 400);
+    }, 10);
+  }
+
+  closePopup() {
+    const popup = document.querySelector(".popup-modal");
+    if (popup) {
+      popup.classList.remove("show");
     }
-    
+
+    document.removeEventListener('keydown', this.handleEscapeKey);
+
+    setTimeout(() => {
+      this.showPopup = false;
+    }, 400);
+  }
+
+  private handleEscapeKey = (event: KeyboardEvent): void => {
+    if (event.key === 'Escape') {
+      this.closePopup();
+    }
+  }
+
+  handleBackdropClick(event: Event): void {
+    this.closePopup();
+  }
+
   hide(): boolean {
     const hiddenRoutes = ['/', '/login', '/settings/profile', '/settings/appearance', '/settings/notifications', '/settings/sign-out', '/grades', '/grades/grade-calc'];
     return !hiddenRoutes.includes(this.router.url);
@@ -64,7 +78,7 @@ export class AppComponent implements OnDestroy {
     const visibleRoutes = ['/grades', '/grades/grade-calc'];
     return visibleRoutes.includes(this.router.url);
   }
-  
+
   headerRouting(): void {
     if(this.loginService.getUserId()) {
       this.router.navigate(['/main/task-list']);

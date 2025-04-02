@@ -23,21 +23,21 @@
 .assignment-column {
     padding: 10px;
     word-wrap: break-word;
-    flex: 1; 
+    flex: 1;
     border-right: 3px solid #949494;
     font-size: 18px;
 }
 
 .assignmentPopup {
     font-size: 20px;
-    color: black; 
-    line-height: 1.7; 
+    color: black;
+    line-height: 1.7;
 }
 
   .description, .course{
     font-weight: bold;
   }
-  
+
 .assignment-column:last-child {
     border-right: none;
 }

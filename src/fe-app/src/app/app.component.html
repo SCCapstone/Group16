@@ -19,8 +19,8 @@
       </div>
     </header>
 
-    <div *ngIf="showPopup" class="popup-modal">
-      <div class="popup-content">
+    <div *ngIf="showPopup" class="popup-modal" (click)="handleBackdropClick($event)">
+      <div class="popup-content" (click)="$event.stopPropagation()">
         <span class="close" (click)="closePopup()">&times;</span>
         <p *ngIf="popupType === 'notifications'"><app-notifications></app-notifications></p>
         <p *ngIf="popupType === 'settings'"><app-settings (onSignout)="closePopup()"></app-settings></p>
@@ -42,7 +42,7 @@
         </div>
         <div class="col-md-auto" (click)="headerRouting()">
           <h1 style="text-align: left; color:black; margin-top: 12px; margin-left: -15px;">
-             SETTINGS 
+             SETTINGS
           </h1>
         </div>
         <div class="col-md-auto ms-auto d-flex align-items-center">
@@ -57,4 +57,3 @@
       </div>
     </header>
     -->
-  
