@@ -25,9 +25,6 @@ export class GradesComponent {
   assignments: Assignment[] = [];
   grades: Grade[] = [];
 
-  showPopup = false;
-  popupType: 'calculator' | null = null;
-
   constructor() {}
 
   ngOnInit() {
@@ -93,15 +90,5 @@ export class GradesComponent {
     if (grade.percent < 0 || grade.gradeChar == null)
       return "N/A";
     return grade.gradeChar;
-  }
-
-  openPopup(type: 'calculator'): void {
-    this.popupType = type;
-    this.showPopup = true;
-  }
-
-  closePopup(): void {
-    this.showPopup = false;
-    this.popupType = null;
   }
 }
