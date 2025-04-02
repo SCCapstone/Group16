@@ -35,19 +35,19 @@
                     <img src="images/calc.png" alt="calculator icon" style="width: 73px; height: auto; cursor: pointer;" />
                 </div>
             </div>
-            
-            <div *ngIf="showPopup" class="popup-modal">
-                <div class="popup-content">
+
+            <div *ngIf="showPopup" class="popup-modal" (click)="handleBackdropClick($event)">
+                <div class="popup-content" (click)="$event.stopPropagation()">
                   <span class="close" (click)="closePopup()">&times;</span>
                   <p *ngIf="popupType === 'add-task'"><app-add-task (closePopup)="closePopup()" (onTaskAdd)="handleNewTask($event)"></app-add-task></p>
                   <p *ngIf="popupType === 'grade-calc'"><app-grade-calc></app-grade-calc></p>
                 </div>
               </div>
             <div class="main-view row">
-                
+
                 <!-- TASK LIST, CALENDAR, OR GRADES VIEW -->
                 <router-outlet />
-                
+
             </div>
         </div>
     </div>
