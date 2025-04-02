@@ -43,7 +43,9 @@ export class ProfileSettingsComponent {
     passwordRetype: new FormControl("")
   });
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  ngOnInit() {
     // Load necessary settings from database and initialize form
     this.settingsService.getUserInfo(this.loginService.getUserId()).then((userInfo: UserInfo) => {
       this.preferredName = userInfo.name.preferredDisplayName;

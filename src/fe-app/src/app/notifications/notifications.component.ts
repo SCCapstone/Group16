@@ -7,8 +7,6 @@ import { LoginService } from '../login.service';
 import { DatePipe } from '@angular/common';
 
 
-
-
 @Component({
   selector: 'app-notifications',
   standalone: true,

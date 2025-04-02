@@ -28,7 +28,9 @@ export class GradesComponent {
   showPopup = false;
   popupType: 'calculator' | null = null;
 
-  constructor() {
+  constructor() {}
+
+  ngOnInit() {
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
       this.courses = courses;

@@ -24,6 +24,7 @@ export class SettingsComponent {
 
   @Output() onSignout = new EventEmitter<void>(); // EventEmitter to notify parent
 
+
   handleSignout() {
     if(confirm('Are you sure?')) {
       this.onSignout.emit(); // Emit event to parent component

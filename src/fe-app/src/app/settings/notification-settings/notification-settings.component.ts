@@ -20,7 +20,9 @@ export class NotificationSettingsComponent {
   loginService = inject(LoginService);
   settingsService = inject(SettingsService);
 
-  constructor() {
+  constructor() {}
+
+  ngOnInit() {
     this.settingsService.getUserInfo(this.loginService.getUserId()).then((userInfo: UserInfo) => {
       let userSettings: NotificationSettings = userInfo.settings;
       this.useSchoolEmail = userSettings.institutionEmailNotifications;

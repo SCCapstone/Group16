@@ -29,10 +29,6 @@ export class SecondarySidebarComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {}
 
   constructor(private assignmentService: AssignmentService) {
-    this.courseService.getCourses(this.loginService.getUserId())
-    .then((courses: Course[]) => {
-      this.courses = courses;
-    })
 
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
     effect(() => {
@@ -42,6 +38,13 @@ export class SecondarySidebarComponent implements OnChanges {
       this.assignmentService.getAssignments(this.loginService.getUserId()).then((assignments: Assignment[]) => {
         this.filterTopThree(assignments)
       });
+    })
+  }
+
+  ngOnInit() {
+    this.courseService.getCourses(this.loginService.getUserId())
+    .then((courses: Course[]) => {
+      this.courses = courses;
     })
 
     this.gradesService.getGrades(this.loginService.getUserId())
