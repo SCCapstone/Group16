@@ -21,9 +21,7 @@ export class GradesComponent {
   courseService = inject(CourseService)
   assignmentService = inject(AssignmentService)
   gradeService = inject(GradesService);
-  updateGradeForm = new FormGroup ({
-    grade: new FormControl('', Validators.required)
-  });
+  updateGradeForm: FormGroup<{ [key: string]: FormControl<any> }> = new FormGroup({});
 
   courses: Course[] = [];
   assignments: Assignment[] = [];
@@ -35,16 +33,31 @@ export class GradesComponent {
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
       this.courses = courses;
-    })
+    });
 
     this.assignmentService.getAssignments(this.loginService.getUserId()).then((assignments: Assignment[]) => {
       this.assignments = assignments;
-    })
+    });
 
     this.gradeService.getGrades(this.loginService.getUserId())
     .then((grades: Grade[]) => {
       this.grades = grades;
-    })
+
+      const gradeControls: { [key: string]: FormControl } = {};  // Make sure this is typed correctly
+
+      this.grades.forEach(grade => {
+        if (grade.id) {  // Ensure the grade.id is defined
+          const gradeControl = new FormControl(
+            grade.percent === -1 ? null : grade.percent.toString(),  // Empty string for -1 to show placeholder
+            Validators.required
+          );
+
+          gradeControls[grade.id] = gradeControl;
+        }
+      });
+
+      this.updateGradeForm = new FormGroup<{ [key: string]: FormControl<any> }>(gradeControls);
+    });
   }
 
   /**
@@ -75,17 +88,6 @@ export class GradesComponent {
   }
 
   /**
-   * Takes in a grade value and returns it in the correct format for display.
-   * @param grade A decimal, percent-based grade.
-   * @returns A string adding a % sign to the given grade, or -- if it is negative
-   */
-  displayGrade(grade: number): string {
-    if (grade < 0)
-      return "--";
-    return ("" + grade + "%");
-  }
-
-  /**
    * Sanitizes the letter grade that should be displayed, only returning the letter if the grade percent is positive.
    * @param grade The grade object to be referenced.
    * @returns The output letter grade, accounting for ungraded assignments or null letter grades.
@@ -96,7 +98,7 @@ export class GradesComponent {
     return grade.gradeChar;
   }
 
-  setGrade() {
+  setGrade(gradeId: string | undefined) {
 
   }
 }

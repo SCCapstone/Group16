@@ -12,8 +12,12 @@
         <div class="assignment-column">{{ this.getCourseNameByID(grade.courseId) }}</div>
         <div class="assignment-column">{{ this.getAssignmentTitleByID(grade.assignmentId) }}</div>
           <div class="assignment-column">
-            <form [formGroup]="updateGradeForm" (ngSubmit)="setGrade()">
-              <input id="grade" type="number" formControlName="grade">
+            <form [formGroup]="updateGradeForm" (ngSubmit)="setGrade(grade.id)">
+              <input
+                id="grade"
+                type="number"
+                [formControlName]="grade.id || ''"
+                [placeholder]="grade.percent === -1 ? 'Enter grade' : ''">
               <button type="submit">✔</button>
             </form>
           </div>
