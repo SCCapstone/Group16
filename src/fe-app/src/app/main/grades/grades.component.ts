@@ -56,7 +56,7 @@ export class GradesComponent {
         }
       });
 
-      this.updateGradeForm = new FormGroup<{ [key: string]: FormControl<any> }>(gradeControls);
+      this.updateGradeForm = new FormGroup(gradeControls);
     });
   }
 
@@ -99,6 +99,13 @@ export class GradesComponent {
   }
 
   setGrade(gradeId: string | undefined) {
+    if (gradeId === undefined) {
+      return;
+    }
 
+    const percent: number = this.updateGradeForm.value[gradeId];
+    if (percent != null) {
+      this.gradeService.setGrade(gradeId, percent);
+    }
   }
 }
