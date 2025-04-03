@@ -22,6 +22,13 @@ spec:
           image: ghcr.io/sccapstone/group16/classmate-api:latest
           ports:
             - containerPort: 1616
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
           env:
             - name: MONGO_URI
               valueFrom:
@@ -38,6 +45,12 @@ spec:
                 secretKeyRef:
                   name: classmate-secrets
                   key: GMAIL_SMTP_PASSWORD
+            - name: SPRING_CLOUD_KUBERNETES_LEADER_CONFIGMAP_NAME
+              value: "classmate-api-leader"
+            - name: SPRING_CLOUD_KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
 ---
 apiVersion: v1
 kind: Service

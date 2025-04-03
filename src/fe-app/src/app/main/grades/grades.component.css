@@ -60,30 +60,31 @@ button {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #ddd;
     text-align: center;
-    background-color: white;
+    background-color: #c0c0c0;
 }
 
 
 .assignment-column {
     padding: 8px;
     word-wrap: break-word;
-    flex: 1; 
-    border-right: 1px solid #ddd;
+    flex: 1;
+    border-right: 3px solid #949494;
+    font-size: 18px;
+
 }
 
 
 .assignmentPopup {
     font-size: 20px;
-    color: black; 
-    line-height: 1.7; 
+    color: black;
+    line-height: 1.7;
   }
 
   .assignmentPopup {
     font-size: 22px;
-    color: black; 
-    line-height: 1.7; 
+    color: black;
+    line-height: 1.7;
   }
 
   .due-date{
@@ -93,7 +94,7 @@ button {
   .description, .course{
     font-weight: bold;
   }
-  
+
 
 .assignment-column:last-child {
     border-right: none;
@@ -111,16 +112,24 @@ button {
   font-weight: bold;
   text-align: center;
   padding: 10px;
-  background-color: #f2f1f1;
-  border-bottom: 2px solid #ddd;
+  background-color: #cfcfcf;
+  border-bottom: 3px solid #949494;
+  font-size: 18px;
+
+}
+
+.line {
+  border-bottom: 3px solid #949494;
+  border-radius:12px;
+  width: 95%;
 }
 
 
 .header-column {
   padding: 10px;
   text-transform: uppercase;
-  flex: 1; 
-  border-right: 1px solid #ddd;
+  flex: 1;
+  border-right: 3px solid #949494;
   text-align: center;
 }
 
@@ -132,5 +141,46 @@ button {
   border-right: none;
 }
 
+.assignment-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+input[type="number"] {
+  width: 80px;  /* Adjust size as needed */
+  padding: 5px;
+  text-align: center;
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
+/* Hide arrows for Chrome, Safari, Edge, and Opera */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide arrows for Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+button {
+  margin-left: 10px;
+  padding: 5px 10px;
+}
+
+input[readonly] {
+  background-color: transparent; /* Makes it look non-editable */
+  border: none; /* Removes the border */
+  outline: none; /* Removes blue highlight */
+  box-shadow: none; /* Ensures no additional highlight */
+}

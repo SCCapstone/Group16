@@ -1,4 +1,4 @@
-import { Component, inject, Output, EventEmitter } from '@angular/core';
+import { Component, inject, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Assignment, Course } from '../../course';
 import { CourseService } from '../../course.service';
@@ -14,7 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './add-task.component.html',
   styleUrl: './add-task.component.css'
 })
-export class AddTaskComponent {
+export class AddTaskComponent implements OnInit {
   @Output() closePopup = new EventEmitter<void>();
   @Output() onTaskAdd = new EventEmitter<Assignment>();
 
@@ -27,32 +27,32 @@ export class AddTaskComponent {
   showPopup = false;
   newTask2: Assignment | null = null;
   popupType: 'new-task' | null = null;
-  showFormPopup = true;   
-  showTaskPopup = false;    
+  showFormPopup = true;
+  showTaskPopup = false;
   courseName: String | undefined;
 
   addTaskForm = new FormGroup ({
     title: new FormControl('', Validators.required),
     description: new FormControl(''),
     course: new FormControl('', Validators.required),
-    due: new FormControl('', Validators.required)
+    due: new FormControl('', Validators.required),
+    time: new FormControl('', Validators.required)
   });
 
-  // name: string = "";
-  // description: string = "";
-  // course: string = "";
-  // // course: undefined; // TODO update type to Course when interface is created
-  // due: Date = new Date();
+  constructor() {}
 
-  // displayOutput: boolean = false;  // TODO for testing, remove later
-
-  constructor() {
+  ngOnInit() {
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
       this.courses = courses;
     })
-  }
 
+    const defaultTime = '23:59';
+
+    this.addTaskForm.patchValue({
+      time: defaultTime
+    });
+  }
 
   async addTask() {
     console.log("AddTaskComponent - ADD TASK");
@@ -64,12 +64,11 @@ export class AddTaskComponent {
 
     let dueDate: Date | null = null;
 
+    const date = this.addTaskForm.value.due;
+    const time = this.addTaskForm.value.time;
 
-
-    if (this.addTaskForm.value.due) {
-      const selectedDate = new Date(this.addTaskForm.value.due);
-      selectedDate.setMinutes(selectedDate.getMinutes() + selectedDate.getTimezoneOffset()); // Adjust back to UTC
-      dueDate = selectedDate;
+    if (date && time) {
+      dueDate = new Date(`${date}T${time}:00`);
     }
 
     try {
@@ -95,17 +94,17 @@ export class AddTaskComponent {
         userCreated: false
       };
 
-      this.newTask2 = {
-        id: crypto.randomUUID(),
-        userId: this.loginService.getUserId() ?? '',
-        title: this.addTaskForm.value.title ?? '',
-        description: this.addTaskForm.value.description ?? '',
-        courseId: this.addTaskForm.value.course ?? '',
-        complete: false,
-        availability: {
-          adaptiveRelease: { end: dueDate ?? new Date() }
-        },
-        userCreated: false
+      this.newTask2 = { ...newTask
+        // id: crypto.randomUUID(),
+        // userId: this.loginService.getUserId() ?? '',
+        // title: this.addTaskForm.value.title ?? '',
+        // description: this.addTaskForm.value.description ?? '',
+        // courseId: this.addTaskForm.value.course ?? '',
+        // complete: false,
+        // availability: {
+        //   adaptiveRelease: { end: dueDate ?? new Date() }
+        // },
+        // userCreated: false
       };
       this.courseName = this.getCourseNameByID(this.newTask2.courseId);
       console.log("new task course name: ", this.getCourseNameByID(this.newTask2.courseId));

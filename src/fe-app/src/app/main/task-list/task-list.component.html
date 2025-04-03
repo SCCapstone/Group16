@@ -1,59 +1,23 @@
-
 <div class="assignment-list">
-    <div class="assignment-header">
-        <div class="header-column" ><button class="checkmark-button" style = "color:red; border-color: red;" (click)="test()">✔</button></div>
-        <div class="header-column">COURSE</div>
-        <div class="header-column">TITLE</div>
-        <div class="header-column">DUE</div>
-        <div class="header-column">MODIFY</div>
-        
-    </div>
-    <div class="assignment-container">
-        @for (assignment of this.assignments[this.getIndex()]; track assignment.id) {
-            @if (courseService.getSelectIndex() === -1 || assignment.courseId === courses[courseService.getSelectIndex()].id) {
-                <app-task
-                [assignment]="assignment"
-                [courseName]="this.getCourseNameByID(assignment.courseId)"
-                (taskRemoved)="onTaskRemoved($event)"
-                (taskUpdated)="onTaskUpdated($event)"
-                />
-            }
-        }
-    </div>
+  <div class="assignment-header">
+      <div class="header-column" ><button class="checkmark-button" style = "color:red; border-color: red;" (click)="test()">✔</button></div>
+      <div class="header-column">COURSE</div>
+      <div class="header-column">TITLE</div>
+      <div class="header-column">DUE</div>
+      <div class="header-column">MODIFY</div>
+      
+  </div>
+  <div class="assignment-container">
+      @for (assignment of this.assignments[this.getIndex()]; track assignment.id) {
+          @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
+              <app-task
+              [assignment]="assignment"
+              [courseName]="this.getCourseNameByID(assignment.courseId)"
+              (taskRemoved)="onTaskRemoved($event)"
+              (taskUpdated)="onTaskUpdated($event)"
+              />
+          }
+      }
+  </div>
 
 </div>
-
-<!--
-
-<div class="container py-5">
-    <label for="completed">Show Completed Tasks</label>
-    <input id="completed" type="checkbox" (click)="test()" />
-  
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
-          <th scope="col">✔</th>
-          <th scope="col">Course</th>
-          <th scope="col">Title</th>
-          <th scope="col">Due</th>
-          <th scope="col">Edit</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (assignment of this.assignments[this.getIndex()]; track assignment.id) {
-            @if (courseService.getSelectIndex() === -1 || assignment.courseId === courses[courseService.getSelectIndex()].id) {
-                <app-task
-                 [assignment]="assignment"
-                 [courseName]="this.getCourseNameByID(assignment.courseId)"
-                 (taskRemoved)="onTaskRemoved($event)"
-                 (taskUpdated)="onTaskUpdated($event)"
-                />
-            }
-        }
-      </tbody>
-    </table>
-  </div>
--->
-  
-

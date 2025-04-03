@@ -2,14 +2,17 @@ import { Component, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterModule, Router } from '@angular/router';
 import { LoginService } from './login.service';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 //import {HomeComponent} from './home/home.component';
 import { HeartbeatService } from './heartbeat.service';
+import { SettingsComponent } from "./settings/settings.component";
+import { ProfileSettingsComponent } from './settings/profile-settings/profile-settings.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterModule],
+  imports: [CommonModule, RouterOutlet, RouterModule, NotificationsComponent, SettingsComponent, ProfileSettingsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -22,17 +25,44 @@ export class AppComponent implements OnDestroy {
 
   title = 'fe-app';
   showPopup = false;
-  popupType: 'notifications' | null = null;
+  popupType: string = '';
 
-  openPopup(type: 'notifications'): void {
+  openPopup(type: 'notifications' | 'settings') {
     this.popupType = type;
     this.showPopup = true;
-    console.log("pop up clicked")
+    console.log("popup clicked");
+
+    document.addEventListener('keydown', this.handleEscapeKey);
+
+    setTimeout(() => {
+      const popup = document.querySelector(".popup-modal");
+      if (popup) {
+        popup.classList.add("show");
+      }
+    }, 10);
   }
 
-  closePopup(): void {
-    this.showPopup = false;
-    this.popupType = null;
+  closePopup() {
+    const popup = document.querySelector(".popup-modal");
+    if (popup) {
+      popup.classList.remove("show");
+    }
+
+    document.removeEventListener('keydown', this.handleEscapeKey);
+
+    setTimeout(() => {
+      this.showPopup = false;
+    }, 400);
+  }
+
+  private handleEscapeKey = (event: KeyboardEvent): void => {
+    if (event.key === 'Escape') {
+      this.closePopup();
+    }
+  }
+
+  handleBackdropClick(event: Event): void {
+    this.closePopup();
   }
 
   hide(): boolean {
@@ -48,7 +78,7 @@ export class AppComponent implements OnDestroy {
     const visibleRoutes = ['/grades', '/grades/grade-calc'];
     return visibleRoutes.includes(this.router.url);
   }
-  
+
   headerRouting(): void {
     if(this.loginService.getUserId()) {
       this.router.navigate(['/main/task-list']);

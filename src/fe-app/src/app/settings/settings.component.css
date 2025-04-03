@@ -1,21 +1,32 @@
+
 .settings-main {
     display: flex;
     flex-direction: row;
+    background-color: #cfcfcf;
 }
 
 .sidebar {
-    background-color: #777777;
-    width: 20%;
+    background-color: #cfcfcf;
+    width: 100%;
     margin-top: 20px;
+    height: 100%;
 }
 
-.settings-container {
-    width: 80%;
-}
 
 main{
-    background-color: #aaaaaa;
+    background-color: #cfcfcf;
     color: black;
-    min-height: 100vh;
+}
+
+
+h2{
+    font-weight: bold;
+    margin-top: 40px;
+    color: #c30000
+}
+
+button{
+    margin-top: 30px;
+    border-radius: 5px;
 
 }

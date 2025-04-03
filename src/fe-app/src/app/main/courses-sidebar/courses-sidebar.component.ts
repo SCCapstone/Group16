@@ -13,15 +13,14 @@ import { LoginService } from '../../login.service';
 export class CoursesSidebarComponent {
   courses: Course[] = [];
 
-  constructor(
-    protected courseService: CourseService,  
-    private loginService: LoginService  
-  ) {
+  constructor(protected courseService: CourseService, private loginService: LoginService) {}
+
+  ngOnInit() {
     // Retrieve course list from CourseService and store it in courses
     this.courseService.getCourses(this.loginService.getUserId())
-      .then((courses: Course[]) => {
-        this.courses = courses;
-      });
+    .then((courses: Course[]) => {
+      this.courses = courses;
+    });
 
     // Ensure no course is selected on page load
     //this.courseService.deselectCourse();
