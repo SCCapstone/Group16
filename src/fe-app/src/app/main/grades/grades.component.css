@@ -177,3 +177,10 @@ button {
   margin-left: 10px;
   padding: 5px 10px;
 }
+
+input[readonly] {
+  background-color: transparent; /* Makes it look non-editable */
+  border: none; /* Removes the border */
+  outline: none; /* Removes blue highlight */
+  box-shadow: none; /* Ensures no additional highlight */
+}

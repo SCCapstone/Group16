@@ -100,33 +100,35 @@ export class GradesComponent {
 
   async setGrade(gradeId: string | undefined) {
     if (gradeId === undefined) {
-      return; // If gradeId is undefined, exit the function
+      return;
     }
 
-    // Get the new grade percentage from the form
     const percent: number = this.updateGradeForm.value[gradeId];
-
     if (percent < 0 || percent === undefined || percent === null) {
       return;
     }
 
-    if (percent != null) {
-      const gradeToUpdate = this.grades.find(grade => grade.id === gradeId);
+    const assignment = this.getAssignmentByID(this.grades.find(g => g.id === gradeId)?.assignmentId || '');
+    if (!assignment?.userCreated) {
+      return;
+    }
 
-      if (gradeToUpdate) {
-        gradeToUpdate.percent = percent;
-        gradeToUpdate.gradeChar = this.calculateGradeChar(percent);
-        //const updatedGradeControl = new FormControl(percent.toString(), Validators.required);
-        //this.updateGradeForm.setControl(gradeId, updatedGradeControl);
-        this.updateGradeForm.patchValue({ [gradeId]: percent.toString() });
-      }
+    const gradeToUpdate = this.grades.find(grade => grade.id === gradeId);
+    if (gradeToUpdate && gradeToUpdate.percent == percent) {
+      return;
+    }
 
-      try {
-        await this.gradeService.setGrade(gradeId, percent);
-        console.log(`Grade ${gradeId} updated successfully.`);
-      } catch (error) {
-        console.error(`Error updating grade ${gradeId}:`, error);
-      }
+    if (gradeToUpdate) {
+      gradeToUpdate.percent = percent;
+      gradeToUpdate.gradeChar = this.calculateGradeChar(percent);
+      this.updateGradeForm.patchValue({ [gradeId]: percent.toString() });
+    }
+
+    try {
+      await this.gradeService.setGrade(gradeId, percent);
+      console.log(`Grade ${gradeId} updated successfully.`);
+    } catch (error) {
+      console.error(`Error updating grade ${gradeId}:`, error);
     }
   }
 
@@ -159,5 +161,12 @@ export class GradesComponent {
     }
 
     this.setGrade(gradeId);
+
+    const target = event.target as HTMLInputElement;
+    target.blur();
+  }
+
+  getAssignmentByID(id: string): Assignment | undefined {
+    return this.assignments.find(assignment => assignment.id === id);
   }
 }

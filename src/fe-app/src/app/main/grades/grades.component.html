@@ -21,7 +21,8 @@
                   [placeholder]="grade.percent === -1 ? 'Enter' : ''"
                   [value]="grade.percent === -1 ? '' : grade.percent"
                   (blur)="setGradeOnEvent($event, grade.id)"
-                  (keydown.enter)="setGradeOnEvent($event, grade.id)">
+                  (keydown.enter)="setGradeOnEvent($event, grade.id)"
+                  [readonly]="!getAssignmentByID(grade.assignmentId)?.userCreated">
                 <!--<button type="submit">✔</button>-->
               }
             </form>
