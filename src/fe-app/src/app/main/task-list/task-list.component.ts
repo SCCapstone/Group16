@@ -40,9 +40,9 @@ export class TaskListComponent{
     })
   }
 
-  ngOnInit() {
+   async ngOnInit() {
     // Populate course list with service call
-    this.courseService.getCourses(this.loginService.getUserId())
+    await this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
       this.courses = courses;
     });
