@@ -4,9 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.integration.leader.event.OnGrantedEvent;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest
 public class NotificationTests {
@@ -26,6 +28,9 @@ public class NotificationTests {
 	@Autowired
 	private NotificationManager notificationManager;
 
+	@MockitoBean
+	private EmailController emailController;
+
 	@BeforeEach
 	void clearNotifications() {
 		var user = scraper.getUser(REAL_USERID);
@@ -37,6 +42,8 @@ public class NotificationTests {
     
     @Test
 	void testNotifications() {
+		Mockito.doNothing().when(emailController).sendEmail(Mockito.any(String.class), Mockito.any(String.class), Mockito.any(String.class));
+		
 		var user = scraper.getUser(REAL_USERID);
 		assertTrue(user.getNotifications() != null);
 		assertTrue(user.getNotifications().size() == 0);
@@ -49,6 +56,8 @@ public class NotificationTests {
 
 	@Test
 	void listenerTests() throws InterruptedException {
+		Mockito.doNothing().when(emailController).sendEmail(Mockito.any(String.class), Mockito.any(String.class), Mockito.any(String.class));
+		
 		assertTrue(scraper.getUser(REAL_USERID).getNotifications().size() == 0);
 
 		// Start the change listener
