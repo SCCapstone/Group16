@@ -32,18 +32,20 @@ export class TaskListComponent{
   sortedAssignments: Assignment[] = [];
 
   constructor(private assignmentService: AssignmentService, private cdr: ChangeDetectorRef) {
-    // Populate course list with service call
-    this.courseService.getCourses(this.loginService.getUserId())
-    .then((courses: Course[]) => {
-      this.courses = courses;
-    });
-
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
     effect(() => {
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
       console.log("SIGNAL RUN: Value " + signal);
       this.loadAssignments();                                   // Runs when service constructor finishes, no need to call twice
     })
+  }
+
+   async ngOnInit() {
+    // Populate course list with service call
+    await this.courseService.getCourses(this.loginService.getUserId())
+    .then((courses: Course[]) => {
+      this.courses = courses;
+    });
   }
 
   private async loadAssignments() {

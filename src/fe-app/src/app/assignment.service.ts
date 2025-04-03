@@ -18,8 +18,10 @@ export class AssignmentService {
   private signalValue: number = 0;
   private updateSignal: WritableSignal<number> = signal<number>(this.signalValue);
 
-  constructor() {
-    if(this.loginService.getUserId()) {
+  constructor() {}
+
+  ngOnInit() {
+    if (this.loginService.getUserId()) {
       this.fetchAssignments(this.loginService.getUserId())
       .then((assignments: Assignment[]) => {
         this.assignments = assignments;
@@ -103,11 +105,11 @@ export class AssignmentService {
    */
   async addTask(title: string, description: string, dueDate: Date, userId: string, courseId: string) : Promise<void> {
       const queryParams = new URLSearchParams({
-        title: title,
+        title: title ?? "NULL",
         description: description ?? "",
-        dueDate: dueDate?.toISOString(),
-        userId: userId,
-        courseId: courseId
+        dueDate: dueDate?.toISOString() ?? "NULL",
+        userId: userId ?? "NULL",
+        courseId: courseId ?? "NULL"
       }).toString();
 
       console.log(queryParams);

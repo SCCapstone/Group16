@@ -13,13 +13,6 @@ import { User } from '../user';
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit {
-  ngOnInit(): void {
-    const userId = this.loginService.getUserId();
-    if(userId) {
-      this.router.navigateByUrl('/main/task-list');
-    }
-  }
-
   router = inject(Router);
   user: User | undefined;
   loginService = inject(LoginService);
@@ -28,7 +21,13 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', Validators.required)
   });
 
-  // username: osterholt; password: cameron1234
+  ngOnInit(): void {
+    const userId = this.loginService.getUserId();
+    if(userId) {
+      this.router.navigateByUrl('/main/task-list');
+    }
+  }
+
   login() {
     if (this.loginForm.invalid) {
       alert('A field is blank');

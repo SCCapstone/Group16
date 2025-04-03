@@ -1,15 +1,17 @@
 <!-- TODO: Figure out multilevel routerLink -->
-<div [class]="this.getStyle(0)">
-    <p routerLink="profile" (click)="selectPage(0)">Profile</p>
-</div>
-<div [class]="this.getStyle(1)">
-    <p routerLink="appearance" (click)="selectPage(1)">Appearance</p>
-</div>
-<div [class]="this.getStyle(2)">
-    <p routerLink="notifications" (click)="selectPage(2)">Notifications</p>
-</div>
-<div [class]="this.getStyle(3)">
-    <p routerLink="sign-out" (click)="selectPage(3)">Sign Out</p>
-</div>
-
-<button routerLink="/main">Back to Main Page</button>
+ <main>
+    <div [class]="this.getStyle(0)">
+        <p routerLink="profile" (click)="selectPage(0)">Profile</p>
+    </div>
+    <div [class]="this.getStyle(1)">
+        <p routerLink="appearance" (click)="selectPage(1)">Appearance</p>
+    </div>
+    <div [class]="this.getStyle(2)">
+        <p routerLink="notifications" (click)="selectPage(2)">Notifications</p>
+    </div>
+    <div [class]="this.getStyle(3)">
+        <p routerLink="sign-out" (click)="selectPage(3)">Sign Out</p>
+    </div>
+    
+    <button routerLink="/main">Back to Main Page</button>
+ </main>

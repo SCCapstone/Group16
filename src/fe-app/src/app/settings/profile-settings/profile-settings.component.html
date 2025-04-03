@@ -10,7 +10,30 @@
 
     <label for="phone-number">Phone Number:</label>
     <input type="tel" id="phone-number" formControlName="phone"/>
+    <a class="link" (click)="callPasswordWindow(true)" style = "font-size: 25px; margin-top: 40px;">Update Password ▼</a>
 
-    <button type="submit" [disabled]="!this.profileForm.valid">Save</button>
+
+    @if(this.viewPassword) {   
+        <div class = "newPass">
+        <labeL for="password">Current Password:</labeL>
+        <input type="password" id="password" formControlName="password" />
+        <label for="new-password">New Password:</label>
+        <input type="password" id="new-password" formControlName="newPassword" />
+        <label for="password-re">Retype Password:</label>
+        <input type="password" id="password-re" formControlName="passwordRetype" />        
+        <div class="save-close">
+            <button (click)="callPasswordWindow(false)">Close</button>
+            <button (click)="attemptPasswordSave()">Save</button>
+        </div>   
+        </div>   
+    }
+
+    <button type="submit" [disabled]="!this.profileForm.valid || !this.checkForChanges()">Save</button>
+
+    @if (this.profileConfirm) {
+        <p class="success">Profile settings saved!</p>
+    }
 </form>
+
+
 

@@ -8,7 +8,7 @@
           </h1>
         </div>
         <div class="col-md-auto ms-auto d-flex align-items-center">
-          <a class="ms-3" routerLink='/settings/profile'>
+          <a class="ms-3" (click)="openPopup('settings'); $event.preventDefault();">
             <img src="images/settingsIcon.png" alt="settings icon" style="width: 50px; height: auto; margin-top: 10px;" />
           </a>
           <a class="ms-3" (click)="openPopup('notifications')">
@@ -18,6 +18,21 @@
         <div class="div-line"></div>
       </div>
     </header>
+
+    <div *ngIf="showPopup" class="popup-modal" (click)="handleBackdropClick($event)">
+      <div class="popup-content" (click)="$event.stopPropagation()">
+        <span class="close" (click)="closePopup()">&times;</span>
+        <p *ngIf="popupType === 'notifications'"><app-notifications></app-notifications></p>
+        <p *ngIf="popupType === 'settings'"><app-settings (onSignout)="closePopup()"></app-settings></p>
+      </div>
+    </div>
+
+  <section>
+    <router-outlet></router-outlet>
+  </section>
+</main>
+
+ <!--
     <header *ngIf="settings()">
       <div class="logos row d-flex align-items-center">
         <div class="col-md-auto" (click)="headerRouting()">
@@ -27,7 +42,7 @@
         </div>
         <div class="col-md-auto" (click)="headerRouting()">
           <h1 style="text-align: left; color:black; margin-top: 12px; margin-left: -15px;">
-             SETTINGS 
+             SETTINGS
           </h1>
         </div>
         <div class="col-md-auto ms-auto d-flex align-items-center">
@@ -41,41 +56,4 @@
         <div class="div-line"></div>
       </div>
     </header>
-    <header *ngIf="grades()">
-      <div class="logos row d-flex align-items-center">
-        <div class="col-md-auto" (click)="headerRouting()">
-          <h1 style="text-align: left;">
-            <img class="classmate" src="images/favicon.ico" alt="A+ icon" style="width: 70px; height: auto; margin-top: 7px;" />
-          </h1>
-        </div>
-        <div class="col-md-auto" (click)="headerRouting()">
-          <h1 style="text-align: left; color:black; margin-top: 12px; margin-left: -15px;">
-             GRADES 
-          </h1>
-        </div>
-        <div class="col-md-auto ms-auto d-flex align-items-center">
-          <a class="ms-3" routerLink='/settings/profile'>
-            <img src="images/settingsIcon.png" alt="settings icon" style="width: 50px; height: auto; margin-top: 10px;" />
-          </a>
-          <a class="ms-3" (click)="openPopup('notifications')">
-            <img src="images/notificationIcon.png" alt="notifications icon" style="width: 55px; height: auto; margin-top: 10px;" />
-          </a>
-        </div>
-        <div class="div-line"></div>
-      </div>
-    </header>
-    <div *ngIf="showPopup" class="popup-modal">
-      <div class="popup-content">
-        <span class="close" (click)="closePopup()">&times;</span>
-        <p *ngIf="popupType === 'notifications'">notifications go here</p>
-      </div>
-    </div>
-
-
-  <!--This a element links back to login and is present on all pages
-  likely will need removed but for now is reference for routerLink setup-->
-  <section>
-    <router-outlet></router-outlet>
-  </section>
-</main>
-  
+    -->
