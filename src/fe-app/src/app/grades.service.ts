@@ -38,7 +38,7 @@ export class GradesService {
 
       try {
         const response = await fetch(`${this.url}setGrade?${queryParams}`, {
-          method: 'PUT'
+          method: 'POST'
         });
 
         if(!response.ok) {
