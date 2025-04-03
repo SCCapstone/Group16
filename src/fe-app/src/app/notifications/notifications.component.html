@@ -15,7 +15,7 @@
     <p>No notifications available.</p>
   </div>
 
-  <div>
+  <div *ngIf="notifications?.length">
     <button (click)="clearNotifications()">Clear Notifications</button>
   </div>
 
