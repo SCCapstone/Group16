@@ -18,7 +18,11 @@ public class NotificationManager {
     @Autowired
     private APIScraper scraper;
 
+    @Autowired
+    private EmailController emailController;
+
     public void parseChange(ChangeStreamDocument<Document> change) {
+        System.out.println("DEBUG: parseChange: " + change.toString());
         switch (change.getOperationType().getValue()) {
             case "insert":
                 System.out.println("DEBUG: INSERT");
@@ -52,21 +56,18 @@ public class NotificationManager {
 
     public boolean sendNotification(User user, String message) {
         user.addNotification(message);
-        var ret = true;
 
         if (user.getEmailNotifications()) {
-            //TODO: Send email.
+            emailController.sendEmail(user.getEmail(), "Notification from ClassMATE", message);
         }
         if (user.getInstitutionEmailNotifications()) {
-            //TODO: Send university email.
+            emailController.sendEmail(user.getInstitutionEmail(), "Notification from ClassMATE", message);
         }
         if (user.getSmsNotifications()) {
-            //TODO: Send SMS.
+            // TODO: Send sms notification
         }
-        if(ret) {
-            scraper.saveUser(user);
-        }
-        return ret; 
+        
+        return scraper.saveUser(user);
     }
 
     public boolean clearNotifications(String userId) {
@@ -146,20 +147,12 @@ public class NotificationManager {
     }
 
     private void parseReplace(ChangeStreamDocument<Document> change) {
-        // try {
-        //     FileWriter fw = new FileWriter(new File("updateGrade.json"));
-        //     fw.write(change.getFullDocumentBeforeChange().toJson());
-        //     fw.close();
-        // } catch (Exception e) {
-        //     // TODO: handle exception
-        // }
-
         var changeId = change.getDocumentKey().get("_id").asObjectId().getValue().toString();
         System.out.println("DEBUG: CHANGE ID: " + changeId);
         var changeCollection = change.getNamespace().getCollectionName();
         System.out.println("DEBUG: CHANGE COLLECTION: " + changeCollection);
 
-        if(changeCollection.equals("grades")){
+        if(changeCollection.strip().equalsIgnoreCase("grades")){
             var grade = scraper.getGradeByGradeId(changeId);
             if (grade == null) {
                 return;
