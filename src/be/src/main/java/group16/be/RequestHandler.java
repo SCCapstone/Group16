@@ -37,6 +37,9 @@ public class RequestHandler {
     @Autowired
     private static HeartbeatController heartbeatController;
 
+    @Autowired
+    private NotificationManager notificationManager;
+
     /**
      * This method is to login or register a new user.
      * See {@link group16.be.RequestHandlerTests#testLogin()} for related tests.
@@ -547,6 +550,27 @@ public class RequestHandler {
             return ResponseEntity.ok(user);
         else
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving user");
+    }
+
+    /**
+     * Sends a notification to a user
+     * @param userId
+     * @param message
+     * @return
+     */
+    @CrossOrigin
+    @GetMapping("/api/sendNotification")
+    public ResponseEntity<?> sendNotification(@RequestParam(value = "userId", defaultValue = "NULL") String userId, 
+                                              @RequestParam(value = "message", defaultValue = "NULL") String message) {
+        if(userId == null || userId.equals("NULL"))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID is missing or invalid");
+        if(validateUserId(userId).getStatusCode() != HttpStatus.OK)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with that Id exists");
+        if(message == null || message.equals("NULL"))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Message is missing or invalid");
+        if(!notificationManager.sendNotification(userId, message))
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error sending notification");
+        return ResponseEntity.ok().build();
     }
 
     /* ---------------------- Private Methods ---------------------- */

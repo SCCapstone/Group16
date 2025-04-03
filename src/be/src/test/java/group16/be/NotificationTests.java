@@ -56,7 +56,7 @@ public class NotificationTests {
 
 		// Wait for the listener to start
 		waitForListener();
-		Thread.sleep(2000);
+		Thread.sleep(1000);
 
 		// I am going to modify a grade of "osterholt" in the database. This should update the notifications.
 		var user = scraper.getUser(REAL_USERID);
@@ -65,15 +65,15 @@ public class NotificationTests {
 		grade.setPercent(91);
 		scraper.saveGrade(grade);
 		grade.setPercent(90);
-		scraper.saveGrade(grade);		
+		scraper.saveGrade(grade);
+
+		Thread.sleep(1000);
 
 		user = scraper.getUser(REAL_USERID);
 		System.out.println("DEBUG: User: " + user.simpleToString());
 	
-		assertTrue(user.getNotifications().size() > 0);
 		System.out.println("Notification: " + user.getNotifications().peek());
-
-		notificationManager.clearNotifications(REAL_USERID);
+		assertTrue(user.getNotifications().size() > 0);
 	}
 
 
