@@ -166,6 +166,10 @@ public class User {
         if (contact == null) return null;
         return contact.getEmail();
     }
+    public String getInstitutionEmail() {
+        if (contact == null) return null;
+        return contact.getInstitutionEmail();
+    }
 
     public boolean setMobilePhone(String mobilePhone) {
         if (contact == null) return false;

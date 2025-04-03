@@ -18,6 +18,9 @@ public class NotificationManager {
     @Autowired
     private APIScraper scraper;
 
+    @Autowired
+    private EmailController emailController;
+
     public void parseChange(ChangeStreamDocument<Document> change) {
         System.out.println("DEBUG: parseChange: " + change.toString());
         switch (change.getOperationType().getValue()) {
@@ -53,22 +56,18 @@ public class NotificationManager {
 
     public boolean sendNotification(User user, String message) {
         user.addNotification(message);
-        return scraper.saveUser(user);
-        // var ret = true;
 
-        // if (user.getEmailNotifications()) {
-        //     //TODO: Send email.
-        // }
-        // if (user.getInstitutionEmailNotifications()) {
-        //     //TODO: Send university email.
-        // }
-        // if (user.getSmsNotifications()) {
-        //     //TODO: Send SMS.
-        // }
-        // if(ret) {
-        //     scraper.saveUser(user);
-        // }
-        // return ret; 
+        if (user.getEmailNotifications()) {
+            emailController.sendEmail(user.getEmail(), "Notification from ClassMATE", message);
+        }
+        if (user.getInstitutionEmailNotifications()) {
+            emailController.sendEmail(user.getInstitutionEmail(), "Notification from ClassMATE", message);
+        }
+        if (user.getSmsNotifications()) {
+            // TODO: Send sms notification
+        }
+        
+        return scraper.saveUser(user);
     }
 
     public boolean clearNotifications(String userId) {

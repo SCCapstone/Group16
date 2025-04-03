@@ -33,26 +33,11 @@ spec:
                 secretKeyRef:
                   name: classmate-secrets
                   key: MONGO_DATABASE
-            - name: MAIL_SMTP_HOST
+            - name: GMAIL_SMTP_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: classmate-secrets
-                  key: MAIL_SMTP_HOST
-            - name: MAIL_SMTP_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: classmate-secrets
-                  key: MAIL_SMTP_PORT
-            - name: MAIL_SMTP_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: classmate-secrets
-                  key: MAIL_SMTP_USERNAME
-            - name: MAIL_SMTP_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: classmate-secrets
-                  key: MAIL_SMTP_PASSWORD
+                  key: GMAIL_SMTP_PASSWORD
 ---
 apiVersion: v1
 kind: Service
