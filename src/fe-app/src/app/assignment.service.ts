@@ -50,7 +50,7 @@ export class AssignmentService {
       const data = await response.json() ?? [];
 
       if(Array.isArray(data) && data.length === 0) {
-        throw new Error('assignments are []');
+        throw new Error('assignments are []');  // TODO doesn't this just break when a user has no assignments? probably shouldn't do that
       }
       return data;
     }
@@ -178,10 +178,21 @@ export class AssignmentService {
       const response = await fetch(`${this.url}completeAssignment?${queryParams}`, {
         method: 'PUT'
       });
-
       if(!response.ok) {
         throw new Error(`PUT failed: ${response.status}`)
       }
+
+      // Update assignment in stored array and update signal for components
+      for (let assignment of this.assignments) {
+        if (assignment.id === assignmentId && assignment.complete === false) {
+          assignment.complete = true;
+          this.updateSignal.set(++this.signalValue);
+          return;
+        }
+      }
+
+      // If assignment exists but is not in stored array for whatever reason, fetch
+      this.assignments = await this.fetchAssignments(this.loginService.getUserId());
       this.updateSignal.set(++this.signalValue);
     }
     catch (error: unknown) {
@@ -204,10 +215,21 @@ export class AssignmentService {
       const response = await fetch(`${this.url}openAssignment?${queryParams}`, {
         method: 'PUT'
       });
-
       if(!response.ok) {
         throw new Error(`PUT failed: ${response.status}`)
       }
+      
+      // Update assignment in stored array and update signal for components
+      for (let assignment of this.assignments) {
+        if (assignment.id === assignmentId && assignment.complete === true) {
+          assignment.complete = true;
+          this.updateSignal.set(++this.signalValue);
+          return;
+        }
+      }
+
+      // If assignment exists but is not in stored array for whatever reason, fetch
+      this.assignments = await this.fetchAssignments(this.loginService.getUserId());
       this.updateSignal.set(++this.signalValue);
     }
     catch (error: unknown) {
