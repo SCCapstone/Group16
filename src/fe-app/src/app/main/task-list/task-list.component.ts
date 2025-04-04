@@ -59,7 +59,7 @@ export class TaskListComponent{
   filterAssignments(assignments: Assignment[]) {
     let newAssignments: Assignment[][] = [ [], [] ];
     for (const assignment of assignments) {
-      if (assignment.complete && Date.now() >= (new Date(assignment.availability.adaptiveRelease.end)).getTime())
+      if (assignment.complete)
         newAssignments[COMPLETE].push(assignment);
       else
         newAssignments[ACTIVE].push(assignment);

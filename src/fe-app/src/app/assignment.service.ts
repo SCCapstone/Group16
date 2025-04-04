@@ -182,9 +182,9 @@ export class AssignmentService {
       if(!response.ok) {
         throw new Error(`PUT failed: ${response.status}`)
       }
-
-      console.log(response);
-    } catch (error: unknown) {
+      this.updateSignal.set(++this.signalValue);
+    }
+    catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Error completing task:', error.message);
       } else {
@@ -208,9 +208,9 @@ export class AssignmentService {
       if(!response.ok) {
         throw new Error(`PUT failed: ${response.status}`)
       }
-
-      console.log(response);
-    } catch (error: unknown) {
+      this.updateSignal.set(++this.signalValue);
+    }
+    catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Error opening task:', error.message);
       } else {
