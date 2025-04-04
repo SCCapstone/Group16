@@ -41,6 +41,9 @@ export class AddTaskComponent implements OnInit {
 
   constructor() {}
 
+  /**
+   * On opening the addTask popup get the courses and set the time to 11:59PM
+   */
   ngOnInit() {
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
@@ -54,6 +57,10 @@ export class AddTaskComponent implements OnInit {
     });
   }
 
+  /**
+   * Adds a task to the local list if API call to add a task is successful
+   * Show newly added task in a new task pop up
+   */
   async addTask() {
     console.log("AddTaskComponent - ADD TASK");
 
@@ -109,6 +116,10 @@ export class AddTaskComponent implements OnInit {
     }
   }
 
+  /**
+   * Does the same as addTask() except no new task pop up
+   * Instead clears the form and allows users to keep adding tasks
+   */
   async addMoreTasks() {
     console.log("AddTaskComponent - ADD TASK");
 
@@ -130,7 +141,7 @@ export class AddTaskComponent implements OnInit {
       await this.assignmentService.addTask(
         this.addTaskForm.value.title ?? '',
         this.addTaskForm.value.description ?? '',
-        dueDate ?? new Date(Date.now()),          // TODO temp fix
+        dueDate ?? new Date(Date.now()),
         this.loginService.getUserId() ?? "",
         this.addTaskForm.value.course ?? ''
       )
@@ -160,14 +171,25 @@ export class AddTaskComponent implements OnInit {
     }
   }
 
+  /**
+   * Closes the Add Task form pop up
+   */
   closeFormPopup(): void {
     this.showFormPopup = false;
   }
 
+  /**
+   * Close the New Task pop up
+   */
   closeTaskPopup(): void {
     this.showTaskPopup = false;
   }
 
+  /**
+   * gets the course name by its id
+   * @param id Course Id
+   * @returns Course Name
+   */
   getCourseNameByID(id: String): String {
     for (const course of this.courses) {
       if (course.id === id)
