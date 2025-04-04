@@ -109,7 +109,7 @@ export class TaskListComponent{
     this.cdr.detectChanges();
   }
 
-  test(): void {
+  toggleView(): void {
     this.assignmentService.toggleViewCompleted();
   }
 
