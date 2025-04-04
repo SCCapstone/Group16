@@ -24,6 +24,9 @@ export class SettingsComponent {
 
   @Output() onSignout = new EventEmitter<void>(); // EventEmitter to notify parent
 
+  saveAllSettings() {
+    console.log("call saveAllSettings()");
+  }
 
   handleSignout() {
     if(confirm('Are you sure?')) {

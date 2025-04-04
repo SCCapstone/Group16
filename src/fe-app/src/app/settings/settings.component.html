@@ -10,8 +10,11 @@
         <div class = "sidebar">
             <app-profile-settings></app-profile-settings>
             <app-notification-settings></app-notification-settings>
-            <button (click)="handleSignout()">Sign Out</button>
 
+            <div class="sidebar-buttons">
+                <button (click)="saveAllSettings()">Save Settings</button>
+                <button (click)="handleSignout()">Sign Out</button>
+            </div>
         </div>
 
     </div>
