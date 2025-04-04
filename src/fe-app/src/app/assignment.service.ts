@@ -184,15 +184,9 @@ export class AssignmentService {
 
       // Update assignment in stored array and update signal for components
       for (let assignment of this.assignments) {
-        if (assignment.id === assignmentId && assignment.complete === false) {
+        if (assignment.id === assignmentId && assignment.complete === false)
           assignment.complete = true;
-          this.updateSignal.set(++this.signalValue);
-          return;
-        }
       }
-
-      // If assignment exists but is not in stored array for whatever reason, fetch
-      this.assignments = await this.fetchAssignments(this.loginService.getUserId());
       this.updateSignal.set(++this.signalValue);
     }
     catch (error: unknown) {
@@ -221,15 +215,9 @@ export class AssignmentService {
       
       // Update assignment in stored array and update signal for components
       for (let assignment of this.assignments) {
-        if (assignment.id === assignmentId && assignment.complete === true) {
+        if (assignment.id === assignmentId && assignment.complete === true)
           assignment.complete = true;
-          this.updateSignal.set(++this.signalValue);
-          return;
-        }
       }
-
-      // If assignment exists but is not in stored array for whatever reason, fetch
-      this.assignments = await this.fetchAssignments(this.loginService.getUserId());
       this.updateSignal.set(++this.signalValue);
     }
     catch (error: unknown) {
