@@ -19,8 +19,10 @@
         <option *ngFor="let course of courses" [value]="course.id">{{ course.name }}</option>
       </select>
 
-      <button type="submit">Add Task</button>
-      <button type="button" (click)="addMoreTasks()">Add More Tasks</button>
+      <div class="button-container">
+        <button type="submit">Save & Close</button>
+        <a (click)="addMoreTasks()">Add Another</a>
+      </div>
     </form>
   </div>
 </div>

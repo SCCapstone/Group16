@@ -2,7 +2,6 @@ form div {
   margin-bottom: 10px;
 }
 
-
 label {
   display: block;
   margin-bottom: 5px;
@@ -35,3 +34,21 @@ h3{
   color:#c30000;
 }
 
+a {
+  cursor: pointer;
+  text-decoration: underline !important;
+  color: #c30000 !important;
+  margin-left: 12px;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.button-container a {
+  margin-top: 8px;
+  font-size: 14px;
+}
