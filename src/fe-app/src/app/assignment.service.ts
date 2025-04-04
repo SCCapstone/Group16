@@ -50,7 +50,7 @@ export class AssignmentService {
       const data = await response.json() ?? [];
 
       if(Array.isArray(data) && data.length === 0) {
-        throw new Error('assignments are []');
+        throw new Error('assignments are []');  // TODO doesn't this just break when a user has no assignments? probably shouldn't do that
       }
       return data;
     }
@@ -178,13 +178,18 @@ export class AssignmentService {
       const response = await fetch(`${this.url}completeAssignment?${queryParams}`, {
         method: 'PUT'
       });
-
       if(!response.ok) {
         throw new Error(`PUT failed: ${response.status}`)
       }
 
-      console.log(response);
-    } catch (error: unknown) {
+      // Update assignment in stored array and update signal for components
+      for (let assignment of this.assignments) {
+        if (assignment.id === assignmentId && assignment.complete === false)
+          assignment.complete = true;
+      }
+      this.updateSignal.set(++this.signalValue);
+    }
+    catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Error completing task:', error.message);
       } else {
@@ -204,13 +209,18 @@ export class AssignmentService {
       const response = await fetch(`${this.url}openAssignment?${queryParams}`, {
         method: 'PUT'
       });
-
       if(!response.ok) {
         throw new Error(`PUT failed: ${response.status}`)
       }
-
-      console.log(response);
-    } catch (error: unknown) {
+      
+      // Update assignment in stored array and update signal for components
+      for (let assignment of this.assignments) {
+        if (assignment.id === assignmentId && assignment.complete === true)
+          assignment.complete = true;
+      }
+      this.updateSignal.set(++this.signalValue);
+    }
+    catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Error opening task:', error.message);
       } else {
