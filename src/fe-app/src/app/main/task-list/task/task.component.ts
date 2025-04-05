@@ -11,11 +11,10 @@ import { EditTaskComponent } from '../../edit-task/edit-task.component';
 
 
 @Component({
-  selector: 'app-task',
-  standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, EditTaskComponent],
-  templateUrl: './task.component.html',
-  styleUrl: './task.component.css'
+    selector: 'app-task',
+    imports: [FormsModule, CommonModule, RouterModule, EditTaskComponent],
+    templateUrl: './task.component.html',
+    styleUrl: './task.component.css'
 })
 export class TaskComponent implements OnInit {
   @Input() assignment!: Assignment;

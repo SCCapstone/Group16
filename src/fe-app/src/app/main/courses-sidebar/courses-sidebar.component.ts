@@ -4,11 +4,10 @@ import { CourseService } from '../../course.service';
 import { LoginService } from '../../login.service';
 
 @Component({
-  selector: 'app-courses-sidebar',
-  standalone: true,
-  imports: [],
-  templateUrl: './courses-sidebar.component.html',
-  styleUrl: './courses-sidebar.component.css'
+    selector: 'app-courses-sidebar',
+    imports: [],
+    templateUrl: './courses-sidebar.component.html',
+    styleUrl: './courses-sidebar.component.css'
 })
 export class CoursesSidebarComponent {
   courses: Course[] = [];

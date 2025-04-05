@@ -11,11 +11,10 @@ import { CommonModule } from '@angular/common';
 import { NotificationSettingsComponent } from '../notification-settings/notification-settings.component';
 
 @Component({
-  selector: 'app-profile-settings',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, NotificationSettingsComponent],
-  templateUrl: './profile-settings.component.html',
-  styleUrl: './profile-settings.component.css'
+    selector: 'app-profile-settings',
+    imports: [ReactiveFormsModule, CommonModule],
+    templateUrl: './profile-settings.component.html',
+    styleUrl: './profile-settings.component.css'
 })
 export class ProfileSettingsComponent {
 

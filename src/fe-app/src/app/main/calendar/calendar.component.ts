@@ -8,11 +8,10 @@ import { Course } from '../../course';
 import { Assignment } from '../../course';
 
 @Component({
-  selector: 'app-calendar',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './calendar.component.html',
-  styleUrl: './calendar.component.css'
+    selector: 'app-calendar',
+    imports: [CommonModule],
+    templateUrl: './calendar.component.html',
+    styleUrl: './calendar.component.css'
 })
 export class CalendarComponent {
   weekStart: Date;                  // Start of the currently-selected week

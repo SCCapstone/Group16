@@ -8,11 +8,10 @@ import { DatePipe } from '@angular/common';
 
 
 @Component({
-  selector: 'app-notifications',
-  standalone: true,
-  imports: [RouterModule, CommonModule, DatePipe],
-  templateUrl: './notifications.component.html',
-  styleUrl: './notifications.component.css'
+    selector: 'app-notifications',
+    imports: [RouterModule, CommonModule, DatePipe],
+    templateUrl: './notifications.component.html',
+    styleUrl: './notifications.component.css'
 })
 export class NotificationsComponent implements OnInit{
   userInfo: UserInfo | null = null;
