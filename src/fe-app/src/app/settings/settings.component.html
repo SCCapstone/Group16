@@ -11,9 +11,11 @@
             <app-profile-settings></app-profile-settings>
             <app-notification-settings></app-notification-settings>
 
-            <p>{{ this.saveMessage }}</p>
             <div class="sidebar-buttons">
                 <button (click)="saveAllSettings()">Save Settings</button>
+                @if (this.saveMessage != "") {
+                    <p [class]="this.getMessageStyle()">{{ this.saveMessage }}</p>
+                }
                 <button (click)="handleSignout()">Sign Out</button>
             </div>
         </div>

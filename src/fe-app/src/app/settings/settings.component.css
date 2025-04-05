@@ -18,6 +18,20 @@
     align-items: center;
 }
 
+.success {
+    color: #454545;
+    margin-top: 5px;
+    margin-bottom: -15px;
+    font-size: 16px;
+}
+
+.error {
+    color: red;
+    margin-top: 5px;
+    margin-bottom: -15px;
+    font-size: 16px;
+}
+
 main{
     background-color: #cfcfcf;
     color: black;
