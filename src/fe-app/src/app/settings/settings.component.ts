@@ -30,13 +30,6 @@ export class SettingsComponent {
 
   constructor(private cdr: ChangeDetectorRef) {}
 
-  ngAfterViewInit() {
-    effect(() => {
-      this.profileSettings.validatorSignal();  // Track changes to ProfileSettingsComponent.profileForm.valid
-      this.cdr.detectChanges();                // Update save button accordingly
-    })
-  }
-
   getMessageStyle() {
     if (this.saveSuccess)
       return "success";
