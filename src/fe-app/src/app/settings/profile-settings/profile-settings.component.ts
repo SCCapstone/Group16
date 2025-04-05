@@ -91,6 +91,14 @@ export class ProfileSettingsComponent {
       return "success";
     return "error"
   }
+  
+  /**
+   * Gets the valid property of the profile settings form, determining whether or not that section of settings can be submitted.
+   * @returns ProfileSettingsComponent.profileForm.valid
+   */
+  getProfileValidator() {
+    return this.profileForm.valid;
+  }
 
   /**
    * Checks to see if there have been any changes to the content of the name, personal email, or phone fields

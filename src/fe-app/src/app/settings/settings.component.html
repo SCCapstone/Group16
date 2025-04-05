@@ -16,7 +16,7 @@
                 @if (this.saveMessage != "") {
                     <p [class]="this.getMessageStyle()">{{ this.saveMessage }}</p>
                 }
-                <button (click)="handleSignout()">Sign Out</button>
+                <button (click)="handleSignout()" [disabled]="!this.profileSettings.getProfileValidator()">Sign Out</button>
             </div>
         </div>
 

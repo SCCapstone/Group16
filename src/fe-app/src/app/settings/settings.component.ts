@@ -35,6 +35,9 @@ export class SettingsComponent {
   }
 
   async saveAllSettings() {
+    if (!this.profileSettings.getProfileValidator())
+      return;
+    
     try {
       await this.profileSettings.saveProfile();
       await this.notificationSettings.saveNotifications();
