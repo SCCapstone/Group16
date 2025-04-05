@@ -38,6 +38,13 @@ export class SettingsComponent {
 
   async saveAllSettings() {
     
+    if (!this.profileSettings.getProfileValidator()) {
+      this.saveMessage = "Error saving password: ensure fields are valid";
+      this.saveSuccess = false;
+      this.cdr.detectChanges();
+      return
+    }
+
     try {
       await this.profileSettings.saveProfile();
       await this.notificationSettings.saveNotifications();
