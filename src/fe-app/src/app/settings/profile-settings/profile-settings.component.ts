@@ -45,14 +45,18 @@ export class ProfileSettingsComponent {
 
   ngOnInit() {
     // Load necessary settings from database and initialize form
+    console.log("LOADING PROFILE SETTINGS");
+    
     this.settingsService.getUserInfo(this.loginService.getUserId()).then((userInfo: UserInfo) => {
       this.preferredName = userInfo.name.preferredDisplayName;
       this.schoolEmail = userInfo.contact.institutionEmail;
       this.personalEmail = userInfo.contact.email;
       this.phoneNumber = userInfo.contact.mobilePhone;
-
+      
       // Put phone number in more readable format
       this.phoneNumber = this.phoneNumber.substring(0, 3) + "-" + this.phoneNumber.substring(3, 6) + "-" + this.phoneNumber.substring(6, 10);
+
+      console.log(this.preferredName, this.schoolEmail, this.personalEmail, this.phoneNumber);
 
       // Set form control values with values from database
       this.profileForm.setValue({
@@ -64,6 +68,8 @@ export class ProfileSettingsComponent {
         newPassword: "",
         passwordRetype: ""
       })
+
+      this.cdr.detectChanges();
     })
   }
 
@@ -72,7 +78,6 @@ export class ProfileSettingsComponent {
    * @param open True to open the password window, false to close it.
    */
   callPasswordWindow(open: boolean) {
-    this.viewPassword = open;
 
     // Wipe fields and messages
     this.profileForm.patchValue({
@@ -81,6 +86,9 @@ export class ProfileSettingsComponent {
       passwordRetype: ""
     });
     this.passwordMessage = ""
+    this.viewPassword = open;
+
+    this.cdr.detectChanges();
   }
 
   /**
@@ -134,11 +142,13 @@ export class ProfileSettingsComponent {
         this.passwordMessage = error.message;
       else
         this.passwordMessage = "Unexpected error, please try again later";
+      this.cdr.detectChanges();
       return
     }
 
     this.passwordSuccess = true;
     this.passwordMessage = "Password saved!"
+    this.cdr.detectChanges();
   }
 
   /**

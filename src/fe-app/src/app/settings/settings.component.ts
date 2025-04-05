@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Output, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { RouterOutlet, RouterModule, Router } from '@angular/router';
 import { SettingsSidebarComponent } from './settings-sidebar/settings-sidebar.component';
 import { LoginService } from '../login.service';
@@ -28,6 +28,8 @@ export class SettingsComponent {
 
   @Output() onSignout = new EventEmitter<void>(); // EventEmitter to notify parent
 
+  constructor(private cdr: ChangeDetectorRef) {}
+
   getMessageStyle() {
     if (this.saveSuccess)
       return "success";
@@ -35,6 +37,7 @@ export class SettingsComponent {
   }
 
   async saveAllSettings() {
+    console.log("PROFILE VALIDATOR", this.profileSettings.getProfileValidator());
     if (!this.profileSettings.getProfileValidator())
       return;
     
@@ -43,6 +46,7 @@ export class SettingsComponent {
       await this.notificationSettings.saveNotifications();
       this.saveSuccess = true;
       this.saveMessage = "Settings saved!";
+      this.cdr.detectChanges();
     }
     catch (error: unknown) {
       this.saveSuccess = false;
@@ -50,6 +54,7 @@ export class SettingsComponent {
         this.saveMessage = error.message;
       else
         this.saveMessage = "Unexpected error, please try again later";
+      this.cdr.detectChanges();
     }
   }
 
