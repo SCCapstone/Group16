@@ -25,6 +25,7 @@ jobs:
         run: |
           echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> $GITHUB_ENV
           echo "MONGO_DATABASE=${{ secrets.MONGO_DATABASE }}" >> $GITHUB_ENV
+          echo "GMAIL_SMTP_PASSWORD=${{ secrets.GMAIL_SMTP_PASSWORD }}" >> $GITHUB_ENV
           echo "MAIL_SMTP_HOST=${{ secrets.MAIL_SMTP_HOST }}" >> $GITHUB_ENV
           echo "MAIL_SMTP_PORT=${{ secrets.MAIL_SMTP_PORT }}" >> $GITHUB_ENV
           echo "MAIL_SMTP_USERNAME=${{ secrets.MAIL_SMTP_USERNAME }}" >> $GITHUB_ENV
