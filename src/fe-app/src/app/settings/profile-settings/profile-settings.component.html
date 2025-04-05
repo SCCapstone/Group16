@@ -28,7 +28,7 @@
         <label for="password-re">Retype Password:</label>
         <input type="password" id="password-re" formControlName="passwordRetype" />        
         <div class="save-close">
-            <!-- <button (click)="callPasswordWindow(false)">Close</button> -->
+            <button (click)="callPasswordWindow(false)" style="display: none">Close</button>  <!-- No longer in use for user, just for tests -->
             <button (click)="attemptPasswordSave()">Save</button>
         </div>   
         </div>   
