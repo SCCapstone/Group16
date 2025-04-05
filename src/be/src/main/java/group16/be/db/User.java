@@ -171,10 +171,25 @@ public class User {
         return contact.getInstitutionEmail();
     }
 
+    public String getMobilePhone() {
+        if (contact == null) return null;
+        return contact.getMobilePhone();
+    }
+
     public boolean setMobilePhone(String mobilePhone) {
         if (contact == null) return false;
-        contact.mobilePhone = mobilePhone;
-        return true;
+        mobilePhone = mobilePhone.replace("-", "")
+            .replace(")", "")
+            .replace("(", "")
+            .replace("+1", "")
+            .replace(" ", "")
+            .strip();
+        String r = "^\\d{10}$";
+        if(mobilePhone.matches(r)) {
+            contact.mobilePhone = mobilePhone;
+            return true;
+        }
+        return false;
     }
 
     public String getMobileCarrier() {
@@ -276,6 +291,10 @@ public class User {
 
     public User () {
         super();
+        contact = new Contact();
+        name = new Name();
+        job = new Job();
+        locale = new Locale();
     }
 
     public ArrayList<CourseId> getCourseIDs() {
