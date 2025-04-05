@@ -9,11 +9,10 @@ import { GradesService } from '../../grades.service';
 import { Course, Assignment, Grade } from '../../course';
 
 @Component({
-  selector: 'app-secondary-sidebar',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './secondary-sidebar.component.html',
-  styleUrls: ['./secondary-sidebar.component.css']
+    selector: 'app-secondary-sidebar',
+    imports: [CommonModule],
+    templateUrl: './secondary-sidebar.component.html',
+    styleUrls: ['./secondary-sidebar.component.css']
 })
 export class SecondarySidebarComponent implements OnChanges {
   courses: Course[] = [];

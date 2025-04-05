@@ -6,11 +6,10 @@ import { LoginService } from '../../login.service';
 import { SettingsService } from '../../settings.service';
 
 @Component({
-  selector: 'app-notification-settings',
-  standalone: true,
-  imports: [FormsModule],
-  templateUrl: './notification-settings.component.html',
-  styleUrl: './notification-settings.component.css'
+    selector: 'app-notification-settings',
+    imports: [FormsModule],
+    templateUrl: './notification-settings.component.html',
+    styleUrl: './notification-settings.component.css'
 })
 export class NotificationSettingsComponent {
   useSchoolEmail: boolean = false;

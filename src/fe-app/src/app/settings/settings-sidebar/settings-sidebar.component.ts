@@ -4,11 +4,10 @@ import { Router, RouterModule } from '@angular/router';
 import { inject } from '@angular/core';
 
 @Component({
-  selector: 'app-settings-sidebar',
-  standalone: true,
-  imports: [RouterModule],
-  templateUrl: './settings-sidebar.component.html',
-  styleUrl: './settings-sidebar.component.css'
+    selector: 'app-settings-sidebar',
+    imports: [RouterModule],
+    templateUrl: './settings-sidebar.component.html',
+    styleUrl: './settings-sidebar.component.css'
 })
 export class SettingsSidebarComponent
 {

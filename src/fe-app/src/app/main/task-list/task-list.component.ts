@@ -15,11 +15,10 @@ const ACTIVE = 0;
 const COMPLETE = 1;
 
 @Component({
-  selector: 'app-task-list',
-  standalone: true,
-  imports: [CommonModule, TaskComponent, FormsModule],
-  templateUrl: './task-list.component.html',
-  styleUrl: './task-list.component.css'
+    selector: 'app-task-list',
+    imports: [CommonModule, TaskComponent, FormsModule],
+    templateUrl: './task-list.component.html',
+    styleUrl: './task-list.component.css'
 })
 export class TaskListComponent{
   @Input() newTask: Assignment | null = null;

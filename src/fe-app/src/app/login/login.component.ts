@@ -6,11 +6,10 @@ import { LoginService } from '../login.service';
 import { User } from '../user';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+    selector: 'app-login',
+    imports: [CommonModule, RouterModule, ReactiveFormsModule],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit {
   router = inject(Router);

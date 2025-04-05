@@ -10,11 +10,10 @@ import { SettingsComponent } from "./settings/settings.component";
 import { ProfileSettingsComponent } from './settings/profile-settings/profile-settings.component';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterModule, NotificationsComponent, SettingsComponent, ProfileSettingsComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+    selector: 'app-root',
+    imports: [CommonModule, RouterOutlet, RouterModule, NotificationsComponent, SettingsComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css'
 })
 export class AppComponent implements OnDestroy {
 
