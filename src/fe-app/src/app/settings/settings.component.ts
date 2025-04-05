@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, inject, effect, Output, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { RouterOutlet, RouterModule, Router } from '@angular/router';
 import { SettingsSidebarComponent } from './settings-sidebar/settings-sidebar.component';
 import { LoginService } from '../login.service';
@@ -29,6 +29,13 @@ export class SettingsComponent {
   @Output() onSignout = new EventEmitter<void>(); // EventEmitter to notify parent
 
   constructor(private cdr: ChangeDetectorRef) {}
+
+  ngAfterViewInit() {
+    effect(() => {
+      this.profileSettings.validatorSignal();  // Track changes to ProfileSettingsComponent.profileForm.valid
+      this.cdr.detectChanges();                // Update save button accordingly
+    })
+  }
 
   getMessageStyle() {
     if (this.saveSuccess)

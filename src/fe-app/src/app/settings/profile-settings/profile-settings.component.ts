@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, computed, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -30,6 +30,8 @@ export class ProfileSettingsComponent {
 
   loginService = inject(LoginService);
   settingsService = inject(SettingsService);
+
+  readonly validatorSignal = computed(() => this.profileForm.valid);
 
   profileForm = new FormGroup({
     name: new FormControl("", Validators.required),
