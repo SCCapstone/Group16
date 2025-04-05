@@ -50,8 +50,10 @@ export class SettingsService {
       const response = await fetch (`${this.url}updatePreferredName?${queryParams}`, {
         method: 'POST'
       });
-      if(!response.ok)
-        throw new Error(`POST failed: ${response.status}`);
+      if(!response.ok) {
+        console.error(`POST failed: ${response.status}`);
+        throw new Error(await response.text());
+      }
 
       console.log(response);
     }
@@ -80,8 +82,10 @@ export class SettingsService {
       const response = await fetch (`${this.url}updateEmail?${queryParams}`, {
         method: 'POST'
       });
-      if(!response.ok)
-        throw new Error(`POST failed: ${response.status}`);
+      if(!response.ok) {
+        console.error(`POST failed: ${response.status}`);
+        throw new Error(await response.text());
+      }
 
       console.log(response);
     }
@@ -110,8 +114,10 @@ export class SettingsService {
       const response = await fetch (`${this.url}updatePhoneNumber?${queryParams}`, {
         method: 'POST'
       });
-      if(!response.ok)
-        throw new Error(`POST failed: ${response.status}`);
+      if(!response.ok) {
+        console.error(`POST failed: ${response.status}`);
+        throw new Error(await response.text());
+      }
 
       console.log(response);
     }
@@ -145,8 +151,10 @@ export class SettingsService {
         method: 'PUT'
       });
 
-      if(!response.ok)
+      if(!response.ok) {
+        console.error(`POST failed: ${response.status}`);
         throw new Error(await response.text());
+      }
     }
     catch (error: unknown) {
       if (error instanceof Error)
