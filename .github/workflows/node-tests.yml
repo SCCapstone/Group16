@@ -16,19 +16,26 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.11]
+        node-version: [22.14]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v4
+    
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-      working-directory: src/fe-app
-    - run: npm run build --if-present
-      working-directory: src/fe-app
-    - run: npm test
-      working-directory: src/fe-app
+
+    - name: Install dependencies
+      run: npm ci
+      working-directory: ./src/fe-app
+      
+    - name: Build Project
+      run: npm run build --if-present
+      working-directory: ./src/fe-app
+
+    - name: Run Tests
+      run: npm test
+      working-directory: ./src/fe-app
