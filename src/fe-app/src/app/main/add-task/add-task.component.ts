@@ -8,11 +8,10 @@ import { AssignmentService } from '../../assignment.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-add-task',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './add-task.component.html',
-  styleUrl: './add-task.component.css'
+    selector: 'app-add-task',
+    imports: [ReactiveFormsModule, CommonModule],
+    templateUrl: './add-task.component.html',
+    styleUrl: './add-task.component.css'
 })
 export class AddTaskComponent implements OnInit {
   @Output() closePopup = new EventEmitter<void>();

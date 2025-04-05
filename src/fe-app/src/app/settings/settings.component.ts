@@ -8,11 +8,10 @@ import { AssignmentService } from '../assignment.service';
 import { HeartbeatService } from '../heartbeat.service';
 
 @Component({
-  selector: 'app-settings',
-  standalone: true,
-  imports: [RouterOutlet, RouterModule, SettingsSidebarComponent, ProfileSettingsComponent, NotificationSettingsComponent],
-  templateUrl: './settings.component.html',
-  styleUrl: './settings.component.css'
+    selector: 'app-settings',
+    imports: [RouterModule, ProfileSettingsComponent, NotificationSettingsComponent],
+    templateUrl: './settings.component.html',
+    styleUrl: './settings.component.css'
 })
 export class SettingsComponent {
   constructor() {}

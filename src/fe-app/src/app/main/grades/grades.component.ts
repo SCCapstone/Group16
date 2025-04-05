@@ -10,11 +10,10 @@ import { GradeCalcComponent } from "../../grade-calc/grade-calc.component";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-grades',
-  standalone: true,
-  imports: [RouterModule, CommonModule, ReactiveFormsModule],
-  templateUrl: './grades.component.html',
-  styleUrl: './grades.component.css'
+    selector: 'app-grades',
+    imports: [RouterModule, CommonModule, ReactiveFormsModule],
+    templateUrl: './grades.component.html',
+    styleUrl: './grades.component.css'
 })
 export class GradesComponent {
   loginService = inject(LoginService);

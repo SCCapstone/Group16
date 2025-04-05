@@ -5,11 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-grade-calc',
-  standalone: true,
-  imports: [RouterModule, FormsModule, CommonModule],
-  templateUrl: './grade-calc.component.html',
-  styleUrl: './grade-calc.component.css'
+    selector: 'app-grade-calc',
+    imports: [RouterModule, FormsModule, CommonModule],
+    templateUrl: './grade-calc.component.html',
+    styleUrl: './grade-calc.component.css'
 })
 export class GradeCalcComponent {
   assignments: { name: string; grade: number; weight: number }[] = [];
