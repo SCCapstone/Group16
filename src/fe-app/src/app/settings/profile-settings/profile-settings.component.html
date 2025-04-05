@@ -28,16 +28,15 @@
         <label for="password-re">Retype Password:</label>
         <input type="password" id="password-re" formControlName="passwordRetype" />        
         <div class="save-close">
-            <!-- <button (click)="callPasswordWindow(false)" style="display: none">Close</button> -->
+            <!-- <button (click)="callPasswordWindow(false)">Close</button> -->
             <button (click)="attemptPasswordSave()">Save</button>
         </div>   
         </div>   
     }
 
-    <!-- No longer in use for user, just for tests -->
-    <button type="submit" [disabled]="!this.profileForm.valid || !this.checkForChanges()" style="display: none">Save</button>
-
     <!--
+    <button type="submit" [disabled]="!this.profileForm.valid || !this.checkForChanges()">Save</button>
+
     @if (this.profileConfirm) {
         <p class="success">Profile settings saved!</p>
     }
