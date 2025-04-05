@@ -44,9 +44,6 @@ export class SettingsComponent {
   }
 
   async saveAllSettings() {
-    console.log("PROFILE VALIDATOR", this.profileSettings.getProfileValidator());
-    if (!this.profileSettings.getProfileValidator())
-      return;
     
     try {
       await this.profileSettings.saveProfile();
@@ -54,6 +51,11 @@ export class SettingsComponent {
       this.saveSuccess = true;
       this.saveMessage = "Settings saved!";
       this.cdr.detectChanges();
+      setTimeout(() => {
+        this.saveSuccess = false;
+        this.saveMessage = "";
+        this.cdr.detectChanges();
+      }, 3000)
     }
     catch (error: unknown) {
       this.saveSuccess = false;
@@ -61,6 +63,7 @@ export class SettingsComponent {
         this.saveMessage = error.message;
       else
         this.saveMessage = "Unexpected error, please try again later";
+      console.log("DETECTING CHANGES");
       this.cdr.detectChanges();
     }
   }
