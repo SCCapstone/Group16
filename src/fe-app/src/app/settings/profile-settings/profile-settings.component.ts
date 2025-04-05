@@ -26,12 +26,11 @@ export class ProfileSettingsComponent {
   profileConfirm: boolean = false;
 
   viewPassword: boolean = false;
-  passwordError: string = " ";
-  passwordConfirm: boolean = false;
+  passwordMessage: string = "";
+  passwordSuccess: boolean = false;
 
   loginService = inject(LoginService);
   settingsService = inject(SettingsService);
-
 
   profileForm = new FormGroup({
     name: new FormControl("", Validators.required),
@@ -76,14 +75,22 @@ export class ProfileSettingsComponent {
   callPasswordWindow(open: boolean) {
     this.viewPassword = open;
 
-
     // Wipe fields and messages
     this.profileForm.patchValue({
       password: "",
       newPassword: "",
       passwordRetype: ""
     });
-    this.passwordError = ""
+    this.passwordMessage = ""
+  }
+
+  /**
+   * Returns the CSS class of the password confirmation message based on whether or not the most recent save attempt was successful
+   */
+  getMessageStyle() {
+    if (this.passwordSuccess)
+      return "success";
+    return "error"
   }
 
   /**
@@ -103,7 +110,8 @@ export class ProfileSettingsComponent {
     console.log("Save password");
 
     if (this.profileForm.value.newPassword != this.profileForm.value.passwordRetype) {
-      this.passwordError = "Passwords do not match"
+      this.passwordSuccess = false;
+      this.passwordMessage = "Passwords do not match"
       return
     }
 
@@ -114,20 +122,16 @@ export class ProfileSettingsComponent {
       await this.settingsService.updatePassword(this.loginService.getUserId(), oldPassword, newPassword);
     }
     catch (error: unknown) {
-      console.log("DEBUG 3: ERROR UPDATING PASSWORD (ProfileSettingsComponent::attemptPasswordSave)");
+      this.passwordSuccess = false;
       if (error instanceof Error)
-        // this.passwordError = error.message;
-        alert(error.message);
+        this.passwordMessage = error.message;
       else
-        // this.passwordError = "Unexpected error, please try again later";
-        alert("Unexpected error, please try again later");
+        this.passwordMessage = "Unexpected error, please try again later";
       return
     }
 
-    // this.passwordConfirm = true;
-    // this.cdr.detectChanges();
-    this.callPasswordWindow(false);
-    confirm("Password successfully updated!");
+    this.passwordSuccess = true;
+    this.passwordMessage = "Password saved!"
   }
 
   /**
@@ -135,26 +139,31 @@ export class ProfileSettingsComponent {
    */
   async saveProfile() {
 
-    // Update preferred name
-    if (this.profileForm.value.name != null && this.profileForm.value.name != this.preferredName) {
-      this.preferredName = this.profileForm.value.name;
-      await this.settingsService.updatePreferredName(this.loginService.getUserId(), this.preferredName);
-    }
+    try {
+      // Update preferred name
+      if (this.profileForm.value.name != null && this.profileForm.value.name != this.preferredName) {
+        this.preferredName = this.profileForm.value.name;
+        await this.settingsService.updatePreferredName(this.loginService.getUserId(), this.preferredName);
+      }
 
-    // Update personal email
-    if (this.profileForm.value.personal != null && this.profileForm.value.personal != this.personalEmail) {
-      this.personalEmail = this.profileForm.value.personal;
-      await this.settingsService.updatePersonalEmail(this.loginService.getUserId(), this.personalEmail);
-    }
+      // Update personal email
+      if (this.profileForm.value.personal != null && this.profileForm.value.personal != this.personalEmail) {
+        this.personalEmail = this.profileForm.value.personal;
+        await this.settingsService.updatePersonalEmail(this.loginService.getUserId(), this.personalEmail);
+      }
 
-    // Update phone number
-    if (this.profileForm.value.phone != null && this.profileForm.value.phone != this.phoneNumber) {
-      this.phoneNumber = this.profileForm.value.phone;
-      this.phoneNumber = this.phoneNumber.replaceAll("-", "");  // Remove dashes from user input
-      await this.settingsService.updatePhoneNumber(this.loginService.getUserId(), this.phoneNumber);
-    }
+      // Update phone number
+      if (this.profileForm.value.phone != null && this.profileForm.value.phone != this.phoneNumber) {
+        this.phoneNumber = this.profileForm.value.phone;
+        this.phoneNumber = this.phoneNumber.replaceAll("-", "");  // Remove dashes from user input
+        await this.settingsService.updatePhoneNumber(this.loginService.getUserId(), this.phoneNumber);
+      }
 
-    this.profileConfirm = true;
+      this.profileConfirm = true;
+    }
+    catch (error: unknown) {
+      throw error;
+    }
   }
 
 

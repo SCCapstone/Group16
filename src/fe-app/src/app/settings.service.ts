@@ -15,22 +15,24 @@ export class SettingsService {
    * @returns User info, including settings, as a UserInfo object
    */
   async getUserInfo(userId: string | null): Promise<UserInfo> {
-    const response = await fetch(`${this.url}getUser?userId=${userId}`);
-    const data = await response.json() ?? {};
+    try {
+      const response = await fetch(`${this.url}getUser?userId=${userId}`);
+      const data = await response.json() ?? {};
 
-    if (typeof data === 'object' && Object.keys(data).length === 0)  {
-      throw new Error('userInfo is {}');
+      if (typeof data === 'object' && Object.keys(data).length === 0)  {
+        throw new Error('userInfo is {}');
+      }
+      
+      return data;
     }
-    console.log("settings service");
-    console.log(data);
-    return data;
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error('Error fetching userInfo:', error.message);
-    } else {
-      console.error('Unexpected error', error);
+    catch (error: unknown) {
+      if (error instanceof Error)
+        console.error('Error fetching userInfo:', error.message);
+      else
+        console.error('Unexpected error', error);
+  
+      throw error;
     }
-    throw error;
   }
 
   /**
@@ -48,17 +50,17 @@ export class SettingsService {
       const response = await fetch (`${this.url}updatePreferredName?${queryParams}`, {
         method: 'POST'
       });
-      if(!response.ok) {
+      if(!response.ok)
         throw new Error(`POST failed: ${response.status}`);
-      }
+
       console.log(response);
     }
     catch (error: unknown) {
-      if (error instanceof Error) {
+      if (error instanceof Error)
         console.error('Error updating preferred name:', error.message);
-      } else {
+      else
         console.error('Unexpected error', error);
-      }
+
       throw error;
     }
   }
@@ -78,17 +80,17 @@ export class SettingsService {
       const response = await fetch (`${this.url}updateEmail?${queryParams}`, {
         method: 'POST'
       });
-      if(!response.ok) {
+      if(!response.ok)
         throw new Error(`POST failed: ${response.status}`);
-      }
+
       console.log(response);
     }
     catch (error: unknown) {
-      if (error instanceof Error) {
+      if (error instanceof Error)
         console.error('Error updating Email:', error.message);
-      } else {
+      else
         console.error('Unexpected error', error);
-      }
+
       throw error;
     }
   }
@@ -108,9 +110,9 @@ export class SettingsService {
       const response = await fetch (`${this.url}updatePhoneNumber?${queryParams}`, {
         method: 'POST'
       });
-      if(!response.ok) {
+      if(!response.ok)
         throw new Error(`POST failed: ${response.status}`);
-      }
+
       console.log(response);
     }
     catch (error: unknown) {
@@ -143,13 +145,10 @@ export class SettingsService {
         method: 'PUT'
       });
 
-      if(!response.ok) {
-        console.log("DEBUG: ERROR UPDATING PASSWORD (SettingsService::updatePassword)");
+      if(!response.ok)
         throw new Error(await response.text());
-      }
     }
     catch (error: unknown) {
-      console.log("DEBUG 2: ERROR UPDATING PASSWORD (SettingsService::updatePassword -> catch)");
       if (error instanceof Error)
         console.error('Error updating password: ', error.message);
       else

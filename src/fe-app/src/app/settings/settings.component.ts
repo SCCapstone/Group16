@@ -21,16 +21,25 @@ export class SettingsComponent {
   assignmentService = inject(AssignmentService);
   heartbeatService = inject(HeartbeatService);
 
+  saveMessage: string = "";
+
   @ViewChild(ProfileSettingsComponent) profileSettings!: ProfileSettingsComponent;
   @ViewChild(NotificationSettingsComponent) notificationSettings !: NotificationSettingsComponent;
 
   @Output() onSignout = new EventEmitter<void>(); // EventEmitter to notify parent
 
   async saveAllSettings() {
-    console.log("SAVING PROFILE:");
-    await this.profileSettings.saveProfile();
-    console.log("SAVING NOTIFICATIONS:");
-    await this.notificationSettings.saveNotifications();
+    try {
+      await this.profileSettings.saveProfile();
+      await this.notificationSettings.saveNotifications();
+      this.saveMessage = "Settings saved!";
+    }
+    catch (error: unknown) {
+      if (error instanceof Error)
+        this.saveMessage = error.message;
+      else
+        this.saveMessage = "Unexpected error, please try again later";
+    }
   }
 
   handleSignout() {
