@@ -1,5 +1,6 @@
 export interface User {
   readonly id: string;
+  readonly token: string;
 }
 
 // this interface will be added to as new user info is required across the project
