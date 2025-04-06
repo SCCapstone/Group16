@@ -26,7 +26,7 @@ export class CalendarComponent {
   loginService = inject(LoginService);
   courseService = inject(CourseService);
 
-  readonly DAYS_OF_WEEK = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+  readonly DAYS_OF_WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   // INITIALIZATION
 

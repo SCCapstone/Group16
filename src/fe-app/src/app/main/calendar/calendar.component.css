@@ -25,41 +25,65 @@ h1 {
 /* Section of header row containing left/right arrows */
 .header-arrow {
     width: 10%;
+    height: 100%;
+    display: flex;
+}
+
+#left {
+    justify-content: left;
+}
+
+#right {
+    justify-content: right;
 }
 
 img {
-    width: 100%;
-    height: 80%;
+    height: 75%;
+    margin: auto 0;
+    display: block;
 }
+
 
 /* Row containing days of month */
 .day-row {
     height: 15%;
     display: flex;
     justify-content: space-around;
+
     background: orange;
 }
 
 /* A single day of the month inside day-row */
 .day {
-    height: 100%;
+    height: 90%;
+    margin: auto;
+    text-align: center;
+
     background: yellow;
+}
+
+h2 {
+    margin-top: 10%;
 }
 
 /* Base of the actual calendar content */
 .calendar {
     height: 75%;
+    display: flex;
+    justify-content: space-evenly;
+
     background: green;
 }
 
 /* Individual column of the calendar, representing content for a single day */
 .calendar-column {
-
+    width: 14%;
 }
 
 /* Individual task as represented on calendar */
 .calendar-item {
-
+    margin: 5px;
+    background: purple;
 }
 
 .page-container {
