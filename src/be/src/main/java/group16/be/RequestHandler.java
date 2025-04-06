@@ -54,7 +54,9 @@ public class RequestHandler {
      * @param password 
      * @return the user's ID if login was successful
      */
-    @CrossOrigin
+    @CrossOrigin(
+        allowCredentials = "true"
+    )
     @PostMapping("/api/login")
     public ResponseEntity<?> login(@RequestParam(value = "username", defaultValue = "NAME") String username, 
                                    @RequestParam(value = "password", defaultValue = "NULL") String password,
