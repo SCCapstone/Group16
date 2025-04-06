@@ -1,41 +1,43 @@
-<div class="header-row">
-    <div class="header-arrow" id="left">
-    @if (this.checkSemesterStart(this.weekStart)) {
-        <img class="disabled" src="images/left-arrow.png" alt="Back" />
-    }
-    @else {
-        <img src="images/left-arrow.png" alt="Back" (click)="pageBack()" />
-    }
-    </div>
-    <div class="header-text">
-        <h1>{{ this.weekStart.toLocaleString('default', { month: 'long' }) }} {{ this.weekStart.getFullYear() }}</h1>
-    </div>
-    <div class="header-arrow" id="right">
-    @if (this.checkSemesterEnd(this.weekStart)) {
-        <img class="disabled" src="images/right-arrow.png" alt="Next" />
-    }
-    @else {
-        <img src="images/right-arrow.png" alt="Next" (click)="pageForward()" />
-    }
-    </div>
-</div>
-<div class="day-row">
-@for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
-    <div class="day">
-        <h2>{{ this.calculateDateWithOffset($index) }}</h2>
-        <p>{{ this.DAYS_OF_WEEK[$index] }}</p>
-    </div>
-}
-</div>
 <div class="calendar">
-@for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
-    <div class="calendar-column">
-    @for (assignment of dayAssignments; track assignment.id) {
-        <div class="calendar-item">
-        @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
-            <p>{{ assignment.title }} | {{ assignment.description }}</p>
+    <div class="header-row">
+        <div class="header-arrow" id="left">
+        @if (this.checkSemesterStart(this.weekStart)) {
+            <img class="disabled" src="images/left-arrow.png" alt="Back" />
         }
+        @else {
+            <img src="images/left-arrow.png" alt="Back" (click)="pageBack()" />
+        }
+        </div>
+        <div class="header-text">
+            <h1>{{ this.weekStart.toLocaleString('default', { month: 'long' }) }} {{ this.weekStart.getFullYear() }}</h1>
+        </div>
+        <div class="header-arrow" id="right">
+        @if (this.checkSemesterEnd(this.weekStart)) {
+            <img class="disabled" src="images/right-arrow.png" alt="Next" />
+        }
+        @else {
+            <img src="images/right-arrow.png" alt="Next" (click)="pageForward()" />
+        }
+        </div>
+    </div>
+    <div class="day-row">
+    @for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
+        <div class="day">
+            <h2>{{ this.calculateDateWithOffset($index) }}</h2>
+            <p>{{ this.DAYS_OF_WEEK[$index] }}</p>
         </div>
     }
     </div>
-}
+    <div class="calendar-content">
+    @for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
+        <div class="calendar-column">
+        @for (assignment of dayAssignments; track assignment.id) {
+            <div class="calendar-item">
+            @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
+                <p>{{ assignment.title }} | {{ assignment.description }}</p>
+            }
+            </div>
+        }
+        </div>
+    }
+</div>

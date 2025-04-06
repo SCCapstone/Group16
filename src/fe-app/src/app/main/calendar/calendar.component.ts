@@ -1,4 +1,4 @@
-import { Component, inject, effect } from '@angular/core';
+import { Component, inject, effect, ChangeDetectorRef } from '@angular/core';
 
 import { LoginService } from '../../login.service';
 import { CourseService } from '../../course.service';
@@ -30,7 +30,7 @@ export class CalendarComponent {
 
   // INITIALIZATION
 
-  constructor(private assignmentService: AssignmentService) {
+  constructor(private assignmentService: AssignmentService, private cdr: ChangeDetectorRef) {
     const now: Date = new Date(Date.now());
     this.weekStart = this.getWeekStart(now);  // Store start of the current week
     this.pageNumber = 0;
@@ -99,6 +99,8 @@ export class CalendarComponent {
    * Populates weekAssignments with all assignments due during the currently-selected week.
    */
   organizeWeekAssignments() {
+    console.log("CALL organizeWeekAssignments()");
+    
     this.weekAssignments = [[], [], [], [], [], [], []]
     const millisecondsPerDay = 86400000;
     for (const assignment of this.assignments) {
@@ -111,6 +113,7 @@ export class CalendarComponent {
         break;
       this.weekAssignments[difference / millisecondsPerDay].push(assignment);
     }
+    console.log("WEEK ASSIGNMENTS: ", this.weekAssignments);
   }
   
   /**
@@ -215,6 +218,4 @@ export class CalendarComponent {
 
     return output;
   }
-
-  // TODO implement logic to disable previous/next buttons at beginning/end of semester
 }
