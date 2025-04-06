@@ -1,18 +1,19 @@
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { User } from './user';
 import { isPlatformBrowser } from '@angular/common';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
   readonly url = 'https://classmate.osterholt.us/api/';
-  // url = 'localhost:1616/api/login';
+
 
   private readonly PLATFORM_ID_ = inject(PLATFORM_ID)
-  private readonly USER_ID_KEY = 'userId'; // stores userId for use in other components
+  private readonly USER_ID_KEY = 'userId';
 
-  constructor() { }
+  constructor(private cookieService: CookieService) {}
 
   async login(username: string, password: string) : Promise<User> {
     const queryParams = new URLSearchParams({
@@ -46,8 +47,6 @@ export class LoginService {
   }
 
   getUserId(): string | null {
-
-    // I have no idea why this works
     if (isPlatformBrowser(this.PLATFORM_ID_))
       return sessionStorage.getItem(this.USER_ID_KEY);
     return null;
