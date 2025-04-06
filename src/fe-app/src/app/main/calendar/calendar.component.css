@@ -1,14 +1,42 @@
-.day{
-    color: #c30000;
-    font-weight: bold;
+/* Header row of calendar containing month, year, and buttons */
+.header {
+    height: 10%;
+    line-height: 10%;
     text-align: center;
-    font-size: 22px;
+    background: red;
 }
 
-h1{
-    text-align: center;
+h1 {
     font-size: 32px;
     font-weight: bold;
+}
+
+/* Row containing days of month */
+.day-row {
+    height: 15%;
+    display: flex;
+    justify-content: space-around;
+    background: orange;
+}
+
+/* A single day of the month inside day-row */
+.day {
+    background: yellow;
+}
+
+/* Base of the actual calendar content */
+.calendar {
+
+}
+
+/* Individual column of the calendar, representing content for a single day */
+.calendar-column {
+
+}
+
+/* Individual task as represented on calendar */
+.calendar-item {
+
 }
 
 .page-container {

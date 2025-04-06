@@ -1,19 +1,26 @@
-<h1>Week of {{ this.formatDate(this.weekStart) }}</h1>
-<div class="calendar-container">
-    @for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
-        <h1 class="day">{{ this.DAYS_OF_WEEK[$index] }}</h1>
-        <div class="calendar-element">
-            @if (countMatchingAssignments(dayAssignments, this.courseService.getSelectIndex()) > 0) {
-                @for (assignment of dayAssignments; track assignment.id) {
-                    @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
-                        <p>{{ assignment.title }} | {{ assignment.description }}</p>
-                    }
-                }
-            } @else {
-                <p>No assignments this week</p>
-            }
+<div class="header">
+    <h1>Week of {{ this.formatDate(this.weekStart) }}</h1>
+</div>
+<div class="day-row">
+@for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
+    <div class="day">
+        <h1>1</h1>
+        <p>Mon</p>
+    </div>
+}
+</div>
+<div class="calendar">
+@for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
+    <div class="calendar-column">
+    @for (assignment of dayAssignments; track assignment.id) {
+        <div class="calendar-item">
+        @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
+            <p>{{ assignment.title }} | {{ assignment.description }}</p>
+        }
         </div>
     }
+    </div>
+}
 
 <!-- TODO Make buttons icons rather than text -->
 <div class="page-container">
