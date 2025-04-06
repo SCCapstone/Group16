@@ -15,13 +15,12 @@ import { GradeCalcComponent } from "../grade-calc/grade-calc.component";
 
 @Component({
     selector: 'app-main',
-    standalone: true,
     templateUrl: './main.component.html',
     styleUrl: './main.component.css',
     imports: [
-    RouterOutlet, RouterModule, CoursesSidebarComponent, SecondarySidebarComponent, AddTaskComponent, CommonModule,
-    GradeCalcComponent
-]
+        RouterOutlet, RouterModule, CoursesSidebarComponent, SecondarySidebarComponent, AddTaskComponent, CommonModule,
+        GradeCalcComponent
+    ]
 })
 export class MainComponent implements OnInit {
     loginService = inject(LoginService);

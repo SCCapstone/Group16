@@ -15,11 +15,10 @@ const ACTIVE = 0;
 const COMPLETE = 1;
 
 @Component({
-  selector: 'app-task-list',
-  standalone: true,
-  imports: [CommonModule, TaskComponent, FormsModule],
-  templateUrl: './task-list.component.html',
-  styleUrl: './task-list.component.css'
+    selector: 'app-task-list',
+    imports: [CommonModule, TaskComponent, FormsModule],
+    templateUrl: './task-list.component.html',
+    styleUrl: './task-list.component.css'
 })
 export class TaskListComponent{
   @Input() newTask: Assignment | null = null;
@@ -59,7 +58,7 @@ export class TaskListComponent{
   filterAssignments(assignments: Assignment[]) {
     let newAssignments: Assignment[][] = [ [], [] ];
     for (const assignment of assignments) {
-      if (assignment.complete && Date.now() >= (new Date(assignment.availability.adaptiveRelease.end)).getTime())
+      if (assignment.complete)
         newAssignments[COMPLETE].push(assignment);
       else
         newAssignments[ACTIVE].push(assignment);
@@ -109,7 +108,7 @@ export class TaskListComponent{
     this.cdr.detectChanges();
   }
 
-  test(): void {
+  toggleView(): void {
     this.assignmentService.toggleViewCompleted();
   }
 

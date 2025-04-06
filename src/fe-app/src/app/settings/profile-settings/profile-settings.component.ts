@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, computed, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -11,11 +11,10 @@ import { CommonModule } from '@angular/common';
 import { NotificationSettingsComponent } from '../notification-settings/notification-settings.component';
 
 @Component({
-  selector: 'app-profile-settings',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, NotificationSettingsComponent],
-  templateUrl: './profile-settings.component.html',
-  styleUrl: './profile-settings.component.css'
+    selector: 'app-profile-settings',
+    imports: [ReactiveFormsModule, CommonModule],
+    templateUrl: './profile-settings.component.html',
+    styleUrl: './profile-settings.component.css'
 })
 export class ProfileSettingsComponent {
 
@@ -26,12 +25,13 @@ export class ProfileSettingsComponent {
   profileConfirm: boolean = false;
 
   viewPassword: boolean = false;
-  passwordError: string = " ";
-  passwordConfirm: boolean = false;
+  passwordMessage: string = "";
+  passwordSuccess: boolean = false;
 
   loginService = inject(LoginService);
   settingsService = inject(SettingsService);
 
+  readonly validatorSignal = computed(() => this.profileForm.valid);
 
   profileForm = new FormGroup({
     name: new FormControl("", Validators.required),
@@ -47,14 +47,18 @@ export class ProfileSettingsComponent {
 
   ngOnInit() {
     // Load necessary settings from database and initialize form
+    console.log("LOADING PROFILE SETTINGS");
+    
     this.settingsService.getUserInfo(this.loginService.getUserId()).then((userInfo: UserInfo) => {
       this.preferredName = userInfo.name.preferredDisplayName;
       this.schoolEmail = userInfo.contact.institutionEmail;
       this.personalEmail = userInfo.contact.email;
       this.phoneNumber = userInfo.contact.mobilePhone;
-
+      
       // Put phone number in more readable format
       this.phoneNumber = this.phoneNumber.substring(0, 3) + "-" + this.phoneNumber.substring(3, 6) + "-" + this.phoneNumber.substring(6, 10);
+
+      console.log(this.preferredName, this.schoolEmail, this.personalEmail, this.phoneNumber);
 
       // Set form control values with values from database
       this.profileForm.setValue({
@@ -66,6 +70,8 @@ export class ProfileSettingsComponent {
         newPassword: "",
         passwordRetype: ""
       })
+
+      this.cdr.detectChanges();
     })
   }
 
@@ -74,8 +80,6 @@ export class ProfileSettingsComponent {
    * @param open True to open the password window, false to close it.
    */
   callPasswordWindow(open: boolean) {
-    this.viewPassword = open;
-
 
     // Wipe fields and messages
     this.profileForm.patchValue({
@@ -83,7 +87,27 @@ export class ProfileSettingsComponent {
       newPassword: "",
       passwordRetype: ""
     });
-    this.passwordError = ""
+    this.passwordMessage = ""
+    this.viewPassword = open;
+
+    this.cdr.detectChanges();
+  }
+
+  /**
+   * Returns the CSS class of the password confirmation message based on whether or not the most recent save attempt was successful
+   */
+  getMessageStyle() {
+    if (this.passwordSuccess)
+      return "success";
+    return "error"
+  }
+  
+  /**
+   * Gets the valid property of the profile settings form, determining whether or not that section of settings can be submitted.
+   * @returns ProfileSettingsComponent.profileForm.valid
+   */
+  getProfileValidator() {
+    return this.profileForm.valid;
   }
 
   /**
@@ -103,7 +127,8 @@ export class ProfileSettingsComponent {
     console.log("Save password");
 
     if (this.profileForm.value.newPassword != this.profileForm.value.passwordRetype) {
-      this.passwordError = "Passwords do not match"
+      this.passwordSuccess = false;
+      this.passwordMessage = "Passwords do not match"
       return
     }
 
@@ -114,20 +139,18 @@ export class ProfileSettingsComponent {
       await this.settingsService.updatePassword(this.loginService.getUserId(), oldPassword, newPassword);
     }
     catch (error: unknown) {
-      console.log("DEBUG 3: ERROR UPDATING PASSWORD (ProfileSettingsComponent::attemptPasswordSave)");
+      this.passwordSuccess = false;
       if (error instanceof Error)
-        // this.passwordError = error.message;
-        alert(error.message);
+        this.passwordMessage = error.message;
       else
-        // this.passwordError = "Unexpected error, please try again later";
-        alert("Unexpected error, please try again later");
+        this.passwordMessage = "Unexpected error, please try again later";
+      this.cdr.detectChanges();
       return
     }
 
-    // this.passwordConfirm = true;
-    // this.cdr.detectChanges();
-    this.callPasswordWindow(false);
-    confirm("Password successfully updated!");
+    this.passwordSuccess = true;
+    this.passwordMessage = "Password saved!"
+    this.cdr.detectChanges();
   }
 
   /**
@@ -135,26 +158,31 @@ export class ProfileSettingsComponent {
    */
   async saveProfile() {
 
-    // Update preferred name
-    if (this.profileForm.value.name != null && this.profileForm.value.name != this.preferredName) {
-      this.preferredName = this.profileForm.value.name;
-      await this.settingsService.updatePreferredName(this.loginService.getUserId(), this.preferredName);
-    }
+    try {
+      // Update preferred name
+      if (this.profileForm.value.name != null && this.profileForm.value.name != this.preferredName) {
+        this.preferredName = this.profileForm.value.name;
+        await this.settingsService.updatePreferredName(this.loginService.getUserId(), this.preferredName);
+      }
 
-    // Update personal email
-    if (this.profileForm.value.personal != null && this.profileForm.value.personal != this.personalEmail) {
-      this.personalEmail = this.profileForm.value.personal;
-      await this.settingsService.updatePersonalEmail(this.loginService.getUserId(), this.personalEmail);
-    }
+      // Update personal email
+      if (this.profileForm.value.personal != null && this.profileForm.value.personal != this.personalEmail) {
+        this.personalEmail = this.profileForm.value.personal;
+        await this.settingsService.updatePersonalEmail(this.loginService.getUserId(), this.personalEmail);
+      }
 
-    // Update phone number
-    if (this.profileForm.value.phone != null && this.profileForm.value.phone != this.phoneNumber) {
-      this.phoneNumber = this.profileForm.value.phone;
-      this.phoneNumber = this.phoneNumber.replaceAll("-", "");  // Remove dashes from user input
-      await this.settingsService.updatePhoneNumber(this.loginService.getUserId(), this.phoneNumber);
-    }
+      // Update phone number
+      if (this.profileForm.value.phone != null && this.profileForm.value.phone != this.phoneNumber) {
+        this.phoneNumber = this.profileForm.value.phone;
+        this.phoneNumber = this.phoneNumber.replaceAll("-", "");  // Remove dashes from user input
+        await this.settingsService.updatePhoneNumber(this.loginService.getUserId(), this.phoneNumber);
+      }
 
-    this.profileConfirm = true;
+      this.profileConfirm = true;
+    }
+    catch (error: unknown) {
+      throw error;
+    }
   }
 
 

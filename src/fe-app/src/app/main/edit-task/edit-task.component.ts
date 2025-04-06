@@ -8,11 +8,10 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-edit-task',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './edit-task.component.html',
-  styleUrl: './edit-task.component.css'
+    selector: 'app-edit-task',
+    imports: [CommonModule, ReactiveFormsModule],
+    templateUrl: './edit-task.component.html',
+    styleUrl: './edit-task.component.css'
 })
 export class EditTaskComponent implements OnInit {
   @Input () assignment! : Assignment;
