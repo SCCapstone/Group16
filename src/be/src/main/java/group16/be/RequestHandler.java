@@ -15,6 +15,7 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,9 @@ import group16.be.db.Assignment;
 import group16.be.db.Grade;
 import group16.be.db.User;
 
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+
 @RestController
 public class RequestHandler {
 
@@ -40,6 +44,9 @@ public class RequestHandler {
     @Autowired
     private NotificationManager notificationManager;
 
+    @Autowired
+    private TokenService tokenService;
+
     /**
      * This method is to login or register a new user.
      * See {@link group16.be.RequestHandlerTests#testLogin()} for related tests.
@@ -49,20 +56,44 @@ public class RequestHandler {
      */
     @CrossOrigin
     @PostMapping("/api/login")
-    public ResponseEntity<?> login(@RequestParam(value = "username", defaultValue = "NAME") String username, @RequestParam(value = "password", defaultValue = "NULL") String password) {
+    public ResponseEntity<?> login(@RequestParam(value = "username", defaultValue = "NAME") String username, 
+                                   @RequestParam(value = "password", defaultValue = "NULL") String password,
+                                   HttpServletResponse response,
+                                   @CookieValue(value = "auth-token", required = false) String authToken) {
+        // Check if the user has a valid auth token
+        if(authToken != null && tokenService.validateToken(authToken)) {
+            String userId = tokenService.getAuthentication(authToken).getName();
+            if(userId != null && validateUserId(userId).getStatusCode() == HttpStatus.OK) {
+                HashMap<String, String> ret = new HashMap<>();
+                ret.put("id", userId);
+                return ResponseEntity.ok(ret);
+            }
+        }
+
         if(username == null || username.equals("NAME"))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is missing or invalid");
         if(password == null || password.equals("NULL"))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password is missing or invalid");
         
-        String id = scraper.login(username, password); 
-        if(id.startsWith("Error: Multiple")) 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(id);
-        else if (id.equals("Error: Invalid Credentials"))
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(id);
+        String userId = scraper.login(username, password); 
+        if(userId.startsWith("Error: Multiple")) 
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userId);
+        else if (userId.equals("Error: Invalid Credentials"))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(userId);
+
+        // Generate JWT
+        String token = tokenService.generateToken(userId);
+
+        // Create cookie
+        Cookie cookie = new Cookie("auth-token", token);
+        cookie.setHttpOnly(true);   
+        cookie.setPath("/"); // Set the path for the cookie
+        cookie.setMaxAge(7 * 60 * 60 * 24); // Set the cookie to expire in 7 day
+        
+        response.addCookie(cookie); // Add the cookie to the response
 
         HashMap<String, String> ret = new HashMap<>();
-        ret.put("id", id);
+        ret.put("id", userId);
 
         return ResponseEntity.ok(ret);
     }
