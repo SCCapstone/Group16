@@ -1,14 +1,22 @@
 <div class="header-row">
     <div class="header-arrow" id="left">
-        <!-- <img src="images/left-arrow.png" alt="Back" (click)="pageBack()" /> -->
-        <button (click)="pageBack()" [disabled]="this.checkSemesterStart(this.weekStart)">ph-back</button>
+    @if (this.checkSemesterStart(this.weekStart)) {
+        <img class="disabled" src="images/left-arrow.png" alt="Back" />
+    }
+    @else {
+        <img src="images/left-arrow.png" alt="Back" (click)="pageBack()" />
+    }
     </div>
     <div class="header-text">
         <h1>{{ this.weekStart.toLocaleString('default', { month: 'long' }) }} {{ this.weekStart.getFullYear() }}</h1>
     </div>
     <div class="header-arrow" id="right">
-        <!-- <img src="images/right-arrow.png" alt="Next" (click)="pageForward()" /> -->
-        <button (click)="pageForward()" [disabled]="this.checkSemesterEnd(this.weekStart)">ph-next</button>
+    @if (this.checkSemesterEnd(this.weekStart)) {
+        <img class="disabled" src="images/right-arrow.png" alt="Next" />
+    }
+    @else {
+        <img src="images/right-arrow.png" alt="Next" (click)="pageForward()" />
+    }
     </div>
 </div>
 <div class="day-row">
