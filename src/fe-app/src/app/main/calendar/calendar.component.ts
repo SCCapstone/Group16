@@ -133,6 +133,16 @@ export class CalendarComponent {
   }
 
   /**
+   * Calculates the day of the month from the start of the currently-selected week and an integer offset
+   * @param offset Offset from this.weekStart in number of days
+   */
+  calculateDateWithOffset(offset: number): number {
+    let weekStartCopy = new Date(this.weekStart);
+    weekStartCopy.setDate(weekStartCopy.getDate() + offset);
+    return weekStartCopy.getDate();
+  }
+
+  /**
    * Moves calendar page forward by one week.
    */
   pageForward() {

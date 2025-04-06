@@ -56,6 +56,7 @@ img {
 /* A single day of the month inside day-row */
 .day {
     height: 90%;
+    width: 10%;
     margin: auto;
     text-align: center;
 
@@ -64,7 +65,9 @@ img {
 
 h2 {
     margin-top: 10%;
+    margin-bottom: 0;
 }
+
 
 /* Base of the actual calendar content */
 .calendar {

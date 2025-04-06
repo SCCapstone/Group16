@@ -14,7 +14,7 @@
 <div class="day-row">
 @for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
     <div class="day">
-        <h2>{{ this.weekStart.getDate() }}</h2>
+        <h2>{{ this.calculateDateWithOffset($index) }}</h2>
         <p>{{ this.DAYS_OF_WEEK[$index] }}</p>
     </div>
 }
