@@ -1,14 +1,35 @@
-/* Header row of calendar containing month, year, and buttons */
-.header {
+/* Header row of calendar containing header text and button containers */
+.header-row {
     height: 10%;
-    line-height: 10%;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+
     background: red;
 }
 
+/* Section of header row containing text */
+.header-text {
+    width: 80%;
+    display: flex;
+
+    background-color: white;
+}
+
+/* Text itself used in header */
 h1 {
-    font-size: 32px;
+    font-size: 40px;
     font-weight: bold;
+    margin: auto;
+}
+
+/* Section of header row containing left/right arrows */
+.header-arrow {
+    width: 10%;
+}
+
+img {
+    width: 100%;
+    height: 80%;
 }
 
 /* Row containing days of month */
@@ -21,12 +42,14 @@ h1 {
 
 /* A single day of the month inside day-row */
 .day {
+    height: 100%;
     background: yellow;
 }
 
 /* Base of the actual calendar content */
 .calendar {
-
+    height: 75%;
+    background: green;
 }
 
 /* Individual column of the calendar, representing content for a single day */

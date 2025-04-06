@@ -1,10 +1,18 @@
-<div class="header">
-    <h1>Week of {{ this.formatDate(this.weekStart) }}</h1>
+<div class="header-row">
+    <div class="header-button">
+        <!-- <img src="images/left-arrow.png" alt="Back" /> -->
+    </div>
+    <div class="header-text">
+        <h1>{{ this.weekStart.toLocaleString('default', { month: 'long' }) }} {{ this.weekStart.getFullYear() }}</h1>
+    </div>
+    <div class="header-button">
+        <!-- <img src="images/right-arrow.png" alt="Next" /> -->
+    </div>
 </div>
 <div class="day-row">
 @for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
     <div class="day">
-        <h1>1</h1>
+        <h2>1</h2>
         <p>Mon</p>
     </div>
 }
