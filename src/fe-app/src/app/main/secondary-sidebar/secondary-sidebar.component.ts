@@ -33,6 +33,7 @@ export class SecondarySidebarComponent implements OnChanges {
     effect(() => {
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
       console.log("COMPUTED SIGNAL RUN: Value " + signal);
+      
       // Runs when service constructor finishes, no need to call twice
       this.assignmentService.getAssignments(this.loginService.getUserId()).then((assignments: Assignment[]) => {
         this.filterTopThree(assignments)
@@ -58,8 +59,10 @@ export class SecondarySidebarComponent implements OnChanges {
    */
   filterTopThree(assignments: Assignment[]) {
     let candidates: Assignment[] = [];
+    const courseIndex = this.courseService.getSelectIndex();
+
     for (const assignment of assignments) {
-      if (!assignment.complete)
+      if (!assignment.complete && (courseIndex === -1 || assignment.courseId === this.courses[courseIndex].id))
         candidates.push(assignment);
     }
     candidates.sort((a: Assignment, b: Assignment) => {
