@@ -23,16 +23,17 @@ export class LoginService {
 
     try {
       const response = await fetch(`${this.url}login?${queryParams}`, {
-        method: 'POST'
+        method: 'POST',
+        credentials: 'include'
       });
 
       if(!response.ok) {
-        throw new Error(`POST failed: ${response.status}`) // response error
+        const errorText = await response.text();
+        throw new Error(`POST failed: ${response.status} - ${errorText}`);
       }
 
       const user: User = await response.json() ?? {};
       sessionStorage.setItem(this.USER_ID_KEY, user.id);
-      this.saveToken(user.token);
 
       console.log(user);
 
@@ -53,29 +54,7 @@ export class LoginService {
     return null;
   }
 
-  saveToken(token: string): void {
-    this.cookieService.set(this.cookieName, token, {
-      expires: 1,
-      path: '/',
-      secure: true,
-      sameSite: 'Strict'
-    });
-  }
-
-  getToken(): string {
-    return this.cookieService.get(this.cookieName);
-  }
-
-  removeToken(): void {
-    this.cookieService.delete(this.cookieName, '/');
-  }
-
-  isLoggedIn(): boolean {
-    return !!this.getToken();
-  }
-
   signOut(): void { // to be used in signout later
     sessionStorage.removeItem(this.USER_ID_KEY);
-    this.removeToken();
   }
 }
