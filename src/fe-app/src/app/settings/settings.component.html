@@ -1,25 +1,17 @@
 <main>
     <h2> SETTINGS</h2>
     <div class="settings-main">
-       <!-- <div class="sidebar">
-            <app-settings-sidebar />
-        </div>
-        <div class="settings-container">
-            <router-outlet />
-        </div>-->
         <div class = "sidebar">
             <app-profile-settings></app-profile-settings>
             <app-notification-settings></app-notification-settings>
-
             <div class="sidebar-buttons">
-                <button (click)="saveAllSettings()">Save Settings</button>
+                <button (click)="saveAllSettings()" style = "font-size: 20px;">Save Settings</button>
                 @if (this.saveMessage != "") {
                     <p [class]="this.getMessageStyle()">{{ this.saveMessage }}</p>
                 }
-                <button (click)="handleSignout()">Sign Out</button>
+                <button (click)="handleSignout()" style = "font-size: 20px; color: #c30000; border-color: #c30000">Sign Out</button>
             </div>
         </div>
-
     </div>
 </main>
 

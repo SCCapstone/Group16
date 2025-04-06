@@ -1,14 +1,11 @@
 <div id = "container">
   <h2>NOTIFICATIONS</h2>
   <div *ngIf="userInfo?.notifications?.length">
-
       <p *ngFor="let notification of this.notifications">
         {{ notification.timestamp | date:'mediumDate' }} <br> <span class = "time" style = "  font-style: italic;">{{ notification.timestamp | date:'shortTime' }} </span>
         <br><span class= "time" style = "color: #c30000;" >{{ notification.message }} </span>
         <br>
-
       </p>
-
   </div>
 
   <div *ngIf="!userInfo?.notifications?.length">
@@ -18,6 +15,5 @@
   <div *ngIf="notifications?.length">
     <button (click)="clearNotifications()">Clear Notifications</button>
   </div>
-
 </div>
 

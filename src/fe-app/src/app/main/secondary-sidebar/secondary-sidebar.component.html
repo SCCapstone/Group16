@@ -1,8 +1,6 @@
 
 <div class="container">
-
   <div id = "words">
-
     <!-- DUE SOON -->
     @if (this.router.url != "/main/grades")
     {
@@ -21,7 +19,6 @@
         <p>No upcoming assignments.</p>
       }
     }
-
     <!-- GRADES -->
     @else
     {
@@ -32,7 +29,5 @@
         <p>{{ this.calculateFinalGrade(course.id) }}</p>
       }
     }
-
   </div>
-
 </div>

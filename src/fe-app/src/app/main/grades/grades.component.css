@@ -54,7 +54,6 @@ button {
     color: black;
   }
 
-
   .assignment-row {
     display: flex;
     justify-content: space-between;
@@ -64,16 +63,14 @@ button {
     background-color: #c0c0c0;
 }
 
-
 .assignment-column {
-    padding: 8px;
-    word-wrap: break-word;
-    flex: 1;
-    border-right: 3px solid #949494;
-    font-size: 18px;
+  padding: 8px;
+  word-wrap: break-word;
+  flex: 1;
+  border-right: 3px solid #949494;
+  font-size: 18px;
 
 }
-
 
 .assignmentPopup {
     font-size: 20px;
@@ -115,6 +112,9 @@ button {
   background-color: #cfcfcf;
   border-bottom: 3px solid #949494;
   font-size: 18px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 
 }
 
@@ -154,7 +154,7 @@ form {
 }
 
 input[type="number"] {
-  width: 80px;  /* Adjust size as needed */
+  width: 80px;
   padding: 5px;
   text-align: center;
   background-color: #ccc;
@@ -179,8 +179,8 @@ button {
 }
 
 input[readonly] {
-  background-color: transparent; /* Makes it look non-editable */
-  border: none; /* Removes the border */
-  outline: none; /* Removes blue highlight */
-  box-shadow: none; /* Ensures no additional highlight */
+  background-color: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
