@@ -13,7 +13,8 @@ import { CalendarComponent } from './main/calendar/calendar.component';
 import { TaskListComponent } from './main/task-list/task-list.component';
 import { EditTaskComponent } from './main/edit-task/edit-task.component';
 import { GradeCalcComponent } from './grade-calc/grade-calc.component';
-import { authGuard, checkApiRouteGuard } from './auth.guard';
+import { authGuard } from './auth.guard';
+// import { checkApiRouteGuard } from './auth.guard';
 
 export const routes: Routes = [
   {
@@ -111,7 +112,7 @@ export const routes: Routes = [
   {
     path: '**',
     redirectTo: '',
-    pathMatch: 'full',
-    canActivate: [checkApiRouteGuard]
+    pathMatch: 'full' /*,
+    canActivate: [checkApiRouteGuard]*/
   }
 ];

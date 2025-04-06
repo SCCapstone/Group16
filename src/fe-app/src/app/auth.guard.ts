@@ -15,12 +15,12 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
 };
 
-export const checkApiRouteGuard: CanActivateFn = (route, state) => {
-  const currentUrl = state.url;
+// export const checkApiRouteGuard: CanActivateFn = (route, state) => {
+//   const currentUrl = state.url;
 
-  if(currentUrl.startsWith('/api')) {
-    return true;
-  }
+//   if(currentUrl.startsWith('/api')) {
+//     return true;
+//   }
 
-  return false;
-}
+//   return false;
+// }
