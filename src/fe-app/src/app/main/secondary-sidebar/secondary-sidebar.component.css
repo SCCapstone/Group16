@@ -3,7 +3,6 @@ body, html {
     margin: 0;
     display: flex;
     flex-direction: column;
-
 }
 
 .container {
@@ -12,11 +11,10 @@ body, html {
     flex-direction: column;
     background-color: #c0c0c0;
     border-radius: 30px;
-    margin-top: 40px;
+    margin-top: 28px;
     overflow-y: auto;
-    height: 316px;
+    min-height: 42vh;
     box-shadow: 7px 7px 12px rgba(0, 0, 0, 0.3);
-
 }
 
 .date{

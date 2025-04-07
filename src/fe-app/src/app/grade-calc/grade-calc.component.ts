@@ -40,14 +40,6 @@ export class GradeCalcComponent {
     this.saveAssignments();
   }
 
-  // assignments: { name: string; grade: number; weight: number }[] = [
-  //   { name: 'Homework', grade: 0, weight: 0 },
-  //   { name: 'Quizzes', grade: 0, weight: 0 },
-  //   { name: 'Midterm', grade: 0, weight: 0 },
-  //   { name: 'Final', grade: 0, weight: 0 }
-  // ];
-
-
   calculateFinalGrade(): number {
     let totalWeight = 0;
     let weightedSum = 0;

@@ -3,9 +3,9 @@
         <input type="checkbox" [(ngModel)]="assignment.complete" (click)="toggleCompletion(assignment)" />
     </div>
     <div class="assignment-column">{{ courseName.split("-")[0] }}</div>
-    <div class="assignment-column" style = "color: #0000EE; text-decoration: underline; text-decoration-color: #0000EE; cursor: pointer;"><a (click)="openPopup('task')" >{{ assignment.title }}</a></div>
+    <div class="assignment-column" style = "text-decoration: underline; font-weight: 500; cursor: pointer; opacity: 1; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.6'" 
+    onmouseout="this.style.opacity='1'"><a (click)="openPopup('task')" >{{ assignment.title }}</a></div>
     <div class="assignment-column" style = "color: #c30000">{{ assignment.availability.adaptiveRelease.end | date }}</div>
-
     <div class="assignment-column">
       <div style="display: flex; justify-content: center; gap: 40px;">
         <a (click)="openPopup('edit-task')" style="cursor: pointer;">
@@ -18,17 +18,17 @@
     </div>
 </div>
 
-<div id = "line" style =   "border-bottom: 3px solid #949494; width: 95%; justify-self: center;" > </div>
+<!--<div id = "line" style =   "border-bottom: 3px solid #949494; width: 95%; justify-self: center;" > </div>-->
 
 <div *ngIf="showPopup" class="popup-modal" (click)="handleBackdropClick($event)">
     <div class="popup-content" (click)="$event.stopPropagation()">
       <span class="close" (click)="closePopup()">&times;</span>
       <p *ngIf="popupType === 'edit-task'">   <app-edit-task [assignment]="assignment" (close)="closePopup(); updateTask($event)"></app-edit-task>
         <p *ngIf="popupType === 'task'" class="assignmentPopup">
-            <span class="course">{{ courseName.split("-")[0] }} </span><br>
+            <span class="course" style = "font-size: 25px;">{{ courseName.split("-")[0] }} </span><br>
             {{ assignment.title }} <br>
-            <span class="due-date"> Due: {{ assignment.availability.adaptiveRelease.end | date }} </span><br> <br>
-            <span class="description">Description: </span><br>
+            <span class="due-date" style = "color: #c30000"> <br> Due: <br>{{ assignment.availability.adaptiveRelease.end | date }} </span><br> <br>
+            <span class="description" style = "font-size: 25px;">Description: </span><br>
             {{assignment.description}}
           </p>
     </div>

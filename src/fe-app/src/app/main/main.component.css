@@ -1,12 +1,11 @@
-
-
 .selectOptions {
     background-color: #949494;
 }
 
-
 .task-info {
     background-color: #949494;
+    margin-top: -8px;
+
 }
 
 .selectOptions{
@@ -18,6 +17,9 @@
     background-color: #949494;
 }
 
+.container-fluid{
+  background-color: #949494;
+}
 
 .popup-modal {
   display: flex;
@@ -53,18 +55,15 @@
   color: black;
 }
 
-
 .main-view{
-  height: 620px;          
+  height: 76.6vh;          
   overflow-y: auto;
   width: 99%;
   margin-left: 5px;
   background-color: #c0c0c0;
   border-radius: 30px;
   box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
-
 }
-
 
 router-outlet {
   display: contents;

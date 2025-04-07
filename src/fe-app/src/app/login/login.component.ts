@@ -48,21 +48,4 @@ export class LoginComponent implements OnInit {
       console.error('Login failed', error);
     });
   };
-
-  // Test function to log in automatically with osterholt/cameron1234, TODO remove later
-  fastLogin() {
-    this.loginService.login(
-      "osterholt",
-      "cameron1234"
-    )
-    .then((user: User) => {
-      if (user) {
-        this.user = user;
-        this.router.navigateByUrl("/main/task-list");
-      }
-    })
-    .catch((error) => {
-      console.error('Login failed', error);
-    })
-  }
 }
