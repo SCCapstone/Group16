@@ -41,3 +41,7 @@
         </div>
     }
 </div>
+
+@for (assignment of this.assignments; track this.assignments.length) {
+    <p>{{ assignment.title }} | {{ assignment.description }}</p>
+}

@@ -79,6 +79,8 @@ export class CalendarComponent {
     this.assignments.sort((a: Assignment, b: Assignment) => {
       return (a.availability.adaptiveRelease.end.getTime() <= b.availability.adaptiveRelease.end.getTime() ? -1 : 1);
     });
+
+    console.log("ASSIGNMENTS: ", this.assignments);
   }
 
   /**
@@ -106,12 +108,14 @@ export class CalendarComponent {
     for (const assignment of this.assignments) {
       const difference = assignment.availability.adaptiveRelease.end.getTime() - this.weekStart.getTime();
 
-      // Add assignment to array if it's in range based on the day it falls into
+      console.log(assignment.title + " | " + assignment.availability.adaptiveRelease.end + " | " + difference);
+
       if (difference < 0)
         continue;
       if (difference >= 7 * millisecondsPerDay)
         break;
-      this.weekAssignments[difference / millisecondsPerDay].push(assignment);
+      
+      this.weekAssignments[Math.floor(difference / millisecondsPerDay)].push(assignment);
     }
     console.log("WEEK ASSIGNMENTS: ", this.weekAssignments);
   }
