@@ -91,6 +91,6 @@ export class SecondarySidebarComponent implements OnChanges {
 
     if (count == 0)
       return "--";
-    return (sum / count) + "%";
+    return (sum / count).toFixed(2) + "%";
   }
 }
