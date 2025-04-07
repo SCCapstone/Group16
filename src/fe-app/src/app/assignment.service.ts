@@ -35,6 +35,11 @@ export class AssignmentService {
     return this.updateSignal();
   }
 
+  // Miscellaneous assignment signal update, used for any component that needs to trigger change detection for assignments globally
+  incrementUpdateSignal() {
+    this.updateSignal.set(++this.signalValue);
+  }
+
   async getAssignments(userId: string | null): Promise<Assignment[]> {
     if (userId === this.loginService.getUserId()) {
       if (this.assignments.length === 0)
@@ -166,6 +171,17 @@ export class AssignmentService {
       }
       throw error;
     }
+
+    // Update assignment in-place
+    for (let assignment of this.assignments) {
+      if (assignment.id === assignmentId) {
+        assignment.title = title ?? "NULL";
+        assignment.description = description ?? "";
+        assignment.availability.adaptiveRelease.end = dueDate ?? new Date(Date.now());
+        break;
+      }
+    }
+    this.updateSignal.set(++this.signalValue);
   }
 
   async completeTask(assignmentId: string | null) {
@@ -252,6 +268,14 @@ export class AssignmentService {
       }
       throw error;
     }
+
+    for (let i=0; i < this.assignments.length; i++) {
+      if (this.assignments[i].id === assignmentId) {
+        this.assignments.splice(i, 1);
+        break;
+      }
+    }
+    this.updateSignal.set(++this.signalValue);
   }
 
   /**

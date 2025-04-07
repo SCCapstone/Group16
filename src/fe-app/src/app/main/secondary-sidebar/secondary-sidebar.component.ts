@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, SimpleChanges, effect } from '@angular/core';
+import { Component, inject, Input, OnChanges, SimpleChanges, effect, computed, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -27,17 +27,20 @@ export class SecondarySidebarComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {}
 
-  constructor(private assignmentService: AssignmentService) {
+  constructor(private assignmentService: AssignmentService, private cdr: ChangeDetectorRef) {
 
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
     effect(() => {
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
-      console.log("COMPUTED SIGNAL RUN: Value " + signal);
+      console.log("SIDEBAR SIGNAL RUN: Value " + signal);
+      
       // Runs when service constructor finishes, no need to call twice
       this.assignmentService.getAssignments(this.loginService.getUserId()).then((assignments: Assignment[]) => {
         this.filterTopThree(assignments)
+        console.log("ASSIGNMENTS: ", this.assignments);
+        this.cdr.detectChanges();
       });
-    })
+    });
   }
 
   ngOnInit() {
@@ -58,8 +61,10 @@ export class SecondarySidebarComponent implements OnChanges {
    */
   filterTopThree(assignments: Assignment[]) {
     let candidates: Assignment[] = [];
+    const courseIndex = this.courseService.getSelectIndex();
+
     for (const assignment of assignments) {
-      if (!assignment.complete)
+      if (!assignment.complete && (courseIndex === -1 || assignment.courseId === this.courses[courseIndex].id))
         candidates.push(assignment);
     }
     candidates.sort((a: Assignment, b: Assignment) => {
