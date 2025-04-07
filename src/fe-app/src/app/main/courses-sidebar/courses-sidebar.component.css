@@ -1,4 +1,3 @@
-/* For a div housing a course in course sidebar */
 .course {
     font-size: 36px;
     width: 80%;
@@ -12,15 +11,13 @@ main{
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
     padding-top: 5px;
     padding-bottom: 5px;
-
+    min-height: 42vh;
 }
 
-/* Additional styling for the selected course div */
 .selected {
     color: #c30000;
 }
 
-/* Text for course names themselves */
 p {
     margin: 10px auto;
     text-align: center;

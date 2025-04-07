@@ -3,9 +3,9 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    /*border-bottom: 3px solid #949494;*/
     text-align: center;
     background-color: #c0c0c0;
+    border-bottom: 3px solid #949494;
 }
 
 .line {
@@ -71,7 +71,7 @@
   }
 
   .popup-content {
-    background: white;
+    background-color: #cfcfcf;
     padding: 20px;
     border-radius: 10px;
     text-align: center;

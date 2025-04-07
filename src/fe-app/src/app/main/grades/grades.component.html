@@ -23,13 +23,12 @@
                   (blur)="setGradeOnEvent($event, grade.id)"
                   (keydown.enter)="setGradeOnEvent($event, grade.id)"
                   [readonly]="!getAssignmentByID(grade.assignmentId)?.userCreated">
-                <!--<button type="submit">✔</button>-->
               }
             </form>
           </div>
           <div class="assignment-column">{{ this.displayGradeChar(grade) }}</div>
           </div>
-        <div id = "line" style =   "border-bottom: 3px solid #949494; width: 95%; justify-self: center;" > </div>
+        <!--<div id = "line" style =   "border-bottom: 3px solid #949494; width: 95%; justify-self: center;" > </div>-->
       }
     }
   </div>

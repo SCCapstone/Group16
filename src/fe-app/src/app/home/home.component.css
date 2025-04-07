@@ -3,7 +3,7 @@ main {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #aaaaaa;
+    background-color: #949494;
 }
 
 .content {
@@ -16,21 +16,21 @@ main {
 }
   
 img {
-    width: 140%;
+    width: 115%;
     height: auto;
 }
 
 h1{
-    font-size: 45px;
+    font-size: 40px;
     color: black;
 }
 
 button {
-    font-size: 20px;
-    padding: 15px 30px;
+    font-size: 22px;
+    padding: 10px 20px;
     border-radius: 10px;
     cursor: pointer;
-    margin-top: 65px;
+    margin-top: 40px;
     color:black;
     border-color: black;
 }

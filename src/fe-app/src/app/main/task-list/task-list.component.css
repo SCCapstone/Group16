@@ -1,4 +1,7 @@
 .assignment-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     display: flex;
     justify-content: space-between;
     font-weight: bold;
@@ -9,13 +12,12 @@
     font-size: 18px;
 }
 
-/* task-list.component.css */
+
 app-task-list {
     padding: 0 !important;
     margin: 0;
   }
 
-  
 .header-column {
     padding: 10px;
     text-transform: uppercase;
