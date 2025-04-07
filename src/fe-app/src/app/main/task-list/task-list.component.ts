@@ -119,13 +119,12 @@ export class TaskListComponent{
       (new Date(b.availability.adaptiveRelease.end)).getTime());
   }
 
-
   getCourseNameByID(id: String): String {
     for (const course of this.courses) {
       if (course.id === id)
         return course.name
     }
-    return "Unknown";
+    return "";
   }
 
   getIndex() {
