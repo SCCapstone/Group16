@@ -46,12 +46,16 @@ export class AssignmentService {
 
   async fetchAssignments(userId: string | null) : Promise<Assignment[]> {
     try {
-      const response = await fetch(`${this.url}getAssignments?userId=${userId}`);
+      const response = await fetch(`${this.url}getAssignments?userId=${userId}`, {
+        method: 'GET',
+        credentials: 'include'
+      });
       const data = await response.json() ?? [];
 
       if(Array.isArray(data) && data.length === 0) {
         throw new Error('assignments are []');  // TODO doesn't this just break when a user has no assignments? probably shouldn't do that
       }
+      console.log(data);
       return data;
     }
     catch (error: unknown) {
@@ -75,7 +79,10 @@ export class AssignmentService {
 
   async getAssignmentById(assignmentId: string | null) : Promise<Assignment> {
     try {
-      const response = await fetch(`${this.url}getAssignmentById?assignmentId=${assignmentId}`);
+      const response = await fetch(`${this.url}getAssignmentById?assignmentId=${assignmentId}`, {
+        method: 'GET',
+        credentials: 'include'
+      });
       const data = await response.json() ?? {};
 
       if(Object.keys(data).length === 0) {
@@ -115,7 +122,8 @@ export class AssignmentService {
       console.log(queryParams);
       try {
         const response = await fetch(`${this.url}createAssignmentWithoutId?${queryParams}`, {
-          method: 'POST'
+          method: 'POST',
+          credentials: 'include'
         });
         if(!response.ok) {
           throw new Error(`POST failed: ${response.status}`)
@@ -150,7 +158,8 @@ export class AssignmentService {
     console.log(queryParams);
     try {
       const response = await fetch(`${this.url}editAssignment?${queryParams}`, {
-        method: 'PUT'
+        method: 'PUT',
+        credentials: 'include'
       });
 
       if(!response.ok) {
@@ -176,7 +185,8 @@ export class AssignmentService {
     console.log(queryParams);
     try {
       const response = await fetch(`${this.url}completeAssignment?${queryParams}`, {
-        method: 'PUT'
+        method: 'PUT',
+        credentials: 'include'
       });
       if(!response.ok) {
         throw new Error(`PUT failed: ${response.status}`)
@@ -207,12 +217,13 @@ export class AssignmentService {
     console.log(queryParams);
     try {
       const response = await fetch(`${this.url}openAssignment?${queryParams}`, {
-        method: 'PUT'
+        method: 'PUT',
+        credentials: 'include'
       });
       if(!response.ok) {
         throw new Error(`PUT failed: ${response.status}`)
       }
-      
+
       // Update assignment in stored array and update signal for components
       for (let assignment of this.assignments) {
         if (assignment.id === assignmentId && assignment.complete === true)
@@ -237,7 +248,8 @@ export class AssignmentService {
 
     try {
       const response = await fetch(`${this.url}removeAssignment?${queryParams}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include'
       });
 
       if(!response.ok) {

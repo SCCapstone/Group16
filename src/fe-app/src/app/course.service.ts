@@ -38,7 +38,10 @@ export class CourseService {
 
   async getCourseById(courseId: string | null) : Promise<Course> {
     try {
-      const response = await fetch(`${this.url}getCourseById?courseId=${courseId}`);
+      const response = await fetch(`${this.url}getCourseById?courseId=${courseId}`, {
+        method: 'GET',
+        credentials: 'include'
+      });
       const data = await response.json() ?? {};
 
       if(Object.keys(data).length === 0) {
