@@ -252,6 +252,14 @@ export class AssignmentService {
       }
       throw error;
     }
+
+    for (let i=0; i < this.assignments.length; i++) {
+      if (this.assignments[i].id === assignmentId) {
+        this.assignments.splice(i, 1);
+        break;
+      }
+    }
+    this.updateSignal.set(++this.signalValue);
   }
 
   /**
