@@ -125,7 +125,7 @@ export class TaskListComponent{
       if (course.id === id)
         return course.name
     }
-    return "Unknown";
+    return "";
   }
 
   getIndex() {
