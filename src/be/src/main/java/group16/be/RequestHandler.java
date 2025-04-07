@@ -38,8 +38,12 @@ public class RequestHandler {
     @Autowired
     private APIScraper scraper;
 
-    @Autowired
     private static HeartbeatController heartbeatController;
+
+    @Autowired
+    public void setHeartbeatController(HeartbeatController heartbeatController) {
+        RequestHandler.heartbeatController = heartbeatController;
+    }
 
     @Autowired
     private NotificationManager notificationManager;
