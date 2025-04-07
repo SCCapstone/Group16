@@ -3,7 +3,8 @@
         <input type="checkbox" [(ngModel)]="assignment.complete" (click)="toggleCompletion(assignment)" />
     </div>
     <div class="assignment-column">{{ courseName.split("-")[0] }}</div>
-    <div class="assignment-column" style = "color: #0000EE; text-decoration: underline; text-decoration-color: #0000EE; cursor: pointer;"><a (click)="openPopup('task')" >{{ assignment.title }}</a></div>
+    <div class="assignment-column" style = "text-decoration: underline; font-weight: 500; cursor: pointer; opacity: 1; transition: opacity 0.3s;" onmouseover="this.style.opacity='0.6'" 
+    onmouseout="this.style.opacity='1'"><a (click)="openPopup('task')" >{{ assignment.title }}</a></div>
     <div class="assignment-column" style = "color: #c30000">{{ assignment.availability.adaptiveRelease.end | date }}</div>
     <div class="assignment-column">
       <div style="display: flex; justify-content: center; gap: 40px;">
@@ -17,7 +18,7 @@
     </div>
 </div>
 
-<div id = "line" style =   "border-bottom: 3px solid #949494; width: 95%; justify-self: center;" > </div>
+<!--<div id = "line" style =   "border-bottom: 3px solid #949494; width: 95%; justify-self: center;" > </div>-->
 
 <div *ngIf="showPopup" class="popup-modal" (click)="handleBackdropClick($event)">
     <div class="popup-content" (click)="$event.stopPropagation()">
