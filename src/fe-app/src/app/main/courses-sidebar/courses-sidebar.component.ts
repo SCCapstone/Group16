@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { Course } from '../../course';
 import { CourseService } from '../../course.service';
+import { AssignmentService } from '../../assignment.service';
 import { LoginService } from '../../login.service';
 
 @Component({
@@ -12,7 +13,12 @@ import { LoginService } from '../../login.service';
 export class CoursesSidebarComponent {
   courses: Course[] = [];
 
-  constructor(protected courseService: CourseService, private loginService: LoginService) {}
+  constructor(
+    protected courseService: CourseService,
+    private assignmentService: AssignmentService,
+    private loginService: LoginService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     // Retrieve course list from CourseService and store it in courses
@@ -32,6 +38,7 @@ export class CoursesSidebarComponent {
       this.courseService.selectCourse(index);
       console.log("Selected Course ID: " + this.courses[index].id);
     }
+    this.assignmentService.incrementUpdateSignal();
   }
 
   getStyle(index: number): string {

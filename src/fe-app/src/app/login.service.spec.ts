@@ -23,11 +23,12 @@ describe('LoginService', () => {
   it('should throw an error when login POST request fails', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve({
       ok: false,
-      status: 500
+      status: 500,
+      text: () => Promise.resolve('Internal Server Error')
     } as Response));
 
     await expectAsync(service.login('username', 'password'))
-      .toBeRejectedWithError('POST failed: 500');
+      .toBeRejectedWithError('POST failed: 500 - Internal Server Error');
   });
 
   it('should throw an error when login fetch encounters a network failure', async () => {
@@ -56,7 +57,7 @@ describe('LoginService', () => {
     const user = await service.login('username', 'password');
 
     expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/login?username=username&password=password',
-    Object({ method: 'POST' }));
+    Object({ method: 'POST', credentials: 'include' }));
     expect(user).toEqual(mockUser);
     expect(sessionStorage.getItem(service['USER_ID_KEY'])).toBe('123');
   });
