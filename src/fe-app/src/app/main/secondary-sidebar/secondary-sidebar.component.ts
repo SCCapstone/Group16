@@ -91,6 +91,8 @@ export class SecondarySidebarComponent implements OnChanges {
 
     if (count == 0)
       return "--";
-    return (sum / count) + "%";
+
+    const average = sum / count;
+    return (average % 1 === 0) ? average + "%" : average.toFixed(2) + "%";
   }
 }
