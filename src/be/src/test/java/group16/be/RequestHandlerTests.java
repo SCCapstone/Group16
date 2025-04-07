@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,8 @@ import org.springframework.scheduling.annotation.Async;
 import group16.be.db.Assignment;
 import group16.be.db.Course;
 import group16.be.db.User;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 @SpringBootTest
 public class RequestHandlerTests {
@@ -24,6 +28,9 @@ public class RequestHandlerTests {
 
     @Autowired
     private APIScraper scraper;
+
+    @Mock
+    private HttpServletResponse response;
 
     private final String LOGIN_USER = "osterholt";
     private final String LOGIN_PASS = "cameron1234";
@@ -41,13 +48,15 @@ public class RequestHandlerTests {
     void testLogin() {
         // Correct Login
         try {
-            var body = handler.login(LOGIN_USER, LOGIN_PASS).getBody();
+            Mockito.doNothing().when(response).addCookie(Mockito.any(Cookie.class));
+
+            var body = handler.login(LOGIN_USER, LOGIN_PASS, response, null).getBody();
             if(body == null) 
                 throw new NullPointerException("Expected HashMap<String, String> but found: null");
             if (body instanceof HashMap) {
                 @SuppressWarnings("unchecked")
-                HashMap<String, String> response = (HashMap<String, String>) body;
-                assertTrue(response.get("id").equals(EXPECTED_RESPONSE.get("id")));
+                HashMap<String, String> responseBody = (HashMap<String, String>) body;
+                assertTrue(responseBody.get("id").equals(EXPECTED_RESPONSE.get("id")));
             }
             else {
                 throw new ClassCastException("Expected HashMap<String, String> but found: " + body.getClass().getName());
@@ -57,28 +66,28 @@ public class RequestHandlerTests {
         }
 
         // Tests wrong password (expecting ResponseStatusException with HttpStatus.UNAUTHORIZED)
-        var response = handler.login("osterholt", "wrongpassword");
+        var response1 = handler.login("osterholt", "wrongpassword", this.response, null);
         // Verify the exception contains HttpStatus.UNAUTHORIZED
-        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, response1.getStatusCode());
 
         // Tests wrong username (expecting ResponseStatusException with HttpStatus.UNAUTHORIZED)
-        var response2 = handler.login("wrongusername", "cameron1234");
+        var response2 = handler.login("wrongusername", "cameron1234", this.response, null);
         // Verify the exception contains HttpStatus.UNAUTHORIZED
         assertEquals(HttpStatus.UNAUTHORIZED, response2.getStatusCode());
 
         // Tests null username and password (expecting ResponseStatusException with HttpStatus.BAD_REQUEST)
-        var response3 = handler.login(null, null);
+        var response3 = handler.login(null, null, this.response, null);
         // Verify the exception contains HttpStatus.BAD_REQUEST
         assertEquals(HttpStatus.BAD_REQUEST, response3.getStatusCode());
 
         // Tests empty username and password (expecting ResponseStatusException with HttpStatus.BAD_REQUEST)
-        var response4 = handler.login("", "");
+        var response4 = handler.login("", "", this.response, null);
         // Verify the exception contains HttpStatus.BAD_REQUEST
         assertEquals(HttpStatus.UNAUTHORIZED, response4.getStatusCode());
 
         // Tests abnormally large username and password (expecting ResponseStatusException with HttpStatus.UNAUTHORIZED)
         String largeString = "A".repeat(1000000); // 1 million 'A's
-        var response5 = handler.login(largeString, largeString);
+        var response5 = handler.login(largeString, largeString, this.response, null);
         // Verify the exception contains HttpStatus.UNAUTHORIZED
         assertEquals(HttpStatus.UNAUTHORIZED, response5.getStatusCode());
     }
