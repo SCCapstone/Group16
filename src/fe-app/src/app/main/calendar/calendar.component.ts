@@ -1,4 +1,4 @@
-import { Component, inject, effect } from '@angular/core';
+import { Component, inject, effect, ChangeDetectorRef } from '@angular/core';
 
 import { LoginService } from '../../login.service';
 import { CourseService } from '../../course.service';
@@ -26,11 +26,11 @@ export class CalendarComponent {
   loginService = inject(LoginService);
   courseService = inject(CourseService);
 
-  readonly DAYS_OF_WEEK = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+  readonly DAYS_OF_WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   // INITIALIZATION
 
-  constructor(private assignmentService: AssignmentService) {
+  constructor(private assignmentService: AssignmentService, private cdr: ChangeDetectorRef) {
     const now: Date = new Date(Date.now());
     this.weekStart = this.getWeekStart(now);  // Store start of the current week
     this.pageNumber = 0;
@@ -79,6 +79,8 @@ export class CalendarComponent {
     this.assignments.sort((a: Assignment, b: Assignment) => {
       return (a.availability.adaptiveRelease.end.getTime() <= b.availability.adaptiveRelease.end.getTime() ? -1 : 1);
     });
+
+    console.log("ASSIGNMENTS: ", this.assignments);
   }
 
   /**
@@ -99,18 +101,23 @@ export class CalendarComponent {
    * Populates weekAssignments with all assignments due during the currently-selected week.
    */
   organizeWeekAssignments() {
+    console.log("CALL organizeWeekAssignments()");
+    
     this.weekAssignments = [[], [], [], [], [], [], []]
     const millisecondsPerDay = 86400000;
     for (const assignment of this.assignments) {
       const difference = assignment.availability.adaptiveRelease.end.getTime() - this.weekStart.getTime();
 
-      // Add assignment to array if it's in range based on the day it falls into
+      console.log(assignment.title + " | " + assignment.availability.adaptiveRelease.end + " | " + difference);
+
       if (difference < 0)
         continue;
       if (difference >= 7 * millisecondsPerDay)
         break;
-      this.weekAssignments[difference / millisecondsPerDay].push(assignment);
+      
+      this.weekAssignments[Math.floor(difference / millisecondsPerDay)].push(assignment);
     }
+    console.log("WEEK ASSIGNMENTS: ", this.weekAssignments);
   }
   
   /**
@@ -130,6 +137,16 @@ export class CalendarComponent {
         count++;
     }
     return count;
+  }
+
+  /**
+   * Calculates the day of the month from the start of the currently-selected week and an integer offset
+   * @param offset Offset from this.weekStart in number of days
+   */
+  calculateDateWithOffset(offset: number): number {
+    let weekStartCopy = new Date(this.weekStart);
+    weekStartCopy.setDate(weekStartCopy.getDate() + offset);
+    return weekStartCopy.getDate();
   }
 
   /**
@@ -205,6 +222,4 @@ export class CalendarComponent {
 
     return output;
   }
-
-  // TODO implement logic to disable previous/next buttons at beginning/end of semester
 }

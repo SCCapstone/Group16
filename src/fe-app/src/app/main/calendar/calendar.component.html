@@ -1,33 +1,44 @@
-<h1>Week of {{ this.formatDate(this.weekStart) }}</h1>
-<div class="calendar-container">
+<div class="calendar">
+    <div class="header-row">
+        <div class="header-arrow" id="left">
+        @if (this.checkSemesterStart(this.weekStart)) {
+            <img class="disabled" src="images/left-arrow.png" alt="Back" />
+        }
+        @else {
+            <img src="images/left-arrow.png" alt="Back" (click)="pageBack()" />
+        }
+        </div>
+        <div class="header-text">
+            <h1>{{ this.weekStart.toLocaleString('default', { month: 'long' }) }} {{ this.weekStart.getFullYear() }}</h1>
+        </div>
+        <div class="header-arrow" id="right">
+        @if (this.checkSemesterEnd(this.weekStart)) {
+            <img class="disabled" src="images/right-arrow.png" alt="Next" />
+        }
+        @else {
+            <img src="images/right-arrow.png" alt="Next" (click)="pageForward()" />
+        }
+        </div>
+    </div>
+    <div class="day-row">
     @for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
-        <h1 class="day">{{ this.DAYS_OF_WEEK[$index] }}</h1>
-        <div class="calendar-element">
-            @if (countMatchingAssignments(dayAssignments, this.courseService.getSelectIndex()) > 0) {
-                @for (assignment of dayAssignments; track assignment.id) {
-                    @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
-                        <p>{{ assignment.title }} | {{ assignment.description }}</p>
-                    }
-                }
-            } @else {
-                <p>No assignments this week</p>
-            }
+        <div class="day">
+            <h2>{{ this.calculateDateWithOffset($index) }}</h2>
+            <p>{{ this.DAYS_OF_WEEK[$index] }}</p>
         </div>
     }
-
-<!-- TODO Make buttons icons rather than text -->
-<div class="page-container">
-    <div id="lastWeekButton">
-        <button (click)="pageBack()" [disabled]="this.checkSemesterStart(this.weekStart)">Previous Week</button>
     </div>
-    <div id="resetButton">
-        <button (click)="reset()" [disabled]="this.pageNumber == 0">Reset</button>
-    </div>
-    <div id="nextWeekButton">
-        <button (click)="pageForward()" [disabled]="this.checkSemesterEnd(this.weekStart)">Next Week</button>
-    </div>
+    <div class="calendar-content">
+    @for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
+        <div class="calendar-column">
+        @for (assignment of dayAssignments; track assignment.id) {
+            @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
+                <div class="calendar-item">
+                    <h3>{{ assignment.title }}</h3>
+                    <p>{{ assignment.availability.adaptiveRelease.end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) }}</p>
+                </div>
+            }
+        }
+        </div>
+    }
 </div>
-
-
-
-
