@@ -21,6 +21,10 @@ export class HeartbeatService {
 
   constructor(@Inject(PLATFORM_ID) private platformId: object) {}
 
+  /**
+   * starts the heartbeat service once the user has logged in
+   * @param userId
+   */
   async startHeartbeat(userId: string) {
     if(!userId || !this.loginService.getUserId()) {
       console.log('no userId to send');
@@ -53,6 +57,10 @@ export class HeartbeatService {
     });
   }
 
+  /**
+   * API call that sends a heartbeat to the server every 30 seconds
+   * @param userId
+   */
   async sendHeartbeat(userId: string): Promise<void> {
     const queryParams = new URLSearchParams({
       userId: userId ?? "NULL"
@@ -78,6 +86,9 @@ export class HeartbeatService {
     }
   }
 
+  /**
+   * stops the heartbeat service once the user has logged out
+   */
   stopHeartbeat() {
     if (this.heartbeatTimer) {
       clearInterval(this.heartbeatTimer);
@@ -102,6 +113,9 @@ export class HeartbeatService {
     }
   }
 
+  /**
+   * resets the inactivity timer when user activity is detected
+   */
   private resetActivityTimer = () => {
     //console.log('Activity detected, resetting inactivity timer...');
     clearTimeout(this.activityTimer);
@@ -116,6 +130,9 @@ export class HeartbeatService {
     });
   };
 
+  /**
+   * listens for user activity events (mouse movement, key presses, clicks) to reset the inactivity timer
+   */
   listenForActivity() {
     console.log('Listening for user activity events.');
     this.resetActivityTimer();
@@ -127,6 +144,9 @@ export class HeartbeatService {
     }
   }
 
+  /**
+   * handles user inactivity by logging them out and resetting the assignment service
+   */
   private onInactivity() {
     console.log('User is inactive for too long. Logging out...');
     this.loginService.signOut();

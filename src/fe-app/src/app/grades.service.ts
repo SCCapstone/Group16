@@ -9,6 +9,11 @@ export class GradesService {
 
   constructor() { }
 
+  /**
+   * API call to get all grades for a user
+   * @param userId
+   * @returns Grade[] : an array of grades for the user
+   */
   async getGrades(userId: string | null) : Promise<Grade[]> {
     const response = await fetch(`${this.url}getGrades?userId=${userId}`);
     const data = await response.json() ?? [];
@@ -28,6 +33,11 @@ export class GradesService {
     throw error;
   }
 
+  /**
+   * API call that sets the grade for a specific assignment
+   * @param gradeId
+   * @param percent
+   */
   async setGrade(gradeId: string | null, percent: number | null) : Promise<void> {
       const queryParams = new URLSearchParams({
         gradeId: gradeId ?? "NULL",
