@@ -29,8 +29,6 @@ export class MainComponent implements OnInit {
     newTask: Assignment | null = null;
     @ViewChild(TaskListComponent) taskListComponent!: TaskListComponent;
 
-    output: string | null = ''; // For testing purposes
-
     showPopup = false;
     popupType: 'add-task' |'grade-calc' | null = null;
 
@@ -50,13 +48,6 @@ export class MainComponent implements OnInit {
             this.heartbeatService.startHeartbeat(userId);
         } else {
             console.warn('No user ID found');
-        }
-    }
-
-    getUserId(): void {
-        console.log(this.loginService.getUserId());
-        if (this.loginService.getUserId()) {
-            this.output = this.loginService.getUserId();
         }
     }
 

@@ -7,7 +7,6 @@ import { NotificationsComponent } from './notifications/notifications.component'
 //import {HomeComponent} from './home/home.component';
 import { HeartbeatService } from './heartbeat.service';
 import { SettingsComponent } from "./settings/settings.component";
-import { ProfileSettingsComponent } from './settings/profile-settings/profile-settings.component';
 
 @Component({
     selector: 'app-root',
@@ -65,7 +64,7 @@ export class AppComponent implements OnDestroy {
    * closes the popup when the escape key is pressed
    * @param event - the keyboard event
    */
-  private handleEscapeKey = (event: KeyboardEvent): void => {
+  handleEscapeKey = (event: KeyboardEvent): void => {
     if (event.key === 'Escape') {
       this.closePopup();
     }
