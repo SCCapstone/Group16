@@ -41,6 +41,9 @@ export class MainComponent implements OnInit {
         }
     }
 
+    /**
+     * Takes in a list of assignments and returns a list of three incomplete assignments with the closest due dates
+     */
     ngOnInit() {
         const userId = this.loginService.getUserId();
         console.log('UserId from app: ' + userId);
@@ -51,29 +54,47 @@ export class MainComponent implements OnInit {
         }
     }
 
+    /**
+     * Gets the new task from the AddTaskComponent and sets it to the newTask property
+     * @param task The task to be added
+     */
     handleNewTask(task: Assignment) {
       this.newTask = task;
       console.log('handleNewTask called with task in main:', task);
     }
 
+    /**
+     * Opens a popup for adding a task or calculating grades
+     * @param type The type of popup to open
+     */
     openPopup(type: 'add-task' | 'grade-calc'): void {
         this.popupType = type;
         this.showPopup = true;
         document.addEventListener('keydown', this.handleEscapeKey);
     }
 
+    /**
+     * Closes the popup and resets the popup type
+     */
     closePopup(): void {
         this.showPopup = false;
         this.popupType = null;
         document.removeEventListener('keydown', this.handleEscapeKey);
     }
-
+    /**
+     * Closes the popup when the escape key is pressed
+     * @param event
+     */
     private handleEscapeKey = (event: KeyboardEvent): void => {
       if (event.key === 'Escape') {
         this.closePopup();
       }
     }
 
+    /**
+     * Closes the popup when the backdrop is clicked
+     * @param event
+     */
     handleBackdropClick(event: Event): void {
       this.closePopup();
     }
