@@ -33,6 +33,10 @@ export class TaskComponent implements OnInit {
 
   ngOnInit() {}
 
+  /**
+   * toggle the completion status of an assignment
+   * @param assignment
+   */
   async toggleCompletion(assignment: Assignment) {
     // console.log("clicked");
     // console.log('Before ' + assignment.complete);
@@ -57,6 +61,9 @@ export class TaskComponent implements OnInit {
     }
   }
 
+  /**
+   * remove the task from the list
+   */
   async removeTask() {
     try {
       this.assignmentService.removeTask(this.assignment.id);
@@ -66,28 +73,46 @@ export class TaskComponent implements OnInit {
     }
   }
 
+  /**
+   * update the task in the list
+   * @param updatedAssignment
+   */
   updateTask(updatedAssignment: Assignment) {
     this.taskUpdated.emit(updatedAssignment);
   }
 
+  /**
+   * open the edit task or task popup
+   */
   openPopup(type: 'edit-task' | 'task'): void {
     this.popupType = type;
     this.showPopup = true;
     document.addEventListener('keydown', this.handleEscapeKey);
   }
 
+  /**
+   * close the popup
+   */
   closePopup(): void {
     this.showPopup = false;
     this.popupType = null;
     document.removeEventListener('keydown', this.handleEscapeKey);
   }
 
+  /**
+   * close the popup when the escape key is pressed
+   * @param event
+   */
   private handleEscapeKey = (event: KeyboardEvent): void => {
     if (event.key === 'Escape') {
       this.closePopup();
     }
   }
 
+  /**
+   * close the popup when the backdrop is clicked
+   * @param event
+   */
   handleBackdropClick(event: Event): void {
     this.closePopup();
   }

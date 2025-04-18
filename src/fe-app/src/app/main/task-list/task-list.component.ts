@@ -30,6 +30,12 @@ export class TaskListComponent{
   assignments: Assignment[][] = [ [], [] ];  // Active, complete
   sortedAssignments: Assignment[] = [];
 
+  /**
+   * constructor for TaskListComponent that initializes the component and sets up the signal
+   * to run whenever the AssignmentService signal updates
+   * @param assignmentService
+   * @param cdr
+   */
   constructor(private assignmentService: AssignmentService, private cdr: ChangeDetectorRef) {
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
     effect(() => {
@@ -39,6 +45,10 @@ export class TaskListComponent{
     })
   }
 
+  /**
+   * ngOnInit lifecycle hook that runs when the component is initialized
+   * populates the course list with a service call
+   */
    async ngOnInit() {
     // Populate course list with service call
     await this.courseService.getCourses(this.loginService.getUserId())
@@ -47,6 +57,10 @@ export class TaskListComponent{
     });
   }
 
+  /**
+   * loadAssignments function that retrieves the assignments from the service
+   * and sorts them by their end date
+   */
   private async loadAssignments() {
     let retrievedAssignments = await this.assignmentService.getAssignments(this.loginService.getUserId());
     retrievedAssignments.sort((a: Assignment, b: Assignment) => {
@@ -55,6 +69,10 @@ export class TaskListComponent{
     this.assignments = this.filterAssignments(retrievedAssignments);
   }
 
+  /**
+   * filterAssignments function that filters the assignments into two lists: active and complete
+   * @param assignments
+   */
   filterAssignments(assignments: Assignment[]) {
     let newAssignments: Assignment[][] = [ [], [] ];
     for (const assignment of assignments) {
@@ -66,6 +84,10 @@ export class TaskListComponent{
     return newAssignments;
   }
 
+  /**
+   * ngOnChanges lifecycle hook that runs when the component receives new task
+   * @param changes
+   */
   ngOnChanges(changes: SimpleChanges) {
     if(changes['newTask'] && this.newTask) {
       console.log('New task received:', this.newTask);
@@ -73,6 +95,10 @@ export class TaskListComponent{
     }
   }
 
+  /**
+   * addNewTask function that adds a new task to the list of assignments
+   * @param task
+   */
   addNewTask (task: Assignment) {
     if (task) {
       this.assignments[ACTIVE].push(task);
@@ -84,6 +110,10 @@ export class TaskListComponent{
     this.cdr.detectChanges();
   }
 
+  /**
+   * removeTask function that removes a task from the list of assignments
+   * @param id
+   */
   onTaskRemoved(id: string) {
     if(confirm('Are you sure?')) {
       this.assignments = this.assignments.map(list =>
@@ -97,6 +127,10 @@ export class TaskListComponent{
       }
   }
 
+  /**
+   * updateTask function that updates a task in the list of assignments
+   * @param updatedAssignment
+   */
   onTaskUpdated(updatedAssignment: Assignment) {
     this.assignments = this.assignments.map(list =>
       list.map(assignment =>
@@ -108,10 +142,17 @@ export class TaskListComponent{
     this.cdr.detectChanges();
   }
 
+  /**
+   * toggles the view of the assignments
+   */
   toggleView(): void {
     this.assignmentService.toggleViewCompleted();
   }
 
+  /**
+   * sorts the assignments by their end date
+   * @returns the sorted list of assignments
+   */
   getSortedAssignments(): Assignment[] {
     console.log('Sorted Assignments: ', this.assignments);
     return [...this.assignments[this.getIndex()]].sort((a, b) =>
@@ -119,6 +160,11 @@ export class TaskListComponent{
       (new Date(b.availability.adaptiveRelease.end)).getTime());
   }
 
+  /**
+   * gets the name of the course by its id
+   * @param id
+   * @returns name of the course with the given id
+   */
   getCourseNameByID(id: String): String {
     for (const course of this.courses) {
       if (course.id === id)
@@ -127,6 +173,10 @@ export class TaskListComponent{
     return "";
   }
 
+  /**
+   * gets the index of the view completed assignments
+   * @returns view completed index
+   */
   getIndex() {
     return (this.assignmentService.getViewCompleted() ? 1 : 0);
   }
