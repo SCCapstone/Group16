@@ -10,9 +10,9 @@ import { LoginService } from '../../login.service';
 describe('TaskListComponent', () => {
   let component: TaskListComponent;
   let fixture: ComponentFixture<TaskListComponent>;
-  let mockAssignmentService: jasmine.SpyObj<any>;
-  let mockCourseService: jasmine.SpyObj<any>;
-  let mockLoginService: jasmine.SpyObj<any>;
+  let mockAssignmentService: jasmine.SpyObj<AssignmentService>;
+  let mockCourseService: jasmine.SpyObj<CourseService>;
+  let mockLoginService: jasmine.SpyObj<LoginService>;
 
 
   beforeEach(async () => {

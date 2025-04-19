@@ -10,9 +10,9 @@ import { EventEmitter } from '@angular/core';
 describe('TaskComponent', () => {
   let component: TaskComponent;
   let fixture: ComponentFixture<TaskComponent>;
-  let mockAssignmentService: jasmine.SpyObj<any>;
-  let mockCourseService: jasmine.SpyObj<any>;
-  let mockLoginService: jasmine.SpyObj<any>;
+  let mockAssignmentService: jasmine.SpyObj<AssignmentService>;
+  let mockCourseService: jasmine.SpyObj<CourseService>;
+  let mockLoginService: jasmine.SpyObj<LoginService>;
 
   beforeEach(async () => {
     const activatedRouteMock = {
