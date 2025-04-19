@@ -6,7 +6,6 @@ import { LoginService } from '../../login.service';
 import { CommonModule } from '@angular/common';
 import { CourseService } from '../../course.service';
 import { AssignmentService } from '../../assignment.service';
-import { GradeCalcComponent } from "../../grade-calc/grade-calc.component";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
@@ -131,7 +130,11 @@ export class GradesComponent {
     }
   }
 
-  // This function calculates the letter grade based on the percent
+  /**
+   * gets the letter grade based on the percent
+   * @param percent
+   * @returns letter grade based on the percent
+   */
   calculateGradeChar(percent: number): string {
     if (percent >= 90)
       return "A";
@@ -151,6 +154,11 @@ export class GradesComponent {
       return "F";
   }
 
+  /**
+   * sets the grade on the event
+   * @param event
+   * @param gradeId
+   */
   setGradeOnEvent(event: Event, gradeId: string | undefined) {
     if (!gradeId) return;
 
@@ -165,6 +173,11 @@ export class GradesComponent {
     target.blur();
   }
 
+  /**
+   * gets the assignment by ID
+   * @param id
+   * @returns Assignment object with the given ID
+   */
   getAssignmentByID(id: string): Assignment | undefined {
     return this.assignments.find(assignment => assignment.id === id);
   }

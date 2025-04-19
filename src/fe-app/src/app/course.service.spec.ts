@@ -54,7 +54,7 @@ describe('CourseService', () => {
     expect(courseList[0].id).toEqual('abc');
   });
 
-  // getCourses()
+  // getCourseById()
   it('should throw an error when getCourseById response is empty ( {} )', async () => {
     spyOn(window, 'fetch').and.returnValue(Promise.resolve({
       json: () => Promise.resolve([]),

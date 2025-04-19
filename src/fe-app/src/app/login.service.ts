@@ -15,6 +15,12 @@ export class LoginService {
 
   constructor(private cookieService: CookieService) {}
 
+  /**
+   * API call to login a user
+   * @param username
+   * @param password
+   * @returns user object with its id
+   */
   async login(username: string, password: string) : Promise<User> {
     const queryParams = new URLSearchParams({
       username: username ?? "NULL",
@@ -48,12 +54,19 @@ export class LoginService {
     }
   }
 
+  /**
+   * accesses the id of the user currently logged in from session storage
+   * @returns the id for the user currently logged in
+   */
   getUserId(): string | null {
     if (isPlatformBrowser(this.PLATFORM_ID_))
       return sessionStorage.getItem(this.USER_ID_KEY);
     return null;
   }
 
+  /**
+   * removes the user id from session storage
+   */
   signOut(): void { // to be used in signout later
     sessionStorage.removeItem(this.USER_ID_KEY);
   }

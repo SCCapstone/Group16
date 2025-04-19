@@ -34,6 +34,9 @@ export class EditTaskComponent implements OnInit {
 
   constructor() {}
 
+  /**
+   * Initializes the form with the assignment data if available
+   */
   ngOnInit() {
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
@@ -70,6 +73,9 @@ export class EditTaskComponent implements OnInit {
     }
   }
 
+  /**
+   * Handles the form submission to edit a task
+   */
   async editTask() {
     if(this.editTaskForm.invalid) {
       return;
