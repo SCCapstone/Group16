@@ -27,6 +27,9 @@ export class NotificationsComponent implements OnInit{
       console.log("User Notifications:", this.userInfo.notifications);
   }
 
+  /**
+   * clears all notifications for the user
+   */
   async clearNotifications() {
     if(!this.notifications || this.notifications.length === 0) {
       alert('No notifications to be cleared');
