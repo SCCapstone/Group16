@@ -23,6 +23,9 @@ export class CalendarComponent {
   assignments: Assignment[] = [];
   weekAssignments: Assignment[][] = [[], [], [], [], [], [], []];
 
+  showPopup: boolean = false;
+  openAssignment: Assignment | null = null;
+
   loginService = inject(LoginService);
   courseService = inject(CourseService);
 
@@ -79,8 +82,6 @@ export class CalendarComponent {
     this.assignments.sort((a: Assignment, b: Assignment) => {
       return (a.availability.adaptiveRelease.end.getTime() <= b.availability.adaptiveRelease.end.getTime() ? -1 : 1);
     });
-
-    console.log("ASSIGNMENTS: ", this.assignments);
   }
 
   /**
@@ -101,14 +102,10 @@ export class CalendarComponent {
    * Populates weekAssignments with all assignments due during the currently-selected week.
    */
   organizeWeekAssignments() {
-    console.log("CALL organizeWeekAssignments()");
-    
     this.weekAssignments = [[], [], [], [], [], [], []]
     const millisecondsPerDay = 86400000;
     for (const assignment of this.assignments) {
       const difference = assignment.availability.adaptiveRelease.end.getTime() - this.weekStart.getTime();
-
-      console.log(assignment.title + " | " + assignment.availability.adaptiveRelease.end + " | " + difference);
 
       if (difference < 0)
         continue;
@@ -117,26 +114,6 @@ export class CalendarComponent {
       
       this.weekAssignments[Math.floor(difference / millisecondsPerDay)].push(assignment);
     }
-    console.log("WEEK ASSIGNMENTS: ", this.weekAssignments);
-  }
-  
-  /**
-   * Counts the number of assignments in the given assignment list matching the given course index.
-   * @param assignmentList One-dimensional array of assignments, corresponding to a single day.
-   * @param courseIndex Index of the currently-selected course in component course list. -1 indicates no selection
-   * @return The number of assignments that are part of the course corresponding to the given index.
-   */
-  countMatchingAssignments(assignmentList: Assignment[], courseIndex: number): number {
-    if (courseIndex < 0 || courseIndex >= this.courses.length)
-      return assignmentList.length;
-
-    const targetID: string = this.courses[courseIndex].id;
-    let count: number = 0;
-    for (const assignment of assignmentList) {
-      if (assignment.courseId === targetID)
-        count++;
-    }
-    return count;
   }
 
   /**
@@ -203,23 +180,65 @@ export class CalendarComponent {
   }
 
   /**
-   * Format the given date in the format of "<Month> <Day>[st/nd/rd/th]"
-   * @param date The date to format
-   * @return Formatted string with relevant date information.
+   * Returns the index of the course matching the given courseID
+   * @param courseID The courseID property of an assignment
+   * @return The index of the corresponding course, or -1 if none found.
    */
-  formatDate(date: Date) {
-    let output: String = date.toLocaleString('en-US', {month: "long", day: "numeric"})
+  getCourseIndexByID(courseID: String | null): number {
+    if (typeof courseID === null)
+      return -1;
+    for (let i=0; i < this.courses.length; i++) {
+      if (this.courses[i].id === courseID)
+        return i
+    }
+    return -1;
+  }
+  
+  /**
+   * Returns the course name of the course matching the given courseID
+   * @param courseID The courseID property of an assignment
+   * @return The name only (ex. "CSCE 355") of the corresponding course, or "unknown" if none found.
+   */
+  getCourseNameByID(courseID: String | null): String {
+    const courseIndex = this.getCourseIndexByID(courseID);
+    if (courseIndex < 0 || courseIndex >= this.courses.length)
+      return "unknown";
+    return this.courses[courseIndex].name.split('-')[0];
+  }
 
-    // ugh
-    if (this.weekStart.getDate() % 10 == 1 && this.weekStart.getDate() != 11)
-      output += "st"
-    else if (this.weekStart.getDate() % 10 == 2 && this.weekStart.getDate() != 12)
-      output += "nd"
-    else if (this.weekStart.getDate() % 10 == 3 && this.weekStart.getDate() != 13)
-      output += "rd"
-    else
-      output += "th"
+  /**
+   * open the edit task or task popup
+   * @param assignment The assignment clicked on by the user
+   */
+  openPopup(assignment: Assignment): void {
+    this.showPopup = true;
+    this.openAssignment = assignment;
+    document.addEventListener('keydown', this.handleEscapeKey);
+  }
 
-    return output;
+  /**
+   * close the popup
+   */
+  closePopup(): void {
+    this.showPopup = false;
+    this.openAssignment = null;
+    document.removeEventListener('keydown', this.handleEscapeKey);
+  }
+
+  /**
+   * close the popup when the escape key is pressed
+   * @param event
+   */
+  private handleEscapeKey = (event: KeyboardEvent): void => {
+    if (event.key === 'Escape')
+      this.closePopup();
+  }
+
+  /**
+   * close the popup when the backdrop is clicked
+   * @param event
+   */
+  handleBackdropClick(): void {
+    this.closePopup();
   }
 }

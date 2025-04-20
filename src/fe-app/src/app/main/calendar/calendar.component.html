@@ -33,7 +33,7 @@
         <div class="calendar-column">
         @for (assignment of dayAssignments; track assignment.id) {
             @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
-                <div class="calendar-item">
+                <div class="calendar-item" (click)="this.openPopup(assignment)">
                     <h3>{{ assignment.title }}</h3>
                     <p>{{ assignment.availability.adaptiveRelease.end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) }}</p>
                 </div>
@@ -42,3 +42,19 @@
         </div>
     }
 </div>
+
+<!-- Assignment popup, not part of base page -->
+@if (this.showPopup) {
+    <div class="popup-modal" (click)="handleBackdropClick()">
+        <div class="popup-content">
+            <span class="close" (click)="closePopup()">&times;</span>
+            <p class="assignmentPopup">
+                <span class="course" style="font-size: 25px;">{{ this.getCourseNameByID(this.openAssignment!.courseId) }} </span><br>
+                {{ openAssignment!.title }} <br>
+                <span class="due-date" style="color: #c30000"> <br> Due: <br>{{ this.openAssignment!.availability.adaptiveRelease.end | date }} </span><br> <br>
+                <span class="description" style="font-size: 25px;">Description: </span><br>
+                {{ openAssignment!.description}}
+            </p>
+        </div>
+    </div>
+}
