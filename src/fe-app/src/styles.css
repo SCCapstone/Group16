@@ -18,6 +18,9 @@ html, body {
   background-color: #949494;
   scrollbar-width: none;
 }
+::webkit-scrollbar {
+  display: none;
+}
 
 main {
   background-color: #949494;
