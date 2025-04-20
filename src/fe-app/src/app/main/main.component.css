@@ -58,6 +58,7 @@
 .main-view{
   height: 76.6vh;          
   overflow-y: auto;
+  scrollbar-width: none;
   width: 99%;
   margin-left: 5px;
   background-color: #c0c0c0;
