@@ -31,7 +31,8 @@ export class CalendarComponent {
     "#80aaed",  // light blue
     "#f0ba3c",  // orange
     "#525af7",  // blue
-    "#76bf6f"   // green
+    "#76bf6f",  // green
+    "#a5a5a5"   // gray
   ];
 
   loginService = inject(LoginService);
@@ -222,7 +223,7 @@ export class CalendarComponent {
   getStyleColorByID(courseID: String | null): String {
     const courseIndex = this.getCourseIndexByID(courseID);
     if (courseIndex < 0 || courseIndex >= this.courses.length || courseIndex >= this.ASSIGNMENT_COLORS.length)
-      return "";
+      return "background-color: " + this.ASSIGNMENT_COLORS[this.ASSIGNMENT_COLORS.length - 1];
     return "background-color: " + this.ASSIGNMENT_COLORS[courseIndex];
   }
 
