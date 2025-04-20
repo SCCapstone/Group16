@@ -25,7 +25,14 @@ export class CalendarComponent {
 
   showPopup: boolean = false;
   openAssignment: Assignment | null = null;
-  readonly ASSIGNMENT_COLORS: String[] = ["red", "orange", "yellow", "green", "blue", "purple", "brown", "gray"];
+  readonly ASSIGNMENT_COLORS: String[] = [
+    "#eb7573",  // red
+    "#c37dd1",  // purple
+    "#80aaed",  // light blue
+    "#f0ba3c",  // orange
+    "#525af7",  // blue
+    "#76bf6f"   // green
+  ];
 
   loginService = inject(LoginService);
   courseService = inject(CourseService);
