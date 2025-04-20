@@ -1,21 +1,32 @@
+/* Full calendar base */
 .calendar {
     margin: 0;
-    margin-left: -0.7%;
+    margin-left: -0.8%;
     padding: 0;
     width: 101.5%;
     height: 100%;
+    scrollbar-width: none;
 }
 
-/* Header row of calendar containing header text and button containers */
-.header-row {
-    height: 10%;
+
+/* Full header of calendar including navigation and day rows, sticks to top on scroll */
+.header-content {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: 25%;
+}
+
+/* Header row of calendar containing month/year text and navigation buttons */
+.navigation-row {
+    height: 40%;
     display: flex;
     justify-content: space-between;
     background-color: #cfcfcf;
 }
 
 /* Section of header row containing text */
-.header-text {
+.navigation-text {
     width: 80%;
     display: flex;
 }
@@ -28,7 +39,7 @@ h1 {
 }
 
 /* Section of header row containing left/right arrows */
-.header-arrow {
+.navigation-arrow {
     width: 10%;
     display: flex;
     align-items: center;
@@ -55,7 +66,7 @@ img {
 
 /* Row containing days of month */
 .day-row {
-    height: 15%;
+    height: 60%;
     display: flex;
     justify-content: space-around;
     background-color: #cfcfcf;
@@ -115,6 +126,7 @@ p {
 .urgent {
     color: #c30000;
 }
+
 
 /* Task popup -- mostly copied from TaskComponent */
 .popup-modal {
