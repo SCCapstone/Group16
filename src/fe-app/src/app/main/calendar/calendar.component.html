@@ -33,7 +33,7 @@
         <div class="calendar-column">
         @for (assignment of dayAssignments; track assignment.id) {
             @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
-                <div class="calendar-item" (click)="this.openPopup(assignment)">
+                <div class="calendar-item" [style]="this.getStyleColorByID(assignment.courseId)" (click)="this.openPopup(assignment)">
                     <h3>{{ assignment.title }}</h3>
                     @if (this.checkPastDue(assignment)) {
                         <p class="urgent">{{ assignment.availability.adaptiveRelease.end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) }}</p>

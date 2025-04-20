@@ -25,6 +25,7 @@ export class CalendarComponent {
 
   showPopup: boolean = false;
   openAssignment: Assignment | null = null;
+  readonly ASSIGNMENT_COLORS: String[] = ["red", "orange", "yellow", "green", "blue", "purple", "brown", "gray"];
 
   loginService = inject(LoginService);
   courseService = inject(CourseService);
@@ -204,6 +205,18 @@ export class CalendarComponent {
     if (courseIndex < 0 || courseIndex >= this.courses.length)
       return "unknown";
     return this.courses[courseIndex].name.split('-')[0];
+  }
+
+  /**
+   * Returns the color for a calendar item based on the given course ID
+   * @param courseID The associated course ID of an assignment
+   * @returns "background-color: <hex_code>", or "" if course not found
+   */
+  getStyleColorByID(courseID: String | null): String {
+    const courseIndex = this.getCourseIndexByID(courseID);
+    if (courseIndex < 0 || courseIndex >= this.courses.length || courseIndex >= this.ASSIGNMENT_COLORS.length)
+      return "";
+    return "background-color: " + this.ASSIGNMENT_COLORS[courseIndex];
   }
 
   /**
