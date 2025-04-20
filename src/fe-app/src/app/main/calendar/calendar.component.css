@@ -107,6 +107,7 @@ h2 {
     border-radius: 10px;
     text-align: center;
     position: relative;
+    overflow-wrap: break-word;
 }
 
 .item-icon {
