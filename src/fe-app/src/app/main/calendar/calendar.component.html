@@ -35,7 +35,17 @@
             @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
                 <div class="calendar-item" (click)="this.openPopup(assignment)">
                     <h3>{{ assignment.title }}</h3>
-                    <p>{{ assignment.availability.adaptiveRelease.end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) }}</p>
+                    @if (this.checkPastDue(assignment)) {
+                        <p class="urgent">{{ assignment.availability.adaptiveRelease.end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) }}</p>
+                        <img class="item-icon" src="images/urgent.png" />
+                    }
+                    @else {
+                        <p>{{ assignment.availability.adaptiveRelease.end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) }}</p>
+                    }
+
+                    @if (assignment.complete) {
+                        <img class="item-icon" src="images/checkmark.png">
+                    }
                 </div>
             }
         }

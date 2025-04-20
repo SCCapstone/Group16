@@ -95,6 +95,14 @@ h2 {
     border-radius: 10px;
     text-align: center;
     background-color: #a5a5a5;
+    position: relative;
+}
+
+.item-icon {
+    position: absolute;
+    height: 40px;
+    bottom: 4px;
+    right:  6px;
 }
 
 h3 {
@@ -103,6 +111,10 @@ h3 {
 
 p {
     margin: auto;
+}
+
+.urgent {
+    color: #c30000;
 }
 
 /* Task popup -- mostly copied from TaskComponent */

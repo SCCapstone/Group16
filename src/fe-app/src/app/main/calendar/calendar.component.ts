@@ -207,6 +207,15 @@ export class CalendarComponent {
   }
 
   /**
+   * Checks if an assignment should be marked as past due on the calendar.
+   * @param assignment The assignment to check
+   * @return true if assignment is incomplete and past due, false otherwise
+   */
+  checkPastDue(assignment: Assignment): boolean {
+    return (!assignment.complete && assignment.availability.adaptiveRelease.end.getTime() <= Date.now())
+  }
+
+  /**
    * open the edit task or task popup
    * @param assignment The assignment clicked on by the user
    */
