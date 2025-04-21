@@ -51,12 +51,21 @@ describe('DueSoonSidebarComponent', () => {
     const mockCourses = [
       { id: 'c1', name: 'Course 1' } as Course
     ];
+
+    const today = new Date();
+
+    const addDays = (date: Date, days: number): Date => {
+      const result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
+    };
+
     const assignments = [
-      { id: '1', courseId: 'c1', availability: { adaptiveRelease: { end: new Date(2025, 1, 1) } }, complete: false } as Assignment,
-      { id: '2', courseId: 'c1', availability: { adaptiveRelease: { end: new Date(2025, 1, 2) } }, complete: false } as Assignment,
-      { id: '3', courseId: 'c1', availability: { adaptiveRelease: { end: new Date(2025, 1, 3) } }, complete: false } as Assignment,
-      { id: '4', courseId: 'c1', availability: { adaptiveRelease: { end: new Date(2025, 1, 4) } }, complete: true } as Assignment,
-      { id: '5', courseId: 'c1', availability: { adaptiveRelease: { end: new Date(2025, 1, 5) } }, complete: false } as Assignment
+      { id: '1', courseId: 'c1', availability: { adaptiveRelease: { end: addDays(today, 1) } }, complete: false } as Assignment,
+      { id: '2', courseId: 'c1', availability: { adaptiveRelease: { end: addDays(today, 2) } }, complete: false } as Assignment,
+      { id: '3', courseId: 'c1', availability: { adaptiveRelease: { end: addDays(today, 3) } }, complete: false } as Assignment,
+      { id: '4', courseId: 'c1', availability: { adaptiveRelease: { end: addDays(today, 4) } }, complete: true } as Assignment,
+      { id: '5', courseId: 'c1', availability: { adaptiveRelease: { end: addDays(today, 5) } }, complete: false } as Assignment
     ];
 
     mockCourseService.getCourses.and.returnValue(Promise.resolve(mockCourses));
