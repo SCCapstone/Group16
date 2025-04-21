@@ -14,8 +14,13 @@ input, select {
   margin-left: 10px;
 }
 
-button {
+button[type="submit"] {
   display: block;
+  margin: 20px auto 0;
   margin-top: 10px;
   margin-left: 10px;
+  border-radius: 10px;
+  justify-self: center;
+  margin-top: 20px;
+  font-size: 18px;
 }
