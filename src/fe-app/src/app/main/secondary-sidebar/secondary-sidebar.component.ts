@@ -33,7 +33,7 @@ export class SecondarySidebarComponent implements OnChanges {
     effect(() => {
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
       console.log("SIDEBAR SIGNAL RUN: Value " + signal);
-      
+
       // Runs when service constructor finishes, no need to call twice
       this.assignmentService.getAssignments(this.loginService.getUserId()).then((assignments: Assignment[]) => {
         this.filterTopThree(assignments)
@@ -62,9 +62,12 @@ export class SecondarySidebarComponent implements OnChanges {
   filterTopThree(assignments: Assignment[]) {
     let candidates: Assignment[] = [];
     const courseIndex = this.courseService.getSelectIndex();
+    const now = new Date();
 
     for (const assignment of assignments) {
-      if (!assignment.complete && (courseIndex === -1 || assignment.courseId === this.courses[courseIndex].id))
+      const endDate = new Date(assignment.availability.adaptiveRelease.end);
+
+      if (!assignment.complete && endDate >= now && (courseIndex === -1 || assignment.courseId === this.courses[courseIndex].id))
         candidates.push(assignment);
     }
     candidates.sort((a: Assignment, b: Assignment) => {
