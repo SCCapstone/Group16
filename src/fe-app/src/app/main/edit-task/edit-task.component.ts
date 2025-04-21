@@ -49,9 +49,14 @@ export class EditTaskComponent implements OnInit {
         ? new Date(this.assignment.availability.adaptiveRelease.end)
         : null;
 
+        let due = '';
         let time = '';
 
         if (dueDate) {
+          const year = dueDate.getFullYear();
+          const month = String(dueDate.getMonth() + 1).padStart(2, '0');
+          const day = String(dueDate.getDate()).padStart(2, '0');
+          due = `${year}-${month}-${day}`;
           time = dueDate.toTimeString().slice(0, 5);
         }
 
@@ -59,7 +64,7 @@ export class EditTaskComponent implements OnInit {
           title: this.assignment.title ?? '',
           description: this.assignment.description ?? '',
           course: this.assignment.courseId ?? '',
-          due: dueDate ? dueDate.toISOString().split('T')[0] : '', // Ensures correct date format
+          due: due ?? '', // Ensures correct date format
           time: time
         });
 
