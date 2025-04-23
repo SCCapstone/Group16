@@ -10,7 +10,7 @@
         <ul>
           @for (assignment of this.assignments; track assignment.id)
           {
-            <li>{{ assignment.title }} <br> <span class = "date">- {{ assignment.availability.adaptiveRelease.end | date:'mediumDate' }}</span></li>
+            <li>{{ assignment.title }} <br> <span class = "date">- {{ assignment.availability.adaptiveRelease.end | date:'medium' }}</span></li>
           }
         </ul>
       }
