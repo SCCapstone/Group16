@@ -42,6 +42,11 @@ Our testing is best done in Visual Studio Code.
 - Back End Unit Testing: In the testing pannel hit play on `be` tab under `Java Test`. Unit tests will soon be deployed in RC1 in each PR before merging to main.
 - Behavioral Testing: In the command pannel install playwright using `>Install Playwright`. Then start the app locally in the `Group16` directory and run `./start`. Finally run in the testing pannel using the play button.
 
+## Screenshots/Uses
+
+- The user can add tasks or mark them as complete at any time, as well as retrieve their assignment grades and use them as part of a fully functional grade calculator.
+- Users can change settings including their contact information and the types of notifications they wish to receive.
+
 ## Authors
 
 - Ava Turner - <AVART@email.sc.edu> (www.linkedin.com/in/avaturner03)
