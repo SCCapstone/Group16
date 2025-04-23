@@ -122,8 +122,8 @@ export class EditTaskComponent implements OnInit {
 
       this.close.emit(updatedAssignment);
     } catch(error) {
-      console.error('Add task failed', error);
-      this.errorMessage = 'An error occurred while adding the task. Please try again.';
+      console.error('Edit task failed', error);
+      this.errorMessage = 'An error occurred while editing the task. Please try again.';
 
       if(error instanceof Error) {
         if(error.message.includes('400')) {
