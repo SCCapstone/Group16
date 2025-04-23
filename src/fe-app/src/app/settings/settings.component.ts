@@ -23,12 +23,20 @@ export class SettingsComponent {
   saveMessage: string = "";
   saveSuccess: boolean = false;
 
+  canSave: boolean = true;
+
   @ViewChild(ProfileSettingsComponent) profileSettings!: ProfileSettingsComponent;
   @ViewChild(NotificationSettingsComponent) notificationSettings !: NotificationSettingsComponent;
 
   @Output() onSignout = new EventEmitter<void>(); // EventEmitter to notify parent
 
   constructor(private cdr: ChangeDetectorRef) {}
+
+  ngAfterViewInit() {
+    this.profileSettings.profileForm.statusChanges.subscribe(status => {
+      this.canSave = (status === "VALID");
+    })
+  }
 
   getMessageStyle() {
     if (this.saveSuccess)
@@ -37,13 +45,8 @@ export class SettingsComponent {
   }
 
   async saveAllSettings() {
-
-    if (!this.profileSettings.getProfileValidator()) {
-      this.saveMessage = "Error saving password: ensure fields are valid";
-      this.saveSuccess = false;
-      this.cdr.detectChanges();
+    if (!this.profileSettings.getProfileValidator())
       return
-    }
 
     try {
       await this.profileSettings.saveProfile();
