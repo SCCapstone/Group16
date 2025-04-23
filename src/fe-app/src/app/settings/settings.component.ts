@@ -23,12 +23,20 @@ export class SettingsComponent {
   saveMessage: string = "";
   saveSuccess: boolean = false;
 
+  canSave: boolean = true;
+
   @ViewChild(ProfileSettingsComponent) profileSettings!: ProfileSettingsComponent;
   @ViewChild(NotificationSettingsComponent) notificationSettings !: NotificationSettingsComponent;
 
   @Output() onSignout = new EventEmitter<void>(); // EventEmitter to notify parent
 
   constructor(private cdr: ChangeDetectorRef) {}
+
+  ngAfterViewInit() {
+    this.profileSettings.profileForm.statusChanges.subscribe(status => {
+      this.canSave = (status === "VALID");
+    })
+  }
 
   getMessageStyle() {
     if (this.saveSuccess)

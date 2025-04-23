@@ -5,7 +5,7 @@
             <app-profile-settings></app-profile-settings>
             <app-notification-settings></app-notification-settings>
             <div class="sidebar-buttons">
-                <button (click)="saveAllSettings()" style = "font-size: 20px;">Save Settings</button>
+                <button (click)="saveAllSettings()" style="font-size: 20px;" [disabled]="!this.canSave">Save Settings</button>
                 @if (this.saveMessage != "") {
                     <p [class]="this.getMessageStyle()">{{ this.saveMessage }}</p>
                 }
