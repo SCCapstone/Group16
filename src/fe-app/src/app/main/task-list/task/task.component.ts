@@ -26,6 +26,7 @@ export class TaskComponent implements OnInit {
   loginService = inject(LoginService)
   showPopup = false;
   popupType: 'edit-task' | 'task' | null = null;
+  showConfirmDelete = false;
   //assignmentId = this.assignment.id ?? null;
 
 
@@ -62,12 +63,29 @@ export class TaskComponent implements OnInit {
   }
 
   /**
+   * open the delete confirmation popup
+   */
+  confirmDeleteTask() {
+    this.showConfirmDelete = true;
+    document.addEventListener('keydown', this.handleEscapeKey);
+  }
+
+  /**
+   * close the delete confirmation popup
+   */
+  cancelDelete(): void {
+    this.showConfirmDelete = false;
+  }
+
+  /**
    * remove the task from the list
    */
   async removeTask() {
     try {
       this.assignmentService.removeTask(this.assignment.id);
       this.taskRemoved.emit(this.assignment.id as string);
+      this.showConfirmDelete = false;
+      document.removeEventListener('keydown', this.handleEscapeKey);
     } catch (error) {
       console.error('Error removing task: ', error);
     }
@@ -105,7 +123,12 @@ export class TaskComponent implements OnInit {
    */
   private handleEscapeKey = (event: KeyboardEvent): void => {
     if (event.key === 'Escape') {
-      this.closePopup();
+      if (this.showPopup) {
+        this.closePopup();
+      }
+      if (this.showConfirmDelete) {
+        this.cancelDelete();
+      }
     }
   }
 
@@ -114,6 +137,11 @@ export class TaskComponent implements OnInit {
    * @param event
    */
   handleBackdropClick(event: Event): void {
-    this.closePopup();
+    if (this.showPopup) {
+      this.closePopup();
+    }
+    if (this.showConfirmDelete) {
+      this.cancelDelete();
+    }
   }
 }
