@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TaskListComponent } from './task-list.component';
 import { Assignment } from '../../course';
-import { first } from 'rxjs';
 import { AssignmentService } from '../../assignment.service';
 import { CourseService } from '../../course.service';
 import { LoginService } from '../../login.service';
