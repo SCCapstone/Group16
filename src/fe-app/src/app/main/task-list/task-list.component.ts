@@ -85,6 +85,67 @@ export class TaskListComponent{
   }
 
   /**
+   * Sorts the assignment list alphabetically based on assignment title.
+   * @param ascending True to sort in ascending order, false descending
+   */
+  sortByTitle(ascending: boolean) {
+    let sign = 1;
+    if (!ascending)
+      sign = -1;
+    this.assignments[ACTIVE].sort((a, b) => {
+      return sign * a.title.localeCompare(b.title);
+    });
+    this.assignments[COMPLETE].sort((a, b) => {
+      return sign * a.title.localeCompare(b.title);
+    });
+  }
+
+  /**
+   * Sorts the assignment list based on course in the order courses appear in the course sidebar.
+   * @param ascending True to sort in ascending order, false descending
+   */
+  sortByCourse(ascending: boolean) {
+    let sign = 1;
+    if (!ascending)
+      sign = -1;
+    this.assignments[ACTIVE].sort((a, b) => {
+      return sign * (this.getCourseIndex(a) - this.getCourseIndex(b));
+    });
+    this.assignments[COMPLETE].sort((a, b) => {
+      return sign * (this.getCourseIndex(a) - this.getCourseIndex(b));
+    });
+  }
+
+  /**
+   * Retrieves the index of the course matching the given assignment's courseID
+   * @param assignment Assignment to find the course of
+   * @returns Index of the matching course in the Course array.
+   */
+  private getCourseIndex(assignment: Assignment) {
+    for (let i=0; i < this.courses.length; i++) {
+      if (this.courses[i].id === assignment.courseId)
+        return i;
+    }
+    return -1;
+  }
+
+  /**
+   * Sorts the assignment list based on date. Note: assignments are sorted by date in ascending order by default.
+   * @param ascending True to sort in ascending order, false descending
+   */
+  sortByDate(ascending: boolean) {
+    let sign = 1;
+    if (!ascending)
+      sign = -1;
+    this.assignments[ACTIVE].sort((a, b) => {
+      return sign * (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+    });
+    this.assignments[COMPLETE].sort((a, b) => {
+      return sign * (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+    });
+  }
+
+  /**
    * ngOnChanges lifecycle hook that runs when the component receives new task
    * @param changes
    */

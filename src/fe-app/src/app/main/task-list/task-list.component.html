@@ -1,11 +1,23 @@
 <div class="assignment-list">
   <div class="assignment-header">
-      <div class="header-column" ><button class="checkmark-button" style = "color:red; border-color: red;" (click)="toggleView()">✔</button></div>
-      <div class="header-column">COURSE</div>
-      <div class="header-column">TITLE</div>
-      <div class="header-column">DUE</div>
-      <div class="header-column">MODIFY</div>
-
+      <div class="header-column">
+        <button class="checkmark-button" style="color:red; border-color: red;" (click)="toggleView()">✔</button>
+      </div>
+      <div class="header-column">
+        <p>COURSE</p>
+        <button (click)="this.sortByCourse(true)">TEST SORT</button>
+      </div>
+      <div class="header-column">
+        <p>TITLE</p>
+        <button (click)="this.sortByTitle(true)">TEST SORT</button>
+      </div>
+      <div class="header-column">
+        <p>DUE</p>
+        <button (click)="this.sortByDate(true)">TEST SORT</button>
+      </div>
+      <div class="header-column">
+        <p>MODIFY</p>
+      </div>
   </div>
   <div class="assignment-container">
       @for (assignment of this.assignments[this.getIndex()]; track assignment.id) {
