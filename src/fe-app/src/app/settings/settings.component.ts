@@ -37,7 +37,7 @@ export class SettingsComponent {
   }
 
   async saveAllSettings() {
-    
+
     if (!this.profileSettings.getProfileValidator()) {
       this.saveMessage = "Error saving password: ensure fields are valid";
       this.saveSuccess = false;
@@ -69,16 +69,12 @@ export class SettingsComponent {
   }
 
   handleSignout() {
-    if(confirm('Are you sure?')) {
-      this.onSignout.emit(); // Emit event to parent component
-      this.loginService.signOut();
-      if (!this.loginService.getUserId()) {
-        this.router.navigate(['/']);
-        this.heartbeatService.stopHeartbeat();
-      }
-      this.assignmentService.reset();  // Reset assignment service so assignments are not transferred across logins
-      } else {
-        return;
-      }
+    this.onSignout.emit(); // Emit event to parent component
+    this.loginService.signOut();
+    if (!this.loginService.getUserId()) {
+      this.router.navigate(['/']);
+      this.heartbeatService.stopHeartbeat();
     }
-}
+    this.assignmentService.reset();  // Reset assignment service so assignments are not transferred across logins
+    }
+  }

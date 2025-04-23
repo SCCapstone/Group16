@@ -23,6 +23,7 @@ export class EditTaskComponent implements OnInit {
   courseService = inject(CourseService);
   assignmentService = inject(AssignmentService);
   courses: Course[] = [];
+  errorMessage: string | null = null;
 
   editTaskForm = new FormGroup ({
     title: new FormControl('', Validators.required),
@@ -121,7 +122,14 @@ export class EditTaskComponent implements OnInit {
 
       this.close.emit(updatedAssignment);
     } catch(error) {
-      console.error('Edit task failed', error);
+      console.error('Add task failed', error);
+      this.errorMessage = 'An error occurred while adding the task. Please try again.';
+
+      if(error instanceof Error) {
+        if(error.message.includes('400')) {
+          this.errorMessage = 'Duplicate task. Please try again.';
+        }
+      }
     }
   }
 }

@@ -24,3 +24,9 @@ button[type="submit"] {
   margin-top: 20px;
   font-size: 18px;
 }
+
+.error {
+  color: red;
+  margin-top: 10px;
+  font-size: 15px;
+}

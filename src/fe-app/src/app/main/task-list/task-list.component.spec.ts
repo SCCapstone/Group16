@@ -92,7 +92,6 @@ describe('TaskListComponent', () => {
     const taskToRemove = { id: '1' } as Assignment;
     component.assignments[0] = [taskToRemove];
 
-    spyOn(window, 'confirm').and.returnValue(true);
     component.onTaskRemoved(taskToRemove.id as string);
 
     expect(component.assignments[0].length).toBe(0);
