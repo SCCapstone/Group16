@@ -66,12 +66,16 @@ button {
 }
 
 .assignment-column {
-  padding: 8px;
-  word-wrap: break-word;
+  display: flex;
+  justify-content: center;
   flex: 1;
+  padding: 8px;
   border-right: 3px solid #949494;
   font-size: 18px;
-
+  align-items: center;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .assignmentPopup {
@@ -141,12 +145,6 @@ button {
 
 .header-column:last-child {
   border-right: none;
-}
-
-.assignment-column {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 form {
