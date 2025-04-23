@@ -8,7 +8,7 @@ Website: [classmate.osterholt.us](https://classmate.osterholt.us/)
 
 ## Link To Repo
 
-https://github.com/SCCapstone/Group16
+[github.com/SCCapstone/Group16](https://github.com/SCCapstone/Group16)
 
 ## External Requirements
 
