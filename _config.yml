@@ -2,5 +2,7 @@ theme: jekyll-theme-slate
 title: "classMA+E"
 description: >
  classMA+E is a personal assignment-planning app that will work with the Blackboard API to retrieve a student's active assignments, quizzes, announcements, and more.<br>
+ <br>
  The user can add tasks or mark them as complete at any time, as well as retrieve their assignment grades and use them as part of a fully functional grade calculator.<br>
+ <br>
  Users can change settings including their contact information and the types of notifications they wish to receive.
