@@ -32,7 +32,7 @@ export class SecondarySidebarComponent implements OnChanges {
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
     effect(() => {
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
-      console.log("SIDEBAR SIGNAL RUN: Value " + signal);
+      console.log("SIDEBAR SIGNAL DUE SOON RUN: Value " + signal);
 
       // Runs when service constructor finishes, no need to call twice
       this.assignmentService.getAssignments(this.loginService.getUserId()).then((assignments: Assignment[]) => {
@@ -41,6 +41,17 @@ export class SecondarySidebarComponent implements OnChanges {
         this.cdr.detectChanges();
       });
     });
+
+    // Set logic to run whenever the GradesService signal updates (for when a grade is updated)
+    effect(() => {
+      const signal = this.gradesService.getUpdateSignal();
+      console.log("SIDEBAR SIGNAL GRADES RUN: Value " + signal);
+
+      this.gradesService.getGrades(this.loginService.getUserId())
+      .then((grades: Grade[]) => {
+        this.grades = grades;
+      })
+    })
   }
 
   ngOnInit() {

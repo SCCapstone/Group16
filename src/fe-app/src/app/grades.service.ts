@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal, signal } from '@angular/core';
 import { Grade } from './course';
 
 @Injectable({
@@ -7,7 +7,14 @@ import { Grade } from './course';
 export class GradesService {
   readonly url = 'https://classmate.osterholt.us/api/';
 
+  private signalValue: boolean = false;
+  private updateSignal: WritableSignal<boolean> = signal<boolean>(this.signalValue);
+
   constructor() { }
+
+  getUpdateSignal() {
+    return this.updateSignal();
+  }
 
   /**
    * API call to get all grades for a user
@@ -39,30 +46,32 @@ export class GradesService {
    * @param percent
    */
   async setGrade(gradeId: string | null, percent: number | null) : Promise<void> {
-      const queryParams = new URLSearchParams({
-        gradeId: gradeId ?? "NULL",
-        percent: percent?.toString() ?? "NULL"
-      }).toString();
+    const queryParams = new URLSearchParams({
+      gradeId: gradeId ?? "NULL",
+      percent: percent?.toString() ?? "NULL"
+    }).toString();
 
-      console.log(queryParams);
+    console.log(queryParams);
 
-      try {
-        const response = await fetch(`${this.url}setGrade?${queryParams}`, {
-          method: 'POST'
-        });
+    try {
+      const response = await fetch(`${this.url}setGrade?${queryParams}`, {
+        method: 'POST'
+      });
 
-        if(!response.ok) {
-          throw new Error(`POST failed: ${response.status}`)
-        }
-
-        console.log(response);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.error('Error setting grade:', error.message);
-        } else {
-          console.error('Unexpected error', error);
-        }
-        throw error;
+      if(!response.ok) {
+        throw new Error(`POST failed: ${response.status}`)
       }
+
+      this.signalValue = !this.signalValue;
+      this.updateSignal.set(this.signalValue);
+
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error setting grade:', error.message);
+      } else {
+        console.error('Unexpected error', error);
+      }
+      throw error;
+    }
   }
 }
