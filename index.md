@@ -2,6 +2,14 @@
 
 Website: [classmate.osterholt.us](https://classmate.osterholt.us/)
 
+## Final Video
+
+- Once recorded, final video will appear here.
+
+## Link To Repo
+
+https://github.com/SCCapstone/Group16
+
 ## External Requirements
 
 To run this project locally, you will need to install Node.js, the Angular Command Line Interface, and JDK.
@@ -33,10 +41,6 @@ Our testing is best done in Visual Studio Code.
 - Front End Unit Testing: You must have Chrome installed to run the FE tests. Once installed, run `ng test` in the `/src/fe-app` directory.
 - Back End Unit Testing: In the testing pannel hit play on `be` tab under `Java Test`. Unit tests will soon be deployed in RC1 in each PR before merging to main.
 - Behavioral Testing: In the command pannel install playwright using `>Install Playwright`. Then start the app locally in the `Group16` directory and run `./start`. Finally run in the testing pannel using the play button.
-
-## Final Video
-
-- Once recorded, final video will appear here.
 
 ## Authors
 
