@@ -33,7 +33,7 @@
       <h3>New Task Added:</h3>
       <div><span class="task-title">Title:</span> <br> <span class="task-value">{{ newTask2?.title }}</span></div>
       <br><div><span class="task-title">Description:</span> <br> <span class="task-value">{{ newTask2?.description }}</span></div>
-      <br><div><span class="task-title">Due Date:</span> <br> <span class="task-value">{{ newTask2?.availability?.adaptiveRelease?.end | date  }}</span></div>
+      <br><div><span class="task-title">Due Date:</span> <br> <span class="task-value">{{ newTask2?.availability?.adaptiveRelease?.end | date: 'medium'  }}</span></div>
       <br><div><span class="task-title">Course:</span> <br> <span class="task-value">{{ courseName }} </span></div>
   </div>
 </div>

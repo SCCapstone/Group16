@@ -63,7 +63,7 @@
             <p class="assignmentPopup">
                 <span class="course" style="font-size: 25px;">{{ this.getCourseNameByID(this.openAssignment!.courseId) }} </span><br>
                 {{ openAssignment!.title }} <br>
-                <span class="due-date" style="color: #c30000"> <br> Due: <br>{{ this.openAssignment!.availability.adaptiveRelease.end | date }} </span><br> <br>
+                <span class="due-date" style="color: #c30000"> <br> Due: <br>{{ this.openAssignment!.availability.adaptiveRelease.end | date: 'medium' }} </span><br> <br>
                 <span class="description" style="font-size: 25px;">Description: </span><br>
                 {{ openAssignment!.description}}
             </p>
