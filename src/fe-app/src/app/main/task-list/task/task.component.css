@@ -36,9 +36,9 @@
     line-height: 1.7;
 }
 
-  .description, .course{
-    font-weight: bold;
-  }
+.description, .course{
+  font-weight: bold;
+}
 
 .assignment-column:last-child {
     border-right: none;
@@ -89,4 +89,38 @@
     cursor: pointer;
     font-size: 34px;
     color: black;
+  }
+
+  .popup-content .close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #555;
+  }
+
+  .confirm-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .confirm-buttons button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .confirm-buttons .yes-button {
+    background-color: #c30000;
+    color: white;
+  }
+
+  .confirm-buttons .no-button {
+    background-color: #949494;
+    color: white;
   }

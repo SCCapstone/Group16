@@ -41,6 +41,10 @@ a {
   margin-left: 12px;
 }
 
+#description {
+  max-width: 100%;
+}
+
 .button-container {
   display: flex;
   flex-direction: column;
