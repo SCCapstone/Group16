@@ -54,7 +54,6 @@ describe('NotificationsComponent', () => {
   });
 
   it('should clear notifications when clearNotifications() is called', async () => {
-    spyOn(window, 'confirm').and.returnValue(true);
     await component.clearNotifications();
     fixture.detectChanges();
 

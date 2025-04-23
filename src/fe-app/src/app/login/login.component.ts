@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
     username: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required)
   });
+  errorMessage: string | null = null;
 
   ngOnInit(): void {
     const userId = this.loginService.getUserId();
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (this.loginForm.invalid) {
-      alert('A field is blank');
+      this.errorMessage = 'A field is blank';
      return;
     }
 
@@ -44,7 +45,7 @@ export class LoginComponent implements OnInit {
       }
     })
     .catch((error) => {
-      alert('Invalid login credentials');
+      this.errorMessage = 'Invalid login credentials';
       console.error('Login failed', error);
     });
   };

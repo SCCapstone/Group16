@@ -70,6 +70,33 @@ describe('TaskComponent', () => {
     expect(mockAssignmentService.completeTask).toHaveBeenCalledWith(assignmentId);
   });
 
+  it('should confirm delete task', () => {
+    component.confirmDeleteTask();
+    expect(component.showConfirmDelete).toBeTrue();
+  });
+
+  it('should cancel delete task', () => {
+    component.cancelDelete();
+    expect(component.showConfirmDelete).toBeFalse();
+  });
+
+  it('should call removeTask() if yes-button is clicked on the modal', () => {
+    spyOn(component, 'removeTask').and.callThrough();
+    component.confirmDeleteTask();
+    component.removeTask();
+
+    expect(component.removeTask).toHaveBeenCalled();
+  }
+  );
+
+  it('should call cancelDelete() if no-button is clicked on the modal', () => {
+    spyOn(component, 'cancelDelete').and.callThrough();
+    component.confirmDeleteTask();
+    component.cancelDelete();
+
+    expect(component.cancelDelete).toHaveBeenCalled();
+  });
+
   it('should remove task', () => {
     const assignmentId = '12345';
     component.assignment.id = assignmentId;

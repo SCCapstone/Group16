@@ -14,14 +14,14 @@ main{
 .username label,
 .password label {
   display: block;
-  margin-bottom: 5px; 
-  
+  margin-bottom: 5px;
+
 }
 
 .forms .username,
 .forms .password,
 .forms .submit {
-  margin: 40px 0; 
+  margin: 40px 0;
 }
 
 h1{
@@ -34,4 +34,9 @@ h1{
   justify-self: center;
   padding-top: 10px;
 }
-  
+
+.error {
+  color: red;
+  margin-top: 10px;
+  font-size: 15px;
+}

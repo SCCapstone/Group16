@@ -41,6 +41,10 @@ a {
   margin-left: 12px;
 }
 
+#description {
+  max-width: 100%;
+}
+
 .button-container {
   display: flex;
   flex-direction: column;
@@ -51,4 +55,16 @@ a {
 .button-container a {
   margin-top: 8px;
   font-size: 14px;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+.success {
+  color: #454545;
+  margin-top: 10px;
+  font-size: 15px;
 }
