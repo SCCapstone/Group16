@@ -29,5 +29,20 @@ main {
 app-task-list, app-calender, app-grades {
   padding: 0 !important;
 }
+
+.centered-text {
+  text-align: center;
+  margin-top: 50px; 
+}
+
+.centered-text h1 {
+  font-size: 2.5em;  
+  font-weight: bold;
+}
+
+.centered-text p {
+  font-size: 1.2em;  
+}
+
   
 
