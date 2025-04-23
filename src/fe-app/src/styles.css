@@ -16,6 +16,10 @@
 html, body {
   font-family: 'Montserrat', sans-serif;
   background-color: #949494;
+  scrollbar-width: none;
+}
+::webkit-scrollbar {
+  display: none;
 }
 
 main {

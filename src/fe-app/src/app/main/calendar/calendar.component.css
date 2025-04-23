@@ -1,21 +1,32 @@
+/* Full calendar base */
 .calendar {
-    all: unset;
     margin: 0;
+    margin-left: -0.8%;
     padding: 0;
-    width: 100%;
-    height: 100%;
+    width: 101.6%;
+    height: 76.6vh;
 }
 
-/* Header row of calendar containing header text and button containers */
-.header-row {
-    height: 10%;
-    display: flex;
-    justify-content: space-between;
+
+/* Full header of calendar including navigation and day rows, sticks to top on scroll */
+.header-content {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: 25%;
+    min-height: 140px;
     background-color: #cfcfcf;
 }
 
+/* Header row of calendar containing month/year text and navigation buttons */
+.navigation-row {
+    height: 40%;
+    display: flex;
+    justify-content: space-between;
+}
+
 /* Section of header row containing text */
-.header-text {
+.navigation-text {
     width: 80%;
     display: flex;
 }
@@ -28,7 +39,7 @@ h1 {
 }
 
 /* Section of header row containing left/right arrows */
-.header-arrow {
+.navigation-arrow {
     width: 10%;
     display: flex;
     align-items: center;
@@ -46,6 +57,7 @@ img {
     height: 50px;
     display: block;
     padding: 10px;
+    cursor: pointer;
 }
 
 .disabled {
@@ -55,10 +67,9 @@ img {
 
 /* Row containing days of month */
 .day-row {
-    height: 15%;
+    height: 60%;
     display: flex;
     justify-content: space-around;
-    background-color: #cfcfcf;
 }
 
 /* A single day of the month inside day-row */
@@ -78,6 +89,7 @@ h2 {
 /* Base of the actual calendar content */
 .calendar-content {
     height: 75%;
+    max-height: 75%;
     display: flex;
     justify-content: space-evenly;
 }
@@ -94,7 +106,16 @@ h2 {
     padding: 20px 10px;
     border-radius: 10px;
     text-align: center;
-    background-color: #a5a5a5;
+    position: relative;
+    overflow-wrap: break-word;
+    cursor: pointer;
+}
+
+.item-icon {
+    position: absolute;
+    height: 40px;
+    bottom: 4px;
+    right:  6px;
 }
 
 h3 {
@@ -103,4 +124,52 @@ h3 {
 
 p {
     margin: auto;
+}
+
+.urgent {
+    color: #c30000;
+}
+
+
+/* Task popup -- mostly copied from TaskComponent */
+.popup-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+}
+
+.popup-content {
+    background-color: #cfcfcf;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    width: 70%;
+    margin: auto;
+}
+
+.close {
+    position: absolute;
+    top: -5px;
+    right: 8px;
+    cursor: pointer;
+    font-size: 34px;
+    color: black;
+}
+
+.assignmentPopup {
+    font-size: 20px;
+    color: black;
+    line-height: 1.7;
+}
+
+.description, .course{
+    font-weight: bold;
 }
