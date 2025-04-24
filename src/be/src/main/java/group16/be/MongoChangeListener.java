@@ -1,5 +1,7 @@
 package group16.be;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.bson.Document;
@@ -21,6 +23,7 @@ public class MongoChangeListener {
     private final String[] COLLECTIONS = { "assignments", "courses", "users", "grades" };
     private MongoClient mongoClient;
     private Thread[] threads = new Thread[COLLECTIONS.length];
+    private Thread dueSoonThread = null;
     private final AtomicBoolean isRunning = new AtomicBoolean(false);
 
     @Autowired
@@ -51,6 +54,36 @@ public class MongoChangeListener {
             threads[i] = new Thread(() -> watchCollection(collection));
             threads[i].start();
         }
+        dueSoonThread = new Thread(() -> watchDueSoon());
+    }
+
+    private void watchDueSoon() {
+        try {
+            // Every day at 6pm est, send notifications for assignments due soon
+            var now = ZonedDateTime.now(ZoneId.of("America/New_York"));
+            // Caculate the next run time from now to 6pm est
+            var nextRun = now.withHour(2).withMinute(0).withSecond(0).withNano(0);
+            if(now.compareTo(nextRun) > 0) {
+                nextRun = nextRun.plusDays(1);
+            }
+            var delay = nextRun.toInstant().toEpochMilli() - now.toInstant().toEpochMilli();
+            System.out.println("DEBUG: Next run for due soon thread: " + nextRun);
+            
+            Thread.sleep(delay);
+
+            if(!isRunning.get() || Thread.currentThread().isInterrupted()) {
+                return;
+            }
+            notificationManager.notifyDueSoonAssignments();
+        } catch (InterruptedException e) {
+            // Thread was interrupted, exit the loop
+            System.out.println("DEBUG: Due soon thread interrupted");
+            Thread.currentThread().interrupt();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     private void stopListeners() {
@@ -62,6 +95,8 @@ public class MongoChangeListener {
                 }
             }
         }
+        if(dueSoonThread != null)
+            dueSoonThread.interrupt();
         if (mongoClient != null) {
             mongoClient.close();
             mongoClient = null;
