@@ -12,11 +12,14 @@
     font-size: 18px;
 }
 
+p {
+    margin: 0;
+}
 
 app-task-list {
     padding: 0 !important;
     margin: 0;
-  }
+}
 
 .header-column {
     padding: 10px;
@@ -43,9 +46,11 @@ app-task-list {
 }
 
 .sort-icon {
+    height: 40px;
     position: absolute;
-    height: 50px;
-    display: none;
+    top: 6%;
+    right: 5%;
+    cursor: pointer;
 }
 
 .faded {
