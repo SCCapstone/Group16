@@ -25,10 +25,11 @@ export class TaskListComponent{
 
   loginService = inject(LoginService);
   courseService = inject(CourseService);
-  // assignmentService = inject(AssignmentService);
+  
   courses: Course[] = [];
   assignments: Assignment[][] = [ [], [] ];  // Active, complete
-  sortedAssignments: Assignment[] = [];
+  sortedCategory: String = ""                // Category currently being sorted by -- "title", "course", or "date"
+  sortedAscending: boolean = false;          // Whether the current sort is ascending or descending
 
   /**
    * constructor for TaskListComponent that initializes the component and sets up the signal
@@ -58,15 +59,24 @@ export class TaskListComponent{
   }
 
   /**
+   * ngOnChanges lifecycle hook that runs when the component receives new task
+   * @param changes
+   */
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes['newTask'] && this.newTask) {
+      console.log('New task received:', this.newTask);
+      this.addNewTask(this.newTask);
+    }
+  }
+
+  /**
    * loadAssignments function that retrieves the assignments from the service
    * and sorts them by their end date
    */
   private async loadAssignments() {
     let retrievedAssignments = await this.assignmentService.getAssignments(this.loginService.getUserId());
-    retrievedAssignments.sort((a: Assignment, b: Assignment) => {
-      return new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime();
-    });
     this.assignments = this.filterAssignments(retrievedAssignments);
+    this.sortByDate(true);
   }
 
   /**
@@ -98,6 +108,8 @@ export class TaskListComponent{
     this.assignments[COMPLETE].sort((a, b) => {
       return sign * a.title.localeCompare(b.title);
     });
+    this.sortedCategory = "title";
+    this.sortedAscending = ascending;
   }
 
   /**
@@ -114,6 +126,8 @@ export class TaskListComponent{
     this.assignments[COMPLETE].sort((a, b) => {
       return sign * (this.getCourseIndex(a) - this.getCourseIndex(b));
     });
+    this.sortedCategory = "course";
+    this.sortedAscending = ascending;
   }
 
   /**
@@ -143,17 +157,8 @@ export class TaskListComponent{
     this.assignments[COMPLETE].sort((a, b) => {
       return sign * (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
     });
-  }
-
-  /**
-   * ngOnChanges lifecycle hook that runs when the component receives new task
-   * @param changes
-   */
-  ngOnChanges(changes: SimpleChanges) {
-    if(changes['newTask'] && this.newTask) {
-      console.log('New task received:', this.newTask);
-      this.addNewTask(this.newTask);
-    }
+    this.sortedCategory = "date";
+    this.sortedAscending = ascending;
   }
 
   /**
