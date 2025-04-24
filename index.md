@@ -1,3 +1,24 @@
+## About
+
+Group 16 is a team of five students collaborating on their Capstone Senior Design project at the University of South Carolina. United by the shared frustrations of navigating Blackboard, we set out to create a web application that streamlines a student’s academic life. Our platform integrates course data, assignments, exams, and more into a centralized, intuitive interface designed to boost organization and reduce stress. We hope this tool serves as a helpful resource for future students on their academic journey.
+
+Authors:
+- Ava Turner
+    - <AVART@email.sc.edu> 
+    - [www.linkedin.com/in/avaturner03](www.linkedin.com/in/avaturner03)
+- Cam Osterholt
+    - <OSTERHOC@email.sc.edu> 
+    - [www.linkedin.com/in/camosterholt/](www.linkedin.com/in/camosterholt/)
+- Cayden Scruggs
+    - <CSCRUGGS@email.sc.edu>
+    - [www.linkedin.com/in/cayden-scruggs-a76a3326b/](www.linkedin.com/in/cayden-scruggs-a76a3326b/)
+- Fred Schein
+    - <FSCHEIN@email.sc.edu>
+    - [www.linkedin.com/in/fschein/](www.linkedin.com/in/fschein/)
+- Michael Pikula
+    - <MPIKULA@email.sc.edu>
+    - [www.linkedin.com/in/michaelpikula/](www.linkedin.com/in/michaelpikula/)
+
 ## Access
 
 Website: [classmate.osterholt.us](https://classmate.osterholt.us/)
@@ -148,10 +169,3 @@ The calculator will then calculate the user's anticipated final grade for the cl
 For example:<br>
 <img src="src/fe-app/public/images/gradecalcexample.png" alt="grade calc example" style = "width: 450px; height: auto">
 
-## Authors
-
-- Ava Turner - <AVART@email.sc.edu> (www.linkedin.com/in/avaturner03)
-- Cam Osterholt - <OSTERHOC@email.sc.edu> (www.linkedin.com/in/camosterholt/)
-- Cayden Scruggs - <CSCRUGGS@email.sc.edu> (www.linkedin.com/in/cayden-scruggs-a76a3326b/)
-- Fred Schein - <FSCHEIN@email.sc.edu> (www.linkedin.com/in/fschein/)
-- Michael Pikula - <MPIKULA@email.sc.edu> (www.linkedin.com/in/michaelpikula/)
