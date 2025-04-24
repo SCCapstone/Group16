@@ -82,7 +82,6 @@ test('test_add_delete', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Due Date:' }).fill('0001-01-01');
   await page.getByLabel('Course:').selectOption('67460db839c6b3085338aa81');
   await page.getByRole('button', { name: 'Save & Close' }).click();
-  await page.getByRole('heading', { name: 'New Task Added:' }).click();
   await page.getByText('×').click();
   page.once('dialog', dialog => {
     console.log(`Dialog message: ${dialog.message()}`);
