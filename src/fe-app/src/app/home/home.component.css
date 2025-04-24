@@ -6,6 +6,17 @@ main {
     background-color: #949494;
 }
 
+.top-right-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  
+
 .content {
     display: flex;
     flex-direction: column;
