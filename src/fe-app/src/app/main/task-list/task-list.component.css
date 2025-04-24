@@ -24,6 +24,7 @@ app-task-list {
     flex: 1; 
     border-right: 3px solid #949494;
     text-align: center;
+    position: relative;
 }
 
 .header-column-check, .header-column-edit, .header-column-remove {
@@ -41,4 +42,12 @@ app-task-list {
     border-right: none;
 }
 
+.sort-icon {
+    position: absolute;
+    height: 50px;
+    display: none;
+}
 
+.faded {
+    opacity: 0.6;
+}
