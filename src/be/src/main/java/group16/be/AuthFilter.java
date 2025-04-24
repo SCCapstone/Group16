@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class AuthFilter extends OncePerRequestFilter{
 
+    @SuppressWarnings("null")
     @Override
     protected void doFilterInternal(HttpServletRequest request, 
                                     HttpServletResponse response, 
