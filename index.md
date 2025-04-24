@@ -42,6 +42,31 @@ Our testing is best done in Visual Studio Code.
 - Back End Unit Testing: In the testing pannel hit play on `be` tab under `Java Test`. Unit tests will soon be deployed in RC1 in each PR before merging to main.
 - Behavioral Testing: In the command pannel install playwright using `>Install Playwright`. Then start the app locally in the `Group16` directory and run `./start`. Finally run in the testing pannel using the play button.
 
+## Home Screen
+![](images/home.png")
+
+## Log In
+![](images/login.png")
+
+## Main Page
+![](images/main.png")
+Overview of Main Page:
+- Header:
+    - classMA+E logo
+    - Settings popup
+    - Notifications Popup
+- Left sidebar:
+    - Classes the user has in their account
+    - Top tasks that are due soon
+- Main tab bar:
+    - Task List View
+    - Calendar View
+    - Grades
+    - Add new task
+    - Grade Calculator
+- Task Information Display
+    - Depending on the tab that is clicked, the task information display the user wishes to see will show in the main window of the webapp.
+
 ## Screenshots/Uses
 
 - The user can add tasks or mark them as complete at any time, as well as retrieve their assignment grades and use them as part of a fully functional grade calculator.
