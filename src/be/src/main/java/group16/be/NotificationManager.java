@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.aggregation.ArrayOperators.In;
 import org.springframework.stereotype.Component;
 
 import com.mongodb.client.model.changestream.ChangeStreamDocument;
@@ -70,7 +69,7 @@ public class NotificationManager {
             emailController.sendEmail(user.getInstitutionEmail(), "Notification from ClassMATE", message);
         }
         if (user.getSmsNotifications()) {
-            // TODO: Send sms notification
+            // Not implemented yet
         }
         
         return scraper.saveUser(user);
@@ -100,7 +99,6 @@ public class NotificationManager {
         var changeCollection = change.getNamespace().getCollectionName();
         
         if(changeCollection.equals("grades")) {
-            // TODO: Are we sending the percent in the notification?
             var grade = scraper.getGradeByGradeId(changeId);
             if (grade == null) {
                 return;
@@ -148,7 +146,6 @@ public class NotificationManager {
     }
     
     private void parseDelete(ChangeStreamDocument<Document> change) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'parseDelete'");
     }
 
