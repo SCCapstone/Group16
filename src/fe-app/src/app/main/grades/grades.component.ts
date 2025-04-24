@@ -61,7 +61,7 @@ export class GradesComponent {
   /**
    * Iterates over the user's courses and returns the name of the course matching the given ID.
    * @param id The ID of a course.
-   * @returns The name of the course, or "unknown" if not found.
+   * @returns The name of the course, or "" if not found.
    */
   getCourseNameByID(id: string): string {
     //console.log("SEARCHING COURSES ARRAY OF SIZE " + this.courses.length)
@@ -69,7 +69,7 @@ export class GradesComponent {
       if (course.id === id)
         return course.name.split('-')[0];
     }
-    return  "unknown";
+    return  "";
   }
 
   /**

@@ -115,7 +115,7 @@ describe('GradesComponent', () => {
     const invalidCourseName = component.getCourseNameByID('3');
 
     expect(courseName).toBe('Course 1');
-    expect(invalidCourseName).toBe('unknown');
+    expect(invalidCourseName).toBe('');
   });
 
   it('should return assignment title by ID', () => {

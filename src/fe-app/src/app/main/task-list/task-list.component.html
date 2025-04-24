@@ -49,17 +49,28 @@
         <p>MODIFY</p>
       </div>
   </div>
-  <div class="assignment-container">
-      @for (assignment of this.assignments[this.getIndex()]; track assignment.id) {
-          @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
-              <app-task
-              [assignment]="assignment"
-              [courseName]="this.getCourseNameByID(assignment.courseId)"
-              (taskRemoved)="onTaskRemoved($event)"
-              (taskUpdated)="onTaskUpdated($event)"
-              />
-          }
-      }
-  </div>
-
+  @defer {
+    <div class="assignment-container">
+        @for (assignment of this.assignments[this.getIndex()]; track assignment.id) {
+            @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
+                <app-task
+                [assignment]="assignment"
+                [courseName]="this.getCourseNameByID(assignment.courseId)"
+                (taskRemoved)="onTaskRemoved($event)"
+                (taskUpdated)="onTaskUpdated($event)"
+                />
+            }
+        }
+    </div>
+  }
+  @placeholder (minimum 0.5s) {
+    <div class="loader-container">
+        <div class="loader"></div>
+    </div>
+  }
+  @loading (minimum 0.5s) {
+    <div class="loader-container">
+        <div class="loader"></div>
+    </div>
+  }
 </div>
