@@ -43,14 +43,16 @@ Our testing is best done in Visual Studio Code.
 - Behavioral Testing: In the command pannel install playwright using `>Install Playwright`. Then start the app locally in the `Group16` directory and run `./start`. Finally run in the testing pannel using the play button.
 
 ## Home Screen
-![](images/home.png")
+<img src="src/fe-app/public/images/home.png" alt="home screen" style = "width: 700px; height: auto">
 
 ## Log In
-![](images/login.png")
+<img src="src/fe-app/public/images/login.png" alt="login screen" style = "width: 700px; height: auto">
 
 ## Main Page
-![](images/main.png")
+<img src="src/fe-app/public/images/main.png" alt="main screen" style = "width: 700px; height: auto">
+<br>
 Overview of Main Page:
+
 - Header:
     - classMA+E logo
     - Settings popup
@@ -67,10 +69,84 @@ Overview of Main Page:
 - Task Information Display
     - Depending on the tab that is clicked, the task information display the user wishes to see will show in the main window of the webapp.
 
-## Screenshots/Uses
+## Settings
+<img src="src/fe-app/public/images/settings1.png" alt="settings" style = "width: 700px; height: auto"> <img src="src/fe-app/public/images/settings2.png" alt="settings" style = "width: 700px; height: auto"><br>
 
-- The user can add tasks or mark them as complete at any time, as well as retrieve their assignment grades and use them as part of a fully functional grade calculator.
-- Users can change settings including their contact information and the types of notifications they wish to receive.
+When clicking the settings gear icon in the header, a settings page will slide out from the right.<br>
+The user is able to customize:
+- Preferred Name
+- Personal Email
+- Phone number
+- Password
+- Notification Preferences (university email, personal email, text message)
+
+This is also where the user can sign out.
+
+## Notifications
+<img src="src/fe-app/public/images/notifications.png" alt="notifications" style = "width: 700px; height: auto"><br>
+When clicking the notification bell icon in the header, a notifications page will slide out from the right. If the user is sent any notifications, it will show in the popup.
+
+
+
+
+## Task List View
+<img src="src/fe-app/public/images/tasklistview.png" alt="task list view" style = "width: 700px; height: auto">
+<br>
+Our task list is designed to layout all the user's tasks in a simple and clear format, sorted by the closest due date.<br>
+
+Columns from left to right:
+- Completed Column
+    - Users are able to check off that a task is completed when they choose.
+    - Once checked off, the task is moved into a "completed" list, that can be shown when checkbox in the header is selected.
+    <img src="src/fe-app/public/images/completed.png" alt="completed tasks" style = "width: 450px; height: auto">
+- Course
+    - Users can see which course the task belongs to.
+    - When a course is clicked in the sidebar, the task list filters to show only the tasks that belong to the course selected.
+    <img src="src/fe-app/public/images/courseselection.png" alt="course selection" style = "width: 450px; height: auto">
+- Title
+    - Users can see the title of the task.
+    - When the title of a task is clicked, a popup that contains the course, title, due date, and description will show.
+    - <img src="src/fe-app/public/images/taskpopup.png" alt="task popup" style = "width: 450px; height: auto">
+- Due Date
+    - Users can see when the task is due.
+- Modify
+    - When clicked on the pencil icon, users have the ability to edit the task.
+    - When clicked on the X icon, users have the ability to remove the task.
+
+## Calendar View
+<img src="src/fe-app/public/images/calendarview.png" alt="calendar view" style = "width: 700px; height: auto"><br>
+<br>
+Our calendar view is designed for the user to see when their tasks are due in a weekly format. Users can scroll through the weeks with the left and right arrows. When a task is clicked in the calendar, that task's information will show in a popup as well.
+
+## Grades
+<img src="src/fe-app/public/images/gradesview.png" alt="grades view" style = "width: 700px; height: auto"><br>
+<br>
+Our grades view is designed for the user to see each grade for their tasks. When a number grade is inputted, the letter grade is calculated in the right hand column.
+<br>
+Additionally, when on the grades page, the left hand side bar will show the user's current final grade for its classes. <br>
+<img src="src/fe-app/public/images/finalgrades.png" alt="final grades" style = "width: 250px; height: auto">
+
+## Add Task
+<img src="src/fe-app/public/images/addtask.png" alt="add task" style = "width: 700px; height: auto"><br>
+When selecting the plus icon in the main tab bar, the user can add a task of their own.
+They are able to include:
+
+- Title
+- Description
+- Due Date
+- Due Time
+- Course
+
+They then have the ability to save and close, or immediately add another task.
+Once the user saves and closes, the task they added will immediately show as confirmation:<br>
+<img src="src/fe-app/public/images/confirmadd.png" alt="confirm add" style = "width: 450px; height: auto">
+
+## Grade Calculator
+<img src="src/fe-app/public/images/gradecalc.png" alt="grade calc" style = "width: 700px; height: auto"><br>
+When selecting the calculator icon in the main tab bar, the user can input different assignments with their weights and scores.
+The calculator will then calculate the user's anticipated final grade for the class. This allows users to calculate any future grades needed to achieve their desired final grade, or the different possible outcomes.<br>
+For example:<br>
+<img src="src/fe-app/public/images/gradecalcexample.png" alt="grade calc example" style = "width: 450px; height: auto">
 
 ## Authors
 
