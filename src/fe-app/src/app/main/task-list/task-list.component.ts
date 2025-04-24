@@ -166,7 +166,6 @@ export class TaskListComponent{
       console.log('Updated assignments (ACTIVE):', this.assignments[ACTIVE]);
     }
     this.assignments = [...this.assignments];
-    this.sortedAssignments = this.getSortedAssignments();
     console.log('New list: ', this.assignments)
     this.cdr.detectChanges();
   }
@@ -180,7 +179,6 @@ export class TaskListComponent{
       list.filter(assignment => assignment.id !== id)
     )
 
-    this.sortedAssignments = this.getSortedAssignments();
     this.cdr.detectChanges();
   }
 
@@ -196,7 +194,6 @@ export class TaskListComponent{
       )
     );
 
-    this.sortedAssignments = this.getSortedAssignments();
     this.cdr.detectChanges();
   }
 
@@ -205,17 +202,6 @@ export class TaskListComponent{
    */
   toggleView(): void {
     this.assignmentService.toggleViewCompleted();
-  }
-
-  /**
-   * sorts the assignments by their end date
-   * @returns the sorted list of assignments
-   */
-  getSortedAssignments(): Assignment[] {
-    console.log('Sorted Assignments: ', this.assignments);
-    return [...this.assignments[this.getIndex()]].sort((a, b) =>
-      (new Date(a.availability.adaptiveRelease.end)).getTime() -
-      (new Date(b.availability.adaptiveRelease.end)).getTime());
   }
 
   /**
