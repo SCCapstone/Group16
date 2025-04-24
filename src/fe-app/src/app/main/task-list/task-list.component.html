@@ -5,15 +5,45 @@
       </div>
       <div class="header-column">
         <p>COURSE</p>
-        <button (click)="this.sortByCourse(true)">TEST SORT</button>
+        @if (this.sortedCategory === "course") {
+            @if (this.sortedAscending) {
+                <img src="images/sorting-asc.png" (click)="this.sortByCourse(false)" />
+            }
+            @else {
+                <img src="images/sorting-desc.png" (click)="this.sortByCourse(true)" />
+            }
+        }
+        @else {
+            <img src="images/sort.png" (click)="this.sortByCourse(true)" />
+        }
       </div>
       <div class="header-column">
         <p>TITLE</p>
-        <button (click)="this.sortByTitle(true)">TEST SORT</button>
+        @if (this.sortedCategory === "title") {
+            @if (this.sortedAscending) {
+                <img src="images/sorting-asc.png" (click)="this.sortByTitle(false)" />
+            }
+            @else {
+                <img src="images/sorting-desc.png" (click)="this.sortByTitle(true)" />
+            }
+        }
+        @else {
+            <img src="images/sort.png" (click)="this.sortByTitle(true)" />
+        }
       </div>
       <div class="header-column">
         <p>DUE</p>
-        <button (click)="this.sortByDate(true)">TEST SORT</button>
+        @if (this.sortedCategory === "date") {
+            @if (this.sortedAscending) {
+                <img src="images/sorting-asc.png" (click)="this.sortByDate(false)" />
+            }
+            @else {
+                <img src="images/sorting-desc.png" (click)="this.sortByDate(true)" />
+            }
+        }
+        @else {
+            <img src="images/sort.png" (click)="this.sortByDate(true)" />
+        }
       </div>
       <div class="header-column">
         <p>MODIFY</p>
