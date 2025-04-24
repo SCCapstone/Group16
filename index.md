@@ -5,23 +5,23 @@ Group 16 is a team of five students collaborating on their Capstone Senior Desig
 Authors:
 - Ava Turner
     - <AVART@email.sc.edu> 
-    - [www.linkedin.com/in/avaturner03](www.linkedin.com/in/avaturner03)
+    - [www.linkedin.com/in/avaturner03](https://www.linkedin.com/in/avaturner03)
 - Cam Osterholt
     - <OSTERHOC@email.sc.edu> 
-    - [www.linkedin.com/in/camosterholt/](www.linkedin.com/in/camosterholt/)
+    - [www.linkedin.com/in/camosterholt/](https://www.linkedin.com/in/camosterholt/)
 - Cayden Scruggs
     - <CSCRUGGS@email.sc.edu>
-    - [www.linkedin.com/in/cayden-scruggs-a76a3326b/](www.linkedin.com/in/cayden-scruggs-a76a3326b/)
+    - [www.linkedin.com/in/cayden-scruggs-a76a3326b/](https://www.linkedin.com/in/cayden-scruggs-a76a3326b/)
 - Fred Schein
     - <FSCHEIN@email.sc.edu>
-    - [www.linkedin.com/in/fschein/](www.linkedin.com/in/fschein/)
+    - [www.linkedin.com/in/fschein/](https://www.linkedin.com/in/fschein/)
 - Michael Pikula
     - <MPIKULA@email.sc.edu>
-    - [www.linkedin.com/in/michaelpikula/](www.linkedin.com/in/michaelpikula/)
+    - [www.linkedin.com/in/michaelpikula/](https://www.linkedin.com/in/michaelpikula/)
 
 ## Access
 
-Website: [classmate.osterholt.us](https://classmate.osterholt.us/)
+Website: [classmate.osterholt.us](https://https://classmate.osterholt.us/)
 
 ## Final Video
 
