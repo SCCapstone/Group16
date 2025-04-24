@@ -62,7 +62,7 @@ public class MongoChangeListener {
             // Every day at 6pm est, send notifications for assignments due soon
             var now = ZonedDateTime.now(ZoneId.of("America/New_York"));
             // Caculate the next run time from now to 6pm est
-            var nextRun = now.withHour(2).withMinute(0).withSecond(0).withNano(0);
+            var nextRun = now.withHour(8).withMinute(0).withSecond(0).withNano(0);
             if(now.compareTo(nextRun) > 0) {
                 nextRun = nextRun.plusDays(1);
             }
