@@ -95,7 +95,7 @@ export class TaskListComponent{
   }
 
   /**
-   * Sorts the assignment list alphabetically based on assignment title.
+   * Sorts the assignment list alphabetically based on assignment title. Ties are sorted by due date (always ascending).
    * @param ascending True to sort in ascending order, false descending
    */
   sortByTitle(ascending: boolean) {
@@ -103,17 +103,23 @@ export class TaskListComponent{
     if (!ascending)
       sign = -1;
     this.assignments[ACTIVE].sort((a, b) => {
-      return sign * a.title.localeCompare(b.title);
+      const compareResult = a.title.localeCompare(b.title);
+      if (compareResult == 0)
+        return (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+      return sign * compareResult;
     });
     this.assignments[COMPLETE].sort((a, b) => {
-      return sign * a.title.localeCompare(b.title);
+      const compareResult = a.title.localeCompare(b.title);
+      if (compareResult == 0)
+        return (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+      return sign * compareResult;
     });
     this.sortedCategory = "title";
     this.sortedAscending = ascending;
   }
 
   /**
-   * Sorts the assignment list based on course in the order courses appear in the course sidebar.
+   * Sorts the assignment list based on course in the order courses appear in the course sidebar. Ties are sorted by due date (always ascending).
    * @param ascending True to sort in ascending order, false descending
    */
   sortByCourse(ascending: boolean) {
@@ -121,10 +127,16 @@ export class TaskListComponent{
     if (!ascending)
       sign = -1;
     this.assignments[ACTIVE].sort((a, b) => {
-      return sign * (this.getCourseIndex(a) - this.getCourseIndex(b));
+      const indexDifference = this.getCourseIndex(a) - this.getCourseIndex(b);
+      if (indexDifference === 0)
+        return (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+      return sign * indexDifference;
     });
     this.assignments[COMPLETE].sort((a, b) => {
-      return sign * (this.getCourseIndex(a) - this.getCourseIndex(b));
+      const indexDifference = this.getCourseIndex(a) - this.getCourseIndex(b);
+      if (indexDifference === 0)
+        return (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+      return sign * indexDifference;
     });
     this.sortedCategory = "course";
     this.sortedAscending = ascending;
