@@ -3,8 +3,6 @@ package group16.be;
 import group16.be.db.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class DataSyncModule {
@@ -21,36 +19,32 @@ public class DataSyncModule {
     @Autowired
     private GradeRepository gradeRepo;
 
-    public List<String> validateDatabase() {
-        List<String> errors = new ArrayList<>();
-
+    public void cleanInvalidDatabaseEntries() {
         for (User user : userRepo.findAll()) {
             if (user.getId() == null || user.getId().trim().isEmpty()) {
-                errors.add("User has a missing or empty ID: " + user);
+                userRepo.delete(user);
             }
         }
 
         for (Course course : courseRepo.findAll()) {
             if (course.getId() == null || course.getId().trim().isEmpty()) {
-                errors.add("Course has a missing or empty Course ID: " + course);
+                courseRepo.delete(course);
             }
         }
 
         for (Assignment assignment : assignmentRepo.findAll()) {
             if (assignment.getId() == null || assignment.getId().trim().isEmpty()) {
-                errors.add("Assignment has a missing or empty ID: " + assignment);
+                assignmentRepo.delete(assignment);
             }
         }
 
         for (Grade grade : gradeRepo.findAll()) {
-            if (grade.getId() == null || grade.getId().trim().isEmpty()) {
-                errors.add("Grade has a missing or empty ID: " + grade);
-            }
-            if (grade.getPercent() < -1) {
-                errors.add("Grade has a negative score: " + grade.getPercent() + " (Grade ID: " + grade.getPercent() + ")");
+            boolean invalidId = grade.getId() == null || grade.getId().trim().isEmpty();
+            boolean negativeScore = grade.getPercent() < -1;
+
+            if (invalidId || negativeScore) {
+                gradeRepo.delete(grade);
             }
         }
-
-        return errors;
     }
 }
