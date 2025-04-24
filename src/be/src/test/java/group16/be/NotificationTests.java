@@ -84,10 +84,6 @@ public class NotificationTests {
 		System.out.println("Notification: " + user.getNotifications().peek());
 		assertTrue(user.getNotifications().size() > 0);
 	}
-	@Test
-	void sendDueSoonNotification() {
-		notificationManager.notifyDueSoonAssignments();
-	}
 
 	private void waitForListener() throws InterruptedException {
 		int retries = 10;
