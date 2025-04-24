@@ -30,31 +30,43 @@
         }
         </div>
     </div>
-    <div class="calendar-content">
-    @for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
-        <div class="calendar-column">
-        @for (assignment of dayAssignments; track assignment.id) {
-            @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
-                <div class="calendar-item" [style]="this.getStyleColorByID(assignment.courseId)" (click)="this.openPopup(assignment)">
-                    <h3>{{ assignment.title }}</h3>
-                    @if (this.checkPastDue(assignment)) {
-                        <p class="urgent">{{ assignment.availability.adaptiveRelease.end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) }}</p>
-                        <img class="item-icon" src="images/urgent.png" />
-                    }
-                    @else {
-                        <p>{{ assignment.availability.adaptiveRelease.end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) }}</p>
-                    }
+    @defer {
+        <div class="calendar-content">
+        @for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
+            <div class="calendar-column">
+            @for (assignment of dayAssignments; track assignment.id) {
+                @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
+                    <div class="calendar-item" [style]="this.getStyleColorByID(assignment.courseId)" (click)="this.openPopup(assignment)">
+                        <h3>{{ assignment.title }}</h3>
+                        @if (this.checkPastDue(assignment)) {
+                            <p class="urgent">{{ assignment.availability.adaptiveRelease.end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) }}</p>
+                            <img class="item-icon" src="images/urgent.png" />
+                        }
+                        @else {
+                            <p>{{ assignment.availability.adaptiveRelease.end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) }}</p>
+                        }
 
-                    @if (assignment.complete) {
-                        <img class="item-icon" src="images/checkmark.png">
-                    }
-                </div>
+                        @if (assignment.complete) {
+                            <img class="item-icon" src="images/checkmark.png">
+                        }
+                    </div>
+                }
             }
+            </div>
         }
         </div>
     }
+    @placeholder (minimum 0.5s) {
+        <div class="loader-container">
+            <div class="loader"></div>
+        </div>
+    }
+    @loading (minimum 0.5s) {
+        <div class="loader-container">
+            <div class="loader"></div>
+        </div>
+    }
 </div>
-
 <!-- Assignment popup, not part of base page -->
 @if (this.showPopup) {
     <div class="popup-modal" (click)="handleBackdropClick()">
