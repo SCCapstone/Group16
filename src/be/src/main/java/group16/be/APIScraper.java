@@ -2,6 +2,7 @@ package group16.be;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -161,6 +162,18 @@ public class APIScraper implements CommandLineRunner {
             return null;
         }
         return user.get();
+    }
+
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<User>();
+        try{
+            users = userRepo.findAll();
+        } catch (Exception e) {
+            System.out.println("getUsers() Error: No users found");
+            e.printStackTrace();
+            return null;
+        }
+        return users;
     }
 
     public ArrayList<Grade> getGrades(String userId) {

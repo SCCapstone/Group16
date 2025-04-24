@@ -85,7 +85,6 @@ public class NotificationTests {
 		assertTrue(user.getNotifications().size() > 0);
 	}
 
-
 	private void waitForListener() throws InterruptedException {
 		int retries = 10;
 		while (retries > 0) {
