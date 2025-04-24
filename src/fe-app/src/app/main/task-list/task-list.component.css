@@ -12,11 +12,14 @@
     font-size: 18px;
 }
 
+p {
+    margin: 0;
+}
 
 app-task-list {
     padding: 0 !important;
     margin: 0;
-  }
+}
 
 .header-column {
     padding: 10px;
@@ -24,6 +27,7 @@ app-task-list {
     flex: 1; 
     border-right: 3px solid #949494;
     text-align: center;
+    position: relative;
 }
 
 .header-column-check, .header-column-edit, .header-column-remove {
@@ -41,4 +45,14 @@ app-task-list {
     border-right: none;
 }
 
+.sort-icon {
+    height: 40px;
+    position: absolute;
+    top: 6%;
+    right: 5%;
+    cursor: pointer;
+}
 
+.faded {
+    opacity: 0.6;
+}

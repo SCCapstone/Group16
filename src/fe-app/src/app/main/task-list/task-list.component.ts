@@ -25,10 +25,11 @@ export class TaskListComponent{
 
   loginService = inject(LoginService);
   courseService = inject(CourseService);
-  // assignmentService = inject(AssignmentService);
+  
   courses: Course[] = [];
   assignments: Assignment[][] = [ [], [] ];  // Active, complete
-  sortedAssignments: Assignment[] = [];
+  sortedCategory: String = ""                // Category currently being sorted by -- "title", "course", or "date"
+  sortedAscending: boolean = false;          // Whether the current sort is ascending or descending
 
   /**
    * constructor for TaskListComponent that initializes the component and sets up the signal
@@ -58,15 +59,24 @@ export class TaskListComponent{
   }
 
   /**
+   * ngOnChanges lifecycle hook that runs when the component receives new task
+   * @param changes
+   */
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes['newTask'] && this.newTask) {
+      console.log('New task received:', this.newTask);
+      this.addNewTask(this.newTask);
+    }
+  }
+
+  /**
    * loadAssignments function that retrieves the assignments from the service
    * and sorts them by their end date
    */
   private async loadAssignments() {
     let retrievedAssignments = await this.assignmentService.getAssignments(this.loginService.getUserId());
-    retrievedAssignments.sort((a: Assignment, b: Assignment) => {
-      return new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime();
-    });
     this.assignments = this.filterAssignments(retrievedAssignments);
+    this.sortByDate(true);
   }
 
   /**
@@ -85,14 +95,82 @@ export class TaskListComponent{
   }
 
   /**
-   * ngOnChanges lifecycle hook that runs when the component receives new task
-   * @param changes
+   * Sorts the assignment list alphabetically based on assignment title. Ties are sorted by due date (always ascending).
+   * @param ascending True to sort in ascending order, false descending
    */
-  ngOnChanges(changes: SimpleChanges) {
-    if(changes['newTask'] && this.newTask) {
-      console.log('New task received:', this.newTask);
-      this.addNewTask(this.newTask);
+  sortByTitle(ascending: boolean) {
+    let sign = 1;
+    if (!ascending)
+      sign = -1;
+    this.assignments[ACTIVE].sort((a, b) => {
+      const compareResult = a.title.localeCompare(b.title);
+      if (compareResult == 0)
+        return (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+      return sign * compareResult;
+    });
+    this.assignments[COMPLETE].sort((a, b) => {
+      const compareResult = a.title.localeCompare(b.title);
+      if (compareResult == 0)
+        return (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+      return sign * compareResult;
+    });
+    this.sortedCategory = "title";
+    this.sortedAscending = ascending;
+  }
+
+  /**
+   * Sorts the assignment list based on course in the order courses appear in the course sidebar. Ties are sorted by due date (always ascending).
+   * @param ascending True to sort in ascending order, false descending
+   */
+  sortByCourse(ascending: boolean) {
+    let sign = 1;
+    if (!ascending)
+      sign = -1;
+    this.assignments[ACTIVE].sort((a, b) => {
+      const indexDifference = this.getCourseIndex(a) - this.getCourseIndex(b);
+      if (indexDifference === 0)
+        return (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+      return sign * indexDifference;
+    });
+    this.assignments[COMPLETE].sort((a, b) => {
+      const indexDifference = this.getCourseIndex(a) - this.getCourseIndex(b);
+      if (indexDifference === 0)
+        return (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+      return sign * indexDifference;
+    });
+    this.sortedCategory = "course";
+    this.sortedAscending = ascending;
+  }
+
+  /**
+   * Retrieves the index of the course matching the given assignment's courseID
+   * @param assignment Assignment to find the course of
+   * @returns Index of the matching course in the Course array.
+   */
+  private getCourseIndex(assignment: Assignment) {
+    for (let i=0; i < this.courses.length; i++) {
+      if (this.courses[i].id === assignment.courseId)
+        return i;
     }
+    return -1;
+  }
+
+  /**
+   * Sorts the assignment list based on date. Note: assignments are sorted by date in ascending order by default.
+   * @param ascending True to sort in ascending order, false descending
+   */
+  sortByDate(ascending: boolean) {
+    let sign = 1;
+    if (!ascending)
+      sign = -1;
+    this.assignments[ACTIVE].sort((a, b) => {
+      return sign * (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+    });
+    this.assignments[COMPLETE].sort((a, b) => {
+      return sign * (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+    });
+    this.sortedCategory = "date";
+    this.sortedAscending = ascending;
   }
 
   /**
@@ -105,7 +183,6 @@ export class TaskListComponent{
       console.log('Updated assignments (ACTIVE):', this.assignments[ACTIVE]);
     }
     this.assignments = [...this.assignments];
-    this.sortedAssignments = this.getSortedAssignments();
     console.log('New list: ', this.assignments)
     this.cdr.detectChanges();
   }
@@ -119,7 +196,6 @@ export class TaskListComponent{
       list.filter(assignment => assignment.id !== id)
     )
 
-    this.sortedAssignments = this.getSortedAssignments();
     this.cdr.detectChanges();
   }
 
@@ -135,7 +211,6 @@ export class TaskListComponent{
       )
     );
 
-    this.sortedAssignments = this.getSortedAssignments();
     this.cdr.detectChanges();
   }
 
@@ -144,17 +219,6 @@ export class TaskListComponent{
    */
   toggleView(): void {
     this.assignmentService.toggleViewCompleted();
-  }
-
-  /**
-   * sorts the assignments by their end date
-   * @returns the sorted list of assignments
-   */
-  getSortedAssignments(): Assignment[] {
-    console.log('Sorted Assignments: ', this.assignments);
-    return [...this.assignments[this.getIndex()]].sort((a, b) =>
-      (new Date(a.availability.adaptiveRelease.end)).getTime() -
-      (new Date(b.availability.adaptiveRelease.end)).getTime());
   }
 
   /**

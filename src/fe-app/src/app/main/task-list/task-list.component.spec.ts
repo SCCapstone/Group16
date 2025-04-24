@@ -60,10 +60,10 @@ describe('TaskListComponent', () => {
     component.assignments[0] = assignments;
     mockAssignmentService.getViewCompleted.and.returnValue(false);
 
-    const sorted = component.getSortedAssignments();
+    component.sortByDate(true);
 
-    expect(sorted[0].availability.adaptiveRelease.end).toEqual(new Date(2025, 0, 1));
-    expect(sorted[1].availability.adaptiveRelease.end).toEqual(new Date(2025, 0, 2));
+    expect(component.assignments[0][0].availability.adaptiveRelease.end).toEqual(new Date(2025, 0, 1));
+    expect(component.assignments[0][1].availability.adaptiveRelease.end).toEqual(new Date(2025, 0, 2));
   });
 
   // it('should add new task correctly', async () => {
