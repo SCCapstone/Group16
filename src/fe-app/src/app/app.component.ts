@@ -32,7 +32,6 @@ export class AppComponent implements OnDestroy {
   openPopup(type: 'notifications' | 'settings') {
     this.popupType = type;
     this.showPopup = true;
-    console.log("popup clicked");
 
     document.addEventListener('keydown', this.handleEscapeKey);
 

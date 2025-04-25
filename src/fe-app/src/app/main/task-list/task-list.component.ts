@@ -41,7 +41,7 @@ export class TaskListComponent{
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
     effect(() => {
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
-      console.log("SIGNAL RUN: Value " + signal);
+
       this.loadAssignments();                                   // Runs when service constructor finishes, no need to call twice
     })
   }
@@ -63,10 +63,8 @@ export class TaskListComponent{
    * @param changes
    */
   ngOnChanges(changes: SimpleChanges) {
-    if(changes['newTask'] && this.newTask) {
-      console.log('New task received:', this.newTask);
+    if(changes['newTask'] && this.newTask)
       this.addNewTask(this.newTask);
-    }
   }
 
   /**
@@ -178,12 +176,10 @@ export class TaskListComponent{
    * @param task
    */
   addNewTask (task: Assignment) {
-    if (task) {
+    if (task)
       this.assignments[ACTIVE].push(task);
-      console.log('Updated assignments (ACTIVE):', this.assignments[ACTIVE]);
-    }
+
     this.assignments = [...this.assignments];
-    console.log('New list: ', this.assignments)
     this.cdr.detectChanges();
   }
 

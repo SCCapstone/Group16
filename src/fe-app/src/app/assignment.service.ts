@@ -116,7 +116,6 @@ export class AssignmentService {
         throw new Error('assignment is {}');
       }
 
-      console.log(data);
       return data;
     }
     catch (error: unknown) {
@@ -146,7 +145,6 @@ export class AssignmentService {
         courseId: courseId ?? "NULL"
       }).toString();
 
-      console.log(queryParams);
       try {
         const response = await fetch(`${this.url}createAssignmentWithoutId?${queryParams}`, {
           method: 'POST'
@@ -190,7 +188,6 @@ export class AssignmentService {
       dueDate: dueDate?.toISOString() ?? "NULL"
     }).toString();
 
-    console.log(queryParams);
     try {
       const response = await fetch(`${this.url}editAssignment?${queryParams}`, {
         method: 'PUT'
@@ -199,8 +196,6 @@ export class AssignmentService {
       if(!response.ok) {
         throw new Error(`PUT failed: ${response.status}`)
       }
-
-      console.log(response);
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Error editing task:', error.message);
@@ -231,7 +226,6 @@ export class AssignmentService {
       assID: assignmentId ?? "NULL"
     }).toString();
 
-    console.log(queryParams);
     try {
       const response = await fetch(`${this.url}completeAssignment?${queryParams}`, {
         method: 'PUT'
@@ -266,7 +260,6 @@ export class AssignmentService {
       assID: assignmentId ?? "NULL"
     }).toString();
 
-    console.log(queryParams);
     try {
       const response = await fetch(`${this.url}openAssignment?${queryParams}`, {
         method: 'PUT'

@@ -47,8 +47,6 @@ export class ProfileSettingsComponent {
 
   ngOnInit() {
     // Load necessary settings from database and initialize form
-    console.log("LOADING PROFILE SETTINGS");
-    
     this.settingsService.getUserInfo(this.loginService.getUserId()).then((userInfo: UserInfo) => {
       this.preferredName = userInfo.name.preferredDisplayName;
       this.schoolEmail = userInfo.contact.institutionEmail;
@@ -57,8 +55,6 @@ export class ProfileSettingsComponent {
       
       // Put phone number in more readable format
       this.phoneNumber = this.phoneNumber.substring(0, 3) + "-" + this.phoneNumber.substring(3, 6) + "-" + this.phoneNumber.substring(6, 10);
-
-      console.log(this.preferredName, this.schoolEmail, this.personalEmail, this.phoneNumber);
 
       // Set form control values with values from database
       this.profileForm.setValue({
@@ -124,8 +120,6 @@ export class ProfileSettingsComponent {
    * Attempts to save the user's new password by validating the entry and making the necessary service calls.
    */
   async attemptPasswordSave() {
-    console.log("Save password");
-
     if (this.profileForm.value.newPassword != this.profileForm.value.passwordRetype) {
       this.passwordSuccess = false;
       this.passwordMessage = "Passwords do not match"

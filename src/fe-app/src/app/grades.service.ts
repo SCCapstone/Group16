@@ -29,7 +29,6 @@ export class GradesService {
       throw new Error('grades are []');
     }
 
-    console.log(data);
     return data;
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -50,8 +49,6 @@ export class GradesService {
       gradeId: gradeId ?? "NULL",
       percent: percent?.toString() ?? "NULL"
     }).toString();
-
-    console.log(queryParams);
 
     try {
       const response = await fetch(`${this.url}setGrade?${queryParams}`, {

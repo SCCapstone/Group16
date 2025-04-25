@@ -26,33 +26,26 @@ export class HeartbeatService {
    * @param userId
    */
   async startHeartbeat(userId: string) {
-    if(!userId || !this.loginService.getUserId()) {
-      console.log('no userId to send');
+    if(!userId || !this.loginService.getUserId())
       return;
-    }
 
-    if(this.heartbeatTimer && this.currentUserId === userId) {
-      console.log('Heartbeat running for: ' + userId)
+    if(this.heartbeatTimer && this.currentUserId === userId)
       return;
-    }
 
     this.currentUserId = userId;
     this.sendHeartbeat(userId);
     if (isPlatformBrowser(this.platformId)) {
       this.listenForActivity();
     }
-    console.log('Heartbeat started');
 
     this.ngZone.runOutsideAngular(() => {
       this.heartbeatTimer = setInterval(() => {
         if(!this.loginService.getUserId()) {
-          console.log('user signedOut');
           this.stopHeartbeat();
           return;
         }
 
         this.sendHeartbeat(userId);
-        //console.log('sending on timer');
       }, this.heartbeatInterval);
     });
   }
@@ -74,8 +67,6 @@ export class HeartbeatService {
       if(!response.ok) {
         throw new Error(`POST failed: ${response.status}`);
       }
-
-      //console.log(response);
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Error sending heartbeat:', error.message); // network error
@@ -109,7 +100,7 @@ export class HeartbeatService {
     }
 
     if (isPlatformBrowser(this.platformId)) {
-      console.log('Heartbeat stopped');
+      console.warn('Heartbeat stopped');
     }
   }
 
@@ -117,16 +108,13 @@ export class HeartbeatService {
    * resets the inactivity timer when user activity is detected
    */
   private resetActivityTimer = () => {
-    //console.log('Activity detected, resetting inactivity timer...');
     clearTimeout(this.activityTimer);
     this.ngZone.runOutsideAngular(() => {
       this.activityTimer = setTimeout(() => {
         this.ngZone.run(() => {
-          //console.log('Activity timer expired. Logging out.');
           this.onInactivity();
         });
       }, this.activityTimeout);
-      //console.log('New activity timer set:', this.activityTimer);
     });
   };
 
@@ -134,7 +122,6 @@ export class HeartbeatService {
    * listens for user activity events (mouse movement, key presses, clicks) to reset the inactivity timer
    */
   listenForActivity() {
-    console.log('Listening for user activity events.');
     this.resetActivityTimer();
 
     if (isPlatformBrowser(this.platformId)) {
@@ -148,7 +135,7 @@ export class HeartbeatService {
    * handles user inactivity by logging them out and resetting the assignment service
    */
   private onInactivity() {
-    console.log('User is inactive for too long. Logging out...');
+    console.warn('User is inactive for too long. Logging out...');
     this.loginService.signOut();
     this.assignmentService.reset();
     this.stopHeartbeat();

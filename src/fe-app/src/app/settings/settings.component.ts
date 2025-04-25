@@ -66,7 +66,7 @@ export class SettingsComponent {
         this.saveMessage = error.message;
       else
         this.saveMessage = "Unexpected error, please try again later";
-      console.log("DETECTING CHANGES");
+
       this.cdr.detectChanges();
     }
   }

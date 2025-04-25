@@ -39,12 +39,8 @@ export class TaskComponent implements OnInit {
    * @param assignment
    */
   async toggleCompletion(assignment: Assignment) {
-    // console.log("clicked");
-    // console.log('Before ' + assignment.complete);
     try {
       const assignmentId = assignment.id ?? null;
-      console.log(assignmentId);
-
       if (!assignmentId) {
         console.error('Assignment ID is missing!');
         return;
@@ -55,8 +51,6 @@ export class TaskComponent implements OnInit {
       } else {
         await this.assignmentService.completeTask(assignmentId);
       }
-      // console.log('After ' + assignment.complete);
-
     } catch (error) {
       console.error('Error toggling task completion:', error);
     }

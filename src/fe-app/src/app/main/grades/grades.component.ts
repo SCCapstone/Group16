@@ -64,7 +64,6 @@ export class GradesComponent {
    * @returns The name of the course, or "" if not found.
    */
   getCourseNameByID(id: string): string {
-    //console.log("SEARCHING COURSES ARRAY OF SIZE " + this.courses.length)
     for (const course of this.courses) {
       if (course.id === id)
         return course.name.split('-')[0];
@@ -124,7 +123,6 @@ export class GradesComponent {
 
     try {
       await this.gradeService.setGrade(gradeId, percent);
-      console.log(`Grade ${gradeId} updated successfully.`);
     } catch (error) {
       console.error(`Error updating grade ${gradeId}:`, error);
     }

@@ -24,7 +24,6 @@ export class NotificationsComponent implements OnInit{
       this.userId = this.loginService.getUserId();
       this.userInfo = await this.settingsService.getUserInfo(this.userId);
       this.notifications = this.userInfo.notifications;
-      console.log("User Notifications:", this.userInfo.notifications);
   }
 
   /**
