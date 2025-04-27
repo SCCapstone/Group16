@@ -1,4 +1,4 @@
-import { Component, inject, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, inject, Output, EventEmitter, OnInit, NgZone } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Assignment, Course } from '../../course';
 import { CourseService } from '../../course.service';
@@ -23,12 +23,15 @@ export class AddTaskComponent implements OnInit {
   courses: Course[] = [];
   route: ActivatedRoute = inject(ActivatedRoute);
   router = inject(Router);
+  private ngZone = inject(NgZone);
   showPopup = false;
   newTask2: Assignment | null = null;
   popupType: 'new-task' | null = null;
   showFormPopup = true;
   showTaskPopup = false;
   courseName: String | undefined;
+  errorMessage: string | null = null;
+  successMessage: string | null = null;
 
   addTaskForm = new FormGroup ({
     title: new FormControl('', Validators.required),
@@ -42,6 +45,7 @@ export class AddTaskComponent implements OnInit {
 
   /**
    * On opening the addTask popup get the courses and set the time to 11:59PM
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
    */
   ngOnInit() {
     this.courseService.getCourses(this.loginService.getUserId())
@@ -57,14 +61,12 @@ export class AddTaskComponent implements OnInit {
   }
 
   /**
-   * Adds a task to the local list if API call to add a task is successful
-   * Show newly added task in a new task pop up
+   * Adds a task to the assignment list through the AssignmentService.
+   * On success, display a popup containing new assignment information.
    */
   async addTask() {
-    console.log("AddTaskComponent - ADD TASK");
-
     if(this.addTaskForm.invalid) {
-      alert('Missing required field')
+      this.errorMessage = 'Missing required field';
       return;
     }
 
@@ -102,28 +104,33 @@ export class AddTaskComponent implements OnInit {
 
       this.newTask2 = { ...newTask };
       this.courseName = this.getCourseNameByID(this.newTask2.courseId);
-      console.log("new task course name: ", this.getCourseNameByID(this.newTask2.courseId));
-      console.log('Emitting new task:', newTask);
+      
       this.onTaskAdd.emit(newTask);
       this.showFormPopup = false;
 
       this.showTaskPopup = true;
       this.popupType = 'new-task';
+      this.errorMessage = null;
 
     } catch (error) {
       console.error('Add task failed', error);
+      this.errorMessage = 'An error occurred while adding the task. Please try again.';
+
+      if(error instanceof Error) {
+        if(error.message.includes('400')) {
+          this.errorMessage = 'Duplicate task. Please try again.';
+        }
+      }
     }
   }
 
   /**
-   * Does the same as addTask() except no new task pop up
-   * Instead clears the form and allows users to keep adding tasks
+   * Adds a task to the assignment list through the AssignmentService.
+   * On success, clear the form and allow the user to add subsequent tasks.
    */
   async addMoreTasks() {
-    console.log("AddTaskComponent - ADD TASK");
-
     if(this.addTaskForm.invalid) {
-      alert('Missing required field')
+      this.errorMessage = 'Missing required field';
       return;
     }
 
@@ -161,12 +168,29 @@ export class AddTaskComponent implements OnInit {
 
       this.addTaskForm.reset();
       this.addTaskForm.patchValue({ time: '23:59' });
-
-
-      console.log('Emitting new task:', newTask);
       this.onTaskAdd.emit(newTask);
+
+      this.errorMessage = null;
+      this.successMessage = 'Task added successfully!';
+
+      this.ngZone.runOutsideAngular(() => {
+        setTimeout(() => {
+          // Re-enter Angular zone to trigger change detection
+          this.ngZone.run(() => {
+            this.successMessage = null;
+          });
+        }, 3000);
+      });
+
     } catch (error) {
       console.error('Add task failed', error);
+      this.errorMessage = 'An error occurred while adding the task. Please try again.';
+
+      if(error instanceof Error) {
+        if(error.message.includes('400')) {
+          this.errorMessage = 'Duplicate task. Please try again.';
+        }
+      }
     }
   }
 

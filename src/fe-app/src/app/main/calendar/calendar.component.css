@@ -1,35 +1,198 @@
-.day{
-    color: #c30000;
-    font-weight: bold;
-    text-align: center;
-    font-size: 22px;
+/* Full calendar base */
+.calendar {
+    margin: 0;
+    margin-left: -0.8%;
+    padding: 0;
+    width: 101.6%;
+    height: 76.6vh;
 }
 
-h1{
-    text-align: center;
-    font-size: 32px;
-    font-weight: bold;
+
+/* Full header of calendar including navigation and day rows, sticks to top on scroll */
+.header-content {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: 25%;
+    min-height: 140px;
+    background-color: #cfcfcf;
 }
 
-.page-container {
+/* Header row of calendar containing month/year text and navigation buttons */
+.navigation-row {
+    height: 40%;
     display: flex;
     justify-content: space-between;
-    align-items: center; 
+}
+
+/* Section of header row containing text */
+.navigation-text {
+    width: 80%;
+    display: flex;
+}
+
+/* Text itself used in header */
+h1 {
+    font-size: 40px;
+    font-weight: bold;
+    margin: auto;
+}
+
+/* Section of header row containing left/right arrows */
+.navigation-arrow {
+    width: 10%;
+    display: flex;
+    align-items: center;
+}
+
+#left {
+    justify-content: left;
+}
+
+#right {
+    justify-content: right;
+}
+
+img {
+    height: 50px;
+    display: block;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.disabled {
+    opacity: 60%;
+}
+
+
+/* Row containing days of month */
+.day-row {
+    height: 60%;
+    display: flex;
+    justify-content: space-around;
+}
+
+/* A single day of the month inside day-row */
+.day {
+    height: 90%;
+    width: 10%;
+    margin: auto;
+    text-align: center;
+}
+
+h2 {
+    margin-top: 10%;
+    margin-bottom: 0;
+}
+
+
+/* Base of the actual calendar content */
+.calendar-content {
+    height: 75%;
+    max-height: 75%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+/* Individual column of the calendar, representing content for a single day */
+.calendar-column {
+    width: 14%;
+}
+
+/* Individual task as represented on calendar */
+.calendar-item {
+    min-height: 15%;
+    margin: 5px;
+    padding: 20px 10px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    overflow-wrap: break-word;
+    cursor: pointer;
+}
+
+.item-icon {
+    position: absolute;
+    height: 40px;
+    bottom: 4px;
+    right:  6px;
+}
+
+h3 {
+    font-size: 20px;
+}
+
+p {
+    margin: auto;
+}
+
+.urgent {
+    color: #c30000;
+}
+
+
+/* Task popup -- mostly copied from TaskComponent */
+.popup-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: 10px; 
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
 }
 
-#lastWeekButton {
-    flex: 1;
-    text-align: left; 
+.popup-content {
+    background-color: #cfcfcf;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    width: 70%;
+    margin: auto;
 }
 
-#nextWeekButton {
-    flex: 1; 
-    text-align: right; 
+.close {
+    position: absolute;
+    top: -5px;
+    right: 8px;
+    cursor: pointer;
+    font-size: 34px;
+    color: black;
 }
 
-.page-container p {
-    flex: 0; 
-    margin: 0 auto; 
+.assignmentPopup {
+    font-size: 20px;
+    color: black;
+    line-height: 1.7;
 }
+
+.description, .course{
+    font-weight: bold;
+}
+
+.loader-container {
+    width: 100%;
+    height: 100%;
+}
+.loader {
+    width: 50px;
+    padding: 8px;
+    margin: auto;
+    margin-top: 20vh;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #c30000;
+    --_m: 
+      conic-gradient(#0000 10%,#000),
+      linear-gradient(#000 0 0) content-box;
+    -webkit-mask: var(--_m);
+            mask: var(--_m);
+    -webkit-mask-composite: source-out;
+            mask-composite: subtract;
+    animation: l3 1s infinite linear;
+}
+@keyframes l3 {to{transform: rotate(1turn)}}

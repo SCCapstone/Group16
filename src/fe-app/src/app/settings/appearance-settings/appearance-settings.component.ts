@@ -1,3 +1,5 @@
+// NOTE: this component is currently unused and may be removed in future releases.
+
 import { Component } from '@angular/core';
 
 @Component({

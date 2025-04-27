@@ -32,20 +32,10 @@
             <p [class]="getMessageStyle()">{{ this.passwordMessage }}</p>
         }
         <div class="save-close">
-            <!-- <button (click)="callPasswordWindow(false)">Close</button> -->
-            <button (click)="attemptPasswordSave()">Save</button>
+            <button (click)="attemptPasswordSave()" style = "border-radius: 10px;">Save</button>
         </div>   
         </div>   
     }
-
-    <!--
-    <button type="submit" [disabled]="!this.profileForm.valid || !this.checkForChanges()">Save</button>
-
-    @if (this.profileConfirm) {
-        <p class="success">Profile settings saved!</p>
-    }
-    -->
-
 </form>
 
 

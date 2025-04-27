@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, SimpleChanges, effect } from '@angular/core';
+import { Component, inject, Input, OnChanges, SimpleChanges, effect, computed, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -14,7 +14,7 @@ import { Course, Assignment, Grade } from '../../course';
     templateUrl: './secondary-sidebar.component.html',
     styleUrls: ['./secondary-sidebar.component.css']
 })
-export class SecondarySidebarComponent implements OnChanges {
+export class SecondarySidebarComponent {
   courses: Course[] = [];
   assignments: Assignment[] = [];
   grades: Grade[] = [];
@@ -25,18 +25,33 @@ export class SecondarySidebarComponent implements OnChanges {
   gradesService = inject(GradesService);
   router = inject(Router);
 
-  ngOnChanges(changes: SimpleChanges) {}
-
-  constructor(private assignmentService: AssignmentService) {
+  /**
+   * Establishes that component should re-get and organize assignments when AssignmentService signal is updated,
+   * and re-get grades when GradeService signal is updated.
+   * @param assignmentService Injects the AssignmentService into this component.
+   * @param cdr Angular's internal ChangeDetectorReference. Used to manually trigger change detection.
+   */
+  constructor(private assignmentService: AssignmentService, private cdr: ChangeDetectorRef) {
 
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
     effect(() => {
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
-      console.log("COMPUTED SIGNAL RUN: Value " + signal);
+
       // Runs when service constructor finishes, no need to call twice
       this.assignmentService.getAssignments(this.loginService.getUserId()).then((assignments: Assignment[]) => {
         this.filterTopThree(assignments)
+        this.cdr.detectChanges();
       });
+    });
+
+    // Set logic to run whenever the GradesService signal updates (for when a grade is updated)
+    effect(() => {
+      const signal = this.gradesService.getUpdateSignal();
+
+      this.gradesService.getGrades(this.loginService.getUserId())
+      .then((grades: Grade[]) => {
+        this.grades = grades;
+      })
     })
   }
 
@@ -58,8 +73,13 @@ export class SecondarySidebarComponent implements OnChanges {
    */
   filterTopThree(assignments: Assignment[]) {
     let candidates: Assignment[] = [];
+    const courseIndex = this.courseService.getSelectIndex();
+    const now = new Date();
+
     for (const assignment of assignments) {
-      if (!assignment.complete)
+      const endDate = new Date(assignment.availability.adaptiveRelease.end);
+
+      if (!assignment.complete && endDate >= now && (courseIndex === -1 || assignment.courseId === this.courses[courseIndex].id))
         candidates.push(assignment);
     }
     candidates.sort((a: Assignment, b: Assignment) => {
@@ -86,6 +106,8 @@ export class SecondarySidebarComponent implements OnChanges {
 
     if (count == 0)
       return "--";
-    return (sum / count) + "%";
+
+    const average = sum / count;
+    return (average % 1 === 0) ? average + "%" : average.toFixed(2) + "%";
   }
 }

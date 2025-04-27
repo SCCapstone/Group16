@@ -49,19 +49,7 @@ describe('SettingsComponent', () => {
     expect(signOutButton).toBeTruthy();
   });
 
-  it('should not call loginService.signout when signout() is invoked on click', async () => {
-    spyOn(window, 'confirm').and.returnValue(false);
-
-    await component.handleSignout();
-
-    expect(mockLoginService.signOut).not.toHaveBeenCalled();
-    expect(mockRouter.navigate).not.toHaveBeenCalled();
-    expect(mockHeartbeatService.stopHeartbeat).not.toHaveBeenCalled();
-    expect(mockAssignmentService.reset).not.toHaveBeenCalled();
-  });
-
   it('should handle signout flow correctly', async () => {
-    spyOn(window, 'confirm').and.returnValue(true);
     spyOn(component.onSignout, 'emit');
     mockLoginService.getUserId.and.returnValue(null);
 

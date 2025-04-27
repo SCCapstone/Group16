@@ -23,6 +23,8 @@ export class SettingsComponent {
   saveMessage: string = "";
   saveSuccess: boolean = false;
 
+  canSave: boolean = true;
+
   @ViewChild(ProfileSettingsComponent) profileSettings!: ProfileSettingsComponent;
   @ViewChild(NotificationSettingsComponent) notificationSettings !: NotificationSettingsComponent;
 
@@ -30,20 +32,33 @@ export class SettingsComponent {
 
   constructor(private cdr: ChangeDetectorRef) {}
 
+  /**
+   * Links the canSave property of the "Save Settings" button to the validity status of the form in ProfileSettings.
+   * Note: ngAfterViewInit is a lifecycle hook that is called when this component is fully rendered.
+   */
+  ngAfterViewInit() {
+    this.profileSettings.profileForm.statusChanges.subscribe(status => {
+      this.canSave = (status === "VALID");
+    })
+  }
+
+  /**
+   * Gets the style of the text popup feedback for clicking the "Save Settings" button
+   * @returns "success" if settings were saved successfully, "error" otherwise.
+   */
   getMessageStyle() {
     if (this.saveSuccess)
       return "success";
     return "error";
   }
 
+  /**
+   * Attempts to save profile settings and notification settings in succession through the SettingsService is the profile settings form is valid.
+   * Displays popup feedback when a response is obtained from the SettingsService.
+   */
   async saveAllSettings() {
-    
-    if (!this.profileSettings.getProfileValidator()) {
-      this.saveMessage = "Error saving password: ensure fields are valid";
-      this.saveSuccess = false;
-      this.cdr.detectChanges();
+    if (!this.profileSettings.getProfileValidator())
       return
-    }
 
     try {
       await this.profileSettings.saveProfile();
@@ -63,22 +78,18 @@ export class SettingsComponent {
         this.saveMessage = error.message;
       else
         this.saveMessage = "Unexpected error, please try again later";
-      console.log("DETECTING CHANGES");
+
       this.cdr.detectChanges();
     }
   }
 
   handleSignout() {
-    if(confirm('Are you sure?')) {
-      this.onSignout.emit(); // Emit event to parent component
-      this.loginService.signOut();
-      if (!this.loginService.getUserId()) {
-        this.router.navigate(['/']);
-        this.heartbeatService.stopHeartbeat();
-      }
-      this.assignmentService.reset();  // Reset assignment service so assignments are not transferred across logins
-      } else {
-        return;
-      }
+    this.onSignout.emit(); // Emit event to parent component
+    this.loginService.signOut();
+    if (!this.loginService.getUserId()) {
+      this.router.navigate(['/']);
+      this.heartbeatService.stopHeartbeat();
     }
-}
+    this.assignmentService.reset();  // Reset assignment service so assignments are not transferred across logins
+    }
+  }

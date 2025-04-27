@@ -38,8 +38,12 @@ public class RequestHandler {
     @Autowired
     private APIScraper scraper;
 
-    @Autowired
     private static HeartbeatController heartbeatController;
+
+    @Autowired
+    public void setHeartbeatController(HeartbeatController heartbeatController) {
+        RequestHandler.heartbeatController = heartbeatController;
+    }
 
     @Autowired
     private NotificationManager notificationManager;
@@ -310,6 +314,14 @@ public class RequestHandler {
 
         if(!scraper.isUserId(userId) || !scraper.isCourseId(courseId) || !scraper.isAssignmentId(assignmentId))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course ID, assignment ID, or user ID is invalid");
+
+        // Search for existing Assignment.
+        var assignments = scraper.getAssignments(userId);
+        for (var assignment : assignments) {
+            // Assignment already exists. Returning HTTP error.
+            if (assignment.getCourseId().equals(courseId) && assignment.getTitle().equalsIgnoreCase(title))
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Assignment already exists");
+        }
 
         var assignment = scraper.findByAssignmentId(assignmentId);
         if(assignment == null) 

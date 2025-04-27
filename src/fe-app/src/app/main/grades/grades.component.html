@@ -5,32 +5,43 @@
     <div class="header-column">GRADE</div>
     <div class="header-column">LETTER</div>
   </div>
-  <div class="assignment-container">
-    @for (grade of this.grades; track grade.id) {
-      @if (this.courseService.getSelectIndex() === -1 || grade.courseId === this.courses[this.courseService.getSelectIndex()].id) {
-        <div class="assignment-row">
-        <div class="assignment-column">{{ this.getCourseNameByID(grade.courseId) }}</div>
-        <div class="assignment-column">{{ this.getAssignmentTitleByID(grade.assignmentId) }}</div>
-          <div class="assignment-column">
-            <form [formGroup]="updateGradeForm" (ngSubmit)="setGrade(grade.id)">
-              @if (grade.id !== undefined) {
-                <input
-                  id="grade"
-                  type="number"
-                  [formControlName]="grade.id || ''"
-                  [placeholder]="!getAssignmentByID(grade.assignmentId)?.userCreated ? '' : (grade.percent === -1 ? 'Enter' : '')"
-                  [value]="grade.percent === -1 ? '' : grade.percent"
-                  (blur)="setGradeOnEvent($event, grade.id)"
-                  (keydown.enter)="setGradeOnEvent($event, grade.id)"
-                  [readonly]="!getAssignmentByID(grade.assignmentId)?.userCreated">
-                <!--<button type="submit">✔</button>-->
-              }
-            </form>
-          </div>
-          <div class="assignment-column">{{ this.displayGradeChar(grade) }}</div>
-          </div>
-        <div id = "line" style =   "border-bottom: 3px solid #949494; width: 95%; justify-self: center;" > </div>
+  @defer {
+    <div class="assignment-container">
+      @for (grade of this.grades; track grade.id) {
+        @if (this.courseService.getSelectIndex() === -1 || grade.courseId === this.courses[this.courseService.getSelectIndex()].id) {
+          <div class="assignment-row">
+          <div class="assignment-column">{{ this.getCourseNameByID(grade.courseId) }}</div>
+          <div class="assignment-column">{{ this.getAssignmentTitleByID(grade.assignmentId) }}</div>
+            <div class="assignment-column">
+              <form [formGroup]="updateGradeForm" (ngSubmit)="setGrade(grade.id)">
+                @if (grade.id !== undefined) {
+                  <input
+                    id="grade"
+                    type="number"
+                    [formControlName]="grade.id || ''"
+                    [placeholder]="!getAssignmentByID(grade.assignmentId)?.userCreated ? '' : (grade.percent === -1 ? 'Enter' : '')"
+                    [value]="grade.percent === -1 ? '' : grade.percent"
+                    (blur)="setGradeOnEvent($event, grade.id)"
+                    (keydown.enter)="setGradeOnEvent($event, grade.id)"
+                    [readonly]="!getAssignmentByID(grade.assignmentId)?.userCreated">
+                }
+              </form>
+            </div>
+            <div class="assignment-column">{{ this.displayGradeChar(grade) }}</div>
+            </div>
+          <!--<div id = "line" style =   "border-bottom: 3px solid #949494; width: 95%; justify-self: center;" > </div>-->
+        }
       }
-    }
-  </div>
+    </div>
+  }
+  @placeholder (minimum 0.5s) {
+    <div class="loader-container">
+      <div class="loader"></div>
+    </div>
+  }
+  @loading (minimum 0.5s) {
+    <div class="loader-container">
+      <div class="loader"></div>
+    </div>
+  }
 </div>

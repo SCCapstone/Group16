@@ -8,8 +8,6 @@ import { SettingsService } from '../../settings.service';
 
 import { CommonModule } from '@angular/common';
 
-import { NotificationSettingsComponent } from '../notification-settings/notification-settings.component';
-
 @Component({
     selector: 'app-profile-settings',
     imports: [ReactiveFormsModule, CommonModule],
@@ -31,8 +29,6 @@ export class ProfileSettingsComponent {
   loginService = inject(LoginService);
   settingsService = inject(SettingsService);
 
-  readonly validatorSignal = computed(() => this.profileForm.valid);
-
   profileForm = new FormGroup({
     name: new FormControl("", Validators.required),
     school: new FormControl({ value: "", disabled: true }, [Validators.required, Validators.email]),
@@ -45,10 +41,12 @@ export class ProfileSettingsComponent {
 
   constructor(private cdr: ChangeDetectorRef) {}
 
+  /**
+   * Loads all profile settings through the SettingsService and populates form.
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
+   */
   ngOnInit() {
     // Load necessary settings from database and initialize form
-    console.log("LOADING PROFILE SETTINGS");
-    
     this.settingsService.getUserInfo(this.loginService.getUserId()).then((userInfo: UserInfo) => {
       this.preferredName = userInfo.name.preferredDisplayName;
       this.schoolEmail = userInfo.contact.institutionEmail;
@@ -57,8 +55,6 @@ export class ProfileSettingsComponent {
       
       // Put phone number in more readable format
       this.phoneNumber = this.phoneNumber.substring(0, 3) + "-" + this.phoneNumber.substring(3, 6) + "-" + this.phoneNumber.substring(6, 10);
-
-      console.log(this.preferredName, this.schoolEmail, this.personalEmail, this.phoneNumber);
 
       // Set form control values with values from database
       this.profileForm.setValue({
@@ -124,8 +120,6 @@ export class ProfileSettingsComponent {
    * Attempts to save the user's new password by validating the entry and making the necessary service calls.
    */
   async attemptPasswordSave() {
-    console.log("Save password");
-
     if (this.profileForm.value.newPassword != this.profileForm.value.passwordRetype) {
       this.passwordSuccess = false;
       this.passwordMessage = "Passwords do not match"
@@ -184,7 +178,4 @@ export class ProfileSettingsComponent {
       throw error;
     }
   }
-
-
-
 }

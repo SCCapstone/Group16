@@ -23,6 +23,7 @@ export class EditTaskComponent implements OnInit {
   courseService = inject(CourseService);
   assignmentService = inject(AssignmentService);
   courses: Course[] = [];
+  errorMessage: string | null = null;
 
   editTaskForm = new FormGroup ({
     title: new FormControl('', Validators.required),
@@ -34,6 +35,10 @@ export class EditTaskComponent implements OnInit {
 
   constructor() {}
 
+  /**
+   * Initializes the form with the assignment data if available
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
+   */
   ngOnInit() {
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
@@ -46,9 +51,14 @@ export class EditTaskComponent implements OnInit {
         ? new Date(this.assignment.availability.adaptiveRelease.end)
         : null;
 
+        let due = '';
         let time = '';
 
         if (dueDate) {
+          const year = dueDate.getFullYear();
+          const month = String(dueDate.getMonth() + 1).padStart(2, '0');
+          const day = String(dueDate.getDate()).padStart(2, '0');
+          due = `${year}-${month}-${day}`;
           time = dueDate.toTimeString().slice(0, 5);
         }
 
@@ -56,13 +66,9 @@ export class EditTaskComponent implements OnInit {
           title: this.assignment.title ?? '',
           description: this.assignment.description ?? '',
           course: this.assignment.courseId ?? '',
-          due: dueDate ? dueDate.toISOString().split('T')[0] : '', // Ensures correct date format
+          due: due ?? '', // Ensures correct date format
           time: time
         });
-
-        this.editTaskForm.get('course')?.valueChanges.subscribe(value => {
-          console.log(value);
-        })
       }
     }
     catch (error) {
@@ -70,6 +76,9 @@ export class EditTaskComponent implements OnInit {
     }
   }
 
+  /**
+   * Handles the form submission to edit a task
+   */
   async editTask() {
     if(this.editTaskForm.invalid) {
       return;
@@ -83,8 +92,6 @@ export class EditTaskComponent implements OnInit {
     if (date && time) {
       dueDate = new Date(`${date}T${time}:00`);
     }
-
-    console.log(this.editTaskForm.value.course);
 
     try {
       await this.assignmentService.editTask(
@@ -111,6 +118,13 @@ export class EditTaskComponent implements OnInit {
       this.close.emit(updatedAssignment);
     } catch(error) {
       console.error('Edit task failed', error);
+      this.errorMessage = 'An error occurred while editing the task. Please try again.';
+
+      if(error instanceof Error) {
+        if(error.message.includes('400')) {
+          this.errorMessage = 'Duplicate task. Please try again.';
+        }
+      }
     }
   }
 }

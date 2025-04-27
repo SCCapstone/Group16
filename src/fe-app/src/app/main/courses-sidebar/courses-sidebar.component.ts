@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { Course } from '../../course';
 import { CourseService } from '../../course.service';
+import { AssignmentService } from '../../assignment.service';
 import { LoginService } from '../../login.service';
 
 @Component({
@@ -12,10 +13,18 @@ import { LoginService } from '../../login.service';
 export class CoursesSidebarComponent {
   courses: Course[] = [];
 
-  constructor(protected courseService: CourseService, private loginService: LoginService) {}
+  constructor(
+    protected courseService: CourseService,
+    private assignmentService: AssignmentService,
+    private loginService: LoginService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
+  /**
+   * Retrieves a list of courses from the CourseService and populate the component with them.
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
+   */
   ngOnInit() {
-    // Retrieve course list from CourseService and store it in courses
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
       this.courses = courses;
@@ -25,15 +34,23 @@ export class CoursesSidebarComponent {
     //this.courseService.deselectCourse();
   }
 
+  /**
+   * Stores the given index as the selected course, or removes selection if given index is already stored.
+   * @param index 
+   */
   selectCourse(index: number): void {
     if (index === this.courseService.getSelectIndex())
       this.courseService.deselectCourse();
-    else {
+    else
       this.courseService.selectCourse(index);
-      console.log("Selected Course ID: " + this.courses[index].id);
-    }
+    this.assignmentService.incrementUpdateSignal();
   }
 
+  /**
+   * Returns the CSS class(es) of the given course index for styling purposes.
+   * @param index The index of a course in the course list.
+   * @returns "course selected" if selected, "course" otherwise.
+   */
   getStyle(index: number): string {
     return index === this.courseService.getSelectIndex() ? "course selected" : "course";
   }

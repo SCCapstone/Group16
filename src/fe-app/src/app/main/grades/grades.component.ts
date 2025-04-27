@@ -6,7 +6,6 @@ import { LoginService } from '../../login.service';
 import { CommonModule } from '@angular/common';
 import { CourseService } from '../../course.service';
 import { AssignmentService } from '../../assignment.service';
-import { GradeCalcComponent } from "../../grade-calc/grade-calc.component";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
@@ -28,6 +27,10 @@ export class GradesComponent {
 
   constructor() {}
 
+  /**
+   * Retrieves course, assignment, and grade information from the corresponding services and initializes forms.
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
+   */
   ngOnInit() {
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
@@ -62,15 +65,14 @@ export class GradesComponent {
   /**
    * Iterates over the user's courses and returns the name of the course matching the given ID.
    * @param id The ID of a course.
-   * @returns The name of the course, or "unknown" if not found.
+   * @returns The name of the course, or "" if not found.
    */
   getCourseNameByID(id: string): string {
-    //console.log("SEARCHING COURSES ARRAY OF SIZE " + this.courses.length)
     for (const course of this.courses) {
       if (course.id === id)
         return course.name.split('-')[0];
     }
-    return  "unknown";
+    return  "";
   }
 
   /**
@@ -125,13 +127,16 @@ export class GradesComponent {
 
     try {
       await this.gradeService.setGrade(gradeId, percent);
-      console.log(`Grade ${gradeId} updated successfully.`);
     } catch (error) {
       console.error(`Error updating grade ${gradeId}:`, error);
     }
   }
 
-  // This function calculates the letter grade based on the percent
+  /**
+   * gets the letter grade based on the percent
+   * @param percent
+   * @returns letter grade based on the percent
+   */
   calculateGradeChar(percent: number): string {
     if (percent >= 90)
       return "A";
@@ -151,6 +156,11 @@ export class GradesComponent {
       return "F";
   }
 
+  /**
+   * sets the grade on the event
+   * @param event
+   * @param gradeId
+   */
   setGradeOnEvent(event: Event, gradeId: string | undefined) {
     if (!gradeId) return;
 
@@ -165,6 +175,11 @@ export class GradesComponent {
     target.blur();
   }
 
+  /**
+   * gets the assignment by ID
+   * @param id
+   * @returns Assignment object with the given ID
+   */
   getAssignmentByID(id: string): Assignment | undefined {
     return this.assignments.find(assignment => assignment.id === id);
   }

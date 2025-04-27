@@ -1,4 +1,4 @@
-import { Component, inject, effect } from '@angular/core';
+import { Component, inject, effect, ChangeDetectorRef } from '@angular/core';
 
 import { LoginService } from '../../login.service';
 import { CourseService } from '../../course.service';
@@ -23,14 +23,32 @@ export class CalendarComponent {
   assignments: Assignment[] = [];
   weekAssignments: Assignment[][] = [[], [], [], [], [], [], []];
 
+  showPopup: boolean = false;
+  openAssignment: Assignment | null = null;
+  readonly ASSIGNMENT_COLORS: String[] = [
+    "#eb7573",  // red
+    "#c37dd1",  // purple
+    "#80aaed",  // light blue
+    "#f0ba3c",  // orange
+    "#525af7",  // blue
+    "#76bf6f",  // green
+    "#a5a5a5"   // gray
+  ];
+
   loginService = inject(LoginService);
   courseService = inject(CourseService);
 
-  readonly DAYS_OF_WEEK = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+  readonly DAYS_OF_WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   // INITIALIZATION
 
-  constructor(private assignmentService: AssignmentService) {
+  /**
+   * Determines the semester window and start of the current week used for the calendar's lifetime.
+   * Also establishes that the component should re-get and organize assignments from the AssignmentService when its signal is updated.
+   * @param assignmentService Injects the AssignmentService into this component.
+   * @param cdr Angular's internal ChangeDetectorReference. Used to manually trigger change detection.
+   */
+  constructor(private assignmentService: AssignmentService, private cdr: ChangeDetectorRef) {
     const now: Date = new Date(Date.now());
     this.weekStart = this.getWeekStart(now);  // Store start of the current week
     this.pageNumber = 0;
@@ -59,6 +77,10 @@ export class CalendarComponent {
     })
   }
 
+  /**
+   * Fetches the course list from the CourseService.
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
+   */
   ngOnInit() {
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
@@ -84,7 +106,7 @@ export class CalendarComponent {
   /**
    * Calculates the start of the week of the given date as defined by midnight of that week's Monday.
    * @param currentDate Any date
-   * @returns 12:00am on Monday of the provided date's corresponding week.
+   * @returns 12:00am on Monday of the provided date's corresponding week, in local time.
    */
   getWeekStart(currentDate: Date): Date {
     currentDate.setHours(0, 0, 0, 0);
@@ -96,7 +118,7 @@ export class CalendarComponent {
   // PERSISTENT
 
   /**
-   * Populates weekAssignments with all assignments due during the currently-selected week.
+   * Populates and organizes into days weekAssignments with all assignments due during the currently-selected week.
    */
   organizeWeekAssignments() {
     this.weekAssignments = [[], [], [], [], [], [], []]
@@ -104,36 +126,27 @@ export class CalendarComponent {
     for (const assignment of this.assignments) {
       const difference = assignment.availability.adaptiveRelease.end.getTime() - this.weekStart.getTime();
 
-      // Add assignment to array if it's in range based on the day it falls into
       if (difference < 0)
         continue;
       if (difference >= 7 * millisecondsPerDay)
         break;
-      this.weekAssignments[difference / millisecondsPerDay].push(assignment);
+      
+      this.weekAssignments[Math.floor(difference / millisecondsPerDay)].push(assignment);
     }
   }
-  
+
   /**
-   * Counts the number of assignments in the given assignment list matching the given course index.
-   * @param assignmentList One-dimensional array of assignments, corresponding to a single day.
-   * @param courseIndex Index of the currently-selected course in component course list. -1 indicates no selection
-   * @return The number of assignments that are part of the course corresponding to the given index.
+   * Calculates the day of the month from the start of the currently-selected week and an integer offset
+   * @param offset Offset from this.weekStart in number of days
    */
-  countMatchingAssignments(assignmentList: Assignment[], courseIndex: number): number {
-    if (courseIndex < 0 || courseIndex >= this.courses.length)
-      return assignmentList.length;
-
-    const targetID: string = this.courses[courseIndex].id;
-    let count: number = 0;
-    for (const assignment of assignmentList) {
-      if (assignment.courseId === targetID)
-        count++;
-    }
-    return count;
+  calculateDateWithOffset(offset: number): number {
+    let weekStartCopy = new Date(this.weekStart);
+    weekStartCopy.setDate(weekStartCopy.getDate() + offset);
+    return weekStartCopy.getDate();
   }
 
   /**
-   * Moves calendar page forward by one week.
+   * Moves calendar page forward by one week and re-organizes the weekAssignments list
    */
   pageForward() {
     this.weekStart.setDate(this.weekStart.getDate() + 7);
@@ -142,7 +155,7 @@ export class CalendarComponent {
   }
 
   /**
-   * Moves calendar page back by one week
+   * Moves calendar page back by one week and re-organizes the weekAssignments list
    */
   pageBack() {
     this.weekStart.setDate(this.weekStart.getDate() - 7);
@@ -151,7 +164,7 @@ export class CalendarComponent {
   }
 
   /**
-   * Resets calendar page to the current week.
+   * Resets calendar page to the current week and re-organizes the weekAssignments list
    */
   reset() {
     this.weekStart = this.getWeekStart(new Date(Date.now()));
@@ -186,25 +199,86 @@ export class CalendarComponent {
   }
 
   /**
-   * Format the given date in the format of "<Month> <Day>[st/nd/rd/th]"
-   * @param date The date to format
-   * @return Formatted string with relevant date information.
+   * Returns the index of the course matching the given courseID
+   * @param courseID The courseID property of an assignment
+   * @return The index of the corresponding course, or -1 if none found.
    */
-  formatDate(date: Date) {
-    let output: String = date.toLocaleString('en-US', {month: "long", day: "numeric"})
-
-    // ugh
-    if (this.weekStart.getDate() % 10 == 1 && this.weekStart.getDate() != 11)
-      output += "st"
-    else if (this.weekStart.getDate() % 10 == 2 && this.weekStart.getDate() != 12)
-      output += "nd"
-    else if (this.weekStart.getDate() % 10 == 3 && this.weekStart.getDate() != 13)
-      output += "rd"
-    else
-      output += "th"
-
-    return output;
+  getCourseIndexByID(courseID: String | null): number {
+    if (typeof courseID === null)
+      return -1;
+    for (let i=0; i < this.courses.length; i++) {
+      if (this.courses[i].id === courseID)
+        return i
+    }
+    return -1;
+  }
+  
+  /**
+   * Returns the course name of the course matching the given courseID
+   * @param courseID The courseID property of an assignment
+   * @return The name only (ex. "CSCE 355") of the corresponding course, or "unknown" if none found.
+   */
+  getCourseNameByID(courseID: String | null): String {
+    const courseIndex = this.getCourseIndexByID(courseID);
+    if (courseIndex < 0 || courseIndex >= this.courses.length)
+      return "unknown";
+    return this.courses[courseIndex].name.split('-')[0];
   }
 
-  // TODO implement logic to disable previous/next buttons at beginning/end of semester
+  /**
+   * Returns the color for a calendar item based on the given course ID
+   * @param courseID The associated course ID of an assignment
+   * @returns "background-color: <hex_code>", or "" if course not found
+   */
+  getStyleColorByID(courseID: String | null): String {
+    const courseIndex = this.getCourseIndexByID(courseID);
+    if (courseIndex < 0 || courseIndex >= this.courses.length || courseIndex >= this.ASSIGNMENT_COLORS.length)
+      return "background-color: " + this.ASSIGNMENT_COLORS[this.ASSIGNMENT_COLORS.length - 1];
+    return "background-color: " + this.ASSIGNMENT_COLORS[courseIndex];
+  }
+
+  /**
+   * Checks if an assignment should be marked as past due on the calendar.
+   * @param assignment The assignment to check
+   * @return true if assignment is incomplete and past due, false otherwise
+   */
+  checkPastDue(assignment: Assignment): boolean {
+    return (!assignment.complete && assignment.availability.adaptiveRelease.end.getTime() <= Date.now())
+  }
+
+  /**
+   * open the edit task or task popup
+   * @param assignment The assignment clicked on by the user
+   */
+  openPopup(assignment: Assignment): void {
+    this.showPopup = true;
+    this.openAssignment = assignment;
+    document.addEventListener('keydown', this.handleEscapeKey);
+  }
+
+  /**
+   * close the popup
+   */
+  closePopup(): void {
+    this.showPopup = false;
+    this.openAssignment = null;
+    document.removeEventListener('keydown', this.handleEscapeKey);
+  }
+
+  /**
+   * close the popup when the escape key is pressed
+   * @param event
+   */
+  private handleEscapeKey = (event: KeyboardEvent): void => {
+    if (event.key === 'Escape')
+      this.closePopup();
+  }
+
+  /**
+   * close the popup when the backdrop is clicked
+   * @param event
+   */
+  handleBackdropClick(): void {
+    this.closePopup();
+  }
 }

@@ -5,19 +5,26 @@
 
 
 :root {
-    font-family: Inter, sans-serif;
-    font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
-  }
-  @supports (font-variation-settings: normal) {
-    :root { font-family: InterVariable, sans-serif; }
-  }
-  body {
-    font-family: 'Montserrat', sans-serif;
-  }
+  font-family: Inter, sans-serif;
+  font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
+}
 
-  main {
-    background-color: #949494;
-  }
+@supports (font-variation-settings: normal) {
+  :root { font-family: InterVariable, sans-serif; }
+}
+
+html, body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #949494;
+  scrollbar-width: none;
+}
+::webkit-scrollbar {
+  display: none;
+}
+
+main {
+  background-color: #949494;
+}
 
 app-task-list, app-calender, app-grades {
   padding: 0 !important;

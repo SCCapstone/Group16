@@ -1,23 +1,76 @@
 <div class="assignment-list">
   <div class="assignment-header">
-      <div class="header-column" ><button class="checkmark-button" style = "color:red; border-color: red;" (click)="toggleView()">✔</button></div>
-      <div class="header-column">COURSE</div>
-      <div class="header-column">TITLE</div>
-      <div class="header-column">DUE</div>
-      <div class="header-column">MODIFY</div>
-      
+      <div class="header-column">
+        <button class="checkmark-button" style="color:red; border-color: red;" (click)="toggleView()">✔</button>
+      </div>
+      <div class="header-column">
+        <p>COURSE</p>
+        @if (this.sortedCategory === "course") {
+            @if (this.sortedAscending) {
+                <img src="images/sorting-asc.png" class="sort-icon" (click)="this.sortByCourse(false)" />
+            }
+            @else {
+                <img src="images/sorting-desc.png" class="sort-icon" (click)="this.sortByCourse(true)" />
+            }
+        }
+        @else {
+            <img src="images/sort.png" class="sort-icon faded" (click)="this.sortByCourse(true)" />
+        }
+      </div>
+      <div class="header-column">
+        <p>TITLE</p>
+        @if (this.sortedCategory === "title") {
+            @if (this.sortedAscending) {
+                <img src="images/sorting-asc.png" class="sort-icon" (click)="this.sortByTitle(false)" />
+            }
+            @else {
+                <img src="images/sorting-desc.png" class="sort-icon" (click)="this.sortByTitle(true)" />
+            }
+        }
+        @else {
+            <img src="images/sort.png" class="sort-icon faded" (click)="this.sortByTitle(true)" />
+        }
+      </div>
+      <div class="header-column">
+        <p>DUE</p>
+        @if (this.sortedCategory === "date") {
+            @if (this.sortedAscending) {
+                <img src="images/sorting-asc.png" class="sort-icon" (click)="this.sortByDate(false)" />
+            }
+            @else {
+                <img src="images/sorting-desc.png" class="sort-icon" (click)="this.sortByDate(true)" />
+            }
+        }
+        @else {
+            <img src="images/sort.png" class="sort-icon faded" (click)="this.sortByDate(true)" />
+        }
+      </div>
+      <div class="header-column">
+        <p>MODIFY</p>
+      </div>
   </div>
-  <div class="assignment-container">
-      @for (assignment of this.assignments[this.getIndex()]; track assignment.id) {
-          @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
-              <app-task
-              [assignment]="assignment"
-              [courseName]="this.getCourseNameByID(assignment.courseId)"
-              (taskRemoved)="onTaskRemoved($event)"
-              (taskUpdated)="onTaskUpdated($event)"
-              />
-          }
-      }
-  </div>
-
+  @defer {
+    <div class="assignment-container">
+        @for (assignment of this.assignments[this.getIndex()]; track assignment.id) {
+            @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
+                <app-task
+                [assignment]="assignment"
+                [courseName]="this.getCourseNameByID(assignment.courseId)"
+                (taskRemoved)="onTaskRemoved($event)"
+                (taskUpdated)="onTaskUpdated($event)"
+                />
+            }
+        }
+    </div>
+  }
+  @placeholder (minimum 0.5s) {
+    <div class="loader-container">
+        <div class="loader"></div>
+    </div>
+  }
+  @loading (minimum 0.5s) {
+    <div class="loader-container">
+        <div class="loader"></div>
+    </div>
+  }
 </div>

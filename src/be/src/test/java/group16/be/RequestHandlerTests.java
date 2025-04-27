@@ -180,8 +180,6 @@ public class RequestHandlerTests {
         var response3 = handler.getAssignments(largeString);
         // Verify the exception contains HttpStatus.NOT_FOUND
         assertEquals(HttpStatus.BAD_REQUEST, response3.getStatusCode());
-
-        //TODO: Test user without assignments
     }
 
     @Async
@@ -217,7 +215,6 @@ public class RequestHandlerTests {
     }
 
 
-    // TODO: Redo, this tests the scraper not the handler
     @Test 
     void testFindCourseById() {
         // Tests findCourseById
@@ -227,7 +224,6 @@ public class RequestHandlerTests {
         assertTrue(scraper.findByCourseId("123") == null);
     }
 
-    // TODO: Redo, this tests the scraper not the handler
     @Test
     void testFindAssignmentById() {
         // Tests findCourseById

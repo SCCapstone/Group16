@@ -1,5 +1,5 @@
 main{
-  background-color: #aaaaaa;
+  background-color: #949494;
   min-height: 100vh;
     color: black;
     font-size: 25px;
@@ -14,20 +14,29 @@ main{
 .username label,
 .password label {
   display: block;
-  margin-bottom: 5px; 
-  
+  margin-bottom: 5px;
+
 }
 
-  
-  .forms .username,
-  .forms .password,
-  .forms .submit {
-    margin: 40px 0; 
-  }
+.forms .username,
+.forms .password,
+.forms .submit {
+  margin: 40px 0;
+}
 
-  h1{
-    margin-top: 50px;
-    color: black;
-    font-size: 60px;
-  }
-  
+h1{
+  margin-top: 50px;
+  color: black;
+  font-size: 60px;
+}
+
+.submit{
+  justify-self: center;
+  padding-top: 10px;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+  font-size: 15px;
+}

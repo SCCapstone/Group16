@@ -25,20 +25,31 @@ export class TaskListComponent{
 
   loginService = inject(LoginService);
   courseService = inject(CourseService);
-  // assignmentService = inject(AssignmentService);
+  
   courses: Course[] = [];
   assignments: Assignment[][] = [ [], [] ];  // Active, complete
-  sortedAssignments: Assignment[] = [];
+  sortedCategory: String = ""                // Category currently being sorted by -- "title", "course", or "date"
+  sortedAscending: boolean = false;          // Whether the current sort is ascending or descending
 
+  /**
+   * Constructor for TaskListComponent that initializes the component and sets up the signal
+   * to run whenever the AssignmentService signal updates
+   * @param assignmentService Used to inject the AssignmentService into this component.
+   * @param cdr Angular's internal ChangeDetectorReference. Used to manually trigger change detection.
+   */
   constructor(private assignmentService: AssignmentService, private cdr: ChangeDetectorRef) {
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
     effect(() => {
       const signal = this.assignmentService.getUpdateSignal();  // Referencing the signal is necessary for it to work
-      console.log("SIGNAL RUN: Value " + signal);
+
       this.loadAssignments();                                   // Runs when service constructor finishes, no need to call twice
     })
   }
 
+  /**
+   * Populates the course list used to link an assignment to its course name by courseID.
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
+   */
    async ngOnInit() {
     // Populate course list with service call
     await this.courseService.getCourses(this.loginService.getUserId())
@@ -47,14 +58,29 @@ export class TaskListComponent{
     });
   }
 
-  private async loadAssignments() {
-    let retrievedAssignments = await this.assignmentService.getAssignments(this.loginService.getUserId());
-    retrievedAssignments.sort((a: Assignment, b: Assignment) => {
-      return new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime();
-    });
-    this.assignments = this.filterAssignments(retrievedAssignments);
+  /**
+   * ngOnChanges lifecycle hook that runs when the component receives new task
+   * @param changes
+   */
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes['newTask'] && this.newTask)
+      this.addNewTask(this.newTask);
   }
 
+  /**
+   * loadAssignments function that retrieves the assignments from the service
+   * and sorts them by their end date
+   */
+  private async loadAssignments() {
+    let retrievedAssignments = await this.assignmentService.getAssignments(this.loginService.getUserId());
+    this.assignments = this.filterAssignments(retrievedAssignments);
+    this.sortByDate(true);
+  }
+
+  /**
+   * filterAssignments function that filters the assignments into two lists: active and complete
+   * @param assignments
+   */
   filterAssignments(assignments: Assignment[]) {
     let newAssignments: Assignment[][] = [ [], [] ];
     for (const assignment of assignments) {
@@ -66,37 +92,114 @@ export class TaskListComponent{
     return newAssignments;
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if(changes['newTask'] && this.newTask) {
-      console.log('New task received:', this.newTask);
-      this.addNewTask(this.newTask);
-    }
+  /**
+   * Sorts the assignment list alphabetically based on assignment title. Ties are sorted by due date (always ascending).
+   * @param ascending True to sort in ascending order, false descending
+   */
+  sortByTitle(ascending: boolean) {
+    let sign = 1;
+    if (!ascending)
+      sign = -1;
+    this.assignments[ACTIVE].sort((a, b) => {
+      const compareResult = a.title.localeCompare(b.title);
+      if (compareResult == 0)
+        return (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+      return sign * compareResult;
+    });
+    this.assignments[COMPLETE].sort((a, b) => {
+      const compareResult = a.title.localeCompare(b.title);
+      if (compareResult == 0)
+        return (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+      return sign * compareResult;
+    });
+    this.sortedCategory = "title";
+    this.sortedAscending = ascending;
   }
 
-  addNewTask (task: Assignment) {
-    if (task) {
-      this.assignments[ACTIVE].push(task);
-      console.log('Updated assignments (ACTIVE):', this.assignments[ACTIVE]);
+  /**
+   * Sorts the assignment list based on course in the order courses appear in the course sidebar. Ties are sorted by due date (always ascending).
+   * @param ascending True to sort in ascending order, false descending
+   */
+  sortByCourse(ascending: boolean) {
+    let sign = 1;
+    if (!ascending)
+      sign = -1;
+    this.assignments[ACTIVE].sort((a, b) => {
+      const indexDifference = this.getCourseIndex(a) - this.getCourseIndex(b);
+      if (indexDifference === 0)
+        return (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+      return sign * indexDifference;
+    });
+    this.assignments[COMPLETE].sort((a, b) => {
+      const indexDifference = this.getCourseIndex(a) - this.getCourseIndex(b);
+      if (indexDifference === 0)
+        return (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+      return sign * indexDifference;
+    });
+    this.sortedCategory = "course";
+    this.sortedAscending = ascending;
+  }
+
+  /**
+   * Retrieves the index of the course matching the given assignment's courseID
+   * @param assignment Assignment to find the course of
+   * @returns Index of the matching course in the Course array.
+   */
+  private getCourseIndex(assignment: Assignment) {
+    for (let i=0; i < this.courses.length; i++) {
+      if (this.courses[i].id === assignment.courseId)
+        return i;
     }
+    return -1;
+  }
+
+  /**
+   * Sorts the assignment list based on date. Note: assignments are sorted by date in ascending order by default.
+   * @param ascending True to sort in ascending order, false descending
+   */
+  sortByDate(ascending: boolean) {
+    let sign = 1;
+    if (!ascending)
+      sign = -1;
+    this.assignments[ACTIVE].sort((a, b) => {
+      return sign * (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+    });
+    this.assignments[COMPLETE].sort((a, b) => {
+      return sign * (new Date(a.availability.adaptiveRelease.end).getTime() - new Date(b.availability.adaptiveRelease.end).getTime());
+    });
+    this.sortedCategory = "date";
+    this.sortedAscending = ascending;
+  }
+
+  /**
+   * addNewTask function that adds a new task to the list of assignments
+   * @param task
+   */
+  addNewTask (task: Assignment) {
+    if (task)
+      this.assignments[ACTIVE].push(task);
+
     this.assignments = [...this.assignments];
-    this.sortedAssignments = this.getSortedAssignments();
-    console.log('New list: ', this.assignments)
     this.cdr.detectChanges();
   }
 
+  /**
+   * removeTask function that removes a task from the list of assignments
+   * @param id
+   */
   onTaskRemoved(id: string) {
-    if(confirm('Are you sure?')) {
-      this.assignments = this.assignments.map(list =>
-        list.filter(assignment => assignment.id !== id)
-      )
+    this.assignments = this.assignments.map(list =>
+      list.filter(assignment => assignment.id !== id)
+    )
 
-      this.sortedAssignments = this.getSortedAssignments();
-      this.cdr.detectChanges();
-      } else {
-        return;
-      }
+    this.cdr.detectChanges();
   }
 
+
+  /**
+   * updateTask function that updates a task in the list of assignments
+   * @param updatedAssignment
+   */
   onTaskUpdated(updatedAssignment: Assignment) {
     this.assignments = this.assignments.map(list =>
       list.map(assignment =>
@@ -104,30 +207,33 @@ export class TaskListComponent{
       )
     );
 
-    this.sortedAssignments = this.getSortedAssignments();
     this.cdr.detectChanges();
   }
 
+  /**
+   * toggles the view of the assignments
+   */
   toggleView(): void {
     this.assignmentService.toggleViewCompleted();
   }
 
-  getSortedAssignments(): Assignment[] {
-    console.log('Sorted Assignments: ', this.assignments);
-    return [...this.assignments[this.getIndex()]].sort((a, b) =>
-      (new Date(a.availability.adaptiveRelease.end)).getTime() -
-      (new Date(b.availability.adaptiveRelease.end)).getTime());
-  }
-
-
+  /**
+   * gets the name of the course by its id
+   * @param id
+   * @returns name of the course with the given id
+   */
   getCourseNameByID(id: String): String {
     for (const course of this.courses) {
       if (course.id === id)
         return course.name
     }
-    return "Unknown";
+    return "";
   }
 
+  /**
+   * gets the index of the view completed assignments
+   * @returns view completed index
+   */
   getIndex() {
     return (this.assignmentService.getViewCompleted() ? 1 : 0);
   }

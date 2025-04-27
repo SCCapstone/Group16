@@ -1,33 +1,84 @@
-<h1>Week of {{ this.formatDate(this.weekStart) }}</h1>
-<div class="calendar-container">
-    @for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
-        <h1 class="day">{{ this.DAYS_OF_WEEK[$index] }}</h1>
-        <div class="calendar-element">
-            @if (countMatchingAssignments(dayAssignments, this.courseService.getSelectIndex()) > 0) {
-                @for (assignment of dayAssignments; track assignment.id) {
-                    @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
-                        <p>{{ assignment.title }} | {{ assignment.description }}</p>
-                    }
-                }
-            } @else {
-                <p>No assignments this week</p>
+<div class="calendar">
+    <div class="header-content">
+        <div class="navigation-row">
+            <div class="navigation-arrow" id="left">
+            @if (this.checkSemesterStart(this.weekStart)) {
+                <img class="disabled" src="images/left-arrow.png" alt="Back" />
             }
+            @else {
+                <img src="images/left-arrow.png" alt="Back" (click)="pageBack()" />
+            }
+            </div>
+            <div class="navigation-text">
+                <h1>{{ this.weekStart.toLocaleString('default', { month: 'long' }) }} {{ this.weekStart.getFullYear() }}</h1>
+            </div>
+            <div class="navigation-arrow" id="right">
+            @if (this.checkSemesterEnd(this.weekStart)) {
+                <img class="disabled" src="images/right-arrow.png" alt="Next" />
+            }
+            @else {
+                <img src="images/right-arrow.png" alt="Next" (click)="pageForward()" />
+            }
+            </div>
+        </div>
+        <div class="day-row">
+        @for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
+            <div class="day">
+                <h2>{{ this.calculateDateWithOffset($index) }}</h2>
+                <p>{{ this.DAYS_OF_WEEK[$index] }}</p>
+            </div>
+        }
+        </div>
+    </div>
+    @defer {
+        <div class="calendar-content">
+        @for (dayAssignments of this.weekAssignments; track this.weekAssignments.length) {
+            <div class="calendar-column">
+            @for (assignment of dayAssignments; track assignment.id) {
+                @if (this.courseService.getSelectIndex() === -1 || assignment.courseId === this.courses[this.courseService.getSelectIndex()].id) {
+                    <div class="calendar-item" [style]="this.getStyleColorByID(assignment.courseId)" (click)="this.openPopup(assignment)">
+                        <h3>{{ assignment.title }}</h3>
+                        @if (this.checkPastDue(assignment)) {
+                            <p class="urgent">{{ assignment.availability.adaptiveRelease.end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) }}</p>
+                            <img class="item-icon" src="images/urgent.png" />
+                        }
+                        @else {
+                            <p>{{ assignment.availability.adaptiveRelease.end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) }}</p>
+                        }
+
+                        @if (assignment.complete) {
+                            <img class="item-icon" src="images/checkmark.png">
+                        }
+                    </div>
+                }
+            }
+            </div>
+        }
         </div>
     }
-
-<!-- TODO Make buttons icons rather than text -->
-<div class="page-container">
-    <div id="lastWeekButton">
-        <button (click)="pageBack()" [disabled]="this.checkSemesterStart(this.weekStart)">Previous Week</button>
-    </div>
-    <div id="resetButton">
-        <button (click)="reset()" [disabled]="this.pageNumber == 0">Reset</button>
-    </div>
-    <div id="nextWeekButton">
-        <button (click)="pageForward()" [disabled]="this.checkSemesterEnd(this.weekStart)">Next Week</button>
-    </div>
+    @placeholder (minimum 0.5s) {
+        <div class="loader-container">
+            <div class="loader"></div>
+        </div>
+    }
+    @loading (minimum 0.5s) {
+        <div class="loader-container">
+            <div class="loader"></div>
+        </div>
+    }
 </div>
-
-
-
-
+<!-- Assignment popup, not part of base page -->
+@if (this.showPopup) {
+    <div class="popup-modal" (click)="handleBackdropClick()">
+        <div class="popup-content">
+            <span class="close" (click)="closePopup()">&times;</span>
+            <p class="assignmentPopup">
+                <span class="course" style="font-size: 25px;">{{ this.getCourseNameByID(this.openAssignment!.courseId) }} </span><br>
+                {{ openAssignment!.title }} <br>
+                <span class="due-date" style="color: #c30000"> <br> Due: <br>{{ this.openAssignment!.availability.adaptiveRelease.end | date: 'medium' }} </span><br> <br>
+                <span class="description" style="font-size: 25px;">Description: </span><br>
+                {{ openAssignment!.description}}
+            </p>
+        </div>
+    </div>
+}

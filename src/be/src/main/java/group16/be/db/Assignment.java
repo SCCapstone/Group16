@@ -1,5 +1,6 @@
 package group16.be.db;
 
+import java.time.Instant;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
@@ -98,6 +99,9 @@ public class Assignment {
     @JsonIgnore
     public String getDueDate() {
         return availability.adaptiveRelease.end;
+    }
+    public Instant getDueDateAsDate() {
+        return Instant.parse(availability.adaptiveRelease.end);
     }
     public Assignment setDueDate(String dueDate) {
         availability.adaptiveRelease.setEnd(dueDate);

@@ -1,10 +1,13 @@
-
 header{
   background-color: #949494;
   margin-bottom: -20px;
   padding-bottom: 20px;
   padding-left: 10px;
   padding-right: 18px;
+  /*
+  min-height: 12vh;
+  margin-top: -8px;
+  */
 }
 
 .div-line {
@@ -62,7 +65,6 @@ section {
 .popup-modal.show .popup-content {
   transform: translateX(0);
 }
-
 
 .close {
   position: absolute;

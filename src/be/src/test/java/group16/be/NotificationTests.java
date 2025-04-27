@@ -17,7 +17,7 @@ public class NotificationTests {
 
 	/* Listener Test Variables */
 	private final String REAL_USERID = "673fdd30cc2da4c3a3514fb7";
-	private final String REAL_GRADEID = "679d3e875a709c3bbfdb83a3";
+	private final String REAL_GRADEID = "67f72cc95fb8d6706e259b0a";
 
 	@Autowired
 	private APIScraper scraper;
@@ -84,7 +84,6 @@ public class NotificationTests {
 		System.out.println("Notification: " + user.getNotifications().peek());
 		assertTrue(user.getNotifications().size() > 0);
 	}
-
 
 	private void waitForListener() throws InterruptedException {
 		int retries = 10;
