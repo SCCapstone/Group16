@@ -41,7 +41,7 @@ Our testing is best done in Visual Studio Code.
 
 - Front End Unit Testing: You must have Chrome installed to run the FE tests. Once installed, run `ng test` in the `/src/fe-app` directory.
 - Back End Unit Testing: In the testing pannel hit play on `be` tab under `Java Test`. Unit tests will soon be deployed in RC1 in each PR before merging to main.
-- Behavioral Testing: In the command pannel install playwright using `>Install Playwright`. Then start the app locally in the `Group16` directory and run `./start`. Finally run in the testing pannel using the play button.
+- Behavioral Testing: In the `/src/fe-app` directory, run `npx playwright install` to install Playwright. Once installed, run tests from the same directory using `npx playwright test`.
 
 ## Authors
 
