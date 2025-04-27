@@ -68,10 +68,6 @@ export class EditTaskComponent implements OnInit {
           due: due ?? '', // Ensures correct date format
           time: time
         });
-
-        this.editTaskForm.get('course')?.valueChanges.subscribe(value => {
-          console.log(value);
-        })
       }
     }
     catch (error) {
@@ -95,8 +91,6 @@ export class EditTaskComponent implements OnInit {
     if (date && time) {
       dueDate = new Date(`${date}T${time}:00`);
     }
-
-    console.log(this.editTaskForm.value.course);
 
     try {
       await this.assignmentService.editTask(

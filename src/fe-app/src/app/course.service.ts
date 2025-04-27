@@ -34,7 +34,6 @@ export class CourseService {
         throw new Error('courses are []');
       }
 
-      console.log(data);
       return data;
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -60,7 +59,6 @@ export class CourseService {
         throw new Error('course is {}');
       }
 
-      console.log(data);
       return data;
     } catch (error: unknown) {
       if (error instanceof Error) {

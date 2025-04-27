@@ -2,8 +2,6 @@ export interface User {
   readonly id: string;
 }
 
-// this interface will be added to as new user info is required across the project
-// for now it will only have contact info
 export interface UserInfo {
   readonly id: string;
   name: Name;
@@ -35,5 +33,3 @@ export interface Notifications {
   message: string;
   timestamp: string;
 }
-
-// will need appearance settings for rc1

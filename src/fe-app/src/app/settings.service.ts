@@ -54,8 +54,6 @@ export class SettingsService {
         console.error(`POST failed: ${response.status}`);
         throw new Error(await response.text());
       }
-
-      console.log(response);
     }
     catch (error: unknown) {
       if (error instanceof Error)
@@ -86,8 +84,6 @@ export class SettingsService {
         console.error(`POST failed: ${response.status}`);
         throw new Error(await response.text());
       }
-
-      console.log(response);
     }
     catch (error: unknown) {
       if (error instanceof Error)
@@ -118,8 +114,6 @@ export class SettingsService {
         console.error(`POST failed: ${response.status}`);
         throw new Error(await response.text());
       }
-
-      console.log(response);
     }
     catch (error: unknown) {
       if (error instanceof Error) {
@@ -143,8 +137,6 @@ export class SettingsService {
       oldPassword: currentPassword ?? "NULL",
       newPassword: newPassword ?? "NULL"
     }).toString();
-
-    console.log("attempting password update with values " + currentPassword + ", " + newPassword);
 
     try {
       const response = await fetch(`${this.url}editPassword?${queryParams}`, {
@@ -185,10 +177,8 @@ export class SettingsService {
         method: 'POST'
       });
 
-      if(!response.ok) {
+      if(!response.ok)
         throw new Error(`POST failed: ${response.status}`);
-      }
-      console.log(response);
     }
     catch (error: unknown) {
       if (error instanceof Error) {
@@ -217,7 +207,6 @@ export class SettingsService {
       if(!response.ok) {
         throw new Error(`POST failed: ${response.status}`);
       }
-      console.log(response);
     }
     catch (error: unknown) {
       if (error instanceof Error) {

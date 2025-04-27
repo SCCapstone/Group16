@@ -46,12 +46,10 @@ export class MainComponent implements OnInit {
      */
     ngOnInit() {
         const userId = this.loginService.getUserId();
-        console.log('UserId from app: ' + userId);
-        if (userId) {
+        if (userId)
             this.heartbeatService.startHeartbeat(userId);
-        } else {
+        else
             console.warn('No user ID found');
-        }
     }
 
     /**
@@ -60,7 +58,6 @@ export class MainComponent implements OnInit {
      */
     handleNewTask(task: Assignment) {
       this.newTask = task;
-      console.log('handleNewTask called with task in main:', task);
     }
 
     /**

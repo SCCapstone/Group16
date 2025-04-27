@@ -34,10 +34,8 @@ export class CoursesSidebarComponent {
   selectCourse(index: number): void {
     if (index === this.courseService.getSelectIndex())
       this.courseService.deselectCourse();
-    else {
+    else
       this.courseService.selectCourse(index);
-      console.log("Selected Course ID: " + this.courses[index].id);
-    }
     this.assignmentService.incrementUpdateSignal();
   }
 

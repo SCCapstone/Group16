@@ -41,8 +41,6 @@ export class LoginService {
       const user: User = await response.json() ?? {};
       sessionStorage.setItem(this.USER_ID_KEY, user.id);
 
-      console.log(user);
-
       return user;
     } catch (error: unknown) {
       if (error instanceof Error) {

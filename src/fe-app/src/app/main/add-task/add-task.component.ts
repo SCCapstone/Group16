@@ -64,8 +64,6 @@ export class AddTaskComponent implements OnInit {
    * Show newly added task in a new task pop up
    */
   async addTask() {
-    console.log("AddTaskComponent - ADD TASK");
-
     if(this.addTaskForm.invalid) {
       this.errorMessage = 'Missing required field';
       return;
@@ -105,8 +103,7 @@ export class AddTaskComponent implements OnInit {
 
       this.newTask2 = { ...newTask };
       this.courseName = this.getCourseNameByID(this.newTask2.courseId);
-      console.log("new task course name: ", this.getCourseNameByID(this.newTask2.courseId));
-      console.log('Emitting new task:', newTask);
+      
       this.onTaskAdd.emit(newTask);
       this.showFormPopup = false;
 
@@ -131,8 +128,6 @@ export class AddTaskComponent implements OnInit {
    * Instead clears the form and allows users to keep adding tasks
    */
   async addMoreTasks() {
-    console.log("AddTaskComponent - ADD TASK");
-
     if(this.addTaskForm.invalid) {
       this.errorMessage = 'Missing required field';
       return;
@@ -172,8 +167,6 @@ export class AddTaskComponent implements OnInit {
 
       this.addTaskForm.reset();
       this.addTaskForm.patchValue({ time: '23:59' });
-
-      console.log('Emitting new task:', newTask);
       this.onTaskAdd.emit(newTask);
 
       this.errorMessage = null;
