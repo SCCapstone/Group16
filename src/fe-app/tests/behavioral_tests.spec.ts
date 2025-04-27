@@ -24,13 +24,10 @@ test('test_calendar', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Username:' }).press('Tab');
   await page.getByRole('textbox', { name: 'Password:' }).fill('admin');
   await page.getByRole('textbox', { name: 'Password:' }).press('Enter');
-  await page.getByRole('link', { name: 'task list icon' }).click();
   await page.getByRole('link', { name: 'calendar icon' }).click();
-  await page.getByRole('heading', { name: 'MONDAY' }).click();
-  await page.getByRole('button', { name: 'Next Week' }).click();
-  await page.getByRole('button', { name: 'Previous Week' }).click();
-  await page.getByRole('button', { name: 'Next Week' }).click();
-  await page.getByRole('button', { name: 'Reset' }).click();
+  await page.locator('.calendar-column').first().click();
+  await page.getByRole('img', { name: 'Next' }).click();
+  await page.getByRole('img', { name: 'Back' }).click();
 });
 
 test('test_grades', async ({ page }) => {
