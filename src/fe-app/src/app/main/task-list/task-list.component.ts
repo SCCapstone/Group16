@@ -50,9 +50,9 @@ export class TaskListComponent{
    * Populates the course list used to link an assignment to its course name by courseID.
    * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
    */
-   ngOnInit() {
+   async ngOnInit() {
     // Populate course list with service call
-    this.courseService.getCourses(this.loginService.getUserId())
+    await this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
       this.courses = courses;
     });
