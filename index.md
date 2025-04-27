@@ -25,7 +25,7 @@ Website: [classmate.osterholt.us](https://https://classmate.osterholt.us/)
 
 ## Final Video
 
-- Once recorded, final video will appear here.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VeqAH_-3Y6g?si=9x0lYJ-6x5PiAIL9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Link To Repo
 
