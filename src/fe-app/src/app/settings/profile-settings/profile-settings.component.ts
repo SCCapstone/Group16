@@ -8,8 +8,6 @@ import { SettingsService } from '../../settings.service';
 
 import { CommonModule } from '@angular/common';
 
-import { NotificationSettingsComponent } from '../notification-settings/notification-settings.component';
-
 @Component({
     selector: 'app-profile-settings',
     imports: [ReactiveFormsModule, CommonModule],
@@ -31,8 +29,6 @@ export class ProfileSettingsComponent {
   loginService = inject(LoginService);
   settingsService = inject(SettingsService);
 
-  readonly validatorSignal = computed(() => this.profileForm.valid);
-
   profileForm = new FormGroup({
     name: new FormControl("", Validators.required),
     school: new FormControl({ value: "", disabled: true }, [Validators.required, Validators.email]),
@@ -45,6 +41,10 @@ export class ProfileSettingsComponent {
 
   constructor(private cdr: ChangeDetectorRef) {}
 
+  /**
+   * Loads all profile settings through the SettingsService and populates form.
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
+   */
   ngOnInit() {
     // Load necessary settings from database and initialize form
     this.settingsService.getUserInfo(this.loginService.getUserId()).then((userInfo: UserInfo) => {
@@ -178,7 +178,4 @@ export class ProfileSettingsComponent {
       throw error;
     }
   }
-
-
-
 }

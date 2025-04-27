@@ -42,6 +42,12 @@ export class CalendarComponent {
 
   // INITIALIZATION
 
+  /**
+   * Determines the semester window and start of the current week used for the calendar's lifetime.
+   * Also establishes that the component should re-get and organize assignments from the AssignmentService when its signal is updated.
+   * @param assignmentService Injects the AssignmentService into this component.
+   * @param cdr Angular's internal ChangeDetectorReference. Used to manually trigger change detection.
+   */
   constructor(private assignmentService: AssignmentService, private cdr: ChangeDetectorRef) {
     const now: Date = new Date(Date.now());
     this.weekStart = this.getWeekStart(now);  // Store start of the current week
@@ -71,6 +77,10 @@ export class CalendarComponent {
     })
   }
 
+  /**
+   * Fetches the course list from the CourseService.
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
+   */
   ngOnInit() {
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
@@ -96,7 +106,7 @@ export class CalendarComponent {
   /**
    * Calculates the start of the week of the given date as defined by midnight of that week's Monday.
    * @param currentDate Any date
-   * @returns 12:00am on Monday of the provided date's corresponding week.
+   * @returns 12:00am on Monday of the provided date's corresponding week, in local time.
    */
   getWeekStart(currentDate: Date): Date {
     currentDate.setHours(0, 0, 0, 0);
@@ -108,7 +118,7 @@ export class CalendarComponent {
   // PERSISTENT
 
   /**
-   * Populates weekAssignments with all assignments due during the currently-selected week.
+   * Populates and organizes into days weekAssignments with all assignments due during the currently-selected week.
    */
   organizeWeekAssignments() {
     this.weekAssignments = [[], [], [], [], [], [], []]
@@ -136,7 +146,7 @@ export class CalendarComponent {
   }
 
   /**
-   * Moves calendar page forward by one week.
+   * Moves calendar page forward by one week and re-organizes the weekAssignments list
    */
   pageForward() {
     this.weekStart.setDate(this.weekStart.getDate() + 7);
@@ -145,7 +155,7 @@ export class CalendarComponent {
   }
 
   /**
-   * Moves calendar page back by one week
+   * Moves calendar page back by one week and re-organizes the weekAssignments list
    */
   pageBack() {
     this.weekStart.setDate(this.weekStart.getDate() - 7);
@@ -154,7 +164,7 @@ export class CalendarComponent {
   }
 
   /**
-   * Resets calendar page to the current week.
+   * Resets calendar page to the current week and re-organizes the weekAssignments list
    */
   reset() {
     this.weekStart = this.getWeekStart(new Date(Date.now()));

@@ -14,7 +14,7 @@ import { Course, Assignment, Grade } from '../../course';
     templateUrl: './secondary-sidebar.component.html',
     styleUrls: ['./secondary-sidebar.component.css']
 })
-export class SecondarySidebarComponent implements OnChanges {
+export class SecondarySidebarComponent {
   courses: Course[] = [];
   assignments: Assignment[] = [];
   grades: Grade[] = [];
@@ -25,8 +25,12 @@ export class SecondarySidebarComponent implements OnChanges {
   gradesService = inject(GradesService);
   router = inject(Router);
 
-  ngOnChanges(changes: SimpleChanges) {}
-
+  /**
+   * Establishes that component should re-get and organize assignments when AssignmentService signal is updated,
+   * and re-get grades when GradeService signal is updated.
+   * @param assignmentService Injects the AssignmentService into this component.
+   * @param cdr Angular's internal ChangeDetectorReference. Used to manually trigger change detection.
+   */
   constructor(private assignmentService: AssignmentService, private cdr: ChangeDetectorRef) {
 
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)

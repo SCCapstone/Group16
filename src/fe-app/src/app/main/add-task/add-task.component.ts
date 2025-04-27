@@ -45,6 +45,7 @@ export class AddTaskComponent implements OnInit {
 
   /**
    * On opening the addTask popup get the courses and set the time to 11:59PM
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
    */
   ngOnInit() {
     this.courseService.getCourses(this.loginService.getUserId())
@@ -60,8 +61,8 @@ export class AddTaskComponent implements OnInit {
   }
 
   /**
-   * Adds a task to the local list if API call to add a task is successful
-   * Show newly added task in a new task pop up
+   * Adds a task to the assignment list through the AssignmentService.
+   * On success, display a popup containing new assignment information.
    */
   async addTask() {
     if(this.addTaskForm.invalid) {
@@ -124,8 +125,8 @@ export class AddTaskComponent implements OnInit {
   }
 
   /**
-   * Does the same as addTask() except no new task pop up
-   * Instead clears the form and allows users to keep adding tasks
+   * Adds a task to the assignment list through the AssignmentService.
+   * On success, clear the form and allow the user to add subsequent tasks.
    */
   async addMoreTasks() {
     if(this.addTaskForm.invalid) {

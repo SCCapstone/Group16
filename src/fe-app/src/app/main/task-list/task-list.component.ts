@@ -32,10 +32,10 @@ export class TaskListComponent{
   sortedAscending: boolean = false;          // Whether the current sort is ascending or descending
 
   /**
-   * constructor for TaskListComponent that initializes the component and sets up the signal
+   * Constructor for TaskListComponent that initializes the component and sets up the signal
    * to run whenever the AssignmentService signal updates
-   * @param assignmentService
-   * @param cdr
+   * @param assignmentService Used to inject the AssignmentService into this component.
+   * @param cdr Angular's internal ChangeDetectorReference. Used to manually trigger change detection.
    */
   constructor(private assignmentService: AssignmentService, private cdr: ChangeDetectorRef) {
     // Set logic to run whenever the AssignmentService signal updates (e.g. its constructor finishes or an assignment is added)
@@ -47,12 +47,12 @@ export class TaskListComponent{
   }
 
   /**
-   * ngOnInit lifecycle hook that runs when the component is initialized
-   * populates the course list with a service call
+   * Populates the course list used to link an assignment to its course name by courseID.
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
    */
-   async ngOnInit() {
+   ngOnInit() {
     // Populate course list with service call
-    await this.courseService.getCourses(this.loginService.getUserId())
+    this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
       this.courses = courses;
     });

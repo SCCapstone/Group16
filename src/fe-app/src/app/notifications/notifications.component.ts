@@ -20,6 +20,10 @@ export class NotificationsComponent implements OnInit{
 
   constructor(private settingsService: SettingsService, private loginService: LoginService) {}
 
+  /**
+   * Retrieves user info and notification through the SettingsService.
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
+   */
   async ngOnInit() {
       this.userId = this.loginService.getUserId();
       this.userInfo = await this.settingsService.getUserInfo(this.userId);
