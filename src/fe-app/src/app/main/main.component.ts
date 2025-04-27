@@ -15,13 +15,12 @@ import { GradeCalcComponent } from "../grade-calc/grade-calc.component";
 
 @Component({
     selector: 'app-main',
-    standalone: true,
     templateUrl: './main.component.html',
     styleUrl: './main.component.css',
     imports: [
-    RouterOutlet, RouterModule, CoursesSidebarComponent, SecondarySidebarComponent, AddTaskComponent, CommonModule,
-    GradeCalcComponent
-]
+        RouterOutlet, RouterModule, CoursesSidebarComponent, SecondarySidebarComponent, AddTaskComponent, CommonModule,
+        GradeCalcComponent
+    ]
 })
 export class MainComponent implements OnInit {
     loginService = inject(LoginService);
@@ -30,54 +29,73 @@ export class MainComponent implements OnInit {
     newTask: Assignment | null = null;
     @ViewChild(TaskListComponent) taskListComponent!: TaskListComponent;
 
-    output: string | null = ''; // For testing purposes
-
     showPopup = false;
     popupType: 'add-task' |'grade-calc' | null = null;
 
     topThreeAssignments: Assignment[] = [];
 
-
+    /**
+     * Navigates the user to the task-list if they did not navigate to a recognized subroute of the main page.
+     */
     constructor() {
         if (this.router.url != "/main/task-list" && this.router.url != "/main/calendar" && this.router.url != "/main/grades") {
             this.router.navigateByUrl("/main/task-list");
         }
     }
 
+    /**
+     * Takes in a list of assignments and returns a list of three incomplete assignments with the closest due dates
+     * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
+     */
     ngOnInit() {
         const userId = this.loginService.getUserId();
-        console.log('UserId from app: ' + userId);
-        if (userId) {
+        if (userId)
             this.heartbeatService.startHeartbeat(userId);
-        } else {
+        else
             console.warn('No user ID found');
-        }
     }
 
-    // handleDueSoonAssignments(assignments: Assignment[]): void {
-    //     console.log('Top 3 Due Soon Assignments:', assignments);
-    //     this.topThreeAssignments = assignments;
-    // }
-
-    getUserId(): void {
-        console.log(this.loginService.getUserId());
-        if (this.loginService.getUserId()) {
-            this.output = this.loginService.getUserId();
-        }
-    }
-
+    /**
+     * Gets the new task from the AddTaskComponent and sets it to the newTask property
+     * @param task The task to be added
+     */
     handleNewTask(task: Assignment) {
       this.newTask = task;
-      console.log('handleNewTask called with task in main:', task);
     }
 
+    /**
+     * Opens a popup for adding a task or calculating grades
+     * @param type The type of popup to open
+     */
     openPopup(type: 'add-task' | 'grade-calc'): void {
         this.popupType = type;
         this.showPopup = true;
+        document.addEventListener('keydown', this.handleEscapeKey);
     }
 
+    /**
+     * Closes the popup and resets the popup type
+     */
     closePopup(): void {
         this.showPopup = false;
         this.popupType = null;
+        document.removeEventListener('keydown', this.handleEscapeKey);
+    }
+    /**
+     * Closes the popup when the escape key is pressed
+     * @param event
+     */
+    private handleEscapeKey = (event: KeyboardEvent): void => {
+      if (event.key === 'Escape') {
+        this.closePopup();
+      }
+    }
+
+    /**
+     * Closes the popup when the backdrop is clicked
+     * @param event
+     */
+    handleBackdropClick(event: Event): void {
+      this.closePopup();
     }
 }

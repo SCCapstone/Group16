@@ -15,6 +15,7 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,14 +29,27 @@ import group16.be.db.Assignment;
 import group16.be.db.Grade;
 import group16.be.db.User;
 
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+
 @RestController
 public class RequestHandler {
 
     @Autowired
     private APIScraper scraper;
 
-    @Autowired
     private static HeartbeatController heartbeatController;
+
+    @Autowired
+    public void setHeartbeatController(HeartbeatController heartbeatController) {
+        RequestHandler.heartbeatController = heartbeatController;
+    }
+
+    @Autowired
+    private NotificationManager notificationManager;
+
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * This method is to login or register a new user.
@@ -46,20 +60,44 @@ public class RequestHandler {
      */
     @CrossOrigin
     @PostMapping("/api/login")
-    public ResponseEntity<?> login(@RequestParam(value = "username", defaultValue = "NAME") String username, @RequestParam(value = "password", defaultValue = "NULL") String password) {
+    public ResponseEntity<?> login(@RequestParam(value = "username", defaultValue = "NAME") String username, 
+                                   @RequestParam(value = "password", defaultValue = "NULL") String password,
+                                   HttpServletResponse response,
+                                   @CookieValue(value = "auth-token", required = false) String authToken) {
+        // Check if the user has a valid auth token
+        if(authToken != null && tokenService.validateToken(authToken)) {
+            String userId = tokenService.getAuthentication(authToken).getName();
+            if(userId != null && validateUserId(userId).getStatusCode() == HttpStatus.OK) {
+                HashMap<String, String> ret = new HashMap<>();
+                ret.put("id", userId);
+                return ResponseEntity.ok(ret);
+            }
+        }
+
         if(username == null || username.equals("NAME"))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username is missing or invalid");
         if(password == null || password.equals("NULL"))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password is missing or invalid");
         
-        String id = scraper.login(username, password); 
-        if(id.startsWith("Error: Multiple")) 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(id);
-        else if (id.equals("Error: Invalid Credentials"))
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(id);
+        String userId = scraper.login(username, password); 
+        if(userId.startsWith("Error: Multiple")) 
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userId);
+        else if (userId.equals("Error: Invalid Credentials"))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(userId);
+
+        // Generate JWT
+        String token = tokenService.generateToken(userId);
+
+        // Create cookie
+        Cookie cookie = new Cookie("auth-token", token);
+        cookie.setHttpOnly(true);   
+        cookie.setPath("/"); // Set the path for the cookie
+        cookie.setMaxAge(7 * 60 * 60 * 24); // Set the cookie to expire in 7 day
+        
+        response.addCookie(cookie); // Add the cookie to the response
 
         HashMap<String, String> ret = new HashMap<>();
-        ret.put("id", id);
+        ret.put("id", userId);
 
         return ResponseEntity.ok(ret);
     }
@@ -277,6 +315,14 @@ public class RequestHandler {
         if(!scraper.isUserId(userId) || !scraper.isCourseId(courseId) || !scraper.isAssignmentId(assignmentId))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course ID, assignment ID, or user ID is invalid");
 
+        // Search for existing Assignment.
+        var assignments = scraper.getAssignments(userId);
+        for (var assignment : assignments) {
+            // Assignment already exists. Returning HTTP error.
+            if (assignment.getCourseId().equals(courseId) && assignment.getTitle().equalsIgnoreCase(title))
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Assignment already exists");
+        }
+
         var assignment = scraper.findByAssignmentId(assignmentId);
         if(assignment == null) 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Assignment not found");
@@ -456,6 +502,27 @@ public class RequestHandler {
     }
 
     /**
+     * This method is to clear a user's notifications
+     * @param userId
+     * @return True if the notifications were successfully cleared
+     */
+    @CrossOrigin
+    @PostMapping("/api/clearNotifications")
+    public ResponseEntity<?> clearNotifications(@RequestParam(value = "userId", defaultValue = "NULL") String userId) {
+        if(userId == null || userId.equals("NULL")) 
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID is missing or invalid");
+        if(validateUserId(userId).getStatusCode() != HttpStatus.OK)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with that Id exists");
+        
+        var user = scraper.getUser(userId);
+        user.clearNotifications();
+        if(scraper.saveUser(user))
+            return ResponseEntity.ok(user);
+        else
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving user");
+    }
+
+    /**
      * This method updates a user's preferred name
      * @param userId the user's ID
      * @param preferredName the user's new name
@@ -547,6 +614,27 @@ public class RequestHandler {
             return ResponseEntity.ok(user);
         else
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving user");
+    }
+
+    /**
+     * Sends a notification to a user
+     * @param userId
+     * @param message
+     * @return
+     */
+    @CrossOrigin
+    @GetMapping("/api/sendNotification")
+    public ResponseEntity<?> sendNotification(@RequestParam(value = "userId", defaultValue = "NULL") String userId, 
+                                              @RequestParam(value = "message", defaultValue = "NULL") String message) {
+        if(userId == null || userId.equals("NULL"))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User ID is missing or invalid");
+        if(validateUserId(userId).getStatusCode() != HttpStatus.OK)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No user with that Id exists");
+        if(message == null || message.equals("NULL"))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Message is missing or invalid");
+        if(!notificationManager.sendNotification(userId, message))
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error sending notification");
+        return ResponseEntity.ok().build();
     }
 
     /* ---------------------- Private Methods ---------------------- */

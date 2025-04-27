@@ -3,8 +3,19 @@ main {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #aaaaaa;
+    background-color: #949494;
 }
+
+.top-right-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+  
 
 .content {
     display: flex;
@@ -16,21 +27,21 @@ main {
 }
   
 img {
-    width: 140%;
+    width: 115%;
     height: auto;
 }
 
 h1{
-    font-size: 45px;
+    font-size: 40px;
     color: black;
 }
 
 button {
-    font-size: 20px;
-    padding: 15px 30px;
+    font-size: 22px;
+    padding: 10px 20px;
     border-radius: 10px;
     cursor: pointer;
-    margin-top: 65px;
+    margin-top: 40px;
     color:black;
     border-color: black;
 }

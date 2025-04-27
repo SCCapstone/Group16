@@ -1,4 +1,4 @@
-import { Component, inject, Output, EventEmitter } from '@angular/core';
+import { Component, inject, Output, EventEmitter, OnInit, NgZone } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Assignment, Course } from '../../course';
 import { CourseService } from '../../course.service';
@@ -8,13 +8,12 @@ import { AssignmentService } from '../../assignment.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-add-task',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './add-task.component.html',
-  styleUrl: './add-task.component.css'
+    selector: 'app-add-task',
+    imports: [ReactiveFormsModule, CommonModule],
+    templateUrl: './add-task.component.html',
+    styleUrl: './add-task.component.css'
 })
-export class AddTaskComponent {
+export class AddTaskComponent implements OnInit {
   @Output() closePopup = new EventEmitter<void>();
   @Output() onTaskAdd = new EventEmitter<Assignment>();
 
@@ -24,52 +23,60 @@ export class AddTaskComponent {
   courses: Course[] = [];
   route: ActivatedRoute = inject(ActivatedRoute);
   router = inject(Router);
+  private ngZone = inject(NgZone);
   showPopup = false;
   newTask2: Assignment | null = null;
   popupType: 'new-task' | null = null;
-  showFormPopup = true;   
-  showTaskPopup = false;    
+  showFormPopup = true;
+  showTaskPopup = false;
   courseName: String | undefined;
+  errorMessage: string | null = null;
+  successMessage: string | null = null;
 
   addTaskForm = new FormGroup ({
     title: new FormControl('', Validators.required),
     description: new FormControl(''),
     course: new FormControl('', Validators.required),
-    due: new FormControl('', Validators.required)
+    due: new FormControl('', Validators.required),
+    time: new FormControl('', Validators.required)
   });
 
-  // name: string = "";
-  // description: string = "";
-  // course: string = "";
-  // // course: undefined; // TODO update type to Course when interface is created
-  // due: Date = new Date();
+  constructor() {}
 
-  // displayOutput: boolean = false;  // TODO for testing, remove later
-
-  constructor() {
+  /**
+   * On opening the addTask popup get the courses and set the time to 11:59PM
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
+   */
+  ngOnInit() {
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {
       this.courses = courses;
     })
+
+    const defaultTime = '23:59';
+
+    this.addTaskForm.patchValue({
+      time: defaultTime
+    });
   }
 
-
+  /**
+   * Adds a task to the assignment list through the AssignmentService.
+   * On success, display a popup containing new assignment information.
+   */
   async addTask() {
-    console.log("AddTaskComponent - ADD TASK");
-
     if(this.addTaskForm.invalid) {
-      alert('Missing required field')
+      this.errorMessage = 'Missing required field';
       return;
     }
 
     let dueDate: Date | null = null;
 
+    const date = this.addTaskForm.value.due;
+    const time = this.addTaskForm.value.time;
 
-
-    if (this.addTaskForm.value.due) {
-      const selectedDate = new Date(this.addTaskForm.value.due);
-      selectedDate.setMinutes(selectedDate.getMinutes() + selectedDate.getTimezoneOffset()); // Adjust back to UTC
-      dueDate = selectedDate;
+    if (date && time) {
+      dueDate = new Date(`${date}T${time}:00`);
     }
 
     try {
@@ -95,7 +102,58 @@ export class AddTaskComponent {
         userCreated: false
       };
 
-      this.newTask2 = {
+      this.newTask2 = { ...newTask };
+      this.courseName = this.getCourseNameByID(this.newTask2.courseId);
+      
+      this.onTaskAdd.emit(newTask);
+      this.showFormPopup = false;
+
+      this.showTaskPopup = true;
+      this.popupType = 'new-task';
+      this.errorMessage = null;
+
+    } catch (error) {
+      console.error('Add task failed', error);
+      this.errorMessage = 'An error occurred while adding the task. Please try again.';
+
+      if(error instanceof Error) {
+        if(error.message.includes('400')) {
+          this.errorMessage = 'Duplicate task. Please try again.';
+        }
+      }
+    }
+  }
+
+  /**
+   * Adds a task to the assignment list through the AssignmentService.
+   * On success, clear the form and allow the user to add subsequent tasks.
+   */
+  async addMoreTasks() {
+    if(this.addTaskForm.invalid) {
+      this.errorMessage = 'Missing required field';
+      return;
+    }
+
+    let dueDate: Date | null = null;
+
+    const date = this.addTaskForm.value.due;
+    const time = this.addTaskForm.value.time;
+
+    if (date && time) {
+      dueDate = new Date(`${date}T${time}:00`);
+    }
+
+    try {
+      await this.assignmentService.addTask(
+        this.addTaskForm.value.title ?? '',
+        this.addTaskForm.value.description ?? '',
+        dueDate ?? new Date(Date.now()),
+        this.loginService.getUserId() ?? "",
+        this.addTaskForm.value.course ?? ''
+      )
+
+      // Temporary task with displayed info to display immediately after adding
+      const newTask: Assignment = {
         id: crypto.randomUUID(),
         userId: this.loginService.getUserId() ?? '',
         title: this.addTaskForm.value.title ?? '',
@@ -107,33 +165,59 @@ export class AddTaskComponent {
         },
         userCreated: false
       };
-      this.courseName = this.getCourseNameByID(this.newTask2.courseId);
-      console.log("new task course name: ", this.getCourseNameByID(this.newTask2.courseId));
-      console.log('Emitting new task:', newTask);
+
+      this.addTaskForm.reset();
+      this.addTaskForm.patchValue({ time: '23:59' });
       this.onTaskAdd.emit(newTask);
-     this.showFormPopup = false;
 
-     this.showTaskPopup = true;
-     this.popupType = 'new-task';
+      this.errorMessage = null;
+      this.successMessage = 'Task added successfully!';
 
-   } catch (error) {
-     console.error('Add task failed', error);
-   }
- }
+      this.ngZone.runOutsideAngular(() => {
+        setTimeout(() => {
+          // Re-enter Angular zone to trigger change detection
+          this.ngZone.run(() => {
+            this.successMessage = null;
+          });
+        }, 3000);
+      });
 
- closeFormPopup(): void {
-   this.showFormPopup = false;
- }
+    } catch (error) {
+      console.error('Add task failed', error);
+      this.errorMessage = 'An error occurred while adding the task. Please try again.';
 
- closeTaskPopup(): void {
-   this.showTaskPopup = false;
- }
-
- getCourseNameByID(id: String): String {
-  for (const course of this.courses) {
-    if (course.id === id)
-      return course.name
+      if(error instanceof Error) {
+        if(error.message.includes('400')) {
+          this.errorMessage = 'Duplicate task. Please try again.';
+        }
+      }
+    }
   }
-  return "Unknown";
-}
+
+  /**
+   * Closes the Add Task form pop up
+   */
+  closeFormPopup(): void {
+    this.showFormPopup = false;
+  }
+
+  /**
+   * Close the New Task pop up
+   */
+  closeTaskPopup(): void {
+    this.showTaskPopup = false;
+  }
+
+  /**
+   * gets the course name by its id
+   * @param id Course Id
+   * @returns Course Name
+   */
+  getCourseNameByID(id: String): String {
+    for (const course of this.courses) {
+      if (course.id === id)
+        return course.name
+      }
+    return "Unknown";
+  }
 }

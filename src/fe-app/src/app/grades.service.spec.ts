@@ -78,6 +78,6 @@ describe('GradesService', () => {
       .toBeResolved();
 
     expect(fetchSpy).toHaveBeenCalledWith('https://classmate.osterholt.us/api/setGrade?gradeId=789&percent=90',
-    Object({ method: 'PUT' }));
+    Object({ method: 'POST' }));
   });
 });

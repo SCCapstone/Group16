@@ -1,2 +1,19 @@
-<p>notifications works!</p>
-<button routerLink="/main">Back to Main Page</button>
+<div id = "container">
+  <h2>NOTIFICATIONS</h2>
+  <div *ngIf="userInfo?.notifications?.length">
+      <p *ngFor="let notification of this.notifications">
+        {{ notification.timestamp | date:'mediumDate' }} <br> <span class = "time" style = "  font-style: italic;">{{ notification.timestamp | date:'shortTime' }} </span>
+        <br><span class= "time" style = "color: #c30000;" >{{ notification.message }} </span>
+        <br>
+      </p>
+  </div>
+
+  <div *ngIf="!userInfo?.notifications?.length">
+    <p>No notifications available.</p>
+  </div>
+
+  <div *ngIf="notifications?.length">
+    <button (click)="clearNotifications()">Clear Notifications</button>
+  </div>
+</div>
+

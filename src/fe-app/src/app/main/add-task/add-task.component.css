@@ -7,6 +7,7 @@ label {
   margin-bottom: 5px;
   margin-top: 10px;
   margin-left: 10px;
+  font-size: 20px;
 }
 
 input, select {
@@ -33,3 +34,37 @@ h3{
   color:#c30000;
 }
 
+a {
+  cursor: pointer;
+  text-decoration: underline !important;
+  color: #c30000 !important;
+  margin-left: 12px;
+}
+
+#description {
+  max-width: 100%;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.button-container a {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+.success {
+  color: #454545;
+  margin-top: 10px;
+  font-size: 15px;
+}

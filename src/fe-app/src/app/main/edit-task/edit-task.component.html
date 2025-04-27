@@ -8,6 +8,9 @@
   <label for="due">Due Date:</label>
   <input id="due" type="date" formControlName="due">
 
+  <label for="time">Due Time:</label>
+  <input id="time" type="time" formControlName="time">
+
   <label for="course">Course:</label>
   <select id="course" formControlName="course">
     <option value="" disabled></option>
@@ -16,5 +19,8 @@
     </option>
   </select>
 
-  <button type="submit">Edit Task</button>
+  <div class="form-button">
+    <button type="submit">Save</button>
+  </div>
 </form>
+<span class="error">{{ errorMessage }}</span>

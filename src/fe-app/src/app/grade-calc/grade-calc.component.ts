@@ -5,11 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-grade-calc',
-  standalone: true,
-  imports: [RouterModule, FormsModule, CommonModule],
-  templateUrl: './grade-calc.component.html',
-  styleUrl: './grade-calc.component.css'
+    selector: 'app-grade-calc',
+    imports: [RouterModule, FormsModule, CommonModule],
+    templateUrl: './grade-calc.component.html',
+    styleUrl: './grade-calc.component.css'
 })
 export class GradeCalcComponent {
   assignments: { name: string; grade: number; weight: number }[] = [];
@@ -18,6 +17,9 @@ export class GradeCalcComponent {
     this.loadAssignments();
   }
 
+  /**
+   * Retrieves all assignments from local storage and loads them into the component
+   */
   loadAssignments(): void {
     const savedAssignments = localStorage.getItem('assignments');
     if (savedAssignments) {
@@ -27,10 +29,16 @@ export class GradeCalcComponent {
     }
   }
 
+  /**
+   * Saves added grades in the current session so that if the user closest and re-opens the calculator they persist
+   */
   saveAssignments(): void {
     localStorage.setItem('assignments', JSON.stringify(this.assignments));
   }
 
+  /**
+   * Clears the assignment list and resets grade calculator to defaults
+   */
   resetAssignments(): void {
     this.assignments = [
       { name: 'Homework', grade: 0, weight: 0 },
@@ -41,14 +49,10 @@ export class GradeCalcComponent {
     this.saveAssignments();
   }
 
-  // assignments: { name: string; grade: number; weight: number }[] = [
-  //   { name: 'Homework', grade: 0, weight: 0 },
-  //   { name: 'Quizzes', grade: 0, weight: 0 },
-  //   { name: 'Midterm', grade: 0, weight: 0 },
-  //   { name: 'Final', grade: 0, weight: 0 }
-  // ];
-
-
+  /**
+   * Calculates the final grade of a course using the given grades and weights
+   * @returns A positive number representing the final grade as a percentage.
+   */
   calculateFinalGrade(): number {
     let totalWeight = 0;
     let weightedSum = 0;

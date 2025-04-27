@@ -8,11 +8,10 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-edit-task',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './edit-task.component.html',
-  styleUrl: './edit-task.component.css'
+    selector: 'app-edit-task',
+    imports: [CommonModule, ReactiveFormsModule],
+    templateUrl: './edit-task.component.html',
+    styleUrl: './edit-task.component.css'
 })
 export class EditTaskComponent implements OnInit {
   @Input () assignment! : Assignment;
@@ -24,15 +23,27 @@ export class EditTaskComponent implements OnInit {
   courseService = inject(CourseService);
   assignmentService = inject(AssignmentService);
   courses: Course[] = [];
+  errorMessage: string | null = null;
 
   editTaskForm = new FormGroup ({
     title: new FormControl('', Validators.required),
     description: new FormControl(''),
     course: new FormControl('', Validators.required),
-    due: new FormControl('', Validators.required)
+    due: new FormControl('', Validators.required),
+    time: new FormControl('', Validators.required)
   });
 
-  async ngOnInit() {
+  constructor() {}
+
+  /**
+   * Initializes the form with the assignment data if available
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
+   */
+  ngOnInit() {
+    this.courseService.getCourses(this.loginService.getUserId())
+    .then((courses: Course[]) => {
+      this.courses = courses;
+    })
 
     try {
       if (this.assignment) {
@@ -40,34 +51,34 @@ export class EditTaskComponent implements OnInit {
         ? new Date(this.assignment.availability.adaptiveRelease.end)
         : null;
 
+        let due = '';
+        let time = '';
+
         if (dueDate) {
-          dueDate.setMinutes(dueDate.getMinutes() - dueDate.getTimezoneOffset()); // Adjust to local timezone
+          const year = dueDate.getFullYear();
+          const month = String(dueDate.getMonth() + 1).padStart(2, '0');
+          const day = String(dueDate.getDate()).padStart(2, '0');
+          due = `${year}-${month}-${day}`;
+          time = dueDate.toTimeString().slice(0, 5);
         }
 
         this.editTaskForm.patchValue({
           title: this.assignment.title ?? '',
           description: this.assignment.description ?? '',
           course: this.assignment.courseId ?? '',
-          due: dueDate ? dueDate.toISOString().split('T')[0] : '' // Ensures correct date format
+          due: due ?? '', // Ensures correct date format
+          time: time
         });
-
-        this.editTaskForm.get('course')?.valueChanges.subscribe(value => {
-          console.log(value);
-        })
       }
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error fetching assignments:', error);
     }
   }
 
-  constructor() {
-    this.courseService.getCourses(this.loginService.getUserId())
-    .then((courses: Course[]) => {
-      this.courses = courses;
-    })
-  }
-
-
+  /**
+   * Handles the form submission to edit a task
+   */
   async editTask() {
     if(this.editTaskForm.invalid) {
       return;
@@ -75,13 +86,12 @@ export class EditTaskComponent implements OnInit {
 
     let dueDate: Date | null = null;
 
-    if (this.editTaskForm.value.due) {
-      const selectedDate = new Date(this.editTaskForm.value.due);
-      selectedDate.setMinutes(selectedDate.getMinutes() + selectedDate.getTimezoneOffset()); // Adjust back to UTC
-      dueDate = selectedDate;
-    }
+    const date = this.editTaskForm.value.due;
+    const time = this.editTaskForm.value.time;
 
-    console.log(this.editTaskForm.value.course);
+    if (date && time) {
+      dueDate = new Date(`${date}T${time}:00`);
+    }
 
     try {
       await this.assignmentService.editTask(
@@ -108,6 +118,13 @@ export class EditTaskComponent implements OnInit {
       this.close.emit(updatedAssignment);
     } catch(error) {
       console.error('Edit task failed', error);
+      this.errorMessage = 'An error occurred while editing the task. Please try again.';
+
+      if(error instanceof Error) {
+        if(error.message.includes('400')) {
+          this.errorMessage = 'Duplicate task. Please try again.';
+        }
+      }
     }
   }
 }

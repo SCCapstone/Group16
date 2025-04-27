@@ -1,70 +1,53 @@
 package group16.be;
 
-import java.util.Properties;
+import java.util.HashMap;
 
-import group16.be.db.User;
-import jakarta.mail.Authenticator;
-import jakarta.mail.Message;
-import jakarta.mail.MessagingException;
-import jakarta.mail.Multipart;
-import jakarta.mail.PasswordAuthentication;
-import jakarta.mail.Session;
-import jakarta.mail.Transport;
-import jakarta.mail.internet.AddressException;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeBodyPart;
-import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.internet.MimeMultipart;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
 
+@Service
 public class EmailController {
-    
-    public static void sendEmail(User user) throws AddressException, MessagingException {
-        String username = System.getenv("MAIL_SMTP_USERNAME");
-        String password = System.getenv("MAIL_SMTP_PASSWORD");
-        String host = System.getenv("MAIL_SMTP_HOST");
-        String port = System.getenv("MAIL_SMTP_PORT");
-        
-        Properties prop = new Properties();
-        prop.put("mail.smtp.auth", true);
-        prop.put("mail.smtp.starttls.enable", "true");
-        prop.put("mail.smtp.host", host);
-        prop.put("mail.smtp.port", port);
-        prop.put("mail.smtp.ssl.trust", host);
-        Session session = Session.getInstance(prop, new Authenticator() {
+    @Value("${spring.mail.username}")
+    private String from;
 
-/**
- * Provides the username and password for email authentication.
- *
- * @return a PasswordAuthentication object containing the email username and password
- */
+    @Autowired
+    private JavaMailSender mailSender;
 
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
-            }
-        });
+    private HashMap<String, String> CARRIERS  = new HashMap<String, String>() {{
+        put("AT&T", "value1");
+        put("T-Mobile", "value2");
+        put("Verizon", "value2");
+    }};
 
+    /**
+     * Sends an email to the specified recipient with the given subject and body.
+     *
+     * @param to      the recipient's email address
+     * @param subject the subject of the email
+     * @param body    the body of the email
+     */
+    public void sendEmail(String to, String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
+        message.setFrom(from);    
 
-        Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress("from@trial-zr6ke4nd9y9gon12.mlsender.net"));
-        message.setRecipients(
-            Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
-        message.setSubject("Mail Subject");
-        String msg = "This is my first email using JavaMailer";
-
-        MimeBodyPart mimeBodyPart = new MimeBodyPart();
-        mimeBodyPart.setContent(msg, "text/html; charset=utf-8");
-
-        Multipart multipart = new MimeMultipart();
-        multipart.addBodyPart(mimeBodyPart);
-
-        message.setContent(multipart);
-
-        Transport.send(message);
-        
+        mailSender.send(message);
     }
 
-    public static void sendEmail(String emailAddress, String message) throws AddressException, MessagingException {
-        throw new UnsupportedOperationException("Not supported yet.");   
+    /**
+     * Sends a text message to the specified recipient with the given subject and body.
+     *
+     * @param userId    the recipient's userId
+     * @param subject   the subject of the text message
+     * @param body      the body of the text message
+     */
+    public void sendTextMessage(String carrier, String subject, String body) {
+        String carrierEmail = CARRIERS.get(carrier);
+        sendEmail(carrierEmail, subject, body);
     }
 }

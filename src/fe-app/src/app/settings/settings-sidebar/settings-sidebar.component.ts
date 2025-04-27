@@ -1,14 +1,15 @@
+// NOTE: This component is currently unused and may be removed in the future. It is a remnant of our old settings layout.
+
 import { Component } from '@angular/core';
 
 import { Router, RouterModule } from '@angular/router';
 import { inject } from '@angular/core';
 
 @Component({
-  selector: 'app-settings-sidebar',
-  standalone: true,
-  imports: [RouterModule],
-  templateUrl: './settings-sidebar.component.html',
-  styleUrl: './settings-sidebar.component.css'
+    selector: 'app-settings-sidebar',
+    imports: [RouterModule],
+    templateUrl: './settings-sidebar.component.html',
+    styleUrl: './settings-sidebar.component.css'
 })
 export class SettingsSidebarComponent
 {
@@ -20,6 +21,9 @@ export class SettingsSidebarComponent
     this.getSelectedPageFromURL();
   }
 
+  /**
+   * Returns the currently-selected settings page index based on the given URL, or none if URL is unrecognized.
+   */
   getSelectedPageFromURL() {
     switch (this.router.url) {
       case ("/settings/appearance"):
@@ -37,10 +41,19 @@ export class SettingsSidebarComponent
     }
   }
 
+  /**
+   * Selects the page corresponding to the given index.
+   * @param index Index of a page in the list.
+   */
   selectPage(index: number) {
     this.selectedPage = index;
   }
 
+  /**
+   * Retrieves the CSS class of an item in the page list for styling purposes.
+   * @param index Index of the selected page in the list.
+   * @returns "option selected" if selected,  "option" otherwise
+   */
   getStyle(index: number): string {
     if (index === this.selectedPage)
       return "option selected";

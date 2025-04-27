@@ -45,8 +45,8 @@ Our testing is best done in Visual Studio Code.
 
 ## Authors
 
-- Ava Turner - <AVART@email.sc.edu>
-- Cam Osterholt - <OSTERHOC@email.sc.edu>
-- Cayden Scruggs - <CSCRUGGS@email.sc.edu>
-- Fred Schein - <FSCHEIN@email.sc.edu>
-- Michael Pikula - <MPIKULA@email.sc.edu>
+- Ava Turner - <AVART@email.sc.edu> (www.linkedin.com/in/avaturner03)
+- Cam Osterholt - <OSTERHOC@email.sc.edu> (www.linkedin.com/in/camosterholt/)
+- Cayden Scruggs - <CSCRUGGS@email.sc.edu> (www.linkedin.com/in/cayden-scruggs-a76a3326b/)
+- Fred Schein - <FSCHEIN@email.sc.edu> (www.linkedin.com/in/fschein/)
+- Michael Pikula - <MPIKULA@email.sc.edu> (www.linkedin.com/in/michaelpikula/)

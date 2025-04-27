@@ -1,11 +1,16 @@
 package group16.be;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.mongodb.client.model.changestream.ChangeStreamDocument;
 
+import group16.be.db.Assignment;
 import group16.be.db.User;
 
 /**
@@ -18,7 +23,11 @@ public class NotificationManager {
     @Autowired
     private APIScraper scraper;
 
+    @Autowired
+    private EmailController emailController;
+
     public void parseChange(ChangeStreamDocument<Document> change) {
+        System.out.println("DEBUG: parseChange: " + change.toString());
         switch (change.getOperationType().getValue()) {
             case "insert":
                 System.out.println("DEBUG: INSERT");
@@ -52,21 +61,18 @@ public class NotificationManager {
 
     public boolean sendNotification(User user, String message) {
         user.addNotification(message);
-        var ret = true;
 
         if (user.getEmailNotifications()) {
-            //TODO: Send email.
+            emailController.sendEmail(user.getEmail(), "Notification from ClassMATE", message);
         }
         if (user.getInstitutionEmailNotifications()) {
-            //TODO: Send university email.
+            emailController.sendEmail(user.getInstitutionEmail(), "Notification from ClassMATE", message);
         }
         if (user.getSmsNotifications()) {
-            //TODO: Send SMS.
+            // Not implemented yet
         }
-        if(ret) {
-            scraper.saveUser(user);
-        }
-        return ret; 
+        
+        return scraper.saveUser(user);
     }
 
     public boolean clearNotifications(String userId) {
@@ -93,7 +99,6 @@ public class NotificationManager {
         var changeCollection = change.getNamespace().getCollectionName();
         
         if(changeCollection.equals("grades")) {
-            // TODO: Are we sending the percent in the notification?
             var grade = scraper.getGradeByGradeId(changeId);
             if (grade == null) {
                 return;
@@ -141,25 +146,16 @@ public class NotificationManager {
     }
     
     private void parseDelete(ChangeStreamDocument<Document> change) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'parseDelete'");
     }
 
     private void parseReplace(ChangeStreamDocument<Document> change) {
-        // try {
-        //     FileWriter fw = new FileWriter(new File("updateGrade.json"));
-        //     fw.write(change.getFullDocumentBeforeChange().toJson());
-        //     fw.close();
-        // } catch (Exception e) {
-        //     // TODO: handle exception
-        // }
-
         var changeId = change.getDocumentKey().get("_id").asObjectId().getValue().toString();
         System.out.println("DEBUG: CHANGE ID: " + changeId);
         var changeCollection = change.getNamespace().getCollectionName();
         System.out.println("DEBUG: CHANGE COLLECTION: " + changeCollection);
 
-        if(changeCollection.equals("grades")){
+        if(changeCollection.strip().equalsIgnoreCase("grades")){
             var grade = scraper.getGradeByGradeId(changeId);
             if (grade == null) {
                 return;
@@ -169,6 +165,39 @@ public class NotificationManager {
                 return;
             }
             sendNotification(user, "GRADE UPDATED " + grade.getPercent());
+        }
+    }
+
+    public void notifyDueSoonAssignments() {
+        Instant now = Instant.now(); // Current UTC time
+        // Get all users
+        var users = scraper.getAllUsers();
+        for (User user : users) {
+            // Get all assignments for the user
+            var assignments = scraper.getAssignments(user.getId());
+            var dueTomorrow = new ArrayList<String>();
+            var dueToday = new ArrayList<String>();
+            for (Assignment assignment : assignments) {
+                if(assignment.isComplete())
+                    continue;
+                // Check if the assignment is due soon
+                var isWithin24hours = assignment.getDueDateAsDate().isBefore(now.plus(Duration.ofHours(24)));
+                var isWithin48hours = assignment.getDueDateAsDate().isBefore(now.plus(Duration.ofHours(48))) && assignment.getDueDateAsDate().isAfter(now.plus(Duration.ofHours(24)));
+                if (isWithin24hours) {
+                    dueToday.add(assignment.getTitle());
+                } else if (isWithin48hours) {
+                    dueTomorrow.add(assignment.getTitle());
+                }
+            }
+            // Send notifications
+            if (dueToday.size() > 0) {
+                String message = "You have the following assignments due today: " + String.join(",\n", dueToday);
+                sendNotification(user, message);
+            }
+            if (dueTomorrow.size() > 0) {
+                String message = "You have the following assignments due tomorrow: " + String.join(",\n", dueTomorrow);
+                sendNotification(user, message);
+            }
         }
     }
 }

@@ -4,12 +4,19 @@
     align-items: center;
     justify-content: center;
     height: 100%;
+    font-size: 20px;
+    margin-left: 10px;
+    padding-top: 40px;
+}
+
+input[type="checkbox"] {
+    transform: scale(1.1);
 }
 
 .item {
     margin: 10px auto;
 }
 
-button {
-    margin-top: 15px;
+button {    
+    border-radius: 5px;
 }

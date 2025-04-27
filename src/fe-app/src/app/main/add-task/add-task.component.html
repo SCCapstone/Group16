@@ -1,71 +1,41 @@
-<!--<div class="testing">
-    <h1>Add a Task:</h1>
-    <br>
-    <p>Name:</p>
-    <input type="text" id="name" [(ngModel)]="name">
-    <p>Description:</p>
-    <input type="text" id="description" [(ngModel)]="description">
-        COMMENT BLOCK: <p>Type:</p>
-        <select id="type" [(ngModel)]="type">
-            <option>Assignment</option>
-            <option>Reading</option>
-            <option>Quiz</option>
-            <option>Homework</option>
-            <option>Reminder</option>
-        </select>
-    <p>Course:</p>
-    COMMENT: Once course list is done this will be replaced with @for
-    <select id="course" [(ngModel)]="course">
-        <option>test1</option>
-        <option>test2</option>
-        <option>test3</option>
-    </select>
-    <p>Due:</p>
-    <input type="text" id="due" [(ngModel)]="due"> COMMENT: do some other stuff later here
-    <br><br>
-    <button (click)="addTask()">Save</button>
-    <br>
-    @if (displayOutput) {
-        <p>Name: {{ name }}</p>
-        <p>Description: {{ description }}</p>
-        COMMENT: <p>Type: {{ type }}</p>
-        <p>Associated Course: {{ course }}</p>
-        <p>Due Date: {{ due }}</p>
-    }
-</div>-->
 <div *ngIf="showFormPopup" class="popup-modal">
-    <div class="popup-content">
-      <form [formGroup]="addTaskForm" (ngSubmit)="addTask()">
-        <label for="title">Title:</label>
-        <input id="title" type="text" formControlName="title">
-      
-        <label for="description">Description:</label>
-        <textarea id="description" formControlName="description" rows="6" cols="60"></textarea>
-      
-        <label for="due">Due Date:</label>
-        <input id="due" type="date" formControlName="due">
-      
-        <label for="course">Course:</label>
-        <select id="course" formControlName="course">
-          <option value="" disabled></option>
-          <option *ngFor="let course of courses" [value]="course.id">{{ course.name }}</option>
-        </select>
-  
-        <button type="submit">Add Task</button>
-      </form>
-    </div>
+  <div class="popup-content">
+    <form [formGroup]="addTaskForm" (ngSubmit)="addTask()">
+      <label for="title">Title:</label>
+      <input id="title" type="text" formControlName="title">
+
+      <label for="description">Description:</label>
+      <textarea id="description" formControlName="description" rows="6" cols="60"></textarea>
+
+      <label for="due">Due Date:</label>
+      <input id="due" type="date" formControlName="due">
+
+      <label for="time">Due Time:</label>
+      <input id="time" type="time" formControlName="time">
+
+      <label for="course">Course:</label>
+      <select id="course" formControlName="course">
+        <option value="" disabled></option>
+        <option *ngFor="let course of courses" [value]="course.id">{{ course.name }}</option>
+      </select>
+
+      <div class="button-container">
+        <button type="submit" style = "border-radius: 10px; font-size: 18px">Save & Close</button>
+        <a (click)="addMoreTasks()" style = "margin-top: 24px; font-size: 18px;">Add Another</a>
+      </div>
+    </form>
+    <span class="error">{{ errorMessage }}</span>
+    <span class="success">{{ successMessage }}</span>
   </div>
-  
-  <div *ngIf="showTaskPopup" class="popup-modal">
-    <div class="popup-content">
-      <p *ngIf="popupType === 'new-task'">
-        <h3>New Task Added:</h3>
-        <div><span class="task-title">Title:</span> <br> <span class="task-value">{{ newTask2?.title }}</span></div>
-        <br><div><span class="task-title">Description:</span> <br> <span class="task-value">{{ newTask2?.description }}</span></div>
-        <br><div><span class="task-title">Due Date:</span> <br> <span class="task-value">{{ newTask2?.availability?.adaptiveRelease?.end | date }}</span></div>
-        <br><div><span class="task-title">Course:</span> <br> <span class="task-value">{{ courseName }} </span></div>
-    </div>
+</div>
+
+<div *ngIf="showTaskPopup" class="popup-modal">
+  <div class="popup-content">
+    <p *ngIf="popupType === 'new-task'">
+      <h3>New Task Added:</h3>
+      <div><span class="task-title">Title:</span> <br> <span class="task-value">{{ newTask2?.title }}</span></div>
+      <br><div><span class="task-title">Description:</span> <br> <span class="task-value">{{ newTask2?.description }}</span></div>
+      <br><div><span class="task-title">Due Date:</span> <br> <span class="task-value">{{ newTask2?.availability?.adaptiveRelease?.end | date: 'medium'  }}</span></div>
+      <br><div><span class="task-title">Course:</span> <br> <span class="task-value">{{ courseName }} </span></div>
   </div>
-  
- 
-  
+</div>

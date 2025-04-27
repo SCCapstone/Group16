@@ -11,13 +11,12 @@ import { EditTaskComponent } from '../../edit-task/edit-task.component';
 
 
 @Component({
-  selector: 'app-task',
-  standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, EditTaskComponent],
-  templateUrl: './task.component.html',
-  styleUrl: './task.component.css'
+    selector: 'app-task',
+    imports: [FormsModule, CommonModule, RouterModule, EditTaskComponent],
+    templateUrl: './task.component.html',
+    styleUrl: './task.component.css'
 })
-export class TaskComponent implements OnInit {
+export class TaskComponent {
   @Input() assignment!: Assignment;
   @Input() courseName!: String;
   @Output() taskRemoved = new EventEmitter<string>();
@@ -27,26 +26,19 @@ export class TaskComponent implements OnInit {
   loginService = inject(LoginService)
   showPopup = false;
   popupType: 'edit-task' | 'task' | null = null;
+  showConfirmDelete = false;
   //assignmentId = this.assignment.id ?? null;
 
 
   constructor(private assignmentService: AssignmentService) {}
 
-  async ngOnInit() {
-    //try {
-    //  this.courseName = await (await this.courseService.getCourseById(this.assignment.courseId)).name;
-    //} catch (error) {
-    //  console.error('Error fetching course:', error);
-    //}
-  }
-
+  /**
+   * toggle the completion status of an assignment
+   * @param assignment
+   */
   async toggleCompletion(assignment: Assignment) {
-    // console.log("clicked");
-    // console.log('Before ' + assignment.complete);
     try {
       const assignmentId = assignment.id ?? null;
-      console.log(assignmentId);
-
       if (!assignmentId) {
         console.error('Assignment ID is missing!');
         return;
@@ -57,33 +49,91 @@ export class TaskComponent implements OnInit {
       } else {
         await this.assignmentService.completeTask(assignmentId);
       }
-      // console.log('After ' + assignment.complete);
-
     } catch (error) {
       console.error('Error toggling task completion:', error);
     }
   }
 
+  /**
+   * open the delete confirmation popup
+   */
+  confirmDeleteTask() {
+    this.showConfirmDelete = true;
+    document.addEventListener('keydown', this.handleEscapeKey);
+  }
+
+  /**
+   * close the delete confirmation popup
+   */
+  cancelDelete(): void {
+    this.showConfirmDelete = false;
+  }
+
+  /**
+   * remove the task from the list
+   */
   async removeTask() {
     try {
       this.assignmentService.removeTask(this.assignment.id);
       this.taskRemoved.emit(this.assignment.id as string);
+      this.showConfirmDelete = false;
+      document.removeEventListener('keydown', this.handleEscapeKey);
     } catch (error) {
       console.error('Error removing task: ', error);
     }
   }
 
+  /**
+   * update the task in the list
+   * @param updatedAssignment
+   */
   updateTask(updatedAssignment: Assignment) {
     this.taskUpdated.emit(updatedAssignment);
   }
 
+  /**
+   * open the edit task or task popup
+   */
   openPopup(type: 'edit-task' | 'task'): void {
     this.popupType = type;
     this.showPopup = true;
+    document.addEventListener('keydown', this.handleEscapeKey);
   }
 
+  /**
+   * close the popup
+   */
   closePopup(): void {
     this.showPopup = false;
     this.popupType = null;
+    document.removeEventListener('keydown', this.handleEscapeKey);
+  }
+
+  /**
+   * close the popup when the escape key is pressed
+   * @param event
+   */
+  private handleEscapeKey = (event: KeyboardEvent): void => {
+    if (event.key === 'Escape') {
+      if (this.showPopup) {
+        this.closePopup();
+      }
+      if (this.showConfirmDelete) {
+        this.cancelDelete();
+      }
+    }
+  }
+
+  /**
+   * close the popup when the backdrop is clicked
+   * @param event
+   */
+  handleBackdropClick(event: Event): void {
+    if (this.showPopup) {
+      this.closePopup();
+    }
+    if (this.showConfirmDelete) {
+      this.cancelDelete();
+    }
   }
 }

@@ -1,12 +1,11 @@
-
-
 .selectOptions {
-    background-color: #aaaaaa;
+    background-color: #949494;
 }
 
-
 .task-info {
-    background-color: #aaaaaa;
+    background-color: #949494;
+    margin-top: -8px;
+
 }
 
 .selectOptions{
@@ -15,9 +14,12 @@
 }
 
 .sidebar{
-    background-color: #aaaaaa;
+    background-color: #949494;
 }
 
+.container-fluid{
+  background-color: #949494;
+}
 
 .popup-modal {
   display: flex;
@@ -33,7 +35,7 @@
 }
 
 .popup-content {
-  background-color: white;
+  background-color: #cfcfcf;
   padding: 20px;
   border-radius: 10px;
   text-align: center;
@@ -53,21 +55,27 @@
   color: black;
 }
 
-
-.main-view{
-  height: 620px;          
-  overflow-y: auto;
-  width: 99%;
-  margin-left: 5px;
+a.active-icon img {
+  padding-bottom: 5px;
+  border-bottom: 3px solid #c30000;
 }
 
+
+.main-view{
+  height: 75vh;          
+  overflow-y: auto;
+  scrollbar-width: none;
+  width: 99%;
+  margin-left: 5px;
+  background-color: #c0c0c0;
+  border-radius: 30px;
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+.main-view::-webkit-scrollbar {
+  display: none;
+}
 
 router-outlet {
   display: contents;
 }
-
-
-
-
-
-  

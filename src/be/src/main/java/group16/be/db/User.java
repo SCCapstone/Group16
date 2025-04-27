@@ -166,11 +166,30 @@ public class User {
         if (contact == null) return null;
         return contact.getEmail();
     }
+    public String getInstitutionEmail() {
+        if (contact == null) return null;
+        return contact.getInstitutionEmail();
+    }
+
+    public String getMobilePhone() {
+        if (contact == null) return null;
+        return contact.getMobilePhone();
+    }
 
     public boolean setMobilePhone(String mobilePhone) {
         if (contact == null) return false;
-        contact.mobilePhone = mobilePhone;
-        return true;
+        mobilePhone = mobilePhone.replace("-", "")
+            .replace(")", "")
+            .replace("(", "")
+            .replace("+1", "")
+            .replace(" ", "")
+            .strip();
+        String r = "^\\d{10}$";
+        if(mobilePhone.matches(r)) {
+            contact.mobilePhone = mobilePhone;
+            return true;
+        }
+        return false;
     }
 
     public String getMobileCarrier() {
@@ -227,6 +246,7 @@ public class User {
             notifications = new PriorityQueue<>();
         Notification notification = new Notification(message);
         notifications.add(notification);
+        System.out.println("DEBUG: User addNotification: " + notification.getMessage());
     }
     
     private static class Settings {
@@ -271,6 +291,10 @@ public class User {
 
     public User () {
         super();
+        contact = new Contact();
+        name = new Name();
+        job = new Job();
+        locale = new Locale();
     }
 
     public ArrayList<CourseId> getCourseIDs() {
@@ -306,6 +330,18 @@ public class User {
         .append(",\n  courseIDs: ").append(courseIDs != null ? formatCourseIDs(courseIDs) : "null")
         .append("\n}");
         return sb.toString();
+    }
+
+    public String simpleToString() {
+        String notificationString = "";
+        for(var notification : notifications) {
+            notificationString += "\t    { " + notification.getMessage() + " }";
+        }
+        return "User:"
+        + "\t  id: " + id
+        + ",\t  userName: " + userName
+        + ",\t  studentId: " + studentId
+        + ",\t  notifications: " + notificationString;
     }
 
     private String formatCourseIDs(List<CourseId> courseIDs) {
