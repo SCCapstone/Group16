@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('test_check_task', async ({ page }) => {
   await page.goto('http://localhost:4200/');
-  await page.getByRole('button', { name: 'Go To Login' }).click();
+  await page.getByRole('button', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Username:' }).click();
   await page.getByRole('textbox', { name: 'Username:' }).fill('admin');
   await page.getByRole('textbox', { name: 'Username:' }).press('Tab');
@@ -18,7 +18,7 @@ test('test_check_task', async ({ page }) => {
 
 test('test_calendar', async ({ page }) => {
   await page.goto('http://localhost:4200/');
-  await page.getByRole('button', { name: 'Go To Login' }).click();
+  await page.getByRole('button', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Username:' }).click();
   await page.getByRole('textbox', { name: 'Username:' }).fill('admin');
   await page.getByRole('textbox', { name: 'Username:' }).press('Tab');
@@ -35,7 +35,7 @@ test('test_calendar', async ({ page }) => {
 
 test('test_grades', async ({ page }) => {
   await page.goto('http://localhost:4200/');
-  await page.getByRole('button', { name: 'Go To Login' }).click();
+  await page.getByRole('button', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Username:' }).click();
   await page.getByRole('textbox', { name: 'Username:' }).fill('admin');
   await page.getByRole('textbox', { name: 'Username:' }).press('Tab');
@@ -48,7 +48,7 @@ test('test_grades', async ({ page }) => {
 
 test('test_settings_and_notif', async ({ page }) => {
   await page.goto('http://localhost:4200/');
-  await page.getByRole('button', { name: 'Go To Login' }).click();
+  await page.getByRole('button', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Username:' }).click();
   await page.getByRole('textbox', { name: 'Username:' }).fill('admin');
   await page.getByRole('textbox', { name: 'Username:' }).press('Tab');
@@ -68,7 +68,7 @@ test('test_settings_and_notif', async ({ page }) => {
 
 test('test_add_delete', async ({ page }) => {
   await page.goto('http://localhost:4200/');
-  await page.getByRole('button', { name: 'Go To Login' }).click();
+  await page.getByRole('button', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Username:' }).click();
   await page.getByRole('textbox', { name: 'Username:' }).fill('admin');
   await page.getByRole('textbox', { name: 'Username:' }).press('Tab');
@@ -92,7 +92,7 @@ test('test_add_delete', async ({ page }) => {
 
 test('test_classmate_navig', async ({ page }) => {
   await page.goto('http://localhost:4200/');
-  await page.getByRole('button', { name: 'Go To Login' }).click();
+  await page.getByRole('button', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Username:' }).click();
   await page.getByRole('textbox', { name: 'Username:' }).fill('admin');
   await page.getByRole('textbox', { name: 'Username:' }).press('Tab');
@@ -105,7 +105,7 @@ test('test_classmate_navig', async ({ page }) => {
 
 test('test_wrong_password', async ({ page }) => {
   await page.goto('http://localhost:4200/');
-  await page.getByRole('button', { name: 'Go To Login' }).click();
+  await page.getByRole('button', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Username:' }).click();
   await page.getByRole('textbox', { name: 'Username:' }).fill('admin');
   await page.getByRole('textbox', { name: 'Username:' }).press('Tab');
