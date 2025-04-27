@@ -16,7 +16,7 @@ import { EditTaskComponent } from '../../edit-task/edit-task.component';
     templateUrl: './task.component.html',
     styleUrl: './task.component.css'
 })
-export class TaskComponent implements OnInit {
+export class TaskComponent {
   @Input() assignment!: Assignment;
   @Input() courseName!: String;
   @Output() taskRemoved = new EventEmitter<string>();
@@ -31,8 +31,6 @@ export class TaskComponent implements OnInit {
 
 
   constructor(private assignmentService: AssignmentService) {}
-
-  ngOnInit() {}
 
   /**
    * toggle the completion status of an assignment

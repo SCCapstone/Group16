@@ -26,8 +26,8 @@ export class AppComponent implements OnDestroy {
   popupType: string = '';
 
   /**
-   * opens a popup
-   * @param type - type of popup to show
+   * Opens the side panel containing either settings or the notifications list.
+   * @param type Type of popup to show
    */
   openPopup(type: 'notifications' | 'settings') {
     this.popupType = type;
@@ -115,7 +115,8 @@ export class AppComponent implements OnDestroy {
     }
   }
   /**
-   * stops the heartbeat service when the component is destroyed
+   * Stops the heartbeat service
+   * Note: ngOnInit is a lifecycle hook that is called when this component is destroyed
    */
   ngOnDestroy() {
     this.heartbeatService.stopHeartbeat();

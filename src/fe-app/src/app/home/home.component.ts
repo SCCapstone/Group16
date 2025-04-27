@@ -17,6 +17,9 @@ export class HomeComponent {
 
   constructor(public activatedRoute: ActivatedRoute) {}
 
+  /**
+   * Navigates the user to the login page. Called when the "Login" button is clicked.
+   */
   click() {
     this.router.navigate(['/login']);
   }

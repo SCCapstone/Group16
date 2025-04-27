@@ -37,6 +37,7 @@ export class EditTaskComponent implements OnInit {
 
   /**
    * Initializes the form with the assignment data if available
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
    */
   ngOnInit() {
     this.courseService.getCourses(this.loginService.getUserId())

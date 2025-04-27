@@ -12,6 +12,10 @@ export class GradesService {
 
   constructor() { }
 
+  /**
+   * Returns grade service's signal so that components may watch it for changes
+   * @returns The value stored in the signal that components must reference to watch the signal.
+   */
   getUpdateSignal() {
     return this.updateSignal();
   }

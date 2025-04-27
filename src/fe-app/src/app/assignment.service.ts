@@ -21,7 +21,8 @@ export class AssignmentService {
   constructor() {}
 
   /**
-   * ngOnInit used to send a signal that is used to notify components when the assignments have been updated
+   * Fetches and stored the complete assignment list from the backend and updates the signal to notify dependent components.
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
    */
   ngOnInit() {
     if (this.loginService.getUserId()) {
@@ -35,6 +36,7 @@ export class AssignmentService {
 
   /**
    * Returns assignment service's signal so that components may watch it for changes
+   * @returns The value stored in the signal that components must reference to watch the signal.
    */
   getUpdateSignal() {
     return this.updateSignal();

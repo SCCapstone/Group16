@@ -34,7 +34,9 @@ export class MainComponent implements OnInit {
 
     topThreeAssignments: Assignment[] = [];
 
-
+    /**
+     * Navigates the user to the task-list if they did not navigate to a recognized subroute of the main page.
+     */
     constructor() {
         if (this.router.url != "/main/task-list" && this.router.url != "/main/calendar" && this.router.url != "/main/grades") {
             this.router.navigateByUrl("/main/task-list");
@@ -43,6 +45,7 @@ export class MainComponent implements OnInit {
 
     /**
      * Takes in a list of assignments and returns a list of three incomplete assignments with the closest due dates
+     * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
      */
     ngOnInit() {
         const userId = this.loginService.getUserId();

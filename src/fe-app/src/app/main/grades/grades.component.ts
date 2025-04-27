@@ -27,6 +27,10 @@ export class GradesComponent {
 
   constructor() {}
 
+  /**
+   * Retrieves course, assignment, and grade information from the corresponding services and initializes forms.
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
+   */
   ngOnInit() {
     this.courseService.getCourses(this.loginService.getUserId())
     .then((courses: Course[]) => {

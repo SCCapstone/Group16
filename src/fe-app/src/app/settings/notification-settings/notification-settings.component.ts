@@ -21,6 +21,10 @@ export class NotificationSettingsComponent {
 
   constructor(private cdr: ChangeDetectorRef) {}
 
+  /**
+   * Retrieves user's notification settings through SettingsService and updates checkboxes on-screen.
+   * Note: ngOnInit is a lifecycle hook that is called when this component is initialized.
+   */
   ngOnInit() {
     this.settingsService.getUserInfo(this.loginService.getUserId()).then((userInfo: UserInfo) => {
       let userSettings: NotificationSettings = userInfo.settings;
@@ -32,6 +36,9 @@ export class NotificationSettingsComponent {
     })
   }
 
+  /**
+   * Saves the user's notification preferences using the SettingsService.
+   */
   saveNotifications() {
     try {
       this.settingsService.updateNotificationSettings(this.loginService.getUserId(), this.useSchoolEmail, this.usePersonalEmail, this.useText);
